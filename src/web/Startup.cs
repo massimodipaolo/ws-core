@@ -12,61 +12,67 @@ using Microsoft.Extensions.Options;
 
 namespace web
 {
-	public class Startup
-	{
-		private IHostingEnvironment _env { get; set;}
-		private IConfigurationRoot _config;
+    public class Startup
+    {
+        private IHostingEnvironment _env { get; set; }
+        private IConfigurationRoot _config;
 
-		public Startup(IHostingEnvironment env)
-		{
-			_env = env;
+        public Startup(IHostingEnvironment env)
+        {
+            _env = env;
 
-			var builder = new ConfigurationBuilder()
-				.SetBasePath(_env.ContentRootPath)
-				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-				.AddJsonFile($"appsettings.{_env.EnvironmentName}.json", optional: true)
-				.AddEnvironmentVariables(); //override any config files / user secrets          
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(_env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{_env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables(); //override any config files / user secrets          
 
-			_config = builder.Build();
-		}
-		// This method gets called by the runtime. Use this method to add services to the container.
-		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-		public void ConfigureServices(IServiceCollection services)
-		{
-			services.AddOptions().Configure<Configuration>(_config);
+            _config = builder.Build();
+        }
+        // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddOptions().Configure<Configuration>(_config);
 
-			//framework service (Mvc,EF...)
-			services.AddMvc();
+            //framework service (Mvc,EF...)
+            services.AddMvc();
 
-			// Db repo
-			services.AddTransient(typeof(Data.IRepository<>), typeof(Data.Mongo<>));
+            // Db repo
+            services.AddTransient(typeof(Data.IRepository<>), typeof(Data.Mongo<>));
 
-			// Cache repo
-			// https://github.com/esendir/MongoRepository.Cached
+            // Cache repo
+            // https://github.com/esendir/MongoRepository.Cached
 
-			//app service
-			services.AddTransient<IMessage,EmailMessage>();
-		}
+            //app service
+            services.AddTransient<IMessage, EmailMessage>();
+        }
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
-		{
-			loggerFactory.AddConsole();
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        {
+            loggerFactory.AddConsole();
 
-			if (_env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
+            if (_env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
-			app.UseMvc();
+            app.UseMvc();
 
-			/*
-			app.Run(async (context) =>
-			{
-				await context.Response.WriteAsync($"");
-			});
-			*/
+            app.Map("/ascii", _ => _.Run(async (context) =>
+             {
+                 await context.Response.WriteAsync(@"
+                  __ _ _ __  _ __ ______ ___ ___  _ __ ___ 
+                 / _` | '_ \| '_ \______/ __/ _ \| '__/ _ \
+                | (_| | |_) | |_) |    | (_| (_) | | |  __/
+                 \__,_| .__/| .__/      \___\___/|_|  \___|
+                      | |   | |                            
+                      |_|   |_|                            
+                ");
+             }));
 
-		}
-	}
+
+        }
+    }
 }
