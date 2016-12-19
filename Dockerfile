@@ -1,7 +1,7 @@
 FROM microsoft/dotnet
 
 WORKDIR /src/web
-COPY project.json
+COPY project.json .
 RUN dotnet restore
 
 COPY . .
