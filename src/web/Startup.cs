@@ -60,16 +60,24 @@ namespace web
 
             app.UseMvc();
 
-            app.Map("/ascii", _ => _.Run(async (context) =>
+            app.Map("/info", _ => _.Run(async (context) =>
              {
-                 await context.Response.WriteAsync(@"
-                  __ _ _ __  _ __ ______ ___ ___  _ __ ___ 
-                 / _` | '_ \| '_ \______/ __/ _ \| '__/ _ \
-                | (_| | |_) | |_) |    | (_| (_) | | |  __/
-                 \__,_| .__/| .__/      \___\___/|_|  \___|
-                      | |   | |                            
-                      |_|   |_|                            
-                ");
+                 var msg = @"
+..####...#####...#####............####....####...#####...######.
+.##..##..##..##..##..##..........##..##..##..##..##..##..##.....
+.######..#####...#####...######..##......##..##..#####...####...
+.##..##..##......##..............##..##..##..##..##..##..##.....
+.##..##..##......##...............####....####...##..##..######.
+................................................................
+";
+				msg += 
+					"\n" +
+					$"ApplicationName: {_env.ApplicationName}\n" +
+					$"Environment: {_env.EnvironmentName}\n" +
+					$"MachineName: {Environment.MachineName}\n" +
+					$"ProcessorCount: {Environment.ProcessorCount}\n" ;
+				
+				await context.Response.WriteAsync(msg);
              }));
 
 
