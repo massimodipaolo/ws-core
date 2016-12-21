@@ -1,10 +1,9 @@
 FROM microsoft/dotnet
 
-WORKDIR /src/web
-COPY project.json
-RUN dotnet restore
+COPY . /app
 
-COPY . .
+WORKDIR /app/src/web
+RUN dotnet restore
 RUN dotnet publish -c Release -o out
 
 ENV ASPNETCORE_SERVER.URLS http://*:80
