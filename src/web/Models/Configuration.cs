@@ -6,13 +6,21 @@ namespace web
 		public Configuration()
 		{
 		}
-		public Db Db { get; set; }
+		public Db[] Db { get; set; }
 		public Smtp Smtp { get; set; }
 	}
 
-	public class Db : ServerService { 
-		public string Name { get; set; }
-	}
+	public class Db : ServerService {
+        public string Name { get; set; } 
+        public Types Type { get; set; }
+        public enum Types
+        {
+            Memory,
+            FileSystem,
+            Mongo,
+            SqlServer
+        }
+    }
 
 	public class Smtp: ServerService
 	{

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Routing;
 
 namespace web
 {
@@ -36,13 +37,11 @@ namespace web
             services.AddOptions().Configure<Configuration>(_config);
 
             //framework service (Mvc,EF...)
-            services.AddMvc();
+            services.AddMvc();            
 
-            // Db repo
-            services.AddTransient(typeof(Data.IRepository<>), typeof(Data.Mongo<>));
-
-            // Cache repo
-            // https://github.com/esendir/MongoRepository.Cached
+            //Db main repo
+            #warning TODO switch _config Db[0]: mongodb/ef/sql(dapper)/filesystem/default => memory
+            services.AddTransient(typeof(Data.IRepository<>), typeof(Data.MongoDb<>));
 
             //app service
             services.AddTransient<IMessage, EmailMessage>();
@@ -58,7 +57,18 @@ namespace web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=86400");
+                }
+            });
+
+            //Autentication
+
+            //Mvc  
+            app.UseMvc();            
 
             app.Map("/info", _ => _.Run(async (context) =>
              {
@@ -70,14 +80,15 @@ namespace web
 .##..##..##......##...............####....####...##..##..######.
 ................................................................
 ";
-				msg += 
-					"\n" +
-					$"ApplicationName: {_env.ApplicationName}\n" +
-					$"Environment: {_env.EnvironmentName}\n" +
-					$"MachineName: {Environment.MachineName}\n" +
-					$"ProcessorCount: {Environment.ProcessorCount}\n" ;
-				
-				await context.Response.WriteAsync(msg);
+                 msg +=
+                     "\n" +
+                     $"Time: {DateTime.Now}\n" +
+                     $"ApplicationName: {_env.ApplicationName}\n" +
+                     $"Environment: {_env.EnvironmentName}\n" +
+                     $"MachineName: {Environment.MachineName}\n" +
+                     $"ProcessorCount: {Environment.ProcessorCount}\n";
+
+                 await context.Response.WriteAsync(msg);
              }));
 
 

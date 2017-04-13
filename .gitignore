@@ -235,3 +235,6 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 /src/Properties/PublishProfiles/*.ps1
+
+# Files
+/src/web/Files/*.*

@@ -8,7 +8,7 @@ namespace web
 	}
 	public class Entity: IEntity
 	{
-		[MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
+		[MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]        
 		public string Id { get; set; }
 	}
 }

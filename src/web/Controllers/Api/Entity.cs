@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using web.Data;
 using Microsoft.AspNetCore.Mvc;
 namespace web.Controllers
 {
-	public class EntityController<T> : Controller where T:IEntity
+    [Route("api/[controller]")]
+    public class EntityController<T> : Controller where T:IEntity
 	{
 		protected IRepository<T> _repository;
 
@@ -13,31 +15,31 @@ namespace web.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult Get()
+		public virtual IActionResult Get()
 		{
 			return Ok(_repository.List);
 		}
 
 		[HttpGet("{id}")]
-		public IActionResult Get(string id)
+		public virtual IActionResult Get(string id)
 		{
-			return Ok(_repository.FindById(id));
+			return Ok(_repository.Find(id));
 		}
 
 		[HttpPost]
-		public void Post([FromBody]T entity)
+		public virtual void Post([FromBody]T entity)
 		{
 			_repository.Add(entity);
 		}
 
 		[HttpPut("{id}")]
-		public void Put(string id, [FromBody]T entity)
+		public virtual void Put(string id, [FromBody]T entity)
 		{
 			_repository.Update(entity);
 		}
 
 		[HttpDelete]
-		public void Delete([FromBody]T entity)
+		public virtual void Delete([FromBody]T entity)
 		{
 			_repository.Delete(entity);
 		}

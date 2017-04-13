@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 namespace web.Data
 {
-	public class Mongo<T>: IRepository<T> where T:IEntity
+	public class MongoDb<T>: IRepository<T> where T:IEntity
 	{
 		private Db _config {get;set;}
 
@@ -13,9 +13,9 @@ namespace web.Data
 
 		IMongoCollection<T> _collection;
 
-		public Mongo(IOptions<Configuration> config)
+		public MongoDb(IOptions<Configuration> config)
 		{
-			_config = config.Value.Db;
+			_config = config.Value.Db[0];
 			_collection = new MongoClient(Connection).GetDatabase(_config.Name).GetCollection<T>(typeof(T).Name);
 		}
 
@@ -33,8 +33,8 @@ namespace web.Data
 
 		public void Add(T entity)
 		{
-			throw new NotImplementedException();
-		}
+            _collection.InsertOne(entity);
+        }
 
 		public void Delete(T entity)
 		{
@@ -43,10 +43,10 @@ namespace web.Data
 
 		public void Update(T entity)
 		{
-			throw new NotImplementedException();
-		}
+            _collection.ReplaceOneAsync(_ => _.Id == entity.Id, entity, new UpdateOptions {IsUpsert = true});
+        }
 
-		public T FindById(string Id)
+        public T Find(string Id)
 		{
 			return _collection.Find(_ => _.Id == Id).FirstOrDefault();
 		}
