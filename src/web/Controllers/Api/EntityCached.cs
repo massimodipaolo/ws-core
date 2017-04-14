@@ -40,7 +40,7 @@ namespace web.Controllers
             base.Put(id,entity);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public override void Delete([FromBody]T entity)
         {
             _memory.Delete(entity);

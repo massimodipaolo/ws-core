@@ -35,10 +35,11 @@ namespace web.Controllers
 		[HttpPut("{id}")]
 		public virtual void Put(string id, [FromBody]T entity)
 		{
-			_repository.Update(entity);
+
+            _repository.Update(entity);
 		}
 
-		[HttpDelete]
+		[HttpDelete("{id}")]
 		public virtual void Delete([FromBody]T entity)
 		{
 			_repository.Delete(entity);

@@ -1,17 +1,20 @@
 ﻿using System;
-namespace web
+using System.Collections.Generic;
+
+namespace web.Configuration
 {
-	public class Configuration
+	public class Settings
 	{
-		public Configuration()
+		public Settings()
 		{
 		}
-		public Db[] Db { get; set; }
+		public IEnumerable<Db> Db { get; set; }
 		public Smtp Smtp { get; set; }
-	}
+    }
 
-	public class Db : ServerService {
-        public string Name { get; set; } 
+    public class Db : ServerService
+    {
+        public string Name { get; set; }
         public Types Type { get; set; }
         public enum Types
         {
@@ -22,14 +25,15 @@ namespace web
         }
     }
 
-	public class Smtp: ServerService
-	{
-	}
+    public class Smtp : ServerService
+    {
+    }
 
-	public class ServerService { 
-		public string Host { get; set; }
-		public int Port { get; set; }
-		public string User { get; set; }
-		public string Psw { get; set; }
-	}
+    public class ServerService
+    {
+        public string Host { get; set; }
+        public int Port { get; set; }
+        public string User { get; set; }
+        public string Psw { get; set; }
+    }
 }

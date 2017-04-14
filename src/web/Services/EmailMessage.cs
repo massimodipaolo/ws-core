@@ -7,10 +7,10 @@ namespace web
 	public class EmailMessage : IMessage
 	{
 		private IHostingEnvironment _env { get; set; }
-		private Configuration _config { get; set; }
+		private Configuration.Settings _config { get; set; }
 		private ILogger<EmailMessage> _logger { get; set; }
 
-		public EmailMessage(IHostingEnvironment env,IOptions<Configuration> opt, ILogger<EmailMessage> logger)
+		public EmailMessage(IHostingEnvironment env,IOptions<Configuration.Settings> opt, ILogger<EmailMessage> logger)
 		{
 			_env = env;
 			_config = opt.Value;

@@ -34,14 +34,29 @@ namespace web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOptions().Configure<Configuration>(_config);
+            services.AddOptions().Configure<Configuration.Settings>(_config);
 
             //framework service (Mvc,EF...)
-            services.AddMvc();            
+            services.AddMvc();
 
-            //Db main repo
-            #warning TODO switch _config Db[0]: mongodb/ef/sql(dapper)/filesystem/default => memory
-            services.AddTransient(typeof(Data.IRepository<>), typeof(Data.MongoDb<>));
+            //Db main repo            
+            Type dbType = typeof(Data.Memory<>);            
+            var dbConfigType = _config.GetSection("Db:0:Type").Value;
+            if (dbConfigType != null)
+            {
+                switch(dbConfigType)
+                {
+                    case "FileSystem":
+                        dbType = typeof(Data.FileSystem<>);
+                        break;
+                    case "Mongo":
+                        dbType = typeof(Data.Mongo<>);
+                        break;                    
+                    case "SqlServer":                        
+                        break;
+                }
+            }
+            services.AddTransient(typeof(Data.IRepository<>),dbType);
 
             //app service
             services.AddTransient<IMessage, EmailMessage>();

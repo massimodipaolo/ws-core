@@ -7,9 +7,11 @@ namespace web.Data
 {   
     public class Memory<T> : IRepository<T> where T : IEntity
     {
-        ICollection<T> _collection;
+        private static List<T> _collection = new List<T>();
 
-        public Memory(ICollection<T> data)
+        public Memory(){}
+
+        public Memory(List<T> data)
         {
             _collection = data;
         }
@@ -28,8 +30,8 @@ namespace web.Data
         }
 
         public void Delete(T entity)
-        {            
-            _collection.Remove(entity);
+        {   
+            _collection.RemoveAll(_ => _.Id == entity.Id);
         }
 
         public void Update(T entity)

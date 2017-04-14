@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using System.Linq;
+
 namespace web.Data
 {
-	public class MongoDb<T>: IRepository<T> where T:IEntity
+	public class Mongo<T>: IRepository<T> where T:IEntity
 	{
-		private Db _config {get;set;}
+		private Configuration.Db _config {get;set;}
 
 		public string Connection { get { return $"mongodb://{_config.Host}:{_config.Port}";} }
 
 		IMongoCollection<T> _collection;
 
-		public MongoDb(IOptions<Configuration> config)
-		{
-			_config = config.Value.Db[0];
-			_collection = new MongoClient(Connection).GetDatabase(_config.Name).GetCollection<T>(typeof(T).Name);
+		public Mongo(IOptions<Configuration.Settings> config)
+		{			
+            _config = config.Value.Db?.FirstOrDefault(_ => _.Type == Configuration.Db.Types.Mongo);
+            _collection = new MongoClient(Connection).GetDatabase(_config.Name).GetCollection<T>(typeof(T).Name);
 		}
 
 		public IEnumerable<T> List
