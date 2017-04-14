@@ -9,16 +9,16 @@ namespace web.Data
 {
 	public class Mongo<T>: IRepository<T> where T:IEntity
 	{
-		private Configuration.Db _config {get;set;}
+		private Configuration.Settings.Db _db {get;set;}
 
-		public string Connection { get { return $"mongodb://{_config.Host}:{_config.Port}";} }
+		public string Connection { get { return $"mongodb://{_db.Host}:{_db.Port}";} }
 
 		IMongoCollection<T> _collection;
 
 		public Mongo(IOptions<Configuration.Settings> config)
 		{			
-            _config = config.Value.Db?.FirstOrDefault(_ => _.Type == Configuration.Db.Types.Mongo);
-            _collection = new MongoClient(Connection).GetDatabase(_config.Name).GetCollection<T>(typeof(T).Name);
+            _db = config.Value.DbList?.FirstOrDefault(_ => _.Type == Configuration.Settings.Db.Types.Mongo);
+            _collection = new MongoClient(Connection).GetDatabase(_db.Name).GetCollection<T>(typeof(T).Name);
 		}
 
 		public IEnumerable<T> List

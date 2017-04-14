@@ -16,7 +16,9 @@ namespace web
     public class Startup
     {
         private IHostingEnvironment _env { get; set; }
-        private IConfigurationRoot _config;
+	private IConfigurationRoot _config; 
+
+		private DateTime _uptime = DateTime.Now;
 
         public Startup(IHostingEnvironment env)
         {
@@ -24,9 +26,10 @@ namespace web
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(_env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{_env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables(); //override any config files / user secrets          
+                .AddJsonFile("appsettings.json", optional: true) 
+		.AddJsonFile($"appsettings.{_env.EnvironmentName}.json", optional: true)
+		.AddJsonFile("appoptions.json", optional: true, reloadOnChange: true) //IOptionsSnapshot to live reload
+		.AddEnvironmentVariables(); //override any config files / user secrets          
 
             _config = builder.Build();
         }
@@ -34,25 +37,28 @@ namespace web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOptions().Configure<Configuration.Settings>(_config);
+		services.AddOptions()
+			        .Configure<Configuration.Settings>(_config)
+				.Configure<Configuration.Options>(_config);
 
             //framework service (Mvc,EF...)
             services.AddMvc();
 
             //Db main repo            
-            Type dbType = typeof(Data.Memory<>);            
-            var dbConfigType = _config.GetSection("Db:0:Type").Value;
-            if (dbConfigType != null)
+            Type dbType = typeof(Data.Memory<>);    
+            var dbList = _config.GetSection("DbList").Get<IEnumerable<Configuration.Settings.Db>>();
+            if (dbList != null && dbList.Any())
             {
-                switch(dbConfigType)
+		var mainType = dbList.First().Type;
+		switch(mainType)
                 {
-                    case "FileSystem":
+                    case Configuration.Settings.Db.Types.FileSystem:
                         dbType = typeof(Data.FileSystem<>);
                         break;
-                    case "Mongo":
+                    case Configuration.Settings.Db.Types.Mongo:
                         dbType = typeof(Data.Mongo<>);
                         break;                    
-                    case "SqlServer":                        
+                    case Configuration.Settings.Db.Types.SqlServer:
                         break;
                 }
             }
@@ -97,7 +103,7 @@ namespace web
 ";
                  msg +=
                      "\n" +
-                     $"Time: {DateTime.Now}\n" +
+                     $"Uptime: {_uptime}\n" +
                      $"ApplicationName: {_env.ApplicationName}\n" +
                      $"Environment: {_env.EnvironmentName}\n" +
                      $"MachineName: {Environment.MachineName}\n" +
