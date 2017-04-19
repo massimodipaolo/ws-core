@@ -1,5 +1,6 @@
 ﻿using System;
 using web.Data;
+using web.Models;
 using Microsoft.AspNetCore.Mvc;
 namespace web.Controllers
 {

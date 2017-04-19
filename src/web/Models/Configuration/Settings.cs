@@ -11,9 +11,10 @@ namespace web.Configuration
 		public IEnumerable<Db> DbList { get; set; }
 		public ServerService Smtp { get; set; }
 
-		public class Db : ServerService
+		public class Db
 		{
-			public string Name { get; set; }
+            public string Connection { get; set; }
+            public string Name { get; set; }
 			public Types Type { get; set; } = Types.Memory;
 			public enum Types
 			{

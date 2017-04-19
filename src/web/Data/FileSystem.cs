@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using web.Models;
 
 namespace web.Data
 {
@@ -17,7 +18,7 @@ namespace web.Data
         public FileSystem(IOptions<Configuration.Settings> config,IHostingEnvironment env)
         {
             _db = config.Value.DbList?.FirstOrDefault(_ => _.Type==Configuration.Settings.Db.Types.FileSystem);
-            _path = System.IO.Path.Combine(env.ContentRootPath, _db == null || string.IsNullOrEmpty(_db.Host) ? "Files/Entity" : _db.Host, $"{typeof(T).Name}.json");            
+            _path = System.IO.Path.Combine(env.ContentRootPath, _db == null || string.IsNullOrEmpty(_db.Connection) ? "Files/Entity" : _db.Connection, $"{typeof(T).Name}.json");            
 
             using (var stream = File.Open(_path, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite))
             using (var reader = new StreamReader(stream))
@@ -26,15 +27,9 @@ namespace web.Data
                 if (!string.IsNullOrEmpty(readed))
                     _collection = Newtonsoft.Json.JsonConvert.DeserializeObject<List<T>>(readed);
             }                
-        }
+        }        
 
-        public IEnumerable<T> List
-        {
-            get
-            {
-                return _collection;
-            }
-        }
+        IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
 
         public T Find(string Id)
         {

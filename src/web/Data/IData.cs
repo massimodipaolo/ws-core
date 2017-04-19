@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using web.Models;
+
 namespace web.Data
 {
 	public interface IDb<T> where T:IEntity
@@ -10,7 +13,7 @@ namespace web.Data
 
     public interface IRepository<T> where T:IEntity
 	{
-		IEnumerable<T> List { get;}
+        IQueryable<T> List { get;}
         T Find(string Id);
         void Add(T entity);
         void Update(T entity);

@@ -4,36 +4,25 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System.Linq;
+using web.Models;
 
 namespace web.Data
 {
-	public class Mongo<T>: IRepository<T> where T:IEntity
+	public class Mongo<T>: IRepository<T> where T:Entity
 	{
 		private Configuration.Settings.Db _db {get;set;}
-
-		public string Connection { get { return $"mongodb://{_db.Host}:{_db.Port}";} }
 
 		IMongoCollection<T> _collection;
 
 		public Mongo(IOptions<Configuration.Settings> config)
 		{			
             _db = config.Value.DbList?.FirstOrDefault(_ => _.Type == Configuration.Settings.Db.Types.Mongo);
-            _collection = new MongoClient(Connection).GetDatabase(_db.Name).GetCollection<T>(typeof(T).Name);
-		}
+            _collection = new MongoClient(_db.Connection).GetDatabase(_db.Name).GetCollection<T>(typeof(T).Name);                     
+		}        
 
-		public IEnumerable<T> List
-		{
-			get
-			{
-				return _list().Result;
-			}
-		}
+        IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
 
-		private async Task<IEnumerable<T>> _list() {
-			return await _collection.Find(_ => true).ToListAsync();
-		}
-
-		public void Add(T entity)
+        public void Add(T entity)
 		{
             _collection.InsertOne(entity);
         }

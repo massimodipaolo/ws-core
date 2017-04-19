@@ -1,5 +1,5 @@
 ﻿using System;
-namespace web
+namespace web.Models
 {
 	public class Log
 	{

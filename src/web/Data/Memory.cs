@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using web.Models;
 
 namespace web.Data
 {   
@@ -14,15 +15,9 @@ namespace web.Data
         public Memory(List<T> data)
         {
             _collection = data;
-        }
+        }        
 
-        public IEnumerable<T> List
-        {
-            get
-            {
-                return _collection;
-            }
-        }
+        IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
 
         public void Add(T entity)
         {
