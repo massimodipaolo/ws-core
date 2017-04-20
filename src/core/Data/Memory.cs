@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using web.Models;
+using core.Models;
 
-namespace web.Data
+namespace core.Data
 {   
     public class Memory<T> : IRepository<T> where T : IEntity
     {

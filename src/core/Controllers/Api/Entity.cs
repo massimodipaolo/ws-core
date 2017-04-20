@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using web.Data;
-using web. Models;
+using core.Data;
+using core. Models;
 using Microsoft.AspNetCore.Mvc;
-namespace web.Controllers
+namespace core.Controllers
 {
     [Route("api/[controller]")]
     public class EntityController<T> : Controller where T:IEntity

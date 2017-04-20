@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-namespace web
+namespace core
 {
 	public class EmailMessage : IMessage
 	{

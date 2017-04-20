@@ -1,8 +1,8 @@
 ﻿using System;
-using web.Data;
-using web.Models;
+using core.Data;
+using core.Models;
 using Microsoft.AspNetCore.Mvc;
-namespace web.Controllers
+namespace core.Controllers
 {
 
     public class UserController : EntityController<User> //EntityCachedController<User>

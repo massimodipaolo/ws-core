@@ -1,5 +1,5 @@
 ﻿using System;
-namespace web
+namespace core
 {
 	public interface IMessage
 	{

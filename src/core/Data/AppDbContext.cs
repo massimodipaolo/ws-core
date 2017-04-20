@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace web.Data
+namespace core.Data
 {
     public class AppDbContext : DbContext
     {
@@ -18,7 +18,7 @@ namespace web.Data
         {            
             base.OnModelCreating(modelBuilder);
             #warning get all type by reflection: https://gist.github.com/jcansdale/f0c2f70c2dc8094e4fb8eaba6506a550
-            foreach (Type type in (new Type[] { typeof(web.Models.User) }))
+            foreach (Type type in (new Type[] { typeof(core.Models.User) }))
                 modelBuilder.Entity(type); //.ToTable(type.Name);
             // new MyClassMap(modelBuilder.Entity<MyClass>());            
         }

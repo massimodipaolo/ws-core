@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace web.Models
+namespace core.Models
 {
 	public interface IEntity
 	{        

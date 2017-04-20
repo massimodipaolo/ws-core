@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using web.Models;
+using core.Models;
 
-namespace web.Data
+namespace core.Data
 {
 	public interface IDb<T> where T:IEntity
 	{

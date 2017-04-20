@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
-    <AssemblyName>web</AssemblyName>
+    <AssemblyName>core</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>web</PackageId>
     <RuntimeFrameworkVersion>1.1.1</RuntimeFrameworkVersion>    
@@ -36,6 +36,7 @@
   <ItemGroup>
     <Folder Include="Files\Entity\" />
     <Folder Include="Models\Configuration\" />
+    <Folder Include="Code\" />
   </ItemGroup>
 
 </Project>

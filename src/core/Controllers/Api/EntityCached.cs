@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using web.Data;
-using web.Models;
+using core.Data;
+using core.Models;
 using Microsoft.AspNetCore.Mvc;
-namespace web.Controllers
+namespace core.Controllers
 {
     public class EntityCachedController<T> : EntityController<T> where T : IEntity
     {        

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using web.Models;
+using core.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace web.Data
+namespace core.Data
 {
     public class SqlServer<T> : IRepository<T> where T : Entity
     {
