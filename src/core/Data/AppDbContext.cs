@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Loader;
 using System.Threading.Tasks;
 
 namespace core.Data
@@ -16,11 +19,15 @@ namespace core.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {            
-            base.OnModelCreating(modelBuilder);
-            #warning get all type by reflection: https://gist.github.com/jcansdale/f0c2f70c2dc8094e4fb8eaba6506a550
-            foreach (Type type in (new Type[] { typeof(core.Models.User) }))
+            base.OnModelCreating(modelBuilder);            
+            var baseType = typeof(Models.Entity);
+            var entityTypes = core.Code.Utils.Assemblies.SelectMany(_ => _.GetTypes().Where(__ => baseType.IsAssignableFrom(__) && __!= baseType));
+            foreach (Type type in entityTypes)
                 modelBuilder.Entity(type); //.ToTable(type.Name);
             // new MyClassMap(modelBuilder.Entity<MyClass>());            
         }
+
+
+
     }
 }

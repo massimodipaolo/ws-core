@@ -5,10 +5,13 @@
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <AssemblyName>core</AssemblyName>
     <OutputType>Exe</OutputType>
-    <PackageId>web</PackageId>
+    <PackageId>core</PackageId>
     <RuntimeFrameworkVersion>1.1.1</RuntimeFrameworkVersion>    
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>    
-    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>    
+    <Company>Websolute spa</Company>    
+    <Authors>Massimo Di Paolo</Authors>    
+    <Product>app-core</Product>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,7 +39,6 @@
   <ItemGroup>
     <Folder Include="Files\Entity\" />
     <Folder Include="Models\Configuration\" />
-    <Folder Include="Code\" />
   </ItemGroup>
 
 </Project>
