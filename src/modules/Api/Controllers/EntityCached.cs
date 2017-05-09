@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
 using core.Data;
-using core.Models;
 using Microsoft.AspNetCore.Mvc;
-namespace core.Controllers
+using core.Data.Repository;
+
+namespace core.Api.Controllers
 {
     public class EntityCachedController<T> : EntityController<T> where T : IEntity
     {        
@@ -12,7 +13,7 @@ namespace core.Controllers
         public EntityCachedController(IRepository<T> repository) : base(repository)
         {
             if (_memory == null)                
-                _memory = new Memory<T>(_repository.List.ToList());
+                _memory = new InMemory<T>(_repository.List.ToList());
         }
 
         [HttpGet]

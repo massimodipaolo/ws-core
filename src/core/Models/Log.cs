@@ -1,7 +1,7 @@
 ﻿using System;
 namespace core.Models
 {
-	public class Log
+	public class Log//: core.Data.Entity
 	{
 		public Log()
 		{

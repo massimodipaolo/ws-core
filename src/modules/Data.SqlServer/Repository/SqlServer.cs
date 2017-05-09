@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
-using core.Models;
-using Microsoft.EntityFrameworkCore;
 
-namespace core.Data
+namespace core.Data.Repository
 {
     public class SqlServer<T> : IRepository<T> where T : Entity
     {
@@ -12,8 +11,8 @@ namespace core.Data
 
         public SqlServer(AppDbContext context)
         {
-            _context = context;            
-            _collection = _context.Set<T>();            
+            _context = context;
+            _collection = _context.Set<T>();
         }
 
         public IQueryable<T> List => _collection.AsNoTracking().AsQueryable();
@@ -35,7 +34,7 @@ namespace core.Data
         public void Update(T entity)
         {
             if (entity != null)
-            {                
+            {
                 _collection.Update(entity);
                 _context.SaveChanges();
             }
@@ -50,5 +49,5 @@ namespace core.Data
             }
         }
 
-    }    
+    }
 }

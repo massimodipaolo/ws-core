@@ -4,21 +4,23 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System.Linq;
-using core.Models;
+using core.Data;
 
-namespace core.Data
+namespace core.Data.Repository
 {
 	public class Mongo<T>: IRepository<T> where T:Entity
 	{
-		private Configuration.Settings.Db _db {get;set;}
+		//private Configuration.Settings.Db _db {get;set;}
 
 		IMongoCollection<T> _collection;
 
-		public Mongo(IOptions<Configuration.Settings> config)
-		{			
-            _db = config.Value.DbList?.FirstOrDefault(_ => _.Type == Configuration.Settings.Db.Types.Mongo);
-            _collection = new MongoClient(_db.Connection).GetDatabase(_db.Name).GetCollection<T>(typeof(T).Name);                     
-		}        
+        /*
+        public Mongo(IOptions<Configuration.Settings> config)
+		{            
+          //  _db = config.Value.DbList?.FirstOrDefault(_ => _.Type == Configuration.Settings.Db.Types.Mongo);
+           // _collection = new MongoClient(_db.Connection).GetDatabase(_db.Name).GetCollection<T>(typeof(T).Name);                     
+		} 
+        */
 
         IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
 

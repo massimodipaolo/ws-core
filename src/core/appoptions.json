@@ -1,3 +1,25 @@
 ﻿{
-  "Dictionary":  {"Key1":  "Value1", "Key2":  "Value2"}
+  "Extensions": [
+    {
+      "Name": "StaticFiles",
+      "Options": {
+        "Headers": { "Cache-Control": "public,max-age=86400" },
+        "DefaultFiles": [ "index.html", "default.htm" ],
+        "MIMEtypes": {
+          ".myapp": "application/x-msdownload",
+          ".htm3": "text/html"
+        },
+        "EnableDirectoryBrowser": true
+      }
+    },
+    {
+      "Name": "Mvc"
+    }
+  ],
+  "Dictionary": {
+    "Key1": "Value1",
+    "Key2": "Value2"
+  }
 }
+
+

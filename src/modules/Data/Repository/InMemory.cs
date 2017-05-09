@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using core.Models;
+using System.Text;
 
-namespace core.Data
-{   
-    public class Memory<T> : IRepository<T> where T : IEntity
+namespace core.Data.Repository
+{
+    public class InMemory<T> : IRepository<T> where T : IEntity
     {
         private static List<T> _collection = new List<T>();
 
-        public Memory(){}
+        public InMemory() { }
 
-        public Memory(List<T> data)
+        public InMemory(List<T> data)
         {
             _collection = data;
-        }        
+        }
 
         IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
 
@@ -25,7 +24,7 @@ namespace core.Data
         }
 
         public void Delete(T entity)
-        {   
+        {
             _collection.RemoveAll(_ => _.Id == entity.Id);
         }
 

@@ -1,18 +1,16 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using core.Models;
 
-namespace core.Data
+namespace core.Data.Repository
 {
     public class FileSystem<T> : IRepository<T> where T : IEntity
     {
         private List<T> _collection = new List<T>();
         private string _path { get; set; }
+        /*
         private Configuration.Settings.Db _db { get; set; }
         
         public FileSystem(IOptions<Configuration.Settings> config,IHostingEnvironment env)
@@ -27,7 +25,8 @@ namespace core.Data
                 if (!string.IsNullOrEmpty(readed))
                     _collection = Newtonsoft.Json.JsonConvert.DeserializeObject<List<T>>(readed);
             }                
-        }        
+        } 
+        */
 
         IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
 

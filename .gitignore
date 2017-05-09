@@ -143,6 +143,7 @@ publish/
 *.publishproj
 
 # NuGet Packages
+.nuget/
 *.nupkg
 # The packages folder can be ignored because of Package Restore
 **/packages/*
@@ -168,6 +169,8 @@ ApplicationInsights.config
 # Windows Store app package directory
 AppPackages/
 BundleArtifacts/
+packages/
+artifacts/
 
 # Visual Studio cache files
 # files ending in .cache can be ignored
@@ -237,5 +240,5 @@ _Pvt_Extensions
 /src/Properties/PublishProfiles/*.ps1
 
 # Files
-/src/web/Files/*.*
-/src/web/Files/Entity/*.*
+/src/core/Files/*.*
+/src/core/Files/Entity/*.*
