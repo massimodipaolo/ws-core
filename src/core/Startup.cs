@@ -43,7 +43,7 @@ namespace core
             services.AddOptions()
                     .Configure<Configuration.Settings>(_config)
                     .Configure<Configuration.Options>(_config)                    
-                    .Configure<IEnumerable<Extension.Configuration.Options.Extension>>(_config);
+                    .Configure<IEnumerable<Extension.Configuration.Assembly>>(_config);
 
             base.ConfigureServices(services);
 

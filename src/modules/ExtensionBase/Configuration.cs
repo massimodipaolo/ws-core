@@ -4,13 +4,13 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace core.Extension.Configuration
+namespace core.Extension
 {    
-    public class Options
+    public class Configuration
     {
-        public IEnumerable<Extension> Extensions { get; set; }
+        public IEnumerable<Assembly> Extensions { get; set; }
 
-        public class Extension
+        public class Assembly
         {
             public string Name { get; set; }
             public int Index { get; set; }

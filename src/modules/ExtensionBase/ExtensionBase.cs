@@ -11,31 +11,31 @@ namespace core.Extension
     {        
         protected string AssemblyName => GetType().GetTypeInfo().Assembly.GetName().Name;
 
-        protected IEnumerable<Configuration.Options.Extension> AllExtensions
+        protected IEnumerable<Configuration.Assembly> Extensions
         {
             get
             {                
-                return configurationRoot?.GetSection("Extensions").Get<IEnumerable<Configuration.Options.Extension>>();             
+                return configurationRoot?.GetSection("Extensions").Get<IEnumerable<Configuration.Assembly>>();             
             }
         }
 
-        protected Configuration.Options.Extension Configuration
+        protected Configuration.Assembly Assembly
         {
             get
             {
-                return AllExtensions.Select((e, i) => { e.Index = i; return e; }).Where(_ => _.Name == AssemblyName).FirstOrDefault();
+                return Extensions.Select((e, i) => { e.Index = i; return e; }).Where(_ => _.Name == AssemblyName).FirstOrDefault();
             }
         }
 
-        protected int Priority => Configuration?.Index * 100 ?? 0;
+        protected int Priority => Assembly?.Index * 100 ?? 0;
 
         protected T GetOptions<T>() where T: class, new()
         {
             var obj = new T();            
-            if (Configuration != null)            
-                obj = configurationRoot.GetSection($"Extensions:{Configuration.Index}:Options").Get<T>();            
+            if (Assembly != null)            
+                obj = configurationRoot.GetSection($"Extensions:{Assembly.Index}:Options").Get<T>();            
             return obj;
         }
-        public override string Name => $"{AssemblyName} [{Configuration?.Index}]";        
+        public override string Name => $"{AssemblyName} [{Assembly?.Index}]";        
     }
 }

@@ -5,56 +5,75 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
 using System.Collections.Generic;
+using System.IO;
 
 namespace core.Extension
 {
     public class StaticFiles : ExtensionBase
     {
-        //TODO: Inject IFileProvider (or ServiceLocator): https://docs.microsoft.com/en-us/aspnet/core/fundamentals/file-providers
-        private IFileProvider _fileProvider => serviceProvider.GetService<IFileProvider>();
-
         //TODO: singleton
-        private (StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions) _options
+        private IEnumerable<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)> Settings
         {
             get
             {                
-                Options _opt = GetOptions<Options>();
-                
-                //StaticFileOptions
-                var StaticFileOptions = new StaticFileOptions();
-                if (_opt.Headers != null)
-                {
-                    StaticFileOptions.OnPrepareResponse = ctx =>
-                    {
-                        foreach (var h in _opt.Headers)
-                            ctx.Context.Response.Headers.Append(h.Key, h.Value);
-                    };
-                }
-                if (_opt.MIMEtypes != null)
-                {
-                    var provider = new FileExtensionContentTypeProvider();
-                    foreach (var t in _opt.MIMEtypes)
-                        provider.Mappings[t.Key] = t.Value;
-                    StaticFileOptions.ContentTypeProvider = provider;
-                }
+                IEnumerable<Options> opts = GetOptions<List<Options>>();
+                var res = new List<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)>();
+                foreach(var opt in opts) {
+                    
+					//StaticFileOptions
+					var StaticFileOptions = new StaticFileOptions();
 
-                //DirectoryBrowser
-                DirectoryBrowserOptions DirectoryBrowserOptions = null;
-                if (_opt.EnableDirectoryBrowser==true)                
-                    DirectoryBrowserOptions = new DirectoryBrowserOptions();                    
+					//TODO: change Directory.GetCurrentDirectory() with _env.ContentRootPath
+					if (!string.IsNullOrEmpty(opt.Path))
+						//TODO: Inject IFileProvider (or ServiceLocator serviceProvider.GetService<IFileProvider>()): https://docs.microsoft.com/en-us/aspnet/core/fundamentals/file-providers
+						StaticFileOptions.FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), opt.Path));
+                    if (!string.IsNullOrEmpty(opt.RequestPath))
+                        StaticFileOptions.RequestPath = new PathString(opt.RequestPath);
+                    if (opt.Headers != null)
+                        {
+                            StaticFileOptions.OnPrepareResponse = ctx =>
+                            {
+                                foreach (var h in opt.Headers)
+                                    ctx.Context.Response.Headers.Append(h.Key, h.Value);
+                            };
+                        }
+					if (opt.MIMEtypes != null)
+					{
+						var provider = new FileExtensionContentTypeProvider();
+						foreach (var t in opt.MIMEtypes)
+							provider.Mappings[t.Key] = t.Value;
+						StaticFileOptions.ContentTypeProvider = provider;
+					}
 
-                //DefaultFiles
-                DefaultFilesOptions DefaultFilesOptions = null;
-                if (_opt.DefaultFiles?.Length > 0)
-                {
-                    DefaultFilesOptions = new DefaultFilesOptions();
-                    DefaultFilesOptions.DefaultFileNames.Clear();
-                    foreach (var f in _opt.DefaultFiles)
-                        DefaultFilesOptions.DefaultFileNames.Add(f);
+					//DirectoryBrowser
+					DirectoryBrowserOptions DirectoryBrowserOptions = null;
+                    if (opt.EnableDirectoryBrowser) {
+                        DirectoryBrowserOptions = new DirectoryBrowserOptions();
+                        if (!string.IsNullOrEmpty(opt.Path))
+							DirectoryBrowserOptions.FileProvider = StaticFileOptions.FileProvider; 
+                        if (!string.IsNullOrEmpty(opt.RequestPath))
+							DirectoryBrowserOptions.RequestPath=StaticFileOptions.RequestPath;
+                    }					
+
+					//DefaultFiles
+					DefaultFilesOptions DefaultFilesOptions = null;
+					if (opt.DefaultFiles?.Length > 0)
+					{
+						DefaultFilesOptions = new DefaultFilesOptions();
+						if (!string.IsNullOrEmpty(opt.Path))
+							DefaultFilesOptions.FileProvider = StaticFileOptions.FileProvider;
+						if (!string.IsNullOrEmpty(opt.RequestPath))
+							DefaultFilesOptions.RequestPath = StaticFileOptions.RequestPath;
+						DefaultFilesOptions.DefaultFileNames.Clear();
+						foreach (var f in opt.DefaultFiles)
+							DefaultFilesOptions.DefaultFileNames.Add(f);
+					}
+
+                    res.Add((StaticFileOptions, DirectoryBrowserOptions, DefaultFilesOptions));  
                 }
-
-                return (StaticFileOptions, DirectoryBrowserOptions, DefaultFilesOptions);
+                return res;
             }
         }
 
@@ -64,7 +83,7 @@ namespace core.Extension
             {
                 var priority = Priority;
                 var d = new Dictionary<int, Action<IServiceCollection>>();
-                if (_options.DirectoryBrowserOptions != null)
+                if (Settings.Any(_ => _.DirectoryBrowserOptions != null))
                     d[priority] = service => service.AddDirectoryBrowser();                    
                 return d;
             }
@@ -76,22 +95,23 @@ namespace core.Extension
             {
                 var priority = Priority;
                 var d = new Dictionary<int, Action<IApplicationBuilder>>();
+                foreach(var setting in Settings) {
+					if (setting.DefaultFilesOptions != null)
+						d[priority++] = app => app.UseDefaultFiles(setting.DefaultFilesOptions);
 
-                if (_options.DefaultFilesOptions != null)
-                    d[priority] = app => app.UseDefaultFiles(_options.DefaultFilesOptions);
+					if (setting.DirectoryBrowserOptions != null)
+						d[priority++] = app => app.UseDirectoryBrowser(setting.DirectoryBrowserOptions);
 
-                if (_options.DirectoryBrowserOptions != null)
-                    d[priority+1] = app => app.UseDirectoryBrowser(_options.DirectoryBrowserOptions);
-
-                d[priority+2] = app => app.UseStaticFiles(_options.StaticFileOptions);
-
+					d[priority++] = app => app.UseStaticFiles(setting.StaticFileOptions);   
+                }
                 return d;
             }
         }
 
-        //TODO: IEnumerable<Options>, Path, RequestPath: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/static-files#enabling-directory-browsing
         public class Options
-        {   
+        {
+            public string Path { get; set; }
+            public string RequestPath { get; set; }
             public Dictionary<string, string> Headers { get; set; }         
             public Dictionary<string, string> MIMEtypes { get; set; }            
             public String[] DefaultFiles { get; set; }            

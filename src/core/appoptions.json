@@ -2,15 +2,22 @@
   "Extensions": [
     {
       "Name": "StaticFiles",
-      "Options": {
-        "Headers": { "Cache-Control": "public,max-age=86400" },
-        "DefaultFiles": [ "index.html", "default.htm" ],
-        "MIMEtypes": {
-          ".myapp": "application/x-msdownload",
-          ".htm3": "text/html"
+      "Options": [
+        {
+          "Headers": { "Cache-Control": "public,max-age=43200" }
         },
-        "EnableDirectoryBrowser": true
-      }
+        {
+          "Path": "wwwroot/folder",
+          "RequestPath": "/free",
+          "Headers": { "Cache-Control": "public,max-age=86400" },
+          "DefaultFiles": [ "index.html", "default.htm" ],
+          "MIMEtypes": {
+            ".myapp": "application/x-msdownload",
+            ".htm3": "text/html"
+          },
+          "EnableDirectoryBrowser": true
+        }
+      ]
     },
     {
       "Name": "Mvc"
