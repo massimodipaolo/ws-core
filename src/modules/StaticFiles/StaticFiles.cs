@@ -8,70 +8,70 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using ExtCore.Infrastructure;
 
 namespace core.Extension
 {
     public class StaticFiles : ExtensionBase
     {
-        //TODO: singleton
         private IEnumerable<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)> Settings
         {
             get
-            {                
+            {
                 IEnumerable<Options> opts = GetOptions<List<Options>>();
                 var res = new List<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)>();
-                foreach(var opt in opts) {
-                    
-					//StaticFileOptions
-					var StaticFileOptions = new StaticFileOptions();
+                foreach (var opt in opts)
+                {
 
-					//TODO: change Directory.GetCurrentDirectory() with _env.ContentRootPath
-					if (!string.IsNullOrEmpty(opt.Path))
-						//TODO: Inject IFileProvider (or ServiceLocator serviceProvider.GetService<IFileProvider>()): https://docs.microsoft.com/en-us/aspnet/core/fundamentals/file-providers
-						StaticFileOptions.FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), opt.Path));
+                    //StaticFileOptions
+                    var StaticFileOptions = new StaticFileOptions();
+                    if (!string.IsNullOrEmpty(opt.Path))
+                        //TODO: Inject IFileProvider (or ServiceLocator serviceProvider.GetService<IFileProvider>()): https://docs.microsoft.com/en-us/aspnet/core/fundamentals/file-providers
+                        StaticFileOptions.FileProvider = new PhysicalFileProvider(Path.Combine(ContentPath, opt.Path));
                     if (!string.IsNullOrEmpty(opt.RequestPath))
                         StaticFileOptions.RequestPath = new PathString(opt.RequestPath);
                     if (opt.Headers != null)
+                    {
+                        StaticFileOptions.OnPrepareResponse = ctx =>
                         {
-                            StaticFileOptions.OnPrepareResponse = ctx =>
-                            {
-                                foreach (var h in opt.Headers)
-                                    ctx.Context.Response.Headers.Append(h.Key, h.Value);
-                            };
-                        }
-					if (opt.MIMEtypes != null)
-					{
-						var provider = new FileExtensionContentTypeProvider();
-						foreach (var t in opt.MIMEtypes)
-							provider.Mappings[t.Key] = t.Value;
-						StaticFileOptions.ContentTypeProvider = provider;
-					}
+                            foreach (var h in opt.Headers)
+                                ctx.Context.Response.Headers.Append(h.Key, h.Value);
+                        };
+                    }
+                    if (opt.MIMEtypes != null)
+                    {
+                        var provider = new FileExtensionContentTypeProvider();
+                        foreach (var t in opt.MIMEtypes)
+                            provider.Mappings[t.Key] = t.Value;
+                        StaticFileOptions.ContentTypeProvider = provider;
+                    }
 
-					//DirectoryBrowser
-					DirectoryBrowserOptions DirectoryBrowserOptions = null;
-                    if (opt.EnableDirectoryBrowser) {
+                    //DirectoryBrowser
+                    DirectoryBrowserOptions DirectoryBrowserOptions = null;
+                    if (opt.EnableDirectoryBrowser)
+                    {
                         DirectoryBrowserOptions = new DirectoryBrowserOptions();
                         if (!string.IsNullOrEmpty(opt.Path))
-							DirectoryBrowserOptions.FileProvider = StaticFileOptions.FileProvider; 
+                            DirectoryBrowserOptions.FileProvider = StaticFileOptions.FileProvider;
                         if (!string.IsNullOrEmpty(opt.RequestPath))
-							DirectoryBrowserOptions.RequestPath=StaticFileOptions.RequestPath;
-                    }					
+                            DirectoryBrowserOptions.RequestPath = StaticFileOptions.RequestPath;
+                    }
 
-					//DefaultFiles
-					DefaultFilesOptions DefaultFilesOptions = null;
-					if (opt.DefaultFiles?.Length > 0)
-					{
-						DefaultFilesOptions = new DefaultFilesOptions();
-						if (!string.IsNullOrEmpty(opt.Path))
-							DefaultFilesOptions.FileProvider = StaticFileOptions.FileProvider;
-						if (!string.IsNullOrEmpty(opt.RequestPath))
-							DefaultFilesOptions.RequestPath = StaticFileOptions.RequestPath;
-						DefaultFilesOptions.DefaultFileNames.Clear();
-						foreach (var f in opt.DefaultFiles)
-							DefaultFilesOptions.DefaultFileNames.Add(f);
-					}
+                    //DefaultFiles
+                    DefaultFilesOptions DefaultFilesOptions = null;
+                    if (opt.DefaultFiles?.Length > 0)
+                    {
+                        DefaultFilesOptions = new DefaultFilesOptions();
+                        if (!string.IsNullOrEmpty(opt.Path))
+                            DefaultFilesOptions.FileProvider = StaticFileOptions.FileProvider;
+                        if (!string.IsNullOrEmpty(opt.RequestPath))
+                            DefaultFilesOptions.RequestPath = StaticFileOptions.RequestPath;
+                        DefaultFilesOptions.DefaultFileNames.Clear();
+                        foreach (var f in opt.DefaultFiles)
+                            DefaultFilesOptions.DefaultFileNames.Add(f);
+                    }
 
-                    res.Add((StaticFileOptions, DirectoryBrowserOptions, DefaultFilesOptions));  
+                    res.Add((StaticFileOptions, DirectoryBrowserOptions, DefaultFilesOptions));
                 }
                 return res;
             }
@@ -81,10 +81,9 @@ namespace core.Extension
         {
             get
             {
-                var priority = Priority;
                 var d = new Dictionary<int, Action<IServiceCollection>>();
                 if (Settings.Any(_ => _.DirectoryBrowserOptions != null))
-                    d[priority] = service => service.AddDirectoryBrowser();                    
+                    d[Priority] = service => service.AddDirectoryBrowser();
                 return d;
             }
         }
@@ -95,14 +94,15 @@ namespace core.Extension
             {
                 var priority = Priority;
                 var d = new Dictionary<int, Action<IApplicationBuilder>>();
-                foreach(var setting in Settings) {
-					if (setting.DefaultFilesOptions != null)
-						d[priority++] = app => app.UseDefaultFiles(setting.DefaultFilesOptions);
+                foreach (var setting in Settings)
+                {
+                    if (setting.DefaultFilesOptions != null)
+                        d[priority++] = app => app.UseDefaultFiles(setting.DefaultFilesOptions);
 
-					if (setting.DirectoryBrowserOptions != null)
-						d[priority++] = app => app.UseDirectoryBrowser(setting.DirectoryBrowserOptions);
+                    if (setting.DirectoryBrowserOptions != null)
+                        d[priority++] = app => app.UseDirectoryBrowser(setting.DirectoryBrowserOptions);
 
-					d[priority++] = app => app.UseStaticFiles(setting.StaticFileOptions);   
+                    d[priority++] = app => app.UseStaticFiles(setting.StaticFileOptions);
                 }
                 return d;
             }
@@ -112,11 +112,28 @@ namespace core.Extension
         {
             public string Path { get; set; }
             public string RequestPath { get; set; }
-            public Dictionary<string, string> Headers { get; set; }         
-            public Dictionary<string, string> MIMEtypes { get; set; }            
-            public String[] DefaultFiles { get; set; }            
-            public bool EnableDirectoryBrowser { get; set; } = false;                                
+            public Dictionary<string, string> Headers { get; set; }
+            public Dictionary<string, string> MIMEtypes { get; set; }
+            public String[] DefaultFiles { get; set; }
+            public bool EnableDirectoryBrowser { get; set; } = false;
         }
 
+        private string ContentPath => Environment?.ContentRootPath ?? Directory.GetCurrentDirectory();
+        /*
+        private IFileProvider FileProvider => CreateCompositeFileProvider();
+
+        private IFileProvider CreateCompositeFileProvider()
+        {
+            IFileProvider[] fileProviders = new IFileProvider[] {
+                Environment?.WebRootFileProvider ?? new PhysicalFileProvider(Path.Combine(ContentPath,"wwwroot")),
+                serviceProvider.GetService<IFileProvider>()
+            };
+            return new CompositeFileProvider(
+              fileProviders.Concat(
+                ExtensionManager.Assemblies.Select(a => new EmbeddedFileProvider(a, a.GetName().Name))
+              )
+            );
+        }
+        */
     }
 }
