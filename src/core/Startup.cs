@@ -90,17 +90,6 @@ namespace core
                 app.UseDeveloperExceptionPage();
             }
 
-            //Static file (no authorization checks)            
-            /*
-            app.UseStaticFiles(new StaticFileOptions()
-            {                
-                OnPrepareResponse = ctx =>
-                {
-                    ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=86400");
-                }
-            });
-            */
-
             base.Configure(app);
 
             //Data                         

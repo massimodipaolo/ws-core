@@ -119,21 +119,5 @@ namespace core.Extension
         }
 
         private string ContentPath => Environment?.ContentRootPath ?? Directory.GetCurrentDirectory();
-        /*
-        private IFileProvider FileProvider => CreateCompositeFileProvider();
-
-        private IFileProvider CreateCompositeFileProvider()
-        {
-            IFileProvider[] fileProviders = new IFileProvider[] {
-                Environment?.WebRootFileProvider ?? new PhysicalFileProvider(Path.Combine(ContentPath,"wwwroot")),
-                serviceProvider.GetService<IFileProvider>()
-            };
-            return new CompositeFileProvider(
-              fileProviders.Concat(
-                ExtensionManager.Assemblies.Select(a => new EmbeddedFileProvider(a, a.GetName().Name))
-              )
-            );
-        }
-        */
     }
 }
