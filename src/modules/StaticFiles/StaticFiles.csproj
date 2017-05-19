@@ -2,15 +2,40 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <PackageId>app.core.Extensions.StaticFiles</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Authors>Massimo Di Paolo</Authors>
+    <Description>This extension enables the web app to serve static files. A physical file provider is used.</Description>    
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>    
+    <Copyright>Copyright 2017 (c) Massimo Di Paolo. All rights reserved.</Copyright>
+    <PackageTags>static files staticfiles </PackageTags>
+    <RootNamespace>core.Extensions.StaticFiles</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+    <DocumentationFile>bin\Release\netcoreapp1.1\StaticFiles.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+    <DocumentationFile>bin\Debug\netcoreapp1.1\StaticFiles.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="app.core.Extensions.Base" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="1.1.1" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
-  </ItemGroup>
+  
+  <Target Name="NugetPack" AfterTargets="Pack">
+    <ItemGroup>
+      <NugetPackages Include="$(MSBuildProjectDirectory)\bin\$(Configuration)\$(PackageId).$(PackageVersion)*.nupkg" />
+    </ItemGroup>
+    <Copy SourceFiles="@(NugetPackages)" DestinationFolder="F:\Projects\packages-share\_pack" />
+    <Exec Command="F:\Projects\packages-share\nuget delete $(PackageId) $(PackageVersion) -Source F:\Projects\packages-share" ContinueOnError="true" />
+    <Exec Command="F:\Projects\packages-share\nuget add F:\Projects\packages-share\_pack\$(PackageId).$(PackageVersion).nupkg -Source F:\Projects\packages-share" />    
+  </Target>  
 
 </Project>

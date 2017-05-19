@@ -41,9 +41,7 @@ namespace core
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions()
-                    .Configure<Configuration.Settings>(_config)
-                    .Configure<Configuration.Options>(_config)                    
-                    .Configure<IEnumerable<Extension.Configuration.Assembly>>(_config);
+                    .Configure<Configuration.Settings>(_config);
 
             base.ConfigureServices(services);
 

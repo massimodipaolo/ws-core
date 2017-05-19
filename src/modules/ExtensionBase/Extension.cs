@@ -7,9 +7,9 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 
-namespace core.Extension
+namespace core.Extensions.Base
 {
-    public class ExtensionBase : ExtCore.Infrastructure.ExtensionBase
+    public class Extension : ExtCore.Infrastructure.ExtensionBase
     {           
         protected string AssemblyName => GetType().GetTypeInfo().Assembly.GetName().Name;
 

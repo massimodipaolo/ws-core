@@ -8,7 +8,7 @@
         },
         {
           "Path": "wwwroot/folder",
-          "RequestPath": "/free",
+          "RequestPath": "/download",
           "Headers": { "Cache-Control": "public,max-age=86400" },
           "DefaultFiles": [ "index.html", "default.htm" ],
           "MIMEtypes": {
@@ -22,11 +22,7 @@
     {
       "Name": "Mvc"
     }
-  ],
-  "Dictionary": {
-    "Key1": "Value1",
-    "Key2": "Value2"
-  }
+  ]
 }
 
 

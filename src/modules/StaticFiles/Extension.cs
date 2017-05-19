@@ -3,21 +3,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
-using ExtCore.Infrastructure;
 
-namespace core.Extension
+namespace core.Extensions.StaticFiles
 {
-    public class StaticFiles : ExtensionBase
+    public class Extension : Base.Extension
     {
         private IEnumerable<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)> Settings
         {
             get
-            {
+            {                
                 IEnumerable<Options> opts = GetOptions<List<Options>>();
                 var res = new List<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)>();
                 foreach (var opt in opts)

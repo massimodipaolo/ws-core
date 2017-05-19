@@ -22,12 +22,9 @@
 
   <ItemGroup>
     <PackageReference Include="ExtCore.WebApplication" Version="1.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Owin" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.1" />
@@ -37,13 +34,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Code\" />
     <Folder Include="Controllers\" />
     <Folder Include="Files\Entity\" />
+    <Folder Include="Files\Entity\" />
     <Folder Include="Models\Configuration\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\modules\StaticFiles\StaticFiles.csproj" />
   </ItemGroup>
 
 </Project>

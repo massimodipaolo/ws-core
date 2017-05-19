@@ -3,10 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 
-namespace core.Extension
+namespace core.Extensions.Identity
 {
-    public class Identity: ExtensionBase
+        public class Extension: Base.Extension
     {
+        
         public override IEnumerable<KeyValuePair<int, Action<IServiceCollection>>> ConfigureServicesActionsByPriorities
         {
             get
@@ -27,5 +28,6 @@ namespace core.Extension
                 return d;
             }
         }
+        
     }
 }
