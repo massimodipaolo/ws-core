@@ -242,3 +242,7 @@ _Pvt_Extensions
 # Files
 /src/core/Files/*.*
 /src/core/Files/Entity/*.*
+
+# Sample: specific repository
+/samples
+/tests
