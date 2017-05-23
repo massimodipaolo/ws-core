@@ -34,14 +34,5 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.1" />
     <PackageReference Include="System.ValueTuple" Version="4.3.1" />
   </ItemGroup>
-
-  <Target Name="NugetPack" AfterTargets="Pack">
-    <ItemGroup>
-      <NugetPackages Include="$(MSBuildProjectDirectory)\bin\$(Configuration)\$(PackageId).$(PackageVersion)*.nupkg" />
-    </ItemGroup>
-    <Copy SourceFiles="@(NugetPackages)" DestinationFolder="F:\Projects\packages-share\_pack" />
-    <Exec Command="F:\Projects\packages-share\nuget delete $(PackageId) $(PackageVersion) -Source F:\Projects\packages-share" ContinueOnError="true" />
-    <Exec Command="F:\Projects\packages-share\nuget add F:\Projects\packages-share\_pack\$(PackageId).$(PackageVersion).nupkg -Source F:\Projects\packages-share" />    
-  </Target>
   
 </Project>

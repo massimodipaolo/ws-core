@@ -37,8 +37,7 @@
     <Folder Include="Code\" />
     <Folder Include="Controllers\" />
     <Folder Include="Files\Entity\" />
-    <Folder Include="Files\Entity\" />
     <Folder Include="Models\Configuration\" />
-  </ItemGroup>
+  </ItemGroup>  
 
 </Project>

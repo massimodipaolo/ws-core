@@ -246,3 +246,7 @@ _Pvt_Extensions
 # Sample: specific repository
 /samples
 /tests
+
+# Task
+gulpfile.js
+package.json
