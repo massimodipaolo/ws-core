@@ -13,10 +13,10 @@ namespace core
 {
     public class Startup: ExtCore.WebApplication.Startup
     {
-        private IHostingEnvironment _env { get; set; }
-        private IConfigurationRoot _config;
-        private ILoggerFactory _logger { get; set; }                
-        private DateTime _uptime = DateTime.Now;
+        protected IHostingEnvironment _env { get; set; }
+        protected IConfigurationRoot _config;
+        protected ILoggerFactory _logger { get; set; }
+        protected DateTime _uptime = DateTime.Now;
 
         public Startup(IServiceProvider serviceProvider): base(serviceProvider)
         {
@@ -27,9 +27,10 @@ namespace core
 
             var builder = new ConfigurationBuilder()
               .SetBasePath(_env.ContentRootPath)
-              .AddJsonFile("appsettings.json", optional: true)
-              .AddJsonFile($"appsettings.{_env.EnvironmentName}.json", optional: true)
-              .AddJsonFile("appoptions.json", optional: true, reloadOnChange: true) //IOptionsSnapshot to live reload              
+              .AddJsonFile("app-settings.json", optional: true) 
+              .AddJsonFile($"app-settings.{_env.EnvironmentName}.json", optional: true)              
+              .AddJsonFile("ext-settings.json", optional: true, reloadOnChange: true) //IOptionsSnapshot to live reload              
+              .AddJsonFile($"ext-settings.{_env.EnvironmentName}.json", optional: true, reloadOnChange: true)
               .AddEnvironmentVariables(); //override any config files / user secrets          
 
             configurationRoot = builder.Build();
@@ -40,8 +41,7 @@ namespace core
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddOptions()
-                    .Configure<Configuration.Settings>(_config);
+            //services.AddOptions().Configure<Configuration.Settings>(_config);
 
             base.ConfigureServices(services);
 
@@ -74,9 +74,6 @@ namespace core
 
             //Mvc/Route
             //services.AddMvc();
-
-            //app service
-            services.AddTransient<IMessage, EmailMessage>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -108,6 +105,7 @@ namespace core
 
             //Mvc              
             //app.UseMvc();
+
 
             app.Map("/info", _ => _.Run(async (context) =>
              {

@@ -1,24 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-    <PreserveCompilationContext>true</PreserveCompilationContext>
-    <AssemblyName>core</AssemblyName>
-    <OutputType>Exe</OutputType>
-    <PackageId>core</PackageId>
-    <RuntimeFrameworkVersion>1.1.1</RuntimeFrameworkVersion>    
-    <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>    
-    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>    
-    <Company>Websolute spa</Company>    
-    <Authors>Massimo Di Paolo</Authors>    
+    <TargetFramework>netcoreapp1.1</TargetFramework>    
+    <PackageVersion>1.0.0</PackageVersion>
+    <PackageId>app.core</PackageId>
     <Product>app-core</Product>
+    <Authors>Massimo Di Paolo</Authors>
+    <Company>Websolute spa</Company>
+    <Description>Base project for extandable .net core web application.</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <Copyright>Copyright 2017 (c) Massimo Di Paolo. All rights reserved.</Copyright>
+    <PackageTags>app-core,core</PackageTags>
+    <RootNamespace>core</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Update="wwwroot\**\*">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </None>
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ExtCore.WebApplication" Version="1.2.0" />
@@ -32,12 +27,5 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.1" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Code\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Files\Entity\" />
-    <Folder Include="Models\Configuration\" />
-  </ItemGroup>  
-
+  
 </Project>
