@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <PackageId>app.core.Extensions.Base</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
+    <PackageId>app.core.Extensions.Base</PackageId>
+    <AssemblyName>app.core.Extensions.Base</AssemblyName>    
     <Authors>Massimo Di Paolo</Authors>
     <Description>Base extension module, derived from ExtCore by Dmitry Sikorsky</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -11,17 +12,12 @@
     <Copyright>Copyright 2017 (c) Massimo Di Paolo. All rights reserved.</Copyright>
     <PackageTags>extension base</PackageTags>
     <RootNamespace>core.Extensions.Base</RootNamespace>
-    <AssemblyName>ExtensionBase</AssemblyName>
+    <PreBuildEvent />    
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">    
+  <PropertyGroup>
     <NoWarn>1701;1702;1705;1591</NoWarn>
-    <DocumentationFile>bin\Debug\netcoreapp1.1\ExtensionBase.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>1701;1702;1705;1591</NoWarn>
-    <DocumentationFile>bin\Release\netcoreapp1.1\ExtensionBase.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

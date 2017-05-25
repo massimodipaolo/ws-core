@@ -21,7 +21,7 @@ Settings
 
 ```json
 {
-  "Name": "StaticFiles",
+  "Name": "app.core.Extensions.StaticFiles",
   "Options": [
     {
       "Headers": {

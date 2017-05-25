@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>    
     <PackageVersion>1.0.0</PackageVersion>
     <PackageId>app.core</PackageId>
+    <AssemblyName>app.core</AssemblyName>
     <Product>app-core</Product>
     <Authors>Massimo Di Paolo</Authors>
     <Company>Websolute spa</Company>
@@ -12,7 +13,7 @@
     <PackageReleaseNotes>First release</PackageReleaseNotes>
     <Copyright>Copyright 2017 (c) Massimo Di Paolo. All rights reserved.</Copyright>
     <PackageTags>app-core,core</PackageTags>
-    <RootNamespace>core</RootNamespace>
+    <RootNamespace>core</RootNamespace>    
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,5 +28,18 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.1" />
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <Folder Include="wwwroot/" />    
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot/**/*.*" Pack="false" />
+    <Content Update="**/*.json" Pack="false" />
+    <Content Update="*.config" Pack="false" />
+    <Folder Update="Files/">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </Folder>
+  </ItemGroup>
+
 </Project>
