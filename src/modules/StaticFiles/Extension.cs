@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace core.Extensions.StaticFiles
 {
@@ -20,12 +21,18 @@ namespace core.Extensions.StaticFiles
                 var res = new List<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)>();
                 foreach (var opt in opts)
                 {
-
                     //StaticFileOptions
                     var StaticFileOptions = new StaticFileOptions();
                     if (!string.IsNullOrEmpty(opt.Path))
-                        //TODO: Inject IFileProvider (or ServiceLocator serviceProvider.GetService<IFileProvider>()): https://docs.microsoft.com/en-us/aspnet/core/fundamentals/file-providers
-                        StaticFileOptions.FileProvider = new PhysicalFileProvider(Path.Combine(ContentPath, opt.Path));
+                    {
+                        try
+                        {
+                            //TODO: Inject IFileProvider (or ServiceLocator serviceProvider.GetService<IFileProvider>()): https://docs.microsoft.com/en-us/aspnet/core/fundamentals/file-providers
+                            StaticFileOptions.FileProvider = new PhysicalFileProvider(Path.Combine(ContentPath, opt.Path));
+                        } catch(Exception ex) {
+                            logger.LogError(ex.Message);
+                        }
+                    }
                     if (!string.IsNullOrEmpty(opt.RequestPath))
                         StaticFileOptions.RequestPath = new PathString(opt.RequestPath);
                     if (opt.Headers != null)
