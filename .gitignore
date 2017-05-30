@@ -247,6 +247,5 @@ _Pvt_Extensions
 /samples
 /tests
 
-# Task
-gulpfile.js
-package.json
+# Task Secret
+.env
