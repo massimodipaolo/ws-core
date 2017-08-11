@@ -20,8 +20,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="app.core.Extensions.Base" Version="1.0.0" />
     <PackageReference Include="IdentityServer4" Version="1.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
   </ItemGroup>
   
 </Project>

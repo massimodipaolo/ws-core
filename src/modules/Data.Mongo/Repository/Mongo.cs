@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using System.Linq;
-using core.Data;
+using core.Extensions.Data;
 
-namespace core.Data.Repository
+namespace core.Extensions.Data.Repository
 {
 	public class Mongo<T>: IRepository<T> where T:Entity
 	{

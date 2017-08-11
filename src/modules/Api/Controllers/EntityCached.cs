@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using core.Data;
+using core.Extensions.Data;
 using Microsoft.AspNetCore.Mvc;
-using core.Data.Repository;
+using core.Extensions.Data.Repository;
 
 namespace core.Api.Controllers
 {

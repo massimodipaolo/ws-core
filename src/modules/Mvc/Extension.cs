@@ -6,23 +6,17 @@ using Microsoft.Extensions.DependencyInjection;
 namespace core.Extensions.Mvc
 {
     public class Extension: Base.Extension
-    {
-        public override IEnumerable<KeyValuePair<int, Action<IServiceCollection>>> ConfigureServicesActionsByPriorities
+    {       
+        public override void Execute(IServiceCollection services, IServiceProvider serviceProvider)
         {
-            get
-            {
-                var d = new Dictionary<int, Action<IServiceCollection>>();
-                d[Priority] = service => service.AddMvc();
-                return d;
-            }
+            base.Execute(services, serviceProvider);
+            services.AddMvc();
         }
-        public override IEnumerable<KeyValuePair<int, Action<IApplicationBuilder>>> ConfigureActionsByPriorities {
-            get
-            {
-                var d = new Dictionary<int, Action<IApplicationBuilder>>();
-                d[Priority] = app => app.UseMvcWithDefaultRoute();
-                return d;
-            }
-        }
+
+        public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
+        {
+            base.Execute(applicationBuilder, serviceProvider);
+            applicationBuilder.UseMvcWithDefaultRoute();
+        }     
     }
 }

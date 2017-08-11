@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace core.Data
+namespace core.Extensions.Data
 {
     public interface IStorage<T> where T : IEntity
     {

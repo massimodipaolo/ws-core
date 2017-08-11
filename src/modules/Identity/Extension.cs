@@ -7,26 +7,19 @@ namespace core.Extensions.Identity
 {
         public class Extension: Base.Extension
     {
-        
-        public override IEnumerable<KeyValuePair<int, Action<IServiceCollection>>> ConfigureServicesActionsByPriorities
+        public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
-            get
-            {
-                var d = new Dictionary<int, Action<IServiceCollection>>();
-                d[Priority] = service => service.AddIdentityServer().AddTemporarySigningCredential();
-                return d;
-            }
+            base.Execute(serviceCollection, serviceProvider);
+            serviceCollection.AddIdentityServer()
+                                                .AddTemporarySigningCredential()
+                                                .AddInMemoryClients(new IdentityServer4.Models.Client[] { new IdentityServer4.Models.Client() })
+                                                .AddInMemoryIdentityResources(new IdentityServer4.Models.IdentityResource[] { new IdentityServer4.Models.IdentityResource() });
         }
 
-        public override IEnumerable<KeyValuePair<int, Action<IApplicationBuilder>>> ConfigureActionsByPriorities
+        public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
         {
-            get
-            {
-                var priority = Priority;
-                var d = new Dictionary<int, Action<IApplicationBuilder>>();
-                d[Priority] = app => app.UseIdentityServer();
-                return d;
-            }
+            base.Execute(applicationBuilder, serviceProvider);
+            applicationBuilder.UseIdentityServer();
         }
         
     }

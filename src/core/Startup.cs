@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using ExtCore.Infrastructure;
+using ExtCore.WebApplication.Extensions;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -11,17 +13,17 @@ using System.Linq;
 
 namespace core
 {
-    public class Startup: ExtCore.WebApplication.Startup
+    public class Startup
     {
         protected IHostingEnvironment _env { get; set; }
         protected IConfigurationRoot _config;
         protected ILoggerFactory _logger { get; set; }
         protected DateTime _uptime = DateTime.Now;
 
-        public Startup(IServiceProvider serviceProvider): base(serviceProvider)
+        public Startup(IHostingEnvironment hostingEnvironment, ILoggerFactory loggerFactory)
         {
-            _env = this.serviceProvider.GetService<IHostingEnvironment>();
-            _logger = this.serviceProvider.GetService<ILoggerFactory>();
+            _env = hostingEnvironment;
+            _logger = loggerFactory;
             if (_env.IsDevelopment())
                 _logger.AddConsole();
 
@@ -32,60 +34,31 @@ namespace core
               .AddJsonFile("ext-settings.json", optional: true, reloadOnChange: true) //IOptionsSnapshot to live reload              
               .AddJsonFile($"ext-settings.{_env.EnvironmentName}.json", optional: true, reloadOnChange: true)
               .AddEnvironmentVariables(); //override any config files / user secrets          
-
-            configurationRoot = builder.Build();
-            _config = configurationRoot;
+            
+            _config = builder.Build();
         }
         
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public override void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions(); //.Configure<Configuration.Settings>(_config);
 
-            base.ConfigureServices(services);
+            services.AddSingleton<IConfiguration>(_config);            
 
-            //Data                                         
-            //Type dbType = typeof(core.Data.Repository.InMemory<>);
-            //services.AddTransient(typeof(Data.IRepository<>), dbType);
-
-            /*
-            var dbList = _config.GetSection("DbList").Get<IEnumerable<Configuration.Settings.Db>>();
-            if (dbList != null && dbList.Any())
-            {
-                //Db main repository            
-                Type dbType = typeof(Data.Memory<>);
-                var mainType = dbList.First().Type;
-                switch (mainType)
-                {
-                    case Configuration.Settings.Db.Types.FileSystem:
-                        dbType = typeof(Data.FileSystem<>);
-                        break;
-                    case Configuration.Settings.Db.Types.Mongo:
-                        dbType = typeof(Data.Mongo<>);
-                        break;
-                    case Configuration.Settings.Db.Types.SqlServer:
-                        dbType = typeof(Data.SqlServer<>);
-                        break;
-                }
-                services.AddTransient(typeof(Data.IRepository<>), dbType);
-            }
-            */
-
-            //Mvc/Route
-            //services.AddMvc();
+            services.AddExtCore();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public override void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IServiceProvider services)
         {            
             //Error handling
             if (_env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            base.Configure(app);
+                        
+            app.UseExtCore();
 
             //Data                         
             /*
@@ -123,8 +96,8 @@ namespace core
                      $"ApplicationName: {_env.ApplicationName}\n" +
                      $"Environment: {_env.EnvironmentName}\n" +
                      $"MachineName: {Environment.MachineName}\n" +
-                     $"ProcessorCount: {Environment.ProcessorCount}\n" +
-                     $"Extensions: {string.Join(" | ", ExtCore.Infrastructure.ExtensionManager.Extensions.Select(ext => ext.Name))}\n";
+                     $"ProcessorCount: {Environment.ProcessorCount}\n" +                     
+                     $"Extensions: {string.Join(" | ", ExtensionManager.GetInstances<IExtension>().Select(ext => ext.Name))}\n";
 
                  await context.Response.WriteAsync(msg);
              }));

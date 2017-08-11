@@ -1,22 +1,21 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace core.Data.Repository
+namespace core.Extensions.Data.Repository
 {
     public class FileSystem<T> : IRepository<T> where T : IEntity
     {
         private List<T> _collection = new List<T>();
         private string _path { get; set; }
-        /*
-        private Configuration.Settings.Db _db { get; set; }
         
-        public FileSystem(IOptions<Configuration.Settings> config,IHostingEnvironment env)
-        {
-            _db = config.Value.DbList?.FirstOrDefault(_ => _.Type==Configuration.Settings.Db.Types.FileSystem);
-            _path = System.IO.Path.Combine(env.ContentRootPath, _db == null || string.IsNullOrEmpty(_db.Connection) ? "Files/Entity" : _db.Connection, $"{typeof(T).Name}.json");            
+        public FileSystem(IHostingEnvironment env,ILoggerFactory logger)
+        {            
+            _path = System.IO.Path.Combine(env.ContentRootPath, "Files/Entity", $"{typeof(T).Name}.json");            
 
             using (var stream = File.Open(_path, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite))
             using (var reader = new StreamReader(stream))
@@ -24,9 +23,11 @@ namespace core.Data.Repository
                 var readed = reader.ReadToEnd();
                 if (!string.IsNullOrEmpty(readed))
                     _collection = Newtonsoft.Json.JsonConvert.DeserializeObject<List<T>>(readed);
+                else
+                    logger.CreateLogger("Data.Repository.Logger").LogWarning($"Path {_path} not found");
             }                
         } 
-        */
+        
 
         IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
 

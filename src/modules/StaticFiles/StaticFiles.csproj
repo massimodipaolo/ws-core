@@ -20,9 +20,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="app.core.Extensions.Base" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
   </ItemGroup>
 
   <ItemGroup>

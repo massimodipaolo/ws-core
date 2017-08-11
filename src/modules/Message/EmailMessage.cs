@@ -12,7 +12,7 @@ namespace core.Extensions.Message
         //TODO: implement https://github.com/jstedfast/MailKit
         public EmailMessage(ILogger<IMessage> logger)
         {
-            _logger = logger;
+            _logger = logger;            
         }
         public Task SendAsync(string sender, string[][] recipients, string subject, string body)
         {

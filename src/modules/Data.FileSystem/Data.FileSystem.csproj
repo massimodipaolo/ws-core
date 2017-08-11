@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj" />
+    <ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
   </ItemGroup>
 
 </Project>

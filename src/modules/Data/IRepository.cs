@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace core.Data
+namespace core.Extensions.Data
 {
     public interface IRepository<T> where T : IEntity
     {

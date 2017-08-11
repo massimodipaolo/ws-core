@@ -30,7 +30,7 @@ namespace core.Extensions.StaticFiles
                             //TODO: Inject IFileProvider (or ServiceLocator serviceProvider.GetService<IFileProvider>()): https://docs.microsoft.com/en-us/aspnet/core/fundamentals/file-providers
                             StaticFileOptions.FileProvider = new PhysicalFileProvider(Path.Combine(ContentPath, opt.Path));
                         } catch(Exception ex) {
-                            logger.LogError(ex.Message);
+                            _logger.LogError(ex.Message);
                         }
                     }
                     if (!string.IsNullOrEmpty(opt.RequestPath))
@@ -82,35 +82,26 @@ namespace core.Extensions.StaticFiles
             }
         }
 
-        public override IEnumerable<KeyValuePair<int, Action<IServiceCollection>>> ConfigureServicesActionsByPriorities
+        public override void Execute(IServiceCollection services, IServiceProvider serviceProvider)
         {
-            get
-            {
-                var d = new Dictionary<int, Action<IServiceCollection>>();
-                if (Settings.Any(_ => _.DirectoryBrowserOptions != null))
-                    d[Priority] = service => service.AddDirectoryBrowser();
-                return d;
-            }
+            base.Execute(services, serviceProvider);            
+            if (Settings.Any(_ => _.DirectoryBrowserOptions != null))
+                services.AddDirectoryBrowser();            
         }
 
-        public override IEnumerable<KeyValuePair<int, Action<IApplicationBuilder>>> ConfigureActionsByPriorities
+        public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
         {
-            get
+            base.Execute(applicationBuilder, serviceProvider);
+            foreach (var setting in Settings)
             {
-                var priority = Priority;
-                var d = new Dictionary<int, Action<IApplicationBuilder>>();
-                foreach (var setting in Settings)
-                {
-                    if (setting.DefaultFilesOptions != null)
-                        d[priority++] = app => app.UseDefaultFiles(setting.DefaultFilesOptions);
+                if (setting.DefaultFilesOptions != null)                    
+                    applicationBuilder.UseDefaultFiles(setting.DefaultFilesOptions);
 
-                    if (setting.DirectoryBrowserOptions != null)
-                        d[priority++] = app => app.UseDirectoryBrowser(setting.DirectoryBrowserOptions);
+                if (setting.DirectoryBrowserOptions != null)
+                    applicationBuilder.UseDirectoryBrowser(setting.DirectoryBrowserOptions);
 
-                    d[priority++] = app => app.UseStaticFiles(setting.StaticFileOptions);
-                }
-                return d;
-            }
+                applicationBuilder.UseStaticFiles(setting.StaticFileOptions);
+            }            
         }
 
         public class Options
@@ -123,6 +114,6 @@ namespace core.Extensions.StaticFiles
             public bool EnableDirectoryBrowser { get; set; } = false;
         }
 
-        private string ContentPath => Environment?.ContentRootPath ?? Directory.GetCurrentDirectory();
+        private string ContentPath => _env?.ContentRootPath ?? Directory.GetCurrentDirectory();
     }
 }

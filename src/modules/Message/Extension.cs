@@ -6,14 +6,10 @@ namespace core.Extensions.Message
 {
     public class Extension: Base.Extension
     {
-        public override IEnumerable<KeyValuePair<int, Action<IServiceCollection>>> ConfigureServicesActionsByPriorities
+        public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
-            get
-            {
-                var d = new Dictionary<int, Action<IServiceCollection>>();
-                d[Priority] = service => service.AddTransient<IMessage,EmailMessage>();
-                return d;
-            }
-        }
+            base.Execute(serviceCollection, serviceProvider);
+            serviceCollection.AddTransient<IMessage, EmailMessage>();
+        }        
     }
 }

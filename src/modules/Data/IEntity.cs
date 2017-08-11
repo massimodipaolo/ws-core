@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace core.Data
+namespace core.Extensions.Data
 {
     public interface IEntity
     {
