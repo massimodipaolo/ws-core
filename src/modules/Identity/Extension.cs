@@ -10,8 +10,7 @@ namespace core.Extensions.Identity
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
             base.Execute(serviceCollection, serviceProvider);
-            serviceCollection.AddIdentityServer()
-                                                .AddTemporarySigningCredential()
+            serviceCollection.AddIdentityServer()                
                                                 .AddInMemoryClients(new IdentityServer4.Models.Client[] { new IdentityServer4.Models.Client() })
                                                 .AddInMemoryIdentityResources(new IdentityServer4.Models.IdentityResource[] { new IdentityServer4.Models.IdentityResource() });
         }

@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using core.Extensions.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
-namespace core.Data.Repository
+namespace core.Extensions.Data.Repository
 {
     public class SqlServer<T> : IRepository<T> where T : Entity
     {
