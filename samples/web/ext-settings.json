@@ -1,0 +1,41 @@
+﻿{
+  "Extensions": [
+    {
+      "Name": "app.core.Extensions.StaticFiles",
+      "Options": [
+        {
+          "Headers": {
+            "Cache-Control": "public,max-age=43200"
+          }
+        },
+        {
+          "Path": "wwwroot/folder",
+          "RequestPath": "/download",
+          "Headers": {
+            "Cache-Control": "public,max-age=86400"
+          },
+          "DefaultFiles": [
+            "index.html",
+            "default.htm"
+          ],
+          "MIMEtypes": {
+            ".myapp": "application/x-msdownload",
+            ".htm3": "text/html"
+          },
+          "EnableDirectoryBrowser": true
+        }
+      ]
+    },
+    {
+      "Name": "app.core.Extensions.Identity"
+    },
+    {
+      "Name": "app.core.Extensions.Mvc"
+    },
+    {
+      "Name": "app.core.Extensions.Message"
+    }
+  ]
+}
+
+

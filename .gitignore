@@ -244,8 +244,8 @@ _Pvt_Extensions
 /src/core/Files/Entity/*.*
 
 # Sample: specific repository
-/samples
-/tests
+#/samples
+#/tests
 
 # Task Secret
 .env
