@@ -10,7 +10,6 @@ namespace core.Extensions.Data
     }
     public class Entity : IEntity
     {
-        //[MongoDB.Bson.Serialization.Attributes.BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-        public string Id { get; set; }
+        public virtual string Id { get; set; }
     }
 }

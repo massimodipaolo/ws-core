@@ -63,10 +63,11 @@ namespace core
                      "\n" +
                      $"Uptime: {_uptime}\n" +
                      $"ApplicationName: {_env.ApplicationName}\n" +
-                     $"Environment: {_env.EnvironmentName}\n" +
+                     $"Environment: {_env.EnvironmentName}\n" +                     
                      $"MachineName: {Environment.MachineName}\n" +
                      $"ProcessorCount: {Environment.ProcessorCount}\n" +                     
-                     $"Extensions: {string.Join(" | ", ExtensionManager.GetInstances<IExtension>().Select(ext => ext.Name))}\n";
+                     $"Extensions: {string.Join(" | ", ExtensionManager.GetInstances<IExtension>().Select(ext => ext.Name))}\n" + 
+                     $"Configuration: {string.Join(" | ", _config.AsEnumerable().Select(conf => $"{conf.Key}:{conf.Value}"))}\n" ;
 
                  await context.Response.WriteAsync(msg);
              }));
