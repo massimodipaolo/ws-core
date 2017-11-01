@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using core.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace core.Extensions.Mvc
+namespace core.Extensions.Api
 {
-    public class Extension: Base.Extension
-    {       
+    public class Extension : Base.Extension
+    {
         public override void Execute(IServiceCollection services, IServiceProvider serviceProvider)
         {
             base.Execute(services, serviceProvider);
@@ -17,6 +18,6 @@ namespace core.Extensions.Mvc
         {
             base.Execute(applicationBuilder, serviceProvider);
             applicationBuilder.UseMvcWithDefaultRoute();
-        }     
+        }
     }
 }

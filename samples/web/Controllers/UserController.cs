@@ -1,7 +1,7 @@
 ﻿using System;
 using core.Extensions.Data;
 using Microsoft.AspNetCore.Mvc;
-using core.Api.Controllers;
+using core.Extensions.Api.Controllers;
 
 namespace web.Controllers
 {    

@@ -35,7 +35,7 @@ namespace core
 
             services.AddSingleton<IConfiguration>(_config);            
 
-            services.AddExtCore();
+            services.AddExtCore(_config["Extensions:Path"] != null ? $"{_env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{_config["Extensions:Path"]}" : null);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

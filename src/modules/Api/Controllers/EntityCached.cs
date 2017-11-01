@@ -4,7 +4,7 @@ using core.Extensions.Data;
 using Microsoft.AspNetCore.Mvc;
 using core.Extensions.Data.Repository;
 
-namespace core.Api.Controllers
+namespace core.Extensions.Api.Controllers
 {
     public class EntityCachedController<T> : EntityController<T> where T : IEntity
     {        

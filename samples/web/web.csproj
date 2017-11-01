@@ -11,8 +11,6 @@
     <ProjectReference Include="..\..\src\modules\Data.FileSystem\Data.FileSystem.csproj" />
     <ProjectReference Include="..\..\src\modules\Identity\Identity.csproj" />
     <ProjectReference Include="..\..\src\modules\Message\Message.csproj" />
-    <ProjectReference Include="..\..\src\modules\Mvc\Mvc.csproj" />
     <ProjectReference Include="..\..\src\modules\StaticFiles\StaticFiles.csproj" />
   </ItemGroup>
-
 </Project>

@@ -245,6 +245,7 @@ _Pvt_Extensions
 
 # Sample: specific repository
 #/samples
+/samples/**/Extensions/
 #/tests
 
 # Task Secret

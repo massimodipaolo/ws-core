@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using core.Extensions.Data;
 
-namespace core.Api.Controllers
+namespace core.Extensions.Api.Controllers
 {
     [Route("api/[controller]")]
     public class EntityController<T> : ControllerBase where T : IEntity

@@ -2,14 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>    
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.0.1</PackageVersion>
     <PackageId>app.core</PackageId>
     <AssemblyName>app.core</AssemblyName>
     <Product>app-core</Product>
     <Authors>Massimo Di Paolo</Authors>
     <Company>Websolute spa</Company>
     <Description>Base project for extandable .net core web application.</Description>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>First release</PackageReleaseNotes>
     <Copyright>Copyright 2017 (c) Massimo Di Paolo. All rights reserved.</Copyright>
     <PackageTags>app-core,core</PackageTags>

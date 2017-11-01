@@ -30,7 +30,7 @@
       "Name": "app.core.Extensions.Identity"
     },
     {
-      "Name": "app.core.Extensions.Mvc"
+      "Name": "app.core.Extensions.Api"
     },
     {
       "Name": "app.core.Extensions.Message"
