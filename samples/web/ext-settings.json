@@ -27,6 +27,9 @@
       ]
     },
     {
+      "Name": "app.core.Extensions.Data.FileSystem"
+    },
+    {
       "Name": "app.core.Extensions.Identity"
     },
     {
