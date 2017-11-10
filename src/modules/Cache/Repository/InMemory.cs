@@ -20,7 +20,8 @@ namespace core.Extensions.Cache.Repository
             if (_cache == null) _cache = cache;
             if (!_cache.TryGetValue(_key, out _collection))
             {
-                _cache.Set(_key, repository.List.ToList());
+                _collection = repository.List.ToList();
+                _cache.Set(_key, _collection);
             }
         }
 

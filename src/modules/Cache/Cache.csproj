@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <PackageId>app.core.Extensions.Cache</PackageId>
+    <AssemblyName>app.core.Extensions.Cache</AssemblyName>
+    <RootNamespace>core.Extensions.Cache</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

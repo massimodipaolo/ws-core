@@ -32,7 +32,7 @@ namespace core.Extensions.Api.Controllers
         [HttpPost]
         public override void Post([FromBody]T entity)
         {                        
-            _cached.Add(entity);
+            _cached.Add(entity);            
             base.Post(entity);
         }
 
