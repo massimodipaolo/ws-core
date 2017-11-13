@@ -11,7 +11,7 @@ namespace core.Extensions.Cache.Repository
     {
         private string _key => $"CachedRepositoryOf{typeof(T).ToString()}";
         private static IMemoryCache _cache;
-        private static List<T> _collection;
+        private List<T> _collection;
 
         public InMemory() { }
 
