@@ -1,11 +1,9 @@
-﻿using System;
+﻿using core.Extensions.Data.Cache;
+using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using core.Extensions.Data;
-using Microsoft.Extensions.Caching.Memory;
 
-namespace core.Extensions.Cache.Repository
+namespace core.Extensions.Data.Repository
 {
     public class InMemory<T> : ICachedRepository<T> where T : IEntity
     {
@@ -19,9 +17,9 @@ namespace core.Extensions.Cache.Repository
         {
             if (_cache == null) _cache = cache;
             if (!_cache.TryGetValue(_key, out _collection))
-            {
+            {                
                 _collection = repository.List.ToList();
-                _cache.Set(_key, _collection);
+                _cache.Set(_key, _collection);                
             }
         }
 

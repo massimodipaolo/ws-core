@@ -1,6 +1,4 @@
-﻿using System;
-using core.Extensions.Data;
-namespace core.Extensions.Cache
+﻿namespace core.Extensions.Data.Cache
 {
     public interface ICachedRepository<T> : IRepository<T> where T : IEntity
     {

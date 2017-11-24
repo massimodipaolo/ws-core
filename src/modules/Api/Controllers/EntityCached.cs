@@ -1,10 +1,6 @@
-﻿using System;
-using System.Linq;
-using core.Extensions.Data;
+﻿using core.Extensions.Data;
+using core.Extensions.Data.Cache;
 using Microsoft.AspNetCore.Mvc;
-using core.Extensions.Data.Repository;
-using core.Extensions.Cache.Repository;
-using core.Extensions.Cache;
 
 namespace core.Extensions.Api.Controllers
 {

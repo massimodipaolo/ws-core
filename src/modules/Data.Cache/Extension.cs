@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 
-namespace core.Extensions.Cache
+namespace core.Extensions.Data.Cache
 {
     public class Extension : Base.Extension
     {

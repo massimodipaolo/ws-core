@@ -1,6 +1,6 @@
 ﻿using System;
 using core.Extensions.Data;
-using core.Extensions.Cache;
+using core.Extensions.Data.Cache;
 using Microsoft.AspNetCore.Mvc;
 using core.Extensions.Api.Controllers;
 
