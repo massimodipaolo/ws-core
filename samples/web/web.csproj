@@ -8,9 +8,14 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\core\core.csproj" />
     <ProjectReference Include="..\..\src\modules\Api\Api.csproj" />
-    <ProjectReference Include="..\..\src\modules\Data.FileSystem\Data.FileSystem.csproj" />
     <ProjectReference Include="..\..\src\modules\Identity\Identity.csproj" />
     <ProjectReference Include="..\..\src\modules\Message\Message.csproj" />
     <ProjectReference Include="..\..\src\modules\StaticFiles\StaticFiles.csproj" />
+    <ProjectReference Include="..\..\src\modules\Data.Cache\Data.Cache.csproj" />
+    <ProjectReference Include="..\..\src\modules\Data\Data.csproj" />
+    <ProjectReference Include="..\..\src\modules\Data.FileSystem\Data.FileSystem.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Extensions\app.core.Extensions.Cache.dll" />
   </ItemGroup>
 </Project>

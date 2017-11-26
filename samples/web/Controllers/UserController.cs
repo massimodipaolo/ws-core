@@ -6,9 +6,16 @@ using core.Extensions.Api.Controllers;
 
 namespace web.Controllers
 {    
-    public class UserController : EntityCachedController<User> //EntityCachedController<User>
+    [Route("api/user")]
+    public class UserController : EntityController<User> 
     {
-        public UserController(IRepository<User> repository,ICachedRepository<User> cachedRepository) : base(repository,cachedRepository) { }
+        public UserController(IRepository<User> repository) : base(repository) { }
+    }
+
+    [Route("api/cache/user")]
+    public class UserCacheController : EntityCachedController<User>
+    {
+        public UserCacheController(IRepository<User> repository, ICachedRepository<User> cachedRepository) : base(repository, cachedRepository) { }
     }
 
     public class User : IdentityServer4.Models.IdentityResource, IEntity

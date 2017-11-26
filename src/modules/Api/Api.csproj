@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />
+    <ProjectReference Include="..\Data\Data.csproj" />
   </ItemGroup>
 
 </Project>

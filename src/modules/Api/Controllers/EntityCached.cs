@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace core.Extensions.Api.Controllers
 {
+    [Route("api/cache/[controller]")]
     public class EntityCachedController<T> : EntityController<T> where T : IEntity
     {        
         private readonly ICachedRepository<T> _cached;
