@@ -34,7 +34,7 @@
       "Options": {
         "Type": 2,
         "RedisOptions": {
-          "Configuration": "127.0.0.1:36379",
+          "Configuration": "127.0.0.1:6379",
           "InstanceName": "master"
         }
       }

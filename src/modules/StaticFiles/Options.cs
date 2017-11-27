@@ -6,7 +6,8 @@ namespace core.Extensions.Base
 {
     public partial class Options
     {
-        public class StaticFiles
+        public StaticFileOptions StaticFiles { get; set; }
+        public class StaticFileOptions
         {
             public string Path { get; set; }
             public string RequestPath { get; set; }

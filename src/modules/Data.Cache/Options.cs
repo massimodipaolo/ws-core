@@ -7,7 +7,8 @@ namespace core.Extensions.Base
 {
     public partial class Options
     {
-        public class DataCache
+        public DataCacheOptions DataCache { get; set; }
+        public class DataCacheOptions
         {
             public Types Type { get; set; }             
             public RedisCacheOptions RedisOptions { get; set; }            
