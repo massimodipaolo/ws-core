@@ -30,6 +30,16 @@
       "Name": "app.core.Extensions.Data.FileSystem"
     },
     {
+      "Name": "app.core.Extensions.Data.Cache",
+      "Options": {
+        "Type": 2,
+        "RedisOptions": {
+          "Configuration": "127.0.0.1:36379",
+          "InstanceName": "master"
+        }
+      }
+    },
+    {
       "Name": "app.core.Extensions.Identity"
     },
     {

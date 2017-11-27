@@ -1,27 +1,13 @@
 ﻿using core.Extensions.Data.Cache;
-using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace core.Extensions.Data.Repository
 {
-    public class InMemory<T> : ICachedRepository<T> where T : IEntity
+    public class CachedRepository<T> : ICachedRepository<T> where T : IEntity
     {
-        private string _key => $"CachedRepositoryOf{typeof(T).ToString()}";
-        private static IMemoryCache _cache;
-        private List<T> _collection;
-
-        public InMemory() { }
-
-        public InMemory(IMemoryCache cache,IRepository<T> repository)
-        {
-            if (_cache == null) _cache = cache;
-            if (!_cache.TryGetValue(_key, out _collection))
-            {                
-                _collection = repository.List.ToList();
-                _cache.Set(_key, _collection);                
-            }
-        }
+        protected string _key => $"CachedRepositoryOf{typeof(T).ToString()}";
+        protected List<T> _collection;
 
         IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
 
@@ -47,9 +33,9 @@ namespace core.Extensions.Data.Repository
             _collection = _collection.Select(_ => _.Id == entity.Id ? entity : _).ToList();
             Save();
         }
-        private void Save() {
-            _cache.Set(_key, _collection);
+        protected virtual void Save()
+        {
+            
         }
-
     }
 }

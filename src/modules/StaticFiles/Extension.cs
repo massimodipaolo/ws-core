@@ -8,6 +8,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Logging;
+using core.Extensions.Base;
 
 namespace core.Extensions.StaticFiles
 {
@@ -17,7 +18,7 @@ namespace core.Extensions.StaticFiles
         {
             get
             {                
-                IEnumerable<Options> opts = GetOptions<List<Options>>();
+                IEnumerable<Options.StaticFiles> opts = GetOptions<List<Options.StaticFiles>>();
                 var res = new List<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)>();
                 foreach (var opt in opts)
                 {
@@ -102,16 +103,6 @@ namespace core.Extensions.StaticFiles
 
                 applicationBuilder.UseStaticFiles(setting.StaticFileOptions);
             }            
-        }
-
-        public class Options
-        {
-            public string Path { get; set; }
-            public string RequestPath { get; set; }
-            public Dictionary<string, string> Headers { get; set; }
-            public Dictionary<string, string> MIMEtypes { get; set; }
-            public String[] DefaultFiles { get; set; }
-            public bool EnableDirectoryBrowser { get; set; } = false;
         }
 
         private string ContentPath => _env?.ContentRootPath ?? Directory.GetCurrentDirectory();

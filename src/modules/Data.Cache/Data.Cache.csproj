@@ -6,10 +6,6 @@
     <AssemblyName>app.core.Extensions.Data.Cache</AssemblyName>
     <RootNamespace>core.Extensions.Data.Cache</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Repository\" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj" />
     <ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />

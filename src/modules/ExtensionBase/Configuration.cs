@@ -9,6 +9,7 @@ namespace core.Extensions.Base
     public class Configuration
     {
         public IEnumerable<Assembly> Extensions { get; set; }
+        public Options Options { get; set; }
 
         public class Assembly
         {
