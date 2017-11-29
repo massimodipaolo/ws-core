@@ -6,8 +6,23 @@ namespace core.Extensions.Data.Repository
 {
     public class CachedRepository<T> : ICachedRepository<T> where T : IEntity
     {
+        private static ICache _cache;
         protected string _key => $"CachedRepositoryOf{typeof(T).ToString()}";
         protected List<T> _collection;
+        
+
+        public CachedRepository() { }
+
+        public CachedRepository(ICache cache, IRepository<T> repository)
+        {
+            if (_cache == null) _cache = cache;
+            _collection = _cache.Get<List<T>>(_key);            
+            if (_collection == null)
+            {
+                _collection = repository.List.ToList();
+                Save();
+            }
+        }
 
         IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
 
@@ -35,7 +50,7 @@ namespace core.Extensions.Data.Repository
         }
         protected virtual void Save()
         {
-            
+            _cache.Set(_key, _collection);
         }
     }
 }

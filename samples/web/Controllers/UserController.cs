@@ -22,4 +22,29 @@ namespace web.Controllers
     {
         public string Id { get; set;}
     }
+
+    [Route("api/config")]
+    public class ConfigController : ControllerBase
+    {
+        private ICache _cache;
+        private Microsoft.Extensions.Configuration.IConfiguration _config;
+        public ConfigController(Microsoft.Extensions.Configuration.IConfiguration config,ICache cache) {
+            _config = config;
+            _cache = cache;
+        }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            string key = "api:config";
+            var result = _cache.Get<DateTime>(key);
+            if (result == null)
+            {   
+                result = DateTime.Now;
+                _cache.Set(key, result);             
+            }
+            return Ok(result);
+        }
+
+    }
 }

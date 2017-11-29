@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2EC986FB-3831-46DF-AFF0-D6AE6128C55E}"
 EndProject
@@ -16,33 +16,33 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{31612A4E-8B04-4A4C-88C4-48EB07370364}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "src\modules\Data\Data.csproj", "{E4EE85A6-E64C-4FD8-934D-2EB5FBCF0097}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "src\modules\Data\Data.csproj", "{E4EE85A6-E64C-4FD8-934D-2EB5FBCF0097}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "src\modules\Api\Api.csproj", "{946DDFE8-60C9-4F1F-AE3F-66ADC604E797}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "src\modules\Api\Api.csproj", "{946DDFE8-60C9-4F1F-AE3F-66ADC604E797}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.FileSystem", "src\modules\Data.FileSystem\Data.FileSystem.csproj", "{4B554C0C-B363-4C4B-80C2-7493E67F345C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.FileSystem", "src\modules\Data.FileSystem\Data.FileSystem.csproj", "{4B554C0C-B363-4C4B-80C2-7493E67F345C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.SqlServer", "src\modules\Data.SqlServer\Data.SqlServer.csproj", "{E7DBB2C0-3B9A-4AC0-A1AA-E59EEC3466E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.SqlServer", "src\modules\Data.SqlServer\Data.SqlServer.csproj", "{E7DBB2C0-3B9A-4AC0-A1AA-E59EEC3466E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Mongo", "src\modules\Data.Mongo\Data.Mongo.csproj", "{9CF5CD48-1FAF-4E8E-930F-65702A2F9411}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Mongo", "src\modules\Data.Mongo\Data.Mongo.csproj", "{9CF5CD48-1FAF-4E8E-930F-65702A2F9411}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{4F483E03-69AC-4FC6-B7FF-3BF7E24F57E0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1786CCFD-1BA5-455A-BB4C-94976B9F363B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StaticFiles", "src\modules\StaticFiles\StaticFiles.csproj", "{A943B2EF-2FD0-416A-9C54-877FFA0C000A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StaticFiles", "src\modules\StaticFiles\StaticFiles.csproj", "{A943B2EF-2FD0-416A-9C54-877FFA0C000A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtensionBase", "src\modules\ExtensionBase\ExtensionBase.csproj", "{CBF04DEA-35FE-4F74-B271-128BFD1F01CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtensionBase", "src\modules\ExtensionBase\ExtensionBase.csproj", "{CBF04DEA-35FE-4F74-B271-128BFD1F01CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity", "src\modules\Identity\Identity.csproj", "{96047AAA-5A1B-4D46-9FEC-56457D62A293}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity", "src\modules\Identity\Identity.csproj", "{96047AAA-5A1B-4D46-9FEC-56457D62A293}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "web", "samples\web\web.csproj", "{AF58C4F9-2097-41C2-98B6-BD7C194EA882}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "web", "samples\web\web.csproj", "{AF58C4F9-2097-41C2-98B6-BD7C194EA882}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Message", "src\modules\Message\Message.csproj", "{2461F461-8E10-44C9-B87A-688DDA50354C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Message", "src\modules\Message\Message.csproj", "{2461F461-8E10-44C9-B87A-688DDA50354C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Cache", "src\modules\Data.Cache\Data.Cache.csproj", "{ACEACBE1-8F16-4C7D-8E59-4CAC6FC9152B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Cache", "src\modules\Data.Cache\Data.Cache.csproj", "{ACEACBE1-8F16-4C7D-8E59-4CAC6FC9152B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "core", "src\core\core.csproj", "{53800470-648B-4114-A599-849D43E5B4F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "core", "src\core\core.csproj", "{53800470-648B-4114-A599-849D43E5B4F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

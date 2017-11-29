@@ -12,10 +12,13 @@ namespace core.Extensions.Data.Cache
 
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
-            base.Execute(serviceCollection, serviceProvider);            
+            base.Execute(serviceCollection, serviceProvider);
 
-            //repository 
-            Type repositoryType = typeof(Repository.DistributedCache<>);
+            // cache client
+            Type clientType = typeof(DistributedCache);
+
+            // repository 
+            Type repositoryType = typeof(Repository.CachedRepository<>);
 
             // service
             switch (_type)
@@ -31,14 +34,13 @@ namespace core.Extensions.Data.Cache
                     break;
                 default:                    
                     serviceCollection.AddMemoryCache();
-                    repositoryType = typeof(Repository.MemoryCache<>);
+                    clientType = typeof(MemoryCache);                    
                     break;
             }
-
-            // repository
+            
+            serviceCollection.AddTransient(typeof(ICache), clientType);
             serviceCollection.AddTransient(typeof(ICachedRepository<>), repositoryType);
-
-            // cache client
+            
         }
     }    
 }
