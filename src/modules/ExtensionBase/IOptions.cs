@@ -4,7 +4,7 @@ using System.Text;
 
 namespace core.Extensions.Base
 {
-    public partial class Options
+    public interface IOptions
     {
     }
 }

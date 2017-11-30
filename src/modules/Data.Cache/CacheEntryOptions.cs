@@ -6,7 +6,7 @@ namespace core.Extensions.Data.Cache
 {
     public class CacheEntryOptions : ICacheEntryOptions
     {        
-        public CacheEntryOptions() { }
+        public CacheEntryOptions() {}
 
         public DateTimeOffset? AbsoluteExpiration { get; set; }
 
@@ -14,12 +14,12 @@ namespace core.Extensions.Data.Cache
 
         public TimeSpan? SlidingExpiration { get; set; }
         
-        //public static class Expiration
-        //{
-        //    public static CacheEntryOptions Fast => new CacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(EntryProfileExpirationInMinutes.Fast) };
-        //    public static CacheEntryOptions Medium => new CacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(EntryProfileExpirationInMinutes.Medium) };
-        //    public static CacheEntryOptions Slow => new CacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(EntryProfileExpirationInMinutes.Slow) };
-        //    public static CacheEntryOptions Never => new CacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(EntryProfileExpirationInMinutes.Never) };
-        //}
+        public static class Expiration
+        {
+            public static CacheEntryOptions Fast => new CacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(Options.EntryExpirationInMinutes.Fast) };
+            public static CacheEntryOptions Medium => new CacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(Options.EntryExpirationInMinutes.Medium) };
+            public static CacheEntryOptions Slow => new CacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(Options.EntryExpirationInMinutes.Slow) };
+            public static CacheEntryOptions Never => new CacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(Options.EntryExpirationInMinutes.Never) };
+        }
     }
 }

@@ -18,7 +18,7 @@ namespace core.Extensions.StaticFiles
         {
             get
             {                
-                IEnumerable<Options.StaticFileOptions> opts = GetOptions<List<Options.StaticFileOptions>>();
+                IEnumerable<Options> opts = GetOptions<List<Options>>();
                 var res = new List<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)>();
                 foreach (var opt in opts)
                 {
@@ -83,11 +83,11 @@ namespace core.Extensions.StaticFiles
             }
         }
 
-        public override void Execute(IServiceCollection services, IServiceProvider serviceProvider)
+        public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
-            base.Execute(services, serviceProvider);            
+            base.Execute(serviceCollection, serviceProvider);            
             if (Settings.Any(_ => _.DirectoryBrowserOptions != null))
-                services.AddDirectoryBrowser();            
+                serviceCollection.AddDirectoryBrowser();            
         }
 
         public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)

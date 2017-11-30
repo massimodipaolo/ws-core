@@ -2,14 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using core.Extensions.Base;
 
-namespace core.Extensions.Base
+namespace core.Extensions.Data.Cache
 {
-    public partial class Options
+    public class Options: IOptions
     {
-        public DataCacheOptions DataCache { get; set; }
-        public class DataCacheOptions
-        {
             public Types Type { get; set; }
             public enum Types
             {
@@ -21,15 +19,13 @@ namespace core.Extensions.Base
 
             public RedisCacheOptions RedisOptions { get; set; }
 
-            public EntryExpirationInMinutes EntryProfileExpirationInMinutes { get; set; }
-            public class EntryExpirationInMinutes
+            public static Duration EntryExpirationInMinutes { get; set; }
+            public class Duration
             {
                 public int Fast { get; set; } = 10;
                 public int Medium { get; set; } = 60;
                 public int Slow { get; set; } = 240;
                 public int Never { get; set; } = 1440;
             }
-
-        }
     }
 }

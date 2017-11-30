@@ -37,7 +37,7 @@
           "Configuration": "127.0.0.1:6379",
           "InstanceName": "master"
         },
-        "EntryProfileExpirationInMinutes": {
+        "EntryExpirationInMinutes": {
           "Fast": 1,
           "Never": 2880
         }

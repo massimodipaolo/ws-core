@@ -37,11 +37,11 @@ namespace web.Controllers
         public IActionResult Get()
         {
             string key = "api:config";
-            var result = _cache.Get<Microsoft.Extensions.Configuration.IConfiguration>(key);
+            var result = _cache.Get(key);
             if (result == null)
             {   
                 result = _config;
-                _cache.Set(key, result, new CacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1) });                
+                _cache.Set(key, result, CacheEntryOptions.Expiration.Fast);                
             }
             return Ok(result);
         }
