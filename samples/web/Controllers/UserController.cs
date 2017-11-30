@@ -15,7 +15,7 @@ namespace web.Controllers
     [Route("api/cache/user")]
     public class UserCacheController : EntityCachedController<User>
     {
-        public UserCacheController(IRepository<User> repository, ICachedRepository<User> cachedRepository) : base(repository, cachedRepository) { }
+        public UserCacheController(IRepository<User> repository, ICacheRepository<User> cachedRepository) : base(repository, cachedRepository) { }
     }
 
     public class User : IdentityServer4.Models.IdentityResource, IEntity
@@ -37,11 +37,11 @@ namespace web.Controllers
         public IActionResult Get()
         {
             string key = "api:config";
-            var result = _cache.Get<DateTime>(key);
+            var result = _cache.Get<Microsoft.Extensions.Configuration.IConfiguration>(key);
             if (result == null)
             {   
-                result = DateTime.Now;
-                _cache.Set(key, result);             
+                result = _config;
+                _cache.Set(key, result, new CacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1) });                
             }
             return Ok(result);
         }

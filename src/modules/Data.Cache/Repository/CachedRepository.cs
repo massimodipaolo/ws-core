@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace core.Extensions.Data.Repository
 {
-    public class CachedRepository<T> : ICachedRepository<T> where T : IEntity
+    public class CachedRepository<T> : ICacheRepository<T> where T : IEntity
     {
         private static ICache _cache;
         private string _key => $"CachedRepositoryOf{typeof(T).ToString()}";

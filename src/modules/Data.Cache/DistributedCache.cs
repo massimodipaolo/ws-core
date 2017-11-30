@@ -36,5 +36,10 @@ namespace core.Extensions.Data.Cache
         {            
             _cache.Set(key, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)));
         }
+
+        public void Set(string key, object value,ICacheEntryOptions options)
+        {
+            _cache.Set(key, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)), new DistributedCacheEntryOptions() { AbsoluteExpiration=options.AbsoluteExpiration, AbsoluteExpirationRelativeToNow=options.AbsoluteExpirationRelativeToNow, SlidingExpiration=options.SlidingExpiration});
+        }
     }
 }

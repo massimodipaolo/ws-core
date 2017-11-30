@@ -29,8 +29,13 @@ namespace core.Extensions.Data.Cache
         }
 
         public void Set(string key, object value)
-        {
+        {            
             _cache.Set(key, value);
+        }
+
+        public void Set(string key, object value, ICacheEntryOptions options)
+        {
+            _cache.Set(key, value, new MemoryCacheEntryOptions() { AbsoluteExpiration = options.AbsoluteExpiration, AbsoluteExpirationRelativeToNow = options.AbsoluteExpirationRelativeToNow, SlidingExpiration = options.SlidingExpiration });
         }
     }
 }

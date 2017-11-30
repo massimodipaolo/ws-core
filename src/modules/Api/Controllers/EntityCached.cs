@@ -7,9 +7,9 @@ namespace core.Extensions.Api.Controllers
     [Route("api/cache/[controller]")]
     public class EntityCachedController<T> : EntityController<T> where T : IEntity
     {        
-        private readonly ICachedRepository<T> _cached;
+        private readonly ICacheRepository<T> _cached;
 
-        public EntityCachedController(IRepository<T> repository,ICachedRepository<T> cached) : base(repository)
+        public EntityCachedController(IRepository<T> repository,ICacheRepository<T> cached) : base(repository)
         {
             _cached = cached;
         }

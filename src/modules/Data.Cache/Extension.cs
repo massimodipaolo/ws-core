@@ -39,7 +39,7 @@ namespace core.Extensions.Data.Cache
             }
             
             serviceCollection.AddTransient(typeof(ICache), clientType);
-            serviceCollection.AddTransient(typeof(ICachedRepository<>), repositoryType);
+            serviceCollection.AddTransient(typeof(ICacheRepository<>), repositoryType);
             
         }
     }    

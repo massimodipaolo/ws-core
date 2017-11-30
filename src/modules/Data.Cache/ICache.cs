@@ -9,5 +9,6 @@ namespace core.Extensions.Data.Cache
         object Get(string key);
         T Get<T>(string key);
         void Set(string key,object value);
+        void Set(string key, object value, ICacheEntryOptions options);
     }
 }
