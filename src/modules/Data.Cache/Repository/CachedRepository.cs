@@ -8,7 +8,7 @@ namespace core.Extensions.Data.Repository
     public class CachedRepository<T> : ICacheRepository<T> where T : IEntity
     {
         private static ICache _cache;
-        private string _key => $"CachedRepositoryOf{typeof(T).ToString()}";
+        private string _key => $"cache:repository:{typeof(T).ToString()}";
         private List<T> _collection;
         
 

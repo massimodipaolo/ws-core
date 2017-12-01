@@ -27,12 +27,15 @@ namespace core.Extensions.Base
 
         protected IEnumerable<Configuration.Assembly> Extensions => _config?.GetSection("Extensions").Get<IEnumerable<Configuration.Assembly>>();
 
-        protected Configuration.Assembly Assembly => Extensions?.Select((e, i) => { e.Index = i; return e; }).Where(_ => _.Name == AssemblyName).FirstOrDefault();
+        protected Configuration.Assembly Assembly => Extensions?.Select((e, i) => { e.Index = i; return e; }).Where(_ => _.Name == AssemblyName).FirstOrDefault();        
+
         protected T GetOptions<T>() where T : class, new()
         {
             var obj = new T();
             if (Assembly != null)
                 obj = _config?.GetSection($"Extensions:{Assembly.Index}:Options").Get<T>();
+                //obj = Assembly.Options as T;                
+
             return obj;
         }
 

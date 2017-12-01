@@ -8,13 +8,14 @@ namespace core.Extensions.Base
 {    
     public class Configuration
     {
-        public IEnumerable<Assembly> Extensions { get; set; }
-        public IOptions Options { get; set; }
+        public IEnumerable<Assembly> Extensions { get; set; }        
 
         public class Assembly
         {
             public string Name { get; set; }
             public int Index { get; set; }
+            //public core.Extensions.Base.IOptions Options { get; set; } //bind error
+            
         }
     }
 }
