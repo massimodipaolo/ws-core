@@ -1,4 +1,4 @@
-﻿# StaticFiles Extensions
+﻿# StaticFiles Extension
 
 This extension enables the web app to serve static files. A physical file provider is used.
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Redis;
+using Microsoft.Extensions.Caching.SqlServer;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,6 +19,7 @@ namespace core.Extensions.Data.Cache
             }
 
             public RedisCacheOptions RedisOptions { get; set; }
+            public SqlServerCacheOptions SqlOptions { get; set; }
 
             public static Duration EntryExpirationInMinutes { get; set; }
             public class Duration

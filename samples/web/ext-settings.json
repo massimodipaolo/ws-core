@@ -32,11 +32,22 @@
     {
       "Name": "app.core.Extensions.Data.Cache",
       "Options": {
-        "Type": 2,
+        "Type": 3,
         "RedisOptions": {
           "Configuration": "127.0.0.1:6379",
           "InstanceName": "master"
-        }        
+        },
+        "SqlOptions": {
+          "ConnectionString": "Server=.,1433;Database=Cache;User Id=cacheUser;Password=C4$hUs3r-Strong!Pa$$w0rd;",
+          "SchemaName": "dbo",
+          "TableName":  "Entry"
+        } ,
+        "EntryExpirationInMinutes":  {
+          "Fast":  10,
+          "Medium":  60,
+          "Slow":  240,
+          "Never":  1440
+        }         
       }
     },
     {
