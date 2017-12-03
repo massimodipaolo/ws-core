@@ -87,12 +87,13 @@ namespace core.Extensions.StaticFiles
         {
             base.Execute(serviceCollection, serviceProvider);            
             if (Settings.Any(_ => _.DirectoryBrowserOptions != null))
-                serviceCollection.AddDirectoryBrowser();            
+                serviceCollection.AddDirectoryBrowser();   
         }
 
         public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
         {
             base.Execute(applicationBuilder, serviceProvider);
+
             foreach (var setting in Settings)
             {
                 if (setting.DefaultFilesOptions != null)                    

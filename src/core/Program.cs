@@ -31,8 +31,8 @@ namespace core
                 var _env = ctx.HostingEnvironment;
                 config
                 .SetBasePath(_env.ContentRootPath)
-                .AddJsonFile("app-settings.json", optional: true)
-                .AddJsonFile($"app-settings.{_env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("app-settings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"app-settings.{_env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddJsonFile("ext-settings.json", optional: true, reloadOnChange: true) //IOptionsSnapshot to live reload              
                 .AddJsonFile($"ext-settings.{_env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables(); //override any config files / user secrets        

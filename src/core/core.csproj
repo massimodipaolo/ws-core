@@ -41,4 +41,7 @@
     </Folder>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\modules\ExtensionBase\ExtensionBase.csproj" />
+  </ItemGroup>
 </Project>

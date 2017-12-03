@@ -1,65 +1,68 @@
 ﻿{
-  "Extensions": [
-    {
-      "Name": "app.core.Extensions.StaticFiles",
-      "Options": [
-        {
-          "Headers": {
-            "Cache-Control": "public,max-age=43200"
+  "Configuration": {
+    "Path": "Extensions",
+    "Assemblies": [ 
+      { 
+        "Name": "app.core.Extensions.StaticFiles", 
+        "Options": [
+          {
+            "Headers": {
+              "Cache-Control": "public,max-age=43200"
+            }
+          },
+          {
+            "Path": "wwwroot/folder",
+            "RequestPath": "/download",
+            "Headers": {
+              "Cache-Control": "public,max-age=86400"
+            },
+            "DefaultFiles": [
+              "index.html",
+              "default.htm"
+            ],
+            "MIMEtypes": {
+              ".myapp": "application/x-msdownload",
+              ".htm3": "text/html"
+            },
+            "EnableDirectoryBrowser": true  
           }
-        },
-        {
-          "Path": "wwwroot/folder",
-          "RequestPath": "/download",
-          "Headers": {
-            "Cache-Control": "public,max-age=86400"
+        ]
+      },
+      {
+        "Name": "app.core.Extensions.Data.FileSystem"
+      },
+      {
+        "Name": "app.core.Extensions.Data.Cache",
+        "Options": {
+          "Type": 2,
+          "RedisOptions": {
+            "Configuration": "127.0.0.1:6379",
+            "InstanceName": "master"
           },
-          "DefaultFiles": [
-            "index.html",
-            "default.htm"
-          ],
-          "MIMEtypes": {
-            ".myapp": "application/x-msdownload",
-            ".htm3": "text/html"
+          "SqlOptions": {
+            "ConnectionString": "Server=.,1433;Database=Cache;User Id=cacheUser;Password=C4$hUs3r-Strong!Pa$$w0rd;",
+            "SchemaName": "dbo",
+            "TableName": "Entry"
           },
-          "EnableDirectoryBrowser": true
+          "EntryExpirationInMinutes": {
+            "Fast": 10,
+            "Medium": 60,
+            "Slow": 240,
+            "Never": 1440
+          }
         }
-      ]
-    },
-    {
-      "Name": "app.core.Extensions.Data.FileSystem"
-    },
-    {
-      "Name": "app.core.Extensions.Data.Cache",
-      "Options": {
-        "Type": 3,
-        "RedisOptions": {
-          "Configuration": "127.0.0.1:6379",
-          "InstanceName": "master"
-        },
-        "SqlOptions": {
-          "ConnectionString": "Server=.,1433;Database=Cache;User Id=cacheUser;Password=C4$hUs3r-Strong!Pa$$w0rd;",
-          "SchemaName": "dbo",
-          "TableName":  "Entry"
-        } ,
-        "EntryExpirationInMinutes":  {
-          "Fast":  10,
-          "Medium":  60,
-          "Slow":  240,
-          "Never":  1440
-        }         
+      },
+      {
+        "Name": "app.core.Extensions.Identity"
+      },
+      {
+        "Name": "app.core.Extensions.Api"
+      },
+      {
+        "Name": "app.core.Extensions.Message"
       }
-    },
-    {
-      "Name": "app.core.Extensions.Identity"
-    },
-    {
-      "Name": "app.core.Extensions.Api"
-    },
-    {
-      "Name": "app.core.Extensions.Message"
-    }
-  ]
+    ]
+  }
 }
 
 

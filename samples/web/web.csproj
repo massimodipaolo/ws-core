@@ -14,6 +14,7 @@
     <ProjectReference Include="..\..\src\modules\Data.Cache\Data.Cache.csproj" />
     <ProjectReference Include="..\..\src\modules\Data\Data.csproj" />
     <ProjectReference Include="..\..\src\modules\Data.FileSystem\Data.FileSystem.csproj" />
+    <ProjectReference Include="..\..\src\modules\ExtensionBase\ExtensionBase.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Extensions\app.core.Extensions.Cache.dll" />

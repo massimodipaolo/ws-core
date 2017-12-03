@@ -14,18 +14,21 @@ namespace core.Extensions.Base
 {
     public class Extension : ExtCore.Infrastructure.ExtensionBase, IConfigureAction, IConfigureServicesAction
     {        
-        private static IServiceProvider _service;
-        protected IConfiguration _config => _service?.GetService<IConfiguration>();    
-        protected IHostingEnvironment _env => _service?.GetService<IHostingEnvironment>();
-        protected ILogger _logger => _service?.GetService<ILoggerFactory>()?.CreateLogger("Extension.Logger");        
-        private static void Init(IServiceProvider serviceProvider)
+        private static IServiceProvider _serviceProvider;
+        private static IServiceCollection _serviceCollection;
+        protected IConfiguration _config => _serviceProvider?.GetService<IConfiguration>();    
+        protected IHostingEnvironment _env => _serviceProvider?.GetService<IHostingEnvironment>();
+        protected ILogger _logger => _serviceProvider?.GetService<ILoggerFactory>()?.CreateLogger("Extension.Logger");        
+        private static void Init(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
-            if (null == _service)            
-                _service = serviceProvider;               
+            if (null == _serviceCollection)            
+                _serviceCollection = serviceCollection;   
+            if (null == _serviceProvider)            
+                _serviceProvider = serviceProvider;   
         }
         protected string AssemblyName => GetType().GetTypeInfo().Assembly.GetName().Name;
 
-        protected IEnumerable<Configuration.Assembly> Extensions => _config?.GetSection("Extensions").Get<IEnumerable<Configuration.Assembly>>();
+        protected IEnumerable<Configuration.Assembly> Extensions => _config?.GetSection("Configuration:Assemblies").Get<IEnumerable<Configuration.Assembly>>();
 
         protected Configuration.Assembly Assembly => Extensions?.Select((e, i) => { e.Index = i; return e; }).Where(_ => _.Name == AssemblyName).FirstOrDefault();        
 
@@ -33,7 +36,7 @@ namespace core.Extensions.Base
         {
             var obj = new T();
             if (Assembly != null)
-                obj = _config?.GetSection($"Extensions:{Assembly.Index}:Options").Get<T>();
+                obj = _config?.GetSection($"Configuration:Assemblies:{Assembly.Index}:Options").Get<T>();
                 //obj = Assembly.Options as T;                
 
             return obj;
@@ -46,11 +49,16 @@ namespace core.Extensions.Base
 
         //IConfigureServicesAction
         public virtual void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider) {
-            Init(serviceProvider);
+            Init(serviceCollection,serviceProvider);
         }
 
         //IConfigureAction
         public virtual void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider) {            
+        }
+
+        public virtual void Reload(IApplicationBuilder applicationBuilder)
+        {
+            _logger.LogInformation($"{Name}: Option reloading {DateTime.Now}");
         }
 
     }
