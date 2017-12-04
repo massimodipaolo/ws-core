@@ -21,8 +21,8 @@ namespace web
             base.ConfigureServices(services);
         }
 
-        public override void Configure(IApplicationBuilder app,IOptionsMonitor<core.Extensions.Base.Configuration> extMonitor) {
-            base.Configure(app,extMonitor);            
+        public override void Configure(IApplicationBuilder app,IOptionsMonitor<core.Extensions.Base.Configuration> extMonitor, IApplicationLifetime applicationLifetime) {
+            base.Configure(app,extMonitor,applicationLifetime);            
         }
     }
 }

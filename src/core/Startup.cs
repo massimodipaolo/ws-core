@@ -42,7 +42,7 @@ namespace core
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public virtual void Configure(IApplicationBuilder app,IOptionsMonitor<Extensions.Base.Configuration> extMonitor)
+        public virtual void Configure(IApplicationBuilder app,IOptionsMonitor<Extensions.Base.Configuration> extMonitor,IApplicationLifetime applicationLifetime)
         {            
             //Error handling
             if (_env.IsDevelopment())
@@ -66,10 +66,13 @@ namespace core
             }
             */
 
-
             extMonitor.OnChange(extConfig => {
                 _logger.CreateLogger("extMonitor").LogWarning($"Config changed {DateTime.Now}");
-                ExtCore.Events.Event<core.Extensions.Base.IConfigurationChangeEvent, IApplicationBuilder,core.Extensions.Base.Configuration>.Broadcast(app,extConfig);
+                
+                if (extConfig.ShutDownOnChange)
+                    applicationLifetime.StopApplication();
+                else
+                    ExtCore.Events.Event<core.Extensions.Base.IConfigurationChangeEvent, IApplicationBuilder, core.Extensions.Base.Configuration>.Broadcast(app, extConfig);
             });
 
             app.Map("/info", _ => _.Run(async (context) =>

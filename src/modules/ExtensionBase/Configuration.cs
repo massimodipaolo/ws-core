@@ -8,7 +8,9 @@ namespace core.Extensions.Base
 {    
     public class Configuration
     {
-        public IEnumerable<Assembly> Extensions { get; set; }        
+        public string Path { get; set; }
+        public bool ShutDownOnChange { get; set; } = false;
+        public IEnumerable<Assembly> Assemblies { get; set; }        
 
         public class Assembly
         {
