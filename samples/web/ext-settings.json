@@ -1,10 +1,10 @@
 ﻿{
   "Configuration": {
     "Path": "Extensions",
-    "ShutDownOnChange": false,
-    "Assemblies": [  
-      { 
-        "Name": "app.core.Extensions.StaticFiles", 
+    "EnableShutDownOnChange": false,
+    "Assemblies": [      
+      {
+        "Name": "app.core.Extensions.StaticFiles",
         "Options": [
           {
             "Headers": {
@@ -25,7 +25,7 @@
               ".myapp": "application/x-msdownload",
               ".htm3": "text/html"
             },
-            "EnableDirectoryBrowser": true  
+            "EnableDirectoryBrowser": true
           }
         ]
       },

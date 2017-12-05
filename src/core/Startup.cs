@@ -17,6 +17,7 @@ namespace core
     {
         protected IHostingEnvironment _env { get; set; }
         protected IConfiguration _config;
+        private IServiceCollection _services;
         protected ILoggerFactory _logger { get; set; }
         protected DateTime _uptime = DateTime.Now;
         //protected IOptionsMonitor<IEnumerable<Extensions.Base.Configuration.Assembly>> _extMonitor { get; set; }
@@ -32,13 +33,15 @@ namespace core
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public virtual void ConfigureServices(IServiceCollection services)
         {
-            services.AddOptions(); //.Configure<Configuration.Settings>(_config);
+            _services = services;
 
-            services.AddSingleton<IConfiguration>(_config);    
+            _services.AddOptions(); //.Configure<Configuration.Settings>(_config);
 
-            services.AddExtCore(_config["Configuration:Path"] != null ? $"{_env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{_config["Configuration:Path"]}" : null);
+            _services.AddSingleton<IConfiguration>(_config);    
 
-            services.Configure<Extensions.Base.Configuration>(_config.GetSection("Configuration"));
+            _services.AddExtCore(_config["Configuration:Path"] != null ? $"{_env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{_config["Configuration:Path"]}" : null);            
+
+            _services.Configure<Extensions.Base.Configuration>(_config.GetSection("Configuration"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,27 +55,26 @@ namespace core
 
             app.UseExtCore();
 
-            /*
-            try{
-                var optionFactory = new OptionsFactory<Extensions.Base.Configuration>(null, null);
-                var optionCache = new OptionsCache<Extensions.Base.Configuration>();
-                var monitor = new OptionsMonitor<Extensions.Base.Configuration>(optionFactory, null, optionCache);
-                monitor.OnChange(extConfig => {
-                    _logger.CreateLogger("extMonitor").LogWarning($"Config changed {DateTime.Now}");
-                    ExtCore.Events.Event<core.Extensions.Base.IConfigurationChangeEvent, IApplicationBuilder, core.Extensions.Base.Configuration>.Broadcast(app, extConfig);
-                });
-            } catch (Exception ex){
-                _logger.CreateLogger("Monitor instance").LogError(ex.Message);
-            }
-            */
+            Func<IEnumerable<Extensions.Base.Configuration.Assembly>, IEnumerable<IExtension>, bool> extChangeIsUpdatable = (ext1, ext2) =>
+            {
+                Func<IEnumerable<dynamic>, string> serialize = list => string.Join(" | ", list.Select(_ => _.Name));
+                return serialize(ext1) == serialize(ext2);
+            };
 
             extMonitor.OnChange(extConfig => {
-                _logger.CreateLogger("extMonitor").LogWarning($"Config changed {DateTime.Now}");
-                
-                if (extConfig.ShutDownOnChange)
+
+                var isUpdatable = extChangeIsUpdatable(extConfig.Assemblies, ExtensionManager.GetInstances<core.Extensions.Base.Extension>().Where(ext => ext.Priority > 0).OrderBy(ext => ext.Priority));
+                _logger.CreateLogger("extMonitor").LogWarning($"Config changed {DateTime.Now}; Extension is updatable: {isUpdatable} ");
+
+                if (!isUpdatable && extConfig.EnableShutDownOnChange)
+                {   
                     applicationLifetime.StopApplication();
+                }                    
                 else
-                    ExtCore.Events.Event<core.Extensions.Base.IConfigurationChangeEvent, IApplicationBuilder, core.Extensions.Base.Configuration>.Broadcast(app, extConfig);
+                    ExtCore.Events.Event<core.Extensions.Base.IConfigurationChangeEvent, core.Extensions.Base.ConfigurationChangeContext>
+                    .Broadcast(new Extensions.Base.ConfigurationChangeContext()
+                        { App=app, Lifetime= applicationLifetime, Configuration = extConfig}
+                    );
             });
 
             app.Map("/info", _ => _.Run(async (context) =>
@@ -91,9 +93,11 @@ namespace core
                      $"ApplicationName: {_env.ApplicationName}\n" +
                      $"Environment: {_env.EnvironmentName}\n" +                     
                      $"MachineName: {Environment.MachineName}\n" +
-                     $"ProcessorCount: {Environment.ProcessorCount}\n" +                     
-                     $"Extensions: {string.Join(" | ", ExtensionManager.GetInstances<IExtension>().Select(ext => ext.Name))}\n" + 
-                     $"Configuration: {string.Join(" | ", _config.AsEnumerable().Select(conf => $"{conf.Key}:{conf.Value}"))}\n" ;
+                     $"ProcessorCount: {Environment.ProcessorCount}\n" +                                          
+                     $"Extensions: {string.Join(" | ", ExtensionManager.GetInstances<core.Extensions.Base.Extension>().OrderBy(ext => ext.Priority).Select(ext => $"{ext.Name} [{ext.Priority}]"))}\n" +
+                     //$"Configuration: {string.Join(" | ", _config.AsEnumerable().Select(conf => $"{conf.Key}:{conf.Value}"))}\n" +
+                     //$"Services: {string.Join(" | ", _services.Select(srv=> $"{srv.ServiceType.FullName}:{srv.Lifetime}:{srv.ImplementationType?.FullName}"))}\n" +
+                     "" ;
 
                  await context.Response.WriteAsync(msg);
              }));

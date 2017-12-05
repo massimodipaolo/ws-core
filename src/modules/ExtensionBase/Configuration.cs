@@ -9,7 +9,7 @@ namespace core.Extensions.Base
     public class Configuration
     {
         public string Path { get; set; }
-        public bool ShutDownOnChange { get; set; } = false;
+        public bool EnableShutDownOnChange { get; set; } = false;
         public IEnumerable<Assembly> Assemblies { get; set; }        
 
         public class Assembly

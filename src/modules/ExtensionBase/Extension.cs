@@ -13,12 +13,13 @@ using Microsoft.Extensions.Logging;
 namespace core.Extensions.Base
 {
     public class Extension : ExtCore.Infrastructure.ExtensionBase, IConfigureAction, IConfigureServicesAction
-    {        
+    {
         private static IServiceProvider _serviceProvider;
         private static IServiceCollection _serviceCollection;
-        protected IConfiguration _config => _serviceProvider?.GetService<IConfiguration>();    
+        protected IConfiguration _config => _serviceProvider?.GetService<IConfiguration>();
         protected IHostingEnvironment _env => _serviceProvider?.GetService<IHostingEnvironment>();
         protected ILogger _logger => _serviceProvider?.GetService<ILoggerFactory>()?.CreateLogger("Extension.Logger");        
+
         private static void Init(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
             if (null == _serviceCollection)            
@@ -37,15 +38,33 @@ namespace core.Extensions.Base
             var obj = new T();
             if (Assembly != null)
                 obj = _config?.GetSection($"Configuration:Assemblies:{Assembly.Index}:Options").Get<T>();
-                //obj = Assembly.Options as T;                
+            //obj = Assembly.Options as T;                
+
+            if (Option<T>.value == null)
+                Option<T>.value = obj;
 
             return obj;
         }
 
-        public override string Name => $"{AssemblyName} [{Priority}]";
+        public virtual void ReloadOptions<T>(ConfigurationChangeContext ctx) where T : class, new() 
+        {            
+            Func<object, string> serialize = t => Newtonsoft.Json.JsonConvert.SerializeObject(t);
+            var _current = GetOptions<T>();
+            if (serialize(Option<T>.value ?? new T()) == serialize(_current ?? new T())) 
+                _logger.LogInformation($"{Name}: No changes, skip {DateTime.Now}");
+            else
+            {                
+                Execute(ctx.App, _serviceProvider);
+                Execute(_serviceCollection, _serviceProvider);
+                Option<T>.value = _current;
+                _logger.LogInformation($"{Name}: Options reloaded {DateTime.Now}");
+            }
+        }
+
+        public override string Name => AssemblyName;
 
         //IConfigureAction | IConfigureServicesAction
-        public virtual int Priority => Assembly?.Index * 100 ?? 0;
+        public virtual int Priority => (Assembly?.Index + 1) * 100 ?? 0;
 
         //IConfigureServicesAction
         public virtual void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider) {
@@ -56,10 +75,10 @@ namespace core.Extensions.Base
         public virtual void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider) {            
         }
 
-        public virtual void Reload(IApplicationBuilder applicationBuilder)
+        public class Option<T>
         {
-            _logger.LogInformation($"{Name}: Option reloading {DateTime.Now}");
+            public static object value { get; set; }
         }
-
+        
     }
 }

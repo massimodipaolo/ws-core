@@ -1,10 +1,8 @@
-﻿using System;
-using ExtCore.Events;
-using Microsoft.AspNetCore.Builder;
+﻿using ExtCore.Events;
 
 namespace core.Extensions.Base
 {
-    public interface IConfigurationChangeEvent : IEventHandler<IApplicationBuilder, Configuration>
+    public interface IConfigurationChangeEvent : IEventHandler<ConfigurationChangeContext>
     {
     }
 }
