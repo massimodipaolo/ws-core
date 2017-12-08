@@ -2,13 +2,13 @@
   "Configuration": {
     "Path": "Extensions",
     "EnableShutDownOnChange": false,
-    "Assemblies": [      
+    "Assemblies": [
       {
         "Name": "app.core.Extensions.StaticFiles",
         "Options": [
           {
             "Headers": {
-              "Cache-Control": "public,max-age=43200"
+              "Cache-Control": "public,max-age=43201"
             }
           },
           {

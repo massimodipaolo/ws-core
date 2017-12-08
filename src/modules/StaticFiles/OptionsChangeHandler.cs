@@ -10,8 +10,13 @@ namespace core.Extensions.StaticFiles
     {
         public override void HandleEvent(ConfigurationChangeContext ctx)
         {
-            base.HandleEvent(ctx);            
-            new Extension().ReloadOptions<List<Options>>(ctx);
+            base.HandleEvent(ctx);
+            var ext = new Extension();
+            var options = ext.ReloadOptions<List<Options>>();
+            if (options != null) {
+                if (ctx.Configuration.EnableShutDownOnChange)
+                    ctx.Lifetime.StopApplication();
+            }
         }
 
     }

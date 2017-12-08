@@ -10,14 +10,12 @@ namespace core.Extensions.Base
     {
         public string Path { get; set; }
         public bool EnableShutDownOnChange { get; set; } = false;
-        public IEnumerable<Assembly> Assemblies { get; set; }        
+        public IEnumerable<Assembly> Assemblies { get; set; }    
 
         public class Assembly
         {
             public string Name { get; set; }
             public int Index { get; set; }
-            //public core.Extensions.Base.IOptions Options { get; set; } //bind error
-            
         }
     }
 }

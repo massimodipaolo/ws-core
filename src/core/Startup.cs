@@ -20,6 +20,7 @@ namespace core
         private IServiceCollection _services;
         protected ILoggerFactory _logger { get; set; }
         protected DateTime _uptime = DateTime.Now;
+        private string _extLastConfigAssembliesSerialized { get; set; }
         //protected IOptionsMonitor<IEnumerable<Extensions.Base.Configuration.Assembly>> _extMonitor { get; set; }
 
         public Startup(IHostingEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory)
@@ -37,11 +38,13 @@ namespace core
 
             _services.AddOptions(); //.Configure<Configuration.Settings>(_config);
 
-            _services.AddSingleton<IConfiguration>(_config);    
-
-            _services.AddExtCore(_config["Configuration:Path"] != null ? $"{_env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{_config["Configuration:Path"]}" : null);            
+            _services.AddSingleton<IConfiguration>(_config);
 
             _services.Configure<Extensions.Base.Configuration>(_config.GetSection("Configuration"));
+
+            core.Extensions.Base.Extension.Init(_services, _services.BuildServiceProvider());
+
+            _services.AddExtCore(_config["Configuration:Path"] != null ? $"{_env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{_config["Configuration:Path"]}" : null);            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,17 +58,20 @@ namespace core
 
             app.UseExtCore();
 
-            Func<IEnumerable<Extensions.Base.Configuration.Assembly>, IEnumerable<IExtension>, bool> extChangeIsUpdatable = (ext1, ext2) =>
-            {
-                Func<IEnumerable<dynamic>, string> serialize = list => string.Join(" | ", list.Select(_ => _.Name));
-                return serialize(ext1) == serialize(ext2);
-            };
+            Func<IEnumerable<dynamic>, string> _extSerialize = list => string.Join(" | ", list.Select(_ => _.Name));
+
+            _extLastConfigAssembliesSerialized = _extSerialize(ExtensionManager.GetInstances<core.Extensions.Base.Extension>().Where(ext => ext.Priority > 0).OrderBy(ext => ext.Priority));
 
             extMonitor.OnChange(extConfig => {
 
-                var isUpdatable = extChangeIsUpdatable(extConfig.Assemblies, ExtensionManager.GetInstances<core.Extensions.Base.Extension>().Where(ext => ext.Priority > 0).OrderBy(ext => ext.Priority));
+                var _extCurrentAssembliesSerialized = _extSerialize(extConfig.Assemblies);
+                var isUpdatable = _extCurrentAssembliesSerialized == _extLastConfigAssembliesSerialized;
+
                 _logger.CreateLogger("extMonitor").LogWarning($"Config changed {DateTime.Now}; Extension is updatable: {isUpdatable} ");
 
+                if (isUpdatable)
+                    _extLastConfigAssembliesSerialized = _extCurrentAssembliesSerialized;
+                
                 if (!isUpdatable && extConfig.EnableShutDownOnChange)
                 {   
                     applicationLifetime.StopApplication();

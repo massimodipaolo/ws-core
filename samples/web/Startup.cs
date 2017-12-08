@@ -24,11 +24,6 @@ namespace web
 
         public override void Configure(IApplicationBuilder app,IOptionsMonitor<core.Extensions.Base.Configuration> extMonitor, IApplicationLifetime applicationLifetime) {
             base.Configure(app,extMonitor,applicationLifetime);
-
-            app.Map("/track", _ => _.Run(async(ctx) => {
-                var script = @"";
-                await ctx.Response.WriteAsync(script);
-            }));
         }
     }
 }
