@@ -35,7 +35,7 @@
       {
         "Name": "app.core.Extensions.Data.Cache",
         "Options": {
-          "Type": 2,
+          "Type": "Redis",
           "RedisOptions": {
             "Configuration": "127.0.0.1:6379",
             "InstanceName": "master"

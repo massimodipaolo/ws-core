@@ -7,7 +7,7 @@
 
 Options
 
-    Type: {0|1|2|3} 0:memory cache, 1: distributed memory cache, 2: Redis cache, 3: SqlServer cache
+    Type: {Memory|Distributed|Redis|SqlServer} 
     RedisOptions: Configurataion (server) and InstanceName of the Redis machine
     SqlOptions: ConnectionString,SchemaName,TableName. If omitted a local trusted connection on Cache.dbo.Entry table is provided.
     EntryExpirationInMinutes: override the default duration (in minutes) of the provided cache profiles. 
