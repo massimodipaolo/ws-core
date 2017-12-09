@@ -58,16 +58,16 @@ namespace core
 
             app.UseExtCore();
 
-            Func<IEnumerable<dynamic>, string> _extSerialize = list => string.Join(" | ", list.Select(_ => _.Name));
+            Func<IDictionary<string,Extensions.Base.Configuration.Assembly>,string> _extSerialize = list => string.Join(" | ", list.Where(ext => ext.Value.Priority > 0).OrderBy(ext => ext.Value.Priority).Select(_ => _.Key));
 
-            _extLastConfigAssembliesSerialized = _extSerialize(ExtensionManager.GetInstances<core.Extensions.Base.Extension>().Where(ext => ext.Priority > 0).OrderBy(ext => ext.Priority));
+            _extLastConfigAssembliesSerialized = _extSerialize(extMonitor.CurrentValue.Assemblies);
 
             extMonitor.OnChange(extConfig => {
 
                 var _extCurrentAssembliesSerialized = _extSerialize(extConfig.Assemblies);
                 var isUpdatable = _extCurrentAssembliesSerialized == _extLastConfigAssembliesSerialized;
 
-                _logger.CreateLogger("extMonitor").LogWarning($"Config changed {DateTime.Now}; Extension is updatable: {isUpdatable} ");
+                _logger.CreateLogger("extMonitor").LogWarning($"Config changed {DateTime.Now}; Is updatable: {isUpdatable} ");
 
                 if (isUpdatable)
                     _extLastConfigAssembliesSerialized = _extCurrentAssembliesSerialized;

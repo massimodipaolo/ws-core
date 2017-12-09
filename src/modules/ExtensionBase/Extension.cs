@@ -30,16 +30,18 @@ namespace core.Extensions.Base
 
         protected string AssemblyName => GetType().GetTypeInfo().Assembly.GetName().Name;
 
-        protected IEnumerable<Configuration.Assembly> Extensions => _config?.GetSection("Configuration:Assemblies").Get<IEnumerable<Configuration.Assembly>>();
+        protected IEnumerable<Configuration.Assembly> Extensions => _config.GetSection("Configuration:Assemblies")
+                                           .Get<IDictionary<string, core.Extensions.Base.Configuration.Assembly>>()
+                                           .OrderBy(_ => _.Value.Priority)
+                                           .Select((e,i) => new Configuration.Assembly() {Name = e.Key,Priority=i});
 
-        protected Configuration.Assembly Assembly => Extensions?.Select((e, i) => { e.Index = i; return e; }).Where(_ => _.Name == AssemblyName).FirstOrDefault();
+        protected Configuration.Assembly Assembly => Extensions?.Where(_ => _.Name == AssemblyName).FirstOrDefault();
 
         protected T GetOptions<T>() where T : class, new()
         {
             var obj = new T();
             if (Assembly != null)
-                obj = _config?.GetSection($"Configuration:Assemblies:{Assembly.Index}:Options").Get<T>();
-            //obj = Assembly.Options as T;                
+                obj = _config?.GetSection($"Configuration:Assemblies:{AssemblyName}:Options").Get<T>();            
 
             if (Option<T>.value == null)
                 Option<T>.value = obj;
@@ -66,7 +68,7 @@ namespace core.Extensions.Base
         public override string Name => AssemblyName;
 
         //IConfigureAction | IConfigureServicesAction
-        public virtual int Priority => (Assembly?.Index + 1) * 100 ?? 0;
+        public virtual int Priority => (Assembly?.Priority + 1) * 100 ?? 0;
 
         //IConfigureServicesAction
         public virtual void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider) {

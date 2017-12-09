@@ -2,13 +2,13 @@
   "Configuration": {
     "Path": "Extensions",
     "EnableShutDownOnChange": false,
-    "Assemblies": [
-      {
-        "Name": "app.core.Extensions.StaticFiles",
+    "Assemblies": {
+      "app.core.Extensions.StaticFiles": {
+        "Priority":  1,
         "Options": [
           {
             "Headers": {
-              "Cache-Control": "public,max-age=43201"
+              "Cache-Control": "public,max-age=43200"
             }
           },
           {
@@ -29,11 +29,9 @@
           }
         ]
       },
-      {
-        "Name": "app.core.Extensions.Data.FileSystem"
-      },
-      {
-        "Name": "app.core.Extensions.Data.Cache",
+      "app.core.Extensions.Data.FileSystem": { "Priority": 2 },
+      "app.core.Extensions.Data.Cache": { 
+        "Priority": 3,
         "Options": {
           "Type": "Redis",
           "RedisOptions": {
@@ -51,18 +49,12 @@
             "Slow": 240,
             "Never": 1440
           }
-        }
+        } 
       },
-      {
-        "Name": "app.core.Extensions.Identity"
-      },
-      {
-        "Name": "app.core.Extensions.Api"
-      },
-      {
-        "Name": "app.core.Extensions.Message"
+      "app.core.Extensions.Identity": { "Priority": 4 },
+      "app.core.Extensions.Api": { "Priority": 5 },
+      "app.core.Extensions.Message": { "Priority": 6 }
       }
-    ]
   }
 }
 
