@@ -31,8 +31,9 @@ namespace core
                 .AddJsonFile($"app-settings.{_env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddJsonFile("ext-settings.json", optional: true, reloadOnChange: true) //IOptionsSnapshot to live reload              
                 .AddJsonFile($"ext-settings.{_env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-                .AddUserSecrets(assembly, optional: true)
-                .AddEnvironmentVariables(); //override any config files / user secrets        
+                .AddUserSecrets(assembly, optional: true) //override any config files    
+                .AddEnvironmentVariables() //override any user secrets
+                .AddCommandLine(args); //override any environment variables     
             })
             .ConfigureLogging((ctx, logging) =>
             {
