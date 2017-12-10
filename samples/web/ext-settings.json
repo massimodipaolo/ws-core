@@ -35,11 +35,11 @@
         "Options": {
           "Type": "Redis",
           "RedisOptions": {
-            "Configuration": "127.0.0.1:6379",
+            "Configuration": "",
             "InstanceName": "master"
           },
           "SqlOptions": {
-            "ConnectionString": "Server=.,1433;Database=Cache;User Id=cacheUser;Password=C4$hUs3r-Strong!Pa$$w0rd;",
+            "ConnectionString": "",
             "SchemaName": "dbo",
             "TableName": "Entry"
           },

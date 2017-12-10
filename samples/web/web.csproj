@@ -2,9 +2,13 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssetTargetFallback>portable-net45+win8</AssetTargetFallback>    
+    <UserSecretsId>app.samples.web</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
   </ItemGroup>  
   <ItemGroup>
     <ProjectReference Include="..\..\src\core\core.csproj" />
@@ -16,8 +20,5 @@
     <ProjectReference Include="..\..\src\modules\Data\Data.csproj" />
     <ProjectReference Include="..\..\src\modules\Data.FileSystem\Data.FileSystem.csproj" />
     <ProjectReference Include="..\..\src\modules\ExtensionBase\ExtensionBase.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Extensions\app.core.Extensions.Cache.dll" />
   </ItemGroup>
 </Project>

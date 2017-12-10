@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using System.IO;
+using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -14,15 +10,15 @@ namespace core
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            BuildWebHost(args, typeof(Program).Assembly).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHostBuilder(args)
+        public static IWebHost BuildWebHost(string[] args, Assembly assembly) =>
+            WebHostBuilder(args, assembly)
             .UseStartup<Startup>()
             .Build();
 
-        public static IWebHostBuilder WebHostBuilder(string[] args) =>
+        public static IWebHostBuilder WebHostBuilder(string[] args, Assembly assembly) =>
             new WebHostBuilder()
             .UseKestrel()
             .UseContentRoot(Directory.GetCurrentDirectory())
@@ -35,6 +31,7 @@ namespace core
                 .AddJsonFile($"app-settings.{_env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddJsonFile("ext-settings.json", optional: true, reloadOnChange: true) //IOptionsSnapshot to live reload              
                 .AddJsonFile($"ext-settings.{_env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                .AddUserSecrets(assembly, optional: true)
                 .AddEnvironmentVariables(); //override any config files / user secrets        
             })
             .ConfigureLogging((ctx, logging) =>
@@ -42,7 +39,6 @@ namespace core
                 logging.AddConfiguration(ctx.Configuration.GetSection("Logging"));
                 if (ctx.HostingEnvironment.IsDevelopment())
                 {
-                    logging.AddConsole();
                     logging.AddDebug();
                 }
             });
