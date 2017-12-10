@@ -10,7 +10,7 @@ namespace core.Extensions.Data.Repository
         private static ICache _cache;
         private string _key => $"cache:repository:{typeof(T).ToString()}";
         private List<T> _collection;
-        
+
 
         public CachedRepository() { }
 
@@ -19,7 +19,8 @@ namespace core.Extensions.Data.Repository
             if (_cache == null) _cache = cache;
 
             _collection = _cache.Get<List<T>>(_key);
-            if (_collection == null){
+            if (_collection == null)
+            {
                 _collection = repository.List.ToList();
                 Save();
             }
@@ -51,6 +52,7 @@ namespace core.Extensions.Data.Repository
         }
         private void Save()
         {
+
             _cache.Set(_key, _collection);
         }
     }

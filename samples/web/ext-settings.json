@@ -51,9 +51,26 @@
           }
         } 
       },
-      "app.core.Extensions.Identity": { "Priority": 4 },
-      "app.core.Extensions.Api": { "Priority": 5 },
-      "app.core.Extensions.Message": { "Priority": 6 }
+      "app.core.Extensions.Data.Cache.Memcached": { 
+        "Priority": 4,
+        "Options": {
+          "Client": {
+            "Servers": [
+              {"Address": "127.0.0.1","Port": 32770},
+              {"Address": "127.0.0.1","Port": 11212}
+            ]
+          },
+          "EntryExpirationInMinutes": {
+            "Fast": 10,
+            "Medium": 60,
+            "Slow": 240,
+            "Never": 1440
+          }
+        } 
+      },
+      "app.core.Extensions.Identity": { "Priority": 5 },
+      "app.core.Extensions.Api": { "Priority": 6 },
+      "app.core.Extensions.Message": { "Priority": 7 }
       }
   }
 }

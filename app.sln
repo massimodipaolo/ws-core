@@ -44,6 +44,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Cache", "src\modules\D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "core", "src\core\core.csproj", "{53800470-648B-4114-A599-849D43E5B4F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Cache.Memcached", "src\modules\Data.Cache.Memcached\Data.Cache.Memcached.csproj", "{44E83A5C-F02F-48A5-B0F0-1D1C7885DEA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,6 +100,10 @@ Global
 		{53800470-648B-4114-A599-849D43E5B4F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53800470-648B-4114-A599-849D43E5B4F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53800470-648B-4114-A599-849D43E5B4F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44E83A5C-F02F-48A5-B0F0-1D1C7885DEA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44E83A5C-F02F-48A5-B0F0-1D1C7885DEA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44E83A5C-F02F-48A5-B0F0-1D1C7885DEA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44E83A5C-F02F-48A5-B0F0-1D1C7885DEA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,6 +122,7 @@ Global
 		{2461F461-8E10-44C9-B87A-688DDA50354C} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
 		{ACEACBE1-8F16-4C7D-8E59-4CAC6FC9152B} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
 		{53800470-648B-4114-A599-849D43E5B4F0} = {2EC986FB-3831-46DF-AFF0-D6AE6128C55E}
+		{44E83A5C-F02F-48A5-B0F0-1D1C7885DEA1} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1713483-7DCD-42EB-A437-F0BBBAC5F4EF}

@@ -8,17 +8,17 @@ namespace core.Extensions.Data.Cache
 {
     public class DistributedCache : ICache
     {
-        private static IDistributedCache _cache;
+        readonly IDistributedCache _cache;
 
         public DistributedCache() { }
 
         public DistributedCache(IDistributedCache cache)
         {
-            if (_cache == null) _cache = cache;
-        }        
+            _cache = cache;
+        }
 
         public object Get(string key)
-        {            
+        {
             return Get<object>(key);
         }
 
@@ -33,13 +33,13 @@ namespace core.Extensions.Data.Cache
         }
 
         public void Set(string key, object value)
-        {            
+        {
             _cache.Set(key, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)));
         }
 
-        public void Set(string key, object value,ICacheEntryOptions options)
+        public void Set(string key, object value, ICacheEntryOptions options)
         {
-            _cache.Set(key, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)), new DistributedCacheEntryOptions() { AbsoluteExpiration=options.AbsoluteExpiration, AbsoluteExpirationRelativeToNow=options.AbsoluteExpirationRelativeToNow, SlidingExpiration=options.SlidingExpiration});
+            _cache.Set(key, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)), new DistributedCacheEntryOptions() { AbsoluteExpiration = options.AbsoluteExpiration, AbsoluteExpirationRelativeToNow = options.AbsoluteExpirationRelativeToNow, SlidingExpiration = options.SlidingExpiration });
         }
     }
 }

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <PackageId>app.core.Extensions.Data.Cache.Memcached</PackageId>
+    <AssemblyName>app.core.Extensions.Data.Cache.Memcached</AssemblyName>
+    <RootNamespace>core.Extensions.Data.Cache.Memcached</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EnyimMemcachedCore" Version="2.0.2" />
+  </ItemGroup>
+</Project>

@@ -2,11 +2,12 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace core.Extensions.Data.Cache
 {
     public class Extension : Base.Extension
-    {        
+    {
         private Options _options => GetOptions<Options>();
         private Options.Types _type => _options?.Type ?? Options.Types.Memory;
 
@@ -18,6 +19,9 @@ namespace core.Extensions.Data.Cache
             if (Options.EntryExpirationInMinutes == null)
                 Options.EntryExpirationInMinutes = new Options.Duration();
 
+            // init/override default cache profile
+            //CacheEntryOptions.Expiration.Set();
+
             // cache client
             Type clientType = typeof(DistributedCache);
 
@@ -27,24 +31,25 @@ namespace core.Extensions.Data.Cache
             // service
             switch (_type)
             {
-                case Options.Types.Distributed:                    
-                    serviceCollection.AddDistributedMemoryCache();                    
+                case Options.Types.Distributed:
+                    serviceCollection.AddDistributedMemoryCache();
                     break;
-                case Options.Types.Redis:                    
+                case Options.Types.Redis:
                     serviceCollection.AddDistributedRedisCache(_ => { _.Configuration = _options.RedisOptions?.Configuration ?? "localhost:6379"; _.InstanceName = _options.RedisOptions?.InstanceName ?? "master"; });
                     break;
                 case Options.Types.SqlServer:
                     serviceCollection.AddDistributedSqlServerCache(_ => { _.ConnectionString = _options.SqlOptions?.ConnectionString ?? "Server=.;Database=Cache;Trusted_Connection=True;"; _.SchemaName = _options.SqlOptions?.SchemaName ?? "dbo"; _.TableName = _options.SqlOptions?.TableName ?? "Entry"; });
                     break;
-                default:                    
+                default:
                     serviceCollection.AddMemoryCache();
-                    clientType = typeof(MemoryCache);                    
+                    clientType = typeof(MemoryCache);
                     break;
             }
-            
+
+            //DI
             serviceCollection.AddSingleton(typeof(ICache), clientType);
-            serviceCollection.AddTransient(typeof(ICacheRepository<>), repositoryType);           
-            
+            serviceCollection.TryAddTransient(typeof(ICacheRepository<>), repositoryType);
+
         }
-    }    
+    }
 }

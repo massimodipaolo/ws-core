@@ -20,5 +20,6 @@
     <ProjectReference Include="..\..\src\modules\Data\Data.csproj" />
     <ProjectReference Include="..\..\src\modules\Data.FileSystem\Data.FileSystem.csproj" />
     <ProjectReference Include="..\..\src\modules\ExtensionBase\ExtensionBase.csproj" />
+    <ProjectReference Include="..\..\src\modules\Data.Cache.Memcached\Data.Cache.Memcached.csproj" />
   </ItemGroup>
 </Project>
