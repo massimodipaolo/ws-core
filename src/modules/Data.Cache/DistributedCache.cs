@@ -8,13 +8,13 @@ namespace core.Extensions.Data.Cache
 {
     public class DistributedCache : ICache
     {
-        readonly IDistributedCache _cache;
+        readonly IDistributedCache _client;
 
         public DistributedCache() { }
 
-        public DistributedCache(IDistributedCache cache)
+        public DistributedCache(IDistributedCache client)
         {
-            _cache = cache;
+            _client = client;
         }
 
         public object Get(string key)
@@ -24,7 +24,7 @@ namespace core.Extensions.Data.Cache
 
         public T Get<T>(string key)
         {
-            var result = _cache.Get(key);
+            var result = _client.Get(key);
             if (result != null)
             {
                 return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(result));
@@ -34,12 +34,17 @@ namespace core.Extensions.Data.Cache
 
         public void Set(string key, object value)
         {
-            _cache.Set(key, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)));
+            _client.Set(key, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)));
         }
 
         public void Set(string key, object value, ICacheEntryOptions options)
         {
-            _cache.Set(key, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)), new DistributedCacheEntryOptions() { AbsoluteExpiration = options.AbsoluteExpiration, AbsoluteExpirationRelativeToNow = options.AbsoluteExpirationRelativeToNow, SlidingExpiration = options.SlidingExpiration });
+            _client.Set(key, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)), new DistributedCacheEntryOptions() { AbsoluteExpiration = options.AbsoluteExpiration, AbsoluteExpirationRelativeToNow = options.AbsoluteExpirationRelativeToNow, SlidingExpiration = options.SlidingExpiration });
+        }
+
+        public void Remove(string key)
+        {
+            _client.Remove(key);
         }
     }
 }

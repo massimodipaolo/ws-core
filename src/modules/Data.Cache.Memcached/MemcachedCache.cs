@@ -41,5 +41,10 @@ namespace core.Extensions.Data.Cache.Memcached
 
             _client.Store(Enyim.Caching.Memcached.StoreMode.Set, key, value, ExpireAt);
         }
+
+        public void Remove(string key)
+        {
+            _client.Remove(key);
+        }
     }
 }
