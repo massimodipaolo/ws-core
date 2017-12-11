@@ -56,8 +56,10 @@
         "Options": {
           "Client": {
             "Servers": [
-              {"Address": "127.0.0.1","Port": 32770},
-              {"Address": "127.0.0.1","Port": 11212}
+              {
+                "Address": "localhost",
+                "Port": 11211
+              }
             ]
           },
           "EntryExpirationInMinutes": {

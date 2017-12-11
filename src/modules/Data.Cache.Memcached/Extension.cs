@@ -22,11 +22,12 @@ namespace core.Extensions.Data.Cache.Memcached
                 // init/override default cache profile
                 //CacheEntryOptions.Expiration.Set();
 
-                // service
-                serviceCollection.AddEnyimMemcached(_ => _ = _options.Client);
+                // service                
+                serviceCollection.AddEnyimMemcached(_config.GetSection($"Configuration:Assemblies:{this.AssemblyName}:Options:Client"));                
+                //serviceCollection.AddEnyimMemcached(_ => _.AddServer(_options.Client.Servers[0].Address, _options.Client.Servers[0].Port));                
 
                 //DI
-                serviceCollection.AddSingleton(typeof(ICache), typeof(MemcachedCache));
+                serviceCollection.AddSingleton(typeof(ICache), typeof(MemcachedCache));                
                 serviceCollection.TryAddTransient(typeof(ICacheRepository<>), typeof(Repository.CachedRepository<>));
             }
         }

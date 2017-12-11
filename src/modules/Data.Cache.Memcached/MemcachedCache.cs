@@ -14,7 +14,7 @@ namespace core.Extensions.Data.Cache.Memcached
 
         public object Get(string key)
         {
-            return _client.Get(key);
+            return _client.Get<object>(key);
         }
 
         public T Get<T>(string key)
