@@ -46,5 +46,12 @@ namespace web.Controllers
             return Ok(result);
         }
 
+        [HttpDelete]
+        public IActionResult Delete()
+        {   
+            _cache.Clear();            
+            return Ok();
+        }
+
     }
 }

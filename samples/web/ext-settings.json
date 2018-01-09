@@ -1,6 +1,6 @@
 ﻿{
-  "Configuration": {
-    "Path": "Extensions",
+  "ExtConfig": {
+    "Folder": "Extensions",
     "EnableShutDownOnChange": false,
     "Assemblies": {
       "app.core.Extensions.StaticFiles": {
@@ -33,7 +33,7 @@
       "app.core.Extensions.Data.Cache": { 
         "Priority": 3,
         "Options": {
-          "Type": "Redis",
+          "Type": "Memory",
           "RedisOptions": {
             "Configuration": "",
             "InstanceName": "master"
@@ -51,7 +51,7 @@
           }
         } 
       },
-      "app.core.Extensions.Data.Cache.Memcached": { 
+      "__app.core.Extensions.Data.Cache.Memcached": { 
         "Priority": 4,
         "Options": {
           "Client": {

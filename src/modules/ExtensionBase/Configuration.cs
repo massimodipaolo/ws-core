@@ -8,7 +8,8 @@ namespace core.Extensions.Base
 {    
     public class Configuration
     {
-        public string Path { get; set; }
+        public static string Folder { get; set; } = "Extensions";
+        public static string SectionRoot { get; set; } = "ExtConfig";
         public bool EnableShutDownOnChange { get; set; } = false;
         public IDictionary<string,Assembly> Assemblies { get; set; }
 

@@ -9,7 +9,7 @@ namespace core.Extensions.Data.Cache.Memcached
 
         public MemcachedCache(IMemcachedClient client)
         {
-            _client = client;
+            _client = client;            
         }
 
         public object Get(string key)
@@ -45,6 +45,11 @@ namespace core.Extensions.Data.Cache.Memcached
         public void Remove(string key)
         {
             _client.Remove(key);
+        }
+
+        public void Clear()
+        {
+            _client.FlushAll();            
         }
     }
 }

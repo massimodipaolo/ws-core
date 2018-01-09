@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using core.Extensions.Base;
 using ExtCore.Infrastructure;
 using ExtCore.WebApplication.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -38,12 +39,12 @@ namespace core
             _services.AddOptions();
 
             _services.AddSingleton<IConfiguration>(_config);
-
-            _services.Configure<Extensions.Base.Configuration>(_config.GetSection("Configuration"));
+            
+            _services.Configure<Configuration>(_config.GetSection(Configuration.SectionRoot));
 
             core.Extensions.Base.Extension.Init(_services, _services.BuildServiceProvider());
 
-            _services.AddExtCore(_config["Configuration:Path"] != null ? $"{_env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{_config["Configuration:Path"]}" : null);
+            _services.AddExtCore(_config[$"{Configuration.SectionRoot}:Folder"] != null ? $"{_env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{_config[$"{Configuration.SectionRoot}:Folder"]}" : null);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

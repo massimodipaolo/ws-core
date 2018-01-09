@@ -86,9 +86,9 @@ create login cacheUser with password='C4$hUs3r-Strong!Pa$$w0rd'
 go
 create database Cache
 go
-create user cacheUser for login cacheUser
-go
 use Cache
+go
+create user cacheUser for login cacheUser
 go
 create table dbo.Entry(
     Id nvarchar(449) primary key clustered,

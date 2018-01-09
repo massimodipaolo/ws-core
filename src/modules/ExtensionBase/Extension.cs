@@ -30,18 +30,19 @@ namespace core.Extensions.Base
 
         protected string AssemblyName => GetType().GetTypeInfo().Assembly.GetName().Name;
 
-        protected IEnumerable<Configuration.Assembly> Extensions => _config.GetSection("Configuration:Assemblies")
+        protected IEnumerable<Configuration.Assembly> Extensions => _config.GetSection($"{Configuration.SectionRoot}:Assemblies")
                                            .Get<IDictionary<string, core.Extensions.Base.Configuration.Assembly>>()
                                            .OrderBy(_ => _.Value.Priority)
                                            .Select((e,i) => new Configuration.Assembly() {Name = e.Key,Priority=i});
 
         protected Configuration.Assembly Assembly => Extensions?.Where(_ => _.Name == AssemblyName).FirstOrDefault();
 
+        protected string ConfigSectionPathOptions => $"{Configuration.SectionRoot}:Assemblies:{AssemblyName}:Options";
         protected T GetOptions<T>() where T : class, new()
         {
             var obj = new T();
             if (Assembly != null)
-                obj = _config?.GetSection($"Configuration:Assemblies:{AssemblyName}:Options").Get<T>();            
+                obj = _config?.GetSection(ConfigSectionPathOptions).Get<T>();            
 
             if (Option<T>.value == null)
                 Option<T>.value = obj;

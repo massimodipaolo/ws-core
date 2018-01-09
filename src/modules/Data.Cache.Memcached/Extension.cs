@@ -23,8 +23,7 @@ namespace core.Extensions.Data.Cache.Memcached
                 //CacheEntryOptions.Expiration.Set();
 
                 // service                
-                serviceCollection.AddEnyimMemcached(_config.GetSection($"Configuration:Assemblies:{this.AssemblyName}:Options:Client"));                
-                //serviceCollection.AddEnyimMemcached(_ => _.AddServer(_options.Client.Servers[0].Address, _options.Client.Servers[0].Port));                
+                serviceCollection.AddEnyimMemcached(_config.GetSection($"{ConfigSectionPathOptions}:Client"));                                         
 
                 //DI
                 serviceCollection.AddSingleton(typeof(ICache), typeof(MemcachedCache));                

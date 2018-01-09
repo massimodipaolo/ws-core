@@ -11,5 +11,6 @@ namespace core.Extensions.Data.Cache
         void Set(string key, object value);
         void Set(string key, object value, ICacheEntryOptions options);
         void Remove(string key);
+        void Clear();
     }
 }

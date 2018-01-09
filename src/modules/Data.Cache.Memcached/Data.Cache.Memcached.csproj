@@ -14,6 +14,11 @@
     <OutputPath>.</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="netcoreapp2.0\**" />
+    <EmbeddedResource Remove="netcoreapp2.0\**" />
+    <None Remove="netcoreapp2.0\**" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />
   </ItemGroup>
   <ItemGroup>
