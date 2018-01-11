@@ -1,0 +1,190 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "JSON Schema for extensions modules",
+  "type": "object",
+  "definitions": {
+    "assembly": {
+      "type": "object",
+      "required": [ "priority" ],
+      "properties": {
+        "priority": { "type": "number" },
+        "options": { "type": "object" }
+      }
+    },
+    "entryExpirationInMinutes": {
+      "type": "object",
+      "properties": {
+        "fast": {
+          "type": "integer",
+          "default": 10
+        },
+        "medium": {
+          "type": "integer",
+          "default": 60
+        },
+        "slow": {
+          "type": "integer",
+          "default": 240
+        },
+        "never": {
+          "type": "integer",
+          "default": 1440
+        }
+      }
+    }
+  },
+  "required": [ "extConfig" ],
+  "properties": {
+    "extConfig": {
+      "type": "object",
+      "properties": {
+        "folder": {
+          "type": "string"
+        },
+        "enableShutDownOnChange": {
+          "type": "boolean"
+        },
+        "assemblies": {
+          "type": "object",
+          "properties": {
+            "app.core.Extensions.Api": { "$ref": "#/definitions/assembly" },
+            "app.core.Extensions.Data": { "$ref": "#/definitions/assembly" },
+            "app.core.Extensions.Data.Cache": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "type": { "enum": [ "Memory", "Distributed", "Redis", "SqlServer" ] },
+                    "redisOptions": {
+                      "type": "object",
+                      "properties": {
+                        "configuration": { "type": "string" },
+                        "instanceName": {
+                          "type": "string",
+                          "default": "master"
+                        }
+                      }
+                    },
+                    "sqlOptions": {
+                      "type": "object",
+                      "properties": {
+                        "connectionString": { "type": "string" },
+                        "schemaName": {
+                          "type": "string",
+                          "default": "dbo"
+                        },
+                        "tableName": {
+                          "type": "string",
+                          "default": "Entry"
+                        }
+                      }
+                    },
+                    "entryExpirationInMinutes": { "$ref": "#/definitions/entryExpirationInMinutes" }
+                  }
+                }
+              }
+            },
+            "app.core.Extensions.Data.Cache.Memcached": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "client": {
+                      "type": "object",
+                      "properties": {
+                        "servers": {
+                          "type": "array",
+                          "items": {
+                            "properties": {
+                              "address": { "type": "string" },
+                              "port": { "type": "integer" }
+                            }
+                          }
+                        },
+                        "authentication": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "description": "i.e. Enyim.Caching.Memcached.PlainTextAuthenticator"
+                            },
+                            "parameters": {
+                              "type": "object",
+                              "properties": {
+                                "zone": { "type": "string" },
+                                "userName": { "type": "string" },
+                                "password": { "type":  "string"}
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "entryExpirationInMinutes": { "$ref": "#/definitions/entryExpirationInMinutes" }
+                  }
+                }
+              }
+            },
+            "app.core.Extensions.FileSystem": { "$ref": "#/definitions/assembly" },
+            "app.core.Extensions.Mongo": { "$ref": "#/definitions/assembly" },
+            "app.core.Extensions.SqlServer": { "$ref": "#/definitions/assembly" },
+            "app.core.Extensions.Identity": { "$ref": "#/definitions/assembly" },
+            "app.core.Extensions.Message": { "$ref": "#/definitions/assembly" },
+            "app.core.Extensions.StaticFiles": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "paths": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "headers": {
+                            "type": "object",
+                            "additionalProperties": { "type": "string" }
+                          },
+                          "path": { "type": "string" },
+                          "requestPath": { "type": "string" },
+                          "defaultFiles": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                          },
+                          "mimeTypes": {
+                            "type": "object",
+                            "patternProperties": { "^\\.[^.]+$": { "type": "string" } },
+                            "additionalProperties": {
+                              "type": "string",
+                              "pattern": "^\\.[^.]+$"
+                            }
+                          },
+                          "enableDirectoryBrowser": { "type": "boolean" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "additionalProperties": {
+            "type": [
+              "string",
+              "object"
+            ],
+            "$ref": "#/definitions/assembly"
+          }
+        }
+      }
+    }
+  }
+}
