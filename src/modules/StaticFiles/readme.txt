@@ -25,32 +25,34 @@ https://docs.microsoft.com/en-us/aspnet/core/fundamentals/static-files
 Sample configuration
 --------------------
 
-{
-  "Name": "app.core.Extensions.StaticFiles",
-  "Options": [
-    {
-      "Headers": {
-        "Cache-Control": "public,max-age=43200"
+      "app.core.Extensions.StaticFiles": {
+        "priority": 1,
+        "options": {
+          "paths": [
+            {
+              "headers": {
+                "Cache-Control": "public,max-age=43200"
+              }
+            },
+            {
+              "path": "wwwroot/folder",
+              "requestPath": "/download",
+              "headers": {
+                "Cache-Control": "public,max-age=86400"
+              },
+              "defaultFiles": [
+                "index.html",
+                "default.htm"
+              ],
+              "mimeTypes": {
+                ".myapp": "application/x-msdownload",
+                ".htm3": "text/html"
+              },
+              "enableDirectoryBrowser": true
+            }
+          ]
+        }        
       }
-    },
-    {
-      "Path": "wwwroot/folder",
-      "RequestPath": "/download",
-      "Headers": {
-        "Cache-Control": "public,max-age=86400"
-      },
-      "DefaultFiles": [
-        "index.html",
-        "default.htm"
-      ],
-      "MIMEtypes": {
-        ".myapp": "application\/x-msdownload",
-        ".htm3": "text/html"
-      },
-      "EnableDirectoryBrowser": true
-    }
-  ]
-}
 
 Recommendations
 ---------------

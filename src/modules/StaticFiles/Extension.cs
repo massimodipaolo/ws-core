@@ -18,9 +18,9 @@ namespace core.Extensions.StaticFiles
         {
             get
             {                
-                IEnumerable<Options> opts = GetOptions<List<Options>>();
+                Options opts = GetOptions<Options>();
                 var res = new List<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)>();
-                foreach (var opt in opts)
+                foreach (var opt in opts.Paths)
                 {
                     //StaticFileOptions
                     var StaticFileOptions = new StaticFileOptions();

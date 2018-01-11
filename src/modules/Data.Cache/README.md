@@ -51,27 +51,27 @@ public class SomeEntityCacheController : EntityCachedController<SomeEntity> {
 ## Sample configuration
 
 ```json
-{
-    "Name": "app.core.Extensions.Data.Cache",
-    "Options": {
-        "Type": 3,
-        "RedisOptions": {
-            "Configuration": "127.0.0.1:6379",
-            "InstanceName": "master"
-        },
-        "SqlOptions": {
-            "ConnectionString": "Server=.,1433;Database=Cache;User Id=cacheUser;Password=C4$hUs3r-Strong!Pa$$w0rd;",
-            "SchemaName": "dbo",
-            "TableName":  "Entry"
-        } ,
-        "EntryExpirationInMinutes":  {
-            "Fast":  10,
-            "Medium":  60,
-            "Slow":  240,
-            "Never":  1440
-        }         
-    }
-}
+      "app.core.Extensions.Data.Cache": {
+        "priority": 3,
+        "options": {
+          "type": "Redis",
+          "redisOptions": {
+            "configuration": "127.0.0.1:6379",
+            "instanceName": "master"
+          },
+          "sqlOptions": {
+            "connectionString": "Server=.;Database=Cache;Trusted_Connection=True;",
+            "schemaName": "dbo",
+            "tableName": "Entry"
+          },
+          "entryExpirationInMinutes": {
+            "fast": 10,
+            "medium": 60,
+            "slow": 240,
+            "never": 1440
+          }
+        }
+      }
 ```
 
 ## SqlServer initialization

@@ -12,7 +12,7 @@
       }
     },
     "entryExpirationInMinutes": {
-      "type": "object",
+      "type": "object", 
       "properties": {
         "fast": {
           "type": "integer",

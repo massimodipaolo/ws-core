@@ -1,80 +1,92 @@
 ﻿{
-  "ExtConfig": {
-    "Folder": "Extensions",
-    "EnableShutDownOnChange": false,
-    "Assemblies": {
+  "$schema": "https://raw.githubusercontent.com/massimodipaolo/app-core/master/src/modules/ExtensionBase/json-schema.json",
+  "extConfig": {
+    "folder": "Extensions",
+    "enableShutDownOnChange": false,
+    "assemblies": {
       "app.core.Extensions.StaticFiles": {
-        "Priority":  1,
-        "Options": [
-          {
-            "Headers": {
-              "Cache-Control": "public,max-age=43200"
+        "priority": 1,
+        "options": {
+          "paths": [
+            {
+              "headers": {
+                "Cache-Control": "public,max-age=43200"
+              }
+            },
+            {
+              "path": "wwwroot/folder",
+              "requestPath": "/download",
+              "headers": {
+                "Cache-Control": "public,max-age=86400"
+              },
+              "defaultFiles": [
+                "index.html",
+                "default.htm"
+              ],
+              "mimeTypes": {
+                ".myapp": "application/x-msdownload",
+                ".htm3": "text/html"                
+              },
+              "enableDirectoryBrowser": true
             }
-          },
-          {
-            "Path": "wwwroot/folder",
-            "RequestPath": "/download",
-            "Headers": {
-              "Cache-Control": "public,max-age=86400"
-            },
-            "DefaultFiles": [
-              "index.html",
-              "default.htm"
-            ],
-            "MIMEtypes": {
-              ".myapp": "application/x-msdownload",
-              ".htm3": "text/html"
-            },
-            "EnableDirectoryBrowser": true
-          }
-        ]
+          ]
+        }
       },
-      "app.core.Extensions.Data.FileSystem": { "Priority": 2 },
-      "app.core.Extensions.Data.Cache": { 
-        "Priority": 3,
-        "Options": {
-          "Type": "Memory",
-          "RedisOptions": {
-            "Configuration": "",
-            "InstanceName": "master"
+      "app.core.Extensions.Data.FileSystem": { "priority": 2 },
+      "app.core.Extensions.Data.Cache": {
+        "priority": 3,
+        "options": {
+          "type": "Redis"
+          "redisOptions": {
+            "configuration": "",
+            "instanceName": "master"
           },
-          "SqlOptions": {
-            "ConnectionString": "",
-            "SchemaName": "dbo",
-            "TableName": "Entry"
+          "sqlOptions": {
+            "connectionString": "",
+            "schemaName": "dbo",
+            "tableName": "Entry"
           },
-          "EntryExpirationInMinutes": {
-            "Fast": 10,
-            "Medium": 60,
-            "Slow": 240,
-            "Never": 1440
+          "entryExpirationInMinutes": {
+            "fast": 10,
+            "medium": 60,
+            "slow": 240,
+            "never": 1440
           }
-        } 
+        }
       },
-      "__app.core.Extensions.Data.Cache.Memcached": { 
-        "Priority": 4,
-        "Options": {
-          "Client": {
-            "Servers": [
+      "_app.core.Extensions.Data.Cache.Memcached": {
+        "priority": 4,
+        "options": {
+          "client": {
+            "servers": [
               {
-                "Address": "localhost",
-                "Port": 11211
+                "address": "localhost",
+                "port": 11211
               }
             ]
           },
-          "EntryExpirationInMinutes": {
-            "Fast": 10,
-            "Medium": 60,
-            "Slow": 240,
-            "Never": 1440
+          "entryExpirationInMinutes": {
+            "fast": 10,
+            "medium": 60,
+            "slow": 240,
+            "never": 1440
           }
-        } 
+        }
       },
-      "app.core.Extensions.Identity": { "Priority": 5 },
-      "app.core.Extensions.Api": { "Priority": 6 },
-      "app.core.Extensions.Message": { "Priority": 7 }
+      "app.core.Extensions.Data.Cache.Memcached": {
+        "priority": 5,
+        "options": {
+          "client": {
+            "servers": [
+              {
+                "address": "localhost",
+                "port": 11
+              }
+            ]
+          }
+        }
+
       }
+    }
   }
 }
-
-
