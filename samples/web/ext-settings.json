@@ -36,7 +36,7 @@
       "app.core.Extensions.Data.Cache": {
         "priority": 3,
         "options": {
-          "type": "Redis"
+          "type": "Memory",
           "redisOptions": {
             "configuration": "",
             "instanceName": "master"
@@ -72,21 +72,7 @@
             "never": 1440
           }
         }
-      },
-      "app.core.Extensions.Data.Cache.Memcached": {
-        "priority": 5,
-        "options": {
-          "client": {
-            "servers": [
-              {
-                "address": "localhost",
-                "port": 11
-              }
-            ]
-          }
-        }
-
-      }
+      }      
     }
   }
 }
