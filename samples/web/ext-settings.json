@@ -53,7 +53,7 @@
             "never": 1440
           }
         }
-      },
+      },      
       "_app.core.Extensions.Data.Cache.Memcached": {
         "priority": 4,
         "options": {

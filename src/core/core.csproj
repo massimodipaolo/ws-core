@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <PackageVersion>1.0.1</PackageVersion>
     <PackageId>app.core</PackageId>
     <AssemblyName>app.core</AssemblyName>
-    <Product>app-core</Product>
+    <Product>app-core</Product> 
     <Authors>Massimo Di Paolo</Authors>
     <Company>Websolute spa</Company>
     <Description>Base project for extandable .net core web application.</Description>

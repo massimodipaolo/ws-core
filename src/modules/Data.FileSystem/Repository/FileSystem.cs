@@ -56,7 +56,12 @@ namespace core.Extensions.Data.Repository
 
         private void Save()
         {
-            File.WriteAllText(_path,Newtonsoft.Json.JsonConvert.SerializeObject(_collection));
+            var jsonSetting = new Newtonsoft.Json.JsonSerializerSettings()
+            {                 
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore,
+                NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
+            };
+            File.WriteAllText(_path,Newtonsoft.Json.JsonConvert.SerializeObject(_collection,jsonSetting));
         }
     }
 }

@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <PackageVersion>1.0.1</PackageVersion>
+    <PackageReleaseNotes>Expose cache repository Key</PackageReleaseNotes>
     <PackageId>app.core.Extensions.Data.Cache</PackageId>
     <AssemblyName>app.core.Extensions.Data.Cache</AssemblyName>
     <RootNamespace>core.Extensions.Data.Cache</RootNamespace>
