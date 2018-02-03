@@ -25,16 +25,28 @@
               ],
               "mimeTypes": {
                 ".myapp": "application/x-msdownload",
-                ".htm3": "text/html"                
+                ".htm3": "text/html"
               },
               "enableDirectoryBrowser": true
             }
           ]
         }
       },
-      "app.core.Extensions.Data.FileSystem": { "priority": 2 },
+      "app.core.Extensions.Data.FileSystem": { "priority": 3 },
+      "app.core.Extensions.Data.Mongo": {
+        "priority": 2,
+        "options": {
+          "connections": [
+            {
+              "name": "default",
+              "connectionString": "mongodb://localhost:27017",
+              "database": "app-core"
+            }
+          ]
+        }
+      },
       "app.core.Extensions.Data.Cache": {
-        "priority": 3,
+        "priority": 4,
         "options": {
           "type": "Memory",
           "redisOptions": {
@@ -53,9 +65,9 @@
             "never": 1440
           }
         }
-      },      
-      "_app.core.Extensions.Data.Cache.Memcached": {
-        "priority": 4,
+      },
+      "app.core.Extensions.Data.Cache.Memcached": {
+        "priority": 5,
         "options": {
           "client": {
             "servers": [
@@ -72,7 +84,7 @@
             "never": 1440
           }
         }
-      }      
+      }
     }
   }
 }

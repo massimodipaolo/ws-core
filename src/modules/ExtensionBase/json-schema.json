@@ -11,8 +11,28 @@
         "options": { "type": "object" }
       }
     },
+    "dbConnection": {
+      "type": "object",
+      "properties": {
+        "connections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [ "connectionString" ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "default"
+              },
+              "connectionString": { "type": "string" },
+              "database": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
     "entryExpirationInMinutes": {
-      "type": "object", 
+      "type": "object",
       "properties": {
         "fast": {
           "type": "integer",
@@ -119,7 +139,7 @@
                               "properties": {
                                 "zone": { "type": "string" },
                                 "userName": { "type": "string" },
-                                "password": { "type":  "string"}
+                                "password": { "type": "string" }
                               }
                             }
                           }
@@ -131,60 +151,71 @@
                 }
               }
             },
-            "app.core.Extensions.FileSystem": { "$ref": "#/definitions/assembly" },
-            "app.core.Extensions.Mongo": { "$ref": "#/definitions/assembly" },
-            "app.core.Extensions.SqlServer": { "$ref": "#/definitions/assembly" },
-            "app.core.Extensions.Identity": { "$ref": "#/definitions/assembly" },
-            "app.core.Extensions.Message": { "$ref": "#/definitions/assembly" },
-            "app.core.Extensions.StaticFiles": {
+            "app.core.Extensions.FileSystem": {
+              "$ref": "#/definitions/assembly"
+            },
+            "app.core.Extensions.Mongo": {
               "allOf": [
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
                 "options": {
-                  "type": "object",
-                  "properties": {
-                    "paths": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "headers": {
-                            "type": "object",
-                            "additionalProperties": { "type": "string" }
-                          },
-                          "path": { "type": "string" },
-                          "requestPath": { "type": "string" },
-                          "defaultFiles": {
-                            "type": "array",
-                            "items": { "type": "string" }
-                          },
-                          "mimeTypes": {
-                            "type": "object",
-                            "patternProperties": { "^\\.[^.]+$": { "type": "string" } },
-                            "additionalProperties": {
-                              "type": "string",
-                              "pattern": "^\\.[^.]+$"
-                            }
-                          },
-                          "enableDirectoryBrowser": { "type": "boolean" }
-                        }
+                  "$ref": "#/definitions/dbConnection"
+                }
+              }
+            }
+          },
+          "app.core.Extensions.SqlServer": { "$ref": "#/definitions/assembly" },
+          "app.core.Extensions.Identity": { "$ref": "#/definitions/assembly" },
+          "app.core.Extensions.Message": { "$ref": "#/definitions/assembly" },
+          "app.core.Extensions.StaticFiles": {
+            "allOf": [
+              { "$ref": "#/definitions/assembly" }
+            ],
+            "properties": {
+              "options": {
+                "type": "object",
+                "properties": {
+                  "paths": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "headers": {
+                          "type": "object",
+                          "additionalProperties": { "type": "string" }
+                        },
+                        "path": { "type": "string" },
+                        "requestPath": { "type": "string" },
+                        "defaultFiles": {
+                          "type": "array",
+                          "items": { "type": "string" }
+                        },
+                        "mimeTypes": {
+                          "type": "object",
+                          "patternProperties": { "^\\.[^.]+$": { "type": "string" } },
+                          "additionalProperties": {
+                            "type": "string",
+                            "pattern": "^\\.[^.]+$"
+                          }
+                        },
+                        "enableDirectoryBrowser": { "type": "boolean" }
                       }
                     }
                   }
                 }
               }
             }
-          },
-          "additionalProperties": {
-            "type": [
-              "string",
-              "object"
-            ],
-            "$ref": "#/definitions/assembly"
           }
+        },
+        "additionalProperties": {
+          "type": [
+            "string",
+            "object"
+          ],
+          "$ref": "#/definitions/assembly"
         }
       }
     }
   }
-}
+} }

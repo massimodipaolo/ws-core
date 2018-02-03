@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace core.Extensions.Data.FileSystem
 {
@@ -8,8 +9,8 @@ namespace core.Extensions.Data.FileSystem
     {
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
-            base.Execute(serviceCollection, serviceProvider);             
-            serviceCollection.AddTransient(typeof(IRepository<>), typeof(Repository.FileSystem<>));
+            base.Execute(serviceCollection, serviceProvider);
+            serviceCollection.TryAddTransient(typeof(IRepository<>), typeof(Repository.FileSystem<>));
         }
     }
 }

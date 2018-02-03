@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using core.Extensions.Api.Controllers;
 
 namespace web.Controllers
-{    
+{
     [Route("api/user")]
-    public class UserController : EntityController<User> 
+    public class UserController : EntityController<User>
     {
         public UserController(IRepository<User> repository) : base(repository) { }
     }
@@ -18,9 +18,11 @@ namespace web.Controllers
         public UserCacheController(IRepository<User> repository, ICacheRepository<User> cachedRepository) : base(repository, cachedRepository) { }
     }
 
-    public class User : IdentityServer4.Models.IdentityResource, IEntity
+
+    public class User : Entity
     {
-        public string Id { get; set;}
+        public string Name { get; set; }
+        public bool Active { get; set; } = true;
     }
 
     [Route("api/config")]
@@ -28,7 +30,8 @@ namespace web.Controllers
     {
         private ICache _cache;
         private Microsoft.Extensions.Configuration.IConfiguration _config;
-        public ConfigController(Microsoft.Extensions.Configuration.IConfiguration config,ICache cache) {
+        public ConfigController(Microsoft.Extensions.Configuration.IConfiguration config, ICache cache)
+        {
             _config = config;
             _cache = cache;
         }
@@ -39,17 +42,17 @@ namespace web.Controllers
             string key = "api:config";
             var result = _cache.Get(key);
             if (result == null)
-            {   
+            {
                 result = _config;
-                _cache.Set(key, result, CacheEntryOptions.Expiration.Fast);                
+                _cache.Set(key, result, CacheEntryOptions.Expiration.Fast);
             }
             return Ok(result);
         }
 
         [HttpDelete]
         public IActionResult Delete()
-        {   
-            _cache.Clear();            
+        {
+            _cache.Clear();
             return Ok();
         }
 
