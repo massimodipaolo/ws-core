@@ -19,21 +19,23 @@ namespace core.Extensions.Data.Mongo
         {
             base.Execute(serviceCollection, serviceProvider);
 
-            BsonClassMap.RegisterClassMap<core.Extensions.Data.Entity>(cm =>
-            {
-                cm.AutoMap();
-                cm.MapIdMember(c => c.Id);
-                cm.IdMemberMap.SetSerializer(new GuidSerializer(BsonType.String));
-                //cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
-            });
-
             var connections = _options?.Connections;
             if (connections != null && connections.Any())
             {
+
+                BsonClassMap.RegisterClassMap<core.Extensions.Data.Entity>(cm =>
+                {
+                    cm.AutoMap();
+                    cm.MapIdMember(c => c.Id);
+                    cm.IdMemberMap.SetSerializer(new GuidSerializer(BsonType.String));
+                    //cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
+                });
+
                 serviceCollection.Configure<Options>(_ =>
                 {
                     _.Connections = connections;
                 });
+
                 serviceCollection.TryAddTransient(typeof(IRepository<>), typeof(Repository.Mongo<>));
             }
         }

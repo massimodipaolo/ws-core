@@ -12,10 +12,10 @@ namespace core.Extensions.Data.Repository
     {
         private List<T> _collection = new List<T>();
         private string _path { get; set; }
-        
-        public FileSystem(IHostingEnvironment env,ILoggerFactory logger)
-        {            
-            _path = System.IO.Path.Combine(env.ContentRootPath, "Files/Entity", $"{typeof(T).Name}.json");            
+
+        public FileSystem(IHostingEnvironment env, ILoggerFactory logger)
+        {
+            _path = System.IO.Path.Combine(env.ContentRootPath, "Files/Entity", $"{typeof(T).Name}.json");
 
             using (var stream = File.Open(_path, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite))
             using (var reader = new StreamReader(stream))
@@ -25,13 +25,13 @@ namespace core.Extensions.Data.Repository
                     _collection = Newtonsoft.Json.JsonConvert.DeserializeObject<List<T>>(readed);
                 else
                     logger.CreateLogger("Data.Repository.Logger").LogWarning($"Path {_path} not found");
-            }                
-        } 
-        
+            }
+        }
+
 
         IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
 
-        public T Find(string Id)
+        public T Find(Guid Id)
         {
             return _collection.Where(_ => _.Id == Id).FirstOrDefault();
         }
@@ -57,11 +57,11 @@ namespace core.Extensions.Data.Repository
         private void Save()
         {
             var jsonSetting = new Newtonsoft.Json.JsonSerializerSettings()
-            {                 
+            {
                 ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore,
                 NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
             };
-            File.WriteAllText(_path,Newtonsoft.Json.JsonConvert.SerializeObject(_collection,jsonSetting));
+            File.WriteAllText(_path, Newtonsoft.Json.JsonConvert.SerializeObject(_collection, jsonSetting));
         }
     }
 }

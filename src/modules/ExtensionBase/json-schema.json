@@ -161,6 +161,16 @@
                 }
               }
             },
+            "app.core.Extensions.Data.MySql": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "$ref": "#/definitions/dbConnection"
+                }
+              }
+            },
             "app.core.Extensions.Data.SqlServer": {
               "allOf": [
                 { "$ref": "#/definitions/assembly" }

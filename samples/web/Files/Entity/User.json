@@ -1,1 +1,46 @@
-[{"Id":"1","Required":false,"Emphasize":false,"ShowInDiscoveryDocument":true,"Enabled":true,"Name":"Massimo & Simone","DisplayName":null,"Description":null,"UserClaims":[]},{"Id":"2","Required":false,"Emphasize":false,"ShowInDiscoveryDocument":true,"Enabled":true,"Name":"Luca","DisplayName":null,"Description":null,"UserClaims":[]},{"Id":"3","Required":false,"Emphasize":false,"ShowInDiscoveryDocument":true,"Enabled":true,"Name":"Katia","DisplayName":null,"Description":null,"UserClaims":[]},{"Id":"4","Required":false,"Emphasize":false,"ShowInDiscoveryDocument":true,"Enabled":true,"Name":"New","DisplayName":null,"Description":null,"UserClaims":[]}]
+[
+  {
+    "Id": "01c0423e-f36b-1410-8001-800000000000",
+    "Required": false,
+    "Emphasize": false,
+    "ShowInDiscoveryDocument": true,
+    "Enabled": true,
+    "Name": "Massimo & Simone",
+    "DisplayName": null,
+    "Description": null,
+    "UserClaims": []
+  },
+  {
+    "Id": "01c0423e-f36b-1410-8001-800000000001",
+    "Required": false,
+    "Emphasize": false,
+    "ShowInDiscoveryDocument": true,
+    "Enabled": true,
+    "Name": "Luca",
+    "DisplayName": null,
+    "Description": null,
+    "UserClaims": []
+  },
+  {
+    "Id": "01c0423e-f36b-1410-8001-800000000002",
+    "Required": false,
+    "Emphasize": false,
+    "ShowInDiscoveryDocument": true,
+    "Enabled": true,
+    "Name": "Katia",
+    "DisplayName": null,
+    "Description": null,
+    "UserClaims": []
+  },
+  {
+    "Id": "01c0423e-f36b-1410-8001-800000000003",
+    "Required": false,
+    "Emphasize": false,
+    "ShowInDiscoveryDocument": true,
+    "Enabled": true,
+    "Name": "New",
+    "DisplayName": null,
+    "Description": null,
+    "UserClaims": []
+  }
+]

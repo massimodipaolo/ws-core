@@ -37,13 +37,25 @@
         "options": {
           "connections": [
             {
-              "name": "default"
+              "name": "default",
+              "connectionString": ""
+            }
+          ]
+        }
+      },
+      "app.core.Extensions.Data.MySql": {
+        "priority": 2,
+        "options": {
+          "connections": [
+            {
+              "name": "default",
+              "connectionString": ""
             }
           ]
         }
       },
       "app.core.Extensions.Data.Mongo": {
-        "priority": 2,
+        "priority": 3,
         "options": {
           "connections": [
             {

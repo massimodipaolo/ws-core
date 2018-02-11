@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace core.Extensions.Data.SqlServer
+namespace core.Extensions.Data.MySql
 {
     public class Extension : Base.Extension
     {
@@ -23,9 +23,9 @@ namespace core.Extensions.Data.SqlServer
                     _.Connections = connections;
                 });
                 */
-                serviceCollection.AddDbContext<AppDbContext>(_ => _.UseSqlServer(connections.FirstOrDefault().ConnectionString));
+                serviceCollection.AddDbContext<AppDbContext>(_ => _.UseMySql(connections.FirstOrDefault().ConnectionString));
                 serviceCollection.PostConfigure<AppDbContext>(_ => _.Database.EnsureCreated());
-                serviceCollection.TryAddTransient(typeof(IRepository<>), typeof(Repository.SqlServer<>));
+                serviceCollection.TryAddTransient(typeof(IRepository<>), typeof(Repository.MySql<>));
             }
         }
     }
