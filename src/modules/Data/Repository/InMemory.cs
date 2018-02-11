@@ -18,6 +18,11 @@ namespace core.Extensions.Data.Repository
 
         IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
 
+        public T Find(Guid Id)
+        {
+            return _collection.Where(_ => _.Id == Id).FirstOrDefault();
+        }
+
         public void Add(T entity)
         {
             _collection.Add(entity);
@@ -33,9 +38,5 @@ namespace core.Extensions.Data.Repository
             _collection = _collection.Select(_ => _.Id == entity.Id ? entity : _).ToList();
         }
 
-        public T Find(string Id)
-        {
-            return _collection.Where(_ => _.Id == Id).FirstOrDefault();
-        }
     }
 }

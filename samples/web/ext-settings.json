@@ -32,19 +32,29 @@
           ]
         }
       },
-      "app.core.Extensions.Data.FileSystem": { "priority": 3 },
+      "app.core.Extensions.Data.SqlServer": {
+        "priority": 3,
+        "options": {
+          "connections": [
+            {
+              "name": "default"
+            }
+          ]
+        }
+      },
       "app.core.Extensions.Data.Mongo": {
         "priority": 2,
         "options": {
           "connections": [
             {
               "name": "default",
-              "connectionString": "mongodb://localhost:27017",
+              "connectionString": "",
               "database": "app-core"
             }
           ]
         }
       },
+      "app.core.Extensions.Data.FileSystem": { "priority": 3 },
       "app.core.Extensions.Data.Cache": {
         "priority": 4,
         "options": {

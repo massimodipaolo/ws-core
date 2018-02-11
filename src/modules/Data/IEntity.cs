@@ -6,10 +6,10 @@ namespace core.Extensions.Data
 {
     public interface IEntity
     {
-        string Id { get; set; }
+        Guid Id { get; set; }
     }
     public class Entity : IEntity
     {
-        public virtual string Id { get; set; }
+        public virtual Guid Id { get; set; }
     }
 }

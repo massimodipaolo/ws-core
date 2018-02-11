@@ -1,15 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <PackageVersion>1.0.0</PackageVersion>
-    <PackageId>app.core.Extensions.Data</PackageId>
-    <AssemblyName>app.core.Extensions.Data</AssemblyName>
-    <RootNamespace>core.Extensions.Data</RootNamespace>   
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
-  </ItemGroup>
-
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netcoreapp2.0</TargetFramework>
+		<PackageVersion>1.0.1</PackageVersion>
+		<PackageId>app.core.Extensions.Data</PackageId>
+		<AssemblyName>app.core.Extensions.Data</AssemblyName>
+		<RootNamespace>core.Extensions.Data</RootNamespace>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
+	</ItemGroup>
 </Project>

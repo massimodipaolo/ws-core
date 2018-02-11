@@ -23,7 +23,8 @@ namespace core.Extensions.Data.Mongo
             {
                 cm.AutoMap();
                 cm.MapIdMember(c => c.Id);
-                cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
+                cm.IdMemberMap.SetSerializer(new GuidSerializer(BsonType.String));
+                //cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
             });
 
             var connections = _options?.Connections;

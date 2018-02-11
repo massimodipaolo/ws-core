@@ -1,4 +1,5 @@
-﻿using core.Extensions.Data;
+﻿using System;
+using core.Extensions.Data;
 using core.Extensions.Data.Cache;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +10,7 @@ namespace core.Extensions.Api.Controllers
     {
         protected ICacheRepository<T> _cachedRepository;
 
-        public EntityCachedController(IRepository<T> repository,ICacheRepository<T> cached) : base(repository)
+        public EntityCachedController(IRepository<T> repository, ICacheRepository<T> cached) : base(repository)
         {
             _cachedRepository = cached;
         }
@@ -21,15 +22,15 @@ namespace core.Extensions.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public override IActionResult Get(string id)
+        public override IActionResult Get(Guid id)
         {
             return Ok(_cachedRepository.Find(id));
         }
 
         [HttpPost]
         public override void Post([FromBody]T entity)
-        {                        
-            _cachedRepository.Add(entity);            
+        {
+            _cachedRepository.Add(entity);
             //base.Post(entity);
         }
 

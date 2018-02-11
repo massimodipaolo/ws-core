@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using core.Extensions.Base;
 
-namespace core.Extensions.Data.Mongo
+namespace core.Extensions.Data.SqlServer
 {
     public class Options : IOptions
     {

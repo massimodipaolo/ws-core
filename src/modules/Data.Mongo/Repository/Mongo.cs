@@ -27,6 +27,11 @@ namespace core.Extensions.Data.Repository
 
         IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
 
+        public T Find(Guid Id)
+        {
+            return _collection.Find(_ => _.Id == Id).FirstOrDefault();
+        }
+
         public void Add(T entity)
         {
             _collection.InsertOne(entity);
@@ -42,9 +47,5 @@ namespace core.Extensions.Data.Repository
             _collection.ReplaceOneAsync(_ => _.Id == entity.Id, entity, new UpdateOptions { IsUpsert = true });
         }
 
-        public T Find(string Id)
-        {
-            return _collection.Find(_ => _.Id == Id).FirstOrDefault();
-        }
     }
 }

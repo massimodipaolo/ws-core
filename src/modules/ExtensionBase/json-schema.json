@@ -151,10 +151,7 @@
                 }
               }
             },
-            "app.core.Extensions.FileSystem": {
-              "$ref": "#/definitions/assembly"
-            },
-            "app.core.Extensions.Mongo": {
+            "app.core.Extensions.Data.Mongo": {
               "allOf": [
                 { "$ref": "#/definitions/assembly" }
               ],
@@ -163,59 +160,71 @@
                   "$ref": "#/definitions/dbConnection"
                 }
               }
-            }
-          },
-          "app.core.Extensions.SqlServer": { "$ref": "#/definitions/assembly" },
-          "app.core.Extensions.Identity": { "$ref": "#/definitions/assembly" },
-          "app.core.Extensions.Message": { "$ref": "#/definitions/assembly" },
-          "app.core.Extensions.StaticFiles": {
-            "allOf": [
-              { "$ref": "#/definitions/assembly" }
-            ],
-            "properties": {
-              "options": {
-                "type": "object",
-                "properties": {
-                  "paths": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "headers": {
-                          "type": "object",
-                          "additionalProperties": { "type": "string" }
-                        },
-                        "path": { "type": "string" },
-                        "requestPath": { "type": "string" },
-                        "defaultFiles": {
-                          "type": "array",
-                          "items": { "type": "string" }
-                        },
-                        "mimeTypes": {
-                          "type": "object",
-                          "patternProperties": { "^\\.[^.]+$": { "type": "string" } },
-                          "additionalProperties": {
-                            "type": "string",
-                            "pattern": "^\\.[^.]+$"
-                          }
-                        },
-                        "enableDirectoryBrowser": { "type": "boolean" }
+            },
+            "app.core.Extensions.Data.SqlServer": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "$ref": "#/definitions/dbConnection"
+                }
+              }
+            },
+            "app.core.Extensions.FileSystem": {
+              "$ref": "#/definitions/assembly"
+            },
+            "app.core.Extensions.Identity": { "$ref": "#/definitions/assembly" },
+            "app.core.Extensions.Message": { "$ref": "#/definitions/assembly" },
+            "app.core.Extensions.StaticFiles": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "paths": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "headers": {
+                            "type": "object",
+                            "additionalProperties": { "type": "string" }
+                          },
+                          "path": { "type": "string" },
+                          "requestPath": { "type": "string" },
+                          "defaultFiles": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                          },
+                          "mimeTypes": {
+                            "type": "object",
+                            "patternProperties": { "^\\.[^.]+$": { "type": "string" } },
+                            "additionalProperties": {
+                              "type": "string",
+                              "pattern": "^\\.[^.]+$"
+                            }
+                          },
+                          "enableDirectoryBrowser": { "type": "boolean" }
+                        }
                       }
                     }
                   }
                 }
               }
             }
+          },
+          "additionalProperties": {
+            "type": [
+              "string",
+              "object"
+            ],
+            "$ref": "#/definitions/assembly"
           }
-        },
-        "additionalProperties": {
-          "type": [
-            "string",
-            "object"
-          ],
-          "$ref": "#/definitions/assembly"
         }
       }
     }
   }
-} }
+}

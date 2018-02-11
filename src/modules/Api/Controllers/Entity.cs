@@ -7,7 +7,7 @@ namespace core.Extensions.Api.Controllers
 {
     [Route("api/[controller]")]
     public class EntityController<T> : ControllerBase where T : IEntity
-    {   
+    {
         protected IRepository<T> _repository;
 
         public EntityController(IRepository<T> repository)
@@ -22,7 +22,7 @@ namespace core.Extensions.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public virtual IActionResult Get(string id)
+        public virtual IActionResult Get(Guid id)
         {
             return Ok(_repository.Find(id));
         }

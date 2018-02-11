@@ -18,7 +18,7 @@ namespace core.Extensions.Data.Repository
 
         public IQueryable<T> List => _collection.AsNoTracking().AsQueryable();
 
-        public T Find(string Id)
+        public T Find(Guid Id)
         {
             return List.SingleOrDefault(_ => _.Id == Id);
         }

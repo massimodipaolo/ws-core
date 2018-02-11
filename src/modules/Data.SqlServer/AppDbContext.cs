@@ -12,19 +12,26 @@ namespace core.Extensions.Data
     {
         static AppDbContext()
         {
-            
+
         }
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {            
-            base.OnModelCreating(modelBuilder);            
-            var baseType = typeof(Data.Entity);
-            //TODO: use ExtensionManager.GetAssemblies(predicate)
-            //var entityTypes = core.Code.Utils.Assemblies.SelectMany(_ => _.GetTypes().Where(__ => baseType.IsAssignableFrom(__) && __!= baseType));
-            //foreach (Type type in entityTypes)
-            //    modelBuilder.Entity(type); //.ToTable(type.Name);
-            // new MyClassMap(modelBuilder.Entity<MyClass>());            
+        {
+            base.OnModelCreating(modelBuilder);
+
+            foreach (Type type in Base.Util.GetAllTypesOf<IEntity>().Where(_ => _ != typeof(Entity)))
+            {
+                try
+                {
+                    modelBuilder.Entity(type)
+                                .ToTable(type.Name)
+                                .Property("Id").HasColumnName("Id").HasColumnType("uniqueidentifier").HasDefaultValue()
+                                ;
+                }
+                catch { }
+            }
+
         }
 
 

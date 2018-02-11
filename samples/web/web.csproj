@@ -21,5 +21,6 @@
     <ProjectReference Include="..\..\src\modules\ExtensionBase\ExtensionBase.csproj" />
     <ProjectReference Include="..\..\src\modules\Data.Cache.Memcached\Data.Cache.Memcached.csproj" />
     <ProjectReference Include="..\..\src\modules\Data.Mongo\Data.Mongo.csproj" />
+    <ProjectReference Include="..\..\src\modules\Data.SqlServer\Data.SqlServer.csproj" />
   </ItemGroup>
 </Project>
