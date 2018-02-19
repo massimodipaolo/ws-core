@@ -1,12 +1,9 @@
 FROM microsoft/aspnetcore-build:latest AS build-env
-WORKDIR /app/samples/web
 
 # Copy csproj and restore as distinct layers
-COPY samples/web/*.csproj ./
+COPY . /app
+WORKDIR /app/samples/web
 RUN dotnet restore
-
-# Copy everything else and build
-COPY samples/web/*.* ./
 RUN dotnet publish -c Release -o out
 
 # App settings
