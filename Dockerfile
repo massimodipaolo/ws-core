@@ -14,4 +14,4 @@ EXPOSE 5000
 FROM microsoft/aspnetcore:latest
 WORKDIR /app/samples/web
 COPY --from=build-env /app/samples/web/out .
-ENTRYPOINT ["dotnet", "out/web.dll"]
+ENTRYPOINT ["dotnet", "/app/samples/web/out/web.dll"]
