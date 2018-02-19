@@ -6,7 +6,7 @@ COPY samples/web/*.csproj ./
 RUN dotnet restore
 
 # Copy everything else and build
-COPY . ./
+COPY samples/web/*.* ./
 RUN dotnet publish -c Release -o out
 
 # App settings
