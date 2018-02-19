@@ -2,7 +2,7 @@ FROM microsoft/aspnetcore-build:latest AS build-env
 WORKDIR /app/samples/web
 
 # Copy csproj and restore as distinct layers
-COPY *.csproj ./
+COPY samples/web/*.csproj ./
 RUN dotnet restore
 
 # Copy everything else and build
