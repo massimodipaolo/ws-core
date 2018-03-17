@@ -5,17 +5,17 @@ using System.Linq;
 
 namespace core.Extensions.Data.Repository
 {
-    public class CachedRepository<T> : ICacheRepository<T> where T : IEntity
+    public class CachedRepository<T, TKey> : ICacheRepository<T, TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>
     {
         private static ICache _cache;
         //private string _key => $"cache:repository:{typeof(T).ToString()}";
-        private string _key => CachedRepository<T>.Key;
+        private string _key => CachedRepository<T, TKey>.Key;
         private List<T> _collection;
 
 
         public CachedRepository() { }
 
-        public CachedRepository(ICache cache, IRepository<T> repository)
+        public CachedRepository(ICache cache, IRepository<T, TKey> repository)
         {
             if (_cache == null) _cache = cache;
 
@@ -29,11 +29,11 @@ namespace core.Extensions.Data.Repository
 
         public static string Key => $"cache:repository:{typeof(T).ToString()}";
 
-        IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
+        IQueryable<T> IRepository<T, TKey>.List => _collection.AsQueryable();
 
-        public T Find(Guid Id)
+        public T Find(TKey Id)
         {
-            return _collection.Where(_ => _.Id == Id).FirstOrDefault();
+            return _collection.FirstOrDefault(_ => _.Id.Equals(Id));
         }
 
         public void Add(T entity)
@@ -44,13 +44,13 @@ namespace core.Extensions.Data.Repository
 
         public void Delete(T entity)
         {
-            _collection.RemoveAll(_ => _.Id == entity.Id);
+            _collection.RemoveAll(_ => _.Id.Equals(entity.Id));
             Save();
         }
 
         public void Update(T entity)
         {
-            _collection = _collection.Select(_ => _.Id == entity.Id ? entity : _).ToList();
+            _collection = _collection.Select(_ => _.Id.Equals(entity.Id) ? entity : _).ToList();
             Save();
         }
         private void Save()

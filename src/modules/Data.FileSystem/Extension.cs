@@ -10,7 +10,7 @@ namespace core.Extensions.Data.FileSystem
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
             base.Execute(serviceCollection, serviceProvider);
-            serviceCollection.TryAddTransient(typeof(IRepository<>), typeof(Repository.FileSystem<>));
+            serviceCollection.TryAddTransient(typeof(IRepository<,>), typeof(Repository.FileSystem<,>));
         }
     }
 }

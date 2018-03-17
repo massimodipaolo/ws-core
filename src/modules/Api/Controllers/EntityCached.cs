@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace core.Extensions.Api.Controllers
 {
     [Route("api/cache/[controller]")]
-    public class EntityCachedController<T> : EntityController<T> where T : IEntity
+    public class EntityCachedController<T, TKey> : EntityController<T, TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>
     {
-        protected ICacheRepository<T> _cachedRepository;
+        protected ICacheRepository<T, TKey> _cachedRepository;
 
-        public EntityCachedController(IRepository<T> repository, ICacheRepository<T> cached) : base(repository)
+        public EntityCachedController(IRepository<T, TKey> repository, ICacheRepository<T, TKey> cached) : base(repository)
         {
             _cachedRepository = cached;
         }
@@ -22,7 +22,7 @@ namespace core.Extensions.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public override IActionResult Get(Guid id)
+        public override IActionResult Get(TKey id)
         {
             return Ok(_cachedRepository.Find(id));
         }
@@ -35,7 +35,7 @@ namespace core.Extensions.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public override void Put(string id, [FromBody]T entity)
+        public override void Put(TKey id, [FromBody]T entity)
         {
             _cachedRepository.Update(entity);
             //base.Put(id,entity);

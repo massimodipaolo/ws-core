@@ -14,13 +14,18 @@ namespace core.Extensions.Base
 
         public static IEnumerable<Type> GetAllTypesOf<T>()
         {
+            return GetAllTypesOf(typeof(T));
+        }
+
+        public static IEnumerable<Type> GetAllTypesOf(Type type)
+        {
             var platform = Environment.OSVersion.Platform.ToString();
             var runtimeAssemblyNames = DependencyContext.Default.GetRuntimeAssemblyNames(platform);
 
             var types = runtimeAssemblyNames
                 .Select(Assembly.Load)
                 .SelectMany(a => a.ExportedTypes)
-                .Where(t => typeof(T).IsAssignableFrom(t) && !t.IsInterface);
+                .Where(t => type.IsAssignableFrom(t) && !t.IsInterface);
 
             return types;
         }

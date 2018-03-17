@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace core.Extensions.Data.Repository
 {
-    public class FileSystem<T> : IRepository<T> where T : IEntity
+    public class FileSystem<T, TKey> : IRepository<T, TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>
     {
         private List<T> _collection = new List<T>();
         private string _path { get; set; }
@@ -29,11 +29,11 @@ namespace core.Extensions.Data.Repository
         }
 
 
-        IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
+        IQueryable<T> IRepository<T, TKey>.List => _collection.AsQueryable();
 
-        public T Find(Guid Id)
+        public T Find(TKey Id)
         {
-            return _collection.Where(_ => _.Id == Id).FirstOrDefault();
+            return _collection.FirstOrDefault<T>(_ => _.Id.Equals(Id));
         }
 
         public void Add(T entity)
@@ -44,13 +44,13 @@ namespace core.Extensions.Data.Repository
 
         public void Update(T entity)
         {
-            _collection = _collection.Select(_ => _.Id == entity.Id ? entity : _).ToList();
+            _collection = _collection.Select(_ => _.Id.Equals(entity.Id) ? entity : _).ToList();
             Save();
         }
 
         public void Delete(T entity)
         {
-            _collection.RemoveAll(_ => _.Id == entity.Id);
+            _collection.RemoveAll(_ => _.Id.Equals(entity.Id));
             Save();
         }
 

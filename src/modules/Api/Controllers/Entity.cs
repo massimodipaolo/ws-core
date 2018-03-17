@@ -6,11 +6,11 @@ using core.Extensions.Data;
 namespace core.Extensions.Api.Controllers
 {
     [Route("api/[controller]")]
-    public class EntityController<T> : ControllerBase where T : IEntity
+    public class EntityController<T, TKey> : ControllerBase where T : IEntity<TKey> where TKey : IEquatable<TKey>
     {
-        protected IRepository<T> _repository;
+        protected IRepository<T, TKey> _repository;
 
-        public EntityController(IRepository<T> repository)
+        public EntityController(IRepository<T, TKey> repository)
         {
             _repository = repository;
         }
@@ -22,7 +22,7 @@ namespace core.Extensions.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public virtual IActionResult Get(Guid id)
+        public virtual IActionResult Get(TKey id)
         {
             return Ok(_repository.Find(id));
         }
@@ -34,7 +34,7 @@ namespace core.Extensions.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public virtual void Put(string id, [FromBody]T entity)
+        public virtual void Put(TKey id, [FromBody]T entity)
         {
 
             _repository.Update(entity);

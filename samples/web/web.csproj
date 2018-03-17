@@ -21,7 +21,7 @@
     <ProjectReference Include="..\..\src\modules\ExtensionBase\ExtensionBase.csproj" />
     <ProjectReference Include="..\..\src\modules\Data.Cache.Memcached\Data.Cache.Memcached.csproj" />
     <ProjectReference Include="..\..\src\modules\Data.Mongo\Data.Mongo.csproj" />
-    <ProjectReference Include="..\..\src\modules\Data.SqlServer\Data.SqlServer.csproj" />
-    <ProjectReference Include="..\..\src\modules\Data.MySql\Data.MySql.csproj" />
+    <ProjectReference Include="..\..\src\modules\Data.EF.MySql\Data.EF.MySql.csproj" />
+    <ProjectReference Include="..\..\src\modules\Data.EF.SqlServer\Data.EF.SqlServer.csproj" />
   </ItemGroup>
 </Project>

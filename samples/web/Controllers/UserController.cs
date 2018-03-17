@@ -7,19 +7,19 @@ using core.Extensions.Api.Controllers;
 namespace web.Controllers
 {
     [Route("api/user")]
-    public class UserController : EntityController<User>
+    public class UserController : EntityController<User, Guid>
     {
-        public UserController(IRepository<User> repository) : base(repository) { }
+        public UserController(IRepository<User, Guid> repository) : base(repository) { }
     }
 
     [Route("api/cache/user")]
-    public class UserCacheController : EntityCachedController<User>
+    public class UserCacheController : EntityCachedController<User, Guid>
     {
-        public UserCacheController(IRepository<User> repository, ICacheRepository<User> cachedRepository) : base(repository, cachedRepository) { }
+        public UserCacheController(IRepository<User, Guid> repository, ICacheRepository<User, Guid> cachedRepository) : base(repository, cachedRepository) { }
     }
 
 
-    public class User : Entity
+    public class User : Entity<Guid>
     {
         public string Name { get; set; }
         public bool Active { get; set; } = true;

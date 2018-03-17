@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace core.Extensions.Data.Repository
 {
-    public class SqlServer<T> : IRepository<T> where T : Entity
+    public class EF<T, TKey> : IRepository<T, TKey> where T : Entity<TKey> where TKey : IEquatable<TKey>
     {
         private readonly AppDbContext _context;
         private DbSet<T> _collection;
 
-        public SqlServer(AppDbContext context)
+        public EF(AppDbContext context)
         {
             _context = context;
             _collection = _context.Set<T>();
@@ -18,9 +18,9 @@ namespace core.Extensions.Data.Repository
 
         public IQueryable<T> List => _collection.AsNoTracking().AsQueryable();
 
-        public T Find(Guid Id)
+        public T Find(TKey Id)
         {
-            return List.SingleOrDefault(_ => _.Id == Id);
+            return List.SingleOrDefault(_ => _.Id.Equals(Id));
         }
 
         public void Add(T entity)
@@ -52,3 +52,4 @@ namespace core.Extensions.Data.Repository
 
     }
 }
+

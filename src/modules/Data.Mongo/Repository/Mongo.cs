@@ -8,7 +8,7 @@ using core.Extensions.Data.Mongo;
 
 namespace core.Extensions.Data.Repository
 {
-    public class Mongo<T> : IRepository<T> where T : IEntity
+    public class Mongo<T, TKey> : IRepository<T, TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>
     {
         private Mongo.Options _config;
         IMongoCollection<T> _collection;
@@ -25,11 +25,11 @@ namespace core.Extensions.Data.Repository
             _collection = getCollectionByConnection("default");
         }
 
-        IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
+        IQueryable<T> IRepository<T, TKey>.List => _collection.AsQueryable();
 
-        public T Find(Guid Id)
+        public T Find(TKey Id)
         {
-            return _collection.Find(_ => _.Id == Id).FirstOrDefault();
+            return _collection.Find(_ => _.Id.Equals(Id)).FirstOrDefault();
         }
 
         public void Add(T entity)
@@ -39,12 +39,12 @@ namespace core.Extensions.Data.Repository
 
         public void Delete(T entity)
         {
-            _collection.DeleteOne(_ => _.Id == entity.Id);
+            _collection.DeleteOne(_ => _.Id.Equals(entity.Id));
         }
 
         public void Update(T entity)
         {
-            _collection.ReplaceOneAsync(_ => _.Id == entity.Id, entity, new UpdateOptions { IsUpsert = true });
+            _collection.ReplaceOneAsync(_ => _.Id.Equals(entity.Id), entity, new UpdateOptions { IsUpsert = true });
         }
 
     }

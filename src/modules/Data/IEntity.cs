@@ -4,12 +4,14 @@ using System.Text;
 
 namespace core.Extensions.Data
 {
-    public interface IEntity
+    public interface IEntity<TKey>
     {
-        Guid Id { get; set; }
+        TKey Id { get; set; }
     }
-    public class Entity : IEntity
+
+    public class Entity<TKey> : IEntity<TKey> where TKey : IEquatable<TKey>
     {
-        public virtual Guid Id { get; set; }
+        public virtual TKey Id { get; set; }
     }
+
 }

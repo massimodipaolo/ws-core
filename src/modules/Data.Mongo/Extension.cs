@@ -15,6 +15,8 @@ namespace core.Extensions.Data.Mongo
     {
         private Options _options => GetOptions<Options>();
 
+        //private static T BsonClassMap<core.Extensions.Data.Entity<T>> map => default(T);
+
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
             base.Execute(serviceCollection, serviceProvider);
@@ -23,12 +25,32 @@ namespace core.Extensions.Data.Mongo
             if (connections != null && connections.Any())
             {
 
-                BsonClassMap.RegisterClassMap<core.Extensions.Data.Entity>(cm =>
+                BsonClassMap.RegisterClassMap<core.Extensions.Data.Entity<int>>(cm =>
+               {
+                   cm.AutoMap();
+                   cm.MapIdMember(c => c.Id);
+                   cm.IdMemberMap.SetSerializer(new Int32Serializer(BsonType.ObjectId));
+               });
+
+                BsonClassMap.RegisterClassMap<core.Extensions.Data.Entity<long>>(cm =>
+                {
+                    cm.AutoMap();
+                    cm.MapIdMember(c => c.Id);
+                    cm.IdMemberMap.SetSerializer(new Int64Serializer(BsonType.ObjectId));
+                });
+
+                BsonClassMap.RegisterClassMap<core.Extensions.Data.Entity<Guid>>(cm =>
                 {
                     cm.AutoMap();
                     cm.MapIdMember(c => c.Id);
                     cm.IdMemberMap.SetSerializer(new GuidSerializer(BsonType.String));
-                    //cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
+                });
+
+                BsonClassMap.RegisterClassMap<core.Extensions.Data.Entity<string>>(cm =>
+                {
+                    cm.AutoMap();
+                    cm.MapIdMember(c => c.Id);
+                    cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
                 });
 
                 serviceCollection.Configure<Options>(_ =>
@@ -36,7 +58,7 @@ namespace core.Extensions.Data.Mongo
                     _.Connections = connections;
                 });
 
-                serviceCollection.TryAddTransient(typeof(IRepository<>), typeof(Repository.Mongo<>));
+                serviceCollection.TryAddTransient(typeof(IRepository<,>), typeof(Repository.Mongo<,>));
             }
         }
     }

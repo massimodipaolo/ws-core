@@ -22,7 +22,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "src\modules\Api\Api.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.FileSystem", "src\modules\Data.FileSystem\Data.FileSystem.csproj", "{4B554C0C-B363-4C4B-80C2-7493E67F345C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.SqlServer", "src\modules\Data.SqlServer\Data.SqlServer.csproj", "{E7DBB2C0-3B9A-4AC0-A1AA-E59EEC3466E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.EF.SqlServer", "src\modules\Data.EF.SqlServer\Data.EF.SqlServer.csproj", "{E7DBB2C0-3B9A-4AC0-A1AA-E59EEC3466E6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Mongo", "src\modules\Data.Mongo\Data.Mongo.csproj", "{9CF5CD48-1FAF-4E8E-930F-65702A2F9411}"
 EndProject
@@ -46,7 +46,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "core", "src\core\core.cspro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Cache.Memcached", "src\modules\Data.Cache.Memcached\Data.Cache.Memcached.csproj", "{44E83A5C-F02F-48A5-B0F0-1D1C7885DEA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.MySql", "src\modules\Data.MySql\Data.MySql.csproj", "{4F2E79A7-5EC9-4AA3-AF43-BEE9F3E0E048}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.EF.MySql", "src\modules\Data.EF.MySql\Data.EF.MySql.csproj", "{4F2E79A7-5EC9-4AA3-AF43-BEE9F3E0E048}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.EF", "src\modules\Data.EF\Data.EF.csproj", "{5C49E15D-CD3B-4E30-B371-6AC99C81CA69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -110,6 +112,10 @@ Global
 		{4F2E79A7-5EC9-4AA3-AF43-BEE9F3E0E048}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F2E79A7-5EC9-4AA3-AF43-BEE9F3E0E048}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F2E79A7-5EC9-4AA3-AF43-BEE9F3E0E048}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C49E15D-CD3B-4E30-B371-6AC99C81CA69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C49E15D-CD3B-4E30-B371-6AC99C81CA69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C49E15D-CD3B-4E30-B371-6AC99C81CA69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C49E15D-CD3B-4E30-B371-6AC99C81CA69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,6 +136,7 @@ Global
 		{53800470-648B-4114-A599-849D43E5B4F0} = {2EC986FB-3831-46DF-AFF0-D6AE6128C55E}
 		{44E83A5C-F02F-48A5-B0F0-1D1C7885DEA1} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
 		{4F2E79A7-5EC9-4AA3-AF43-BEE9F3E0E048} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
+		{5C49E15D-CD3B-4E30-B371-6AC99C81CA69} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1713483-7DCD-42EB-A437-F0BBBAC5F4EF}

@@ -26,7 +26,7 @@ namespace core.Extensions.Data.Cache
             Type clientType = typeof(DistributedCache);
 
             // repository 
-            Type repositoryType = typeof(Repository.CachedRepository<>);
+            Type repositoryType = typeof(Repository.CachedRepository<,>);
 
             // service
             switch (_type)
@@ -48,7 +48,7 @@ namespace core.Extensions.Data.Cache
 
             //DI
             serviceCollection.AddSingleton(typeof(ICache), clientType);
-            serviceCollection.TryAddTransient(typeof(ICacheRepository<>), repositoryType);
+            serviceCollection.TryAddTransient(typeof(ICacheRepository<,>), repositoryType);
 
         }
     }

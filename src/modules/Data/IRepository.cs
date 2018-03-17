@@ -5,10 +5,10 @@ using System.Text;
 
 namespace core.Extensions.Data
 {
-    public interface IRepository<T> where T : IEntity
+    public interface IRepository<T, TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>
     {
         IQueryable<T> List { get; }
-        T Find(Guid Id);
+        T Find(TKey Id);
         void Add(T entity);
         void Update(T entity);
         void Delete(T entity);

@@ -32,7 +32,7 @@
           ]
         }
       },
-      "app.core.Extensions.Data.SqlServer": {
+      "app.core.Extensions.Data.EF.SqlServer": {
         "priority": 3,
         "options": {
           "connections": [
@@ -43,7 +43,7 @@
           ]
         }
       },
-      "app.core.Extensions.Data.MySql": {
+      "app.core.Extensions.Data.EF.MySql": {
         "priority": 2,
         "options": {
           "connections": [

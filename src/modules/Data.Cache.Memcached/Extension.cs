@@ -23,11 +23,11 @@ namespace core.Extensions.Data.Cache.Memcached
                 //CacheEntryOptions.Expiration.Set();
 
                 // service                
-                serviceCollection.AddEnyimMemcached(_config.GetSection($"{ConfigSectionPathOptions}:Client"));                                         
+                serviceCollection.AddEnyimMemcached(_config.GetSection($"{ConfigSectionPathOptions}:Client"));
 
                 //DI
-                serviceCollection.AddSingleton(typeof(ICache), typeof(MemcachedCache));                
-                serviceCollection.TryAddTransient(typeof(ICacheRepository<>), typeof(Repository.CachedRepository<>));
+                serviceCollection.AddSingleton(typeof(ICache), typeof(MemcachedCache));
+                serviceCollection.TryAddTransient(typeof(ICacheRepository<,>), typeof(Repository.CachedRepository<,>));
             }
         }
 

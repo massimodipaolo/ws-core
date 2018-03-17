@@ -10,4 +10,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Compile Remove="IIdentity.cs" />
+	</ItemGroup>
 </Project>
