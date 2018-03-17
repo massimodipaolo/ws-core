@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netcoreapp2.0</TargetFramework>
+		<PackageVersion>1.0.0</PackageVersion>
+		<PackageId>app.core.Extensions.Data.EF.MySql</PackageId>
+		<AssemblyName>app.core.Extensions.Data.EF.MySql</AssemblyName>
+		<RootNamespace>core.Extensions.Data.EF.MySql</RootNamespace>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Data.EF\Data.EF.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
+	</ItemGroup>
+</Project>

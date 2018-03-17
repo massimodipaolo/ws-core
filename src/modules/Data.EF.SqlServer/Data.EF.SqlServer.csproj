@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <PackageVersion>1.0.0</PackageVersion>
+    <PackageId>app.core.Extensions.Data.EF.SqlServer</PackageId>
+    <AssemblyName>app.core.Extensions.Data.EF.SqlServer</AssemblyName>
+    <RootNamespace>core.Extensions.Data.EF.SqlServer</RootNamespace>  
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Data.EF\Data.EF.csproj" />
+  </ItemGroup>
+
+</Project>
