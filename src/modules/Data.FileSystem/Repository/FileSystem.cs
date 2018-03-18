@@ -40,18 +40,21 @@ namespace core.Extensions.Data.Repository
         {
             _collection.Add(entity);
             Save();
+            entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Create);
         }
 
         public void Update(T entity)
         {
             _collection = _collection.Select(_ => _.Id.Equals(entity.Id) ? entity : _).ToList();
             Save();
+            entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Update);
         }
 
         public void Delete(T entity)
         {
             _collection.RemoveAll(_ => _.Id.Equals(entity.Id));
             Save();
+            entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Delete);
         }
 
         private void Save()

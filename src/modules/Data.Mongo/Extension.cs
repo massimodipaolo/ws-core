@@ -29,15 +29,16 @@ namespace core.Extensions.Data.Mongo
                {
                    cm.AutoMap();
                    cm.MapIdMember(c => c.Id);
-                   cm.IdMemberMap.SetSerializer(new Int32Serializer(BsonType.ObjectId));
+                   cm.IdMemberMap.SetSerializer(new Int32Serializer(BsonType.Int32));
                });
 
                 BsonClassMap.RegisterClassMap<core.Extensions.Data.Entity<long>>(cm =>
                 {
                     cm.AutoMap();
                     cm.MapIdMember(c => c.Id);
-                    cm.IdMemberMap.SetSerializer(new Int64Serializer(BsonType.ObjectId));
+                    cm.IdMemberMap.SetSerializer(new Int64Serializer(BsonType.Int64));
                 });
+
 
                 BsonClassMap.RegisterClassMap<core.Extensions.Data.Entity<Guid>>(cm =>
                 {
@@ -50,7 +51,8 @@ namespace core.Extensions.Data.Mongo
                 {
                     cm.AutoMap();
                     cm.MapIdMember(c => c.Id);
-                    cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
+                    cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.String));
+                    //cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
                 });
 
                 serviceCollection.Configure<Options>(_ =>

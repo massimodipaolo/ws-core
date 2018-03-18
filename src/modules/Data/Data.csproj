@@ -12,5 +12,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Remove="IIdentity.cs" />
+	  <Compile Remove="EntityChangeHandler.cs" />
 	</ItemGroup>
 </Project>

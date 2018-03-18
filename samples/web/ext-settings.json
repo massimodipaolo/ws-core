@@ -33,7 +33,7 @@
         }
       },
       "app.core.Extensions.Data.EF.SqlServer": {
-        "priority": 3,
+        "priority": 30,
         "options": {
           "connections": [
             {
@@ -44,7 +44,7 @@
         }
       },
       "app.core.Extensions.Data.EF.MySql": {
-        "priority": 2,
+        "priority": 20,
         "options": {
           "connections": [
             {
@@ -55,7 +55,7 @@
         }
       },
       "app.core.Extensions.Data.Mongo": {
-        "priority": 3,
+        "priority": 30,
         "options": {
           "connections": [
             {
@@ -70,7 +70,7 @@
       "app.core.Extensions.Data.Cache": {
         "priority": 4,
         "options": {
-          "type": "Memory",
+          "type": "Redis",
           "redisOptions": {
             "configuration": "",
             "instanceName": "master"
