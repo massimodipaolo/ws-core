@@ -29,7 +29,7 @@ namespace core.Extensions.Data.Repository
             {
                 _collection.Add(entity);
                 _context.SaveChanges();
-                entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Create);
+                //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Create);
             }
         }
 
@@ -39,7 +39,7 @@ namespace core.Extensions.Data.Repository
             {
                 _collection.Update(entity);
                 _context.SaveChanges();
-                entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Update);
+                //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Update);
             }
         }
 
@@ -49,7 +49,7 @@ namespace core.Extensions.Data.Repository
             {
                 _collection.Remove(entity);
                 _context.SaveChanges();
-                entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Delete);
+                //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Delete);
             }
         }
 

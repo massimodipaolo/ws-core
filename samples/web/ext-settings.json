@@ -88,7 +88,7 @@
           }
         }
       },
-      "app.core.Extensions.Data.Cache.Memcached": {
+      "__app.core.Extensions.Data.Cache.Memcached": {
         "priority": 5,
         "options": {
           "client": {

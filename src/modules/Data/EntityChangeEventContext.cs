@@ -1,11 +1,11 @@
 ﻿using System;
 namespace core.Extensions.Data
 {
-    public class EntityChangeEventContext<TKey> where TKey : IEquatable<TKey>
-    {
-        public ActionTypes Action { get; set; }
 
-        public Entity<TKey> Entity { get; set; }
+    public class EntityChangeEventContext
+    {        
+        public IEntity Entity { get; set; }
+        public ActionTypes Action { get; set; }
 
         public enum ActionTypes
         {
@@ -17,5 +17,8 @@ namespace core.Extensions.Data
         public EntityChangeEventContext()
         {
         }
-    }
+
+    }   
+
 }
+

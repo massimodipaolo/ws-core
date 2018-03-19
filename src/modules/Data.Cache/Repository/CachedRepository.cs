@@ -5,6 +5,8 @@ using System.Linq;
 
 namespace core.Extensions.Data.Repository
 {
+
+
     public class CachedRepository<T, TKey> : ICacheRepository<T, TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>
     {
         internal static ICache _cache { get; set; }
@@ -58,32 +60,47 @@ namespace core.Extensions.Data.Repository
         {
             _cache.Set(_collectionKey, _collection);
         }
+
     }
 
-    public class EntityChangeHandler<T, TKey> : IEntityChangeEvent<TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>
+    public class EntityChangeHandler<T,TKey> : IEntityChangeEvent<T,TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>
     {
         public int Priority => 0;
 
-        public virtual void HandleEvent(EntityChangeEventContext<TKey> ctx)
+        public void HandleEvent(EntityChangeEventContext ctx)
         {
-            ICache _cache = CachedRepository<T, TKey>._cache;
 
+            var entity = (T)ctx.Entity;
+            
+            ICache _cache = CachedRepository<T, TKey>._cache;
+            
             // sync entity
-            string _key = CachedRepository<T, TKey>.EntityKey(ctx.Entity.Id);
+            string _key = CachedRepository<T, TKey>.EntityKey(entity.Id);
             switch (ctx.Action)
             {
-                case EntityChangeEventContext<TKey>.ActionTypes.Create:
-                case EntityChangeEventContext<TKey>.ActionTypes.Update:
-                    _cache.Set(_key, ctx.Entity);
+                case EntityChangeEventContext.ActionTypes.Create:
+                case EntityChangeEventContext.ActionTypes.Update:
+                    _cache.Set(_key, entity);
                     break;
-                case EntityChangeEventContext<TKey>.ActionTypes.Delete:
+                case EntityChangeEventContext.ActionTypes.Delete:
                     _cache.Remove(_key);
                     break;
             }
 
             // sync entity collection
-            CachedRepository<T, TKey>._cache.Clear();
+            CachedRepository<T, TKey>._cache.Clear();            
         }
     }
+
+    public class SomeActionHandler : ISomeActionEventHandler
+    {
+        public int Priority => 0;
+
+        public void HandleEvent(string argument)
+        {
+            string msg = argument;
+        }
+    }
+
 
 }

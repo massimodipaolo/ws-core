@@ -3,7 +3,12 @@ using ExtCore.Events;
 
 namespace core.Extensions.Data
 {
-    public interface IEntityChangeEvent<TKey> : IEventHandler<EntityChangeEventContext<TKey>> where TKey : IEquatable<TKey>
+    public interface IEntityChangeEvent<T,TKey> : IEventHandler<EntityChangeEventContext> where T : IEntity<TKey> where TKey : IEquatable<TKey>
     {
     }
+
+    public interface ISomeActionEventHandler : IEventHandler<string>
+    {
+    }
+
 }

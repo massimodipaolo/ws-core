@@ -35,19 +35,19 @@ namespace core.Extensions.Data.Repository
         public void Add(T entity)
         {
             _collection.InsertOne(entity);
-            entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Create);
+            //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Create);
         }
 
         public void Update(T entity)
         {
             _collection.ReplaceOneAsync(_ => _.Id.Equals(entity.Id), entity, new UpdateOptions { IsUpsert = true });
-            entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Update);
+            //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Update);
         }
 
         public void Delete(T entity)
         {
             _collection.DeleteOne(_ => _.Id.Equals(entity.Id));
-            entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Delete);
+            //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Delete);
         }
 
     }

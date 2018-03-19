@@ -22,6 +22,6 @@
     <ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EnyimMemcachedCore" Version="2.1.0.1" />
+    <PackageReference Include="EnyimMemcachedCore" Version="2.1.0.5" />
   </ItemGroup>
 </Project>
