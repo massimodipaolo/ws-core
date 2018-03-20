@@ -92,13 +92,24 @@ namespace core.Extensions.Data.Repository
         }
     }
 
-    public class SomeActionHandler : ISomeActionEventHandler
+    public class EntityChangeHandler<TKey> : IEntityChangeEvent<TKey> where TKey : IEquatable<TKey>
     {
         public int Priority => 0;
 
-        public void HandleEvent(string argument)
+        public void HandleEvent(EntityChangeEventContext ctx)
         {
-            string msg = argument;
+            var entity = (IEntity<TKey>)ctx.Entity;
+            TKey id = entity.Id;
+        }
+
+    }
+        public class EntityChangeHandler : IEntityChangeEvent
+    {
+        public int Priority => 0;
+
+        public void HandleEvent(EntityChangeEventContext ctx)
+        {
+            var entity = ctx.Entity;            
         }
     }
 

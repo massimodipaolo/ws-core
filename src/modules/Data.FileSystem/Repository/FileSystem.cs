@@ -32,7 +32,7 @@ namespace core.Extensions.Data.Repository
         IQueryable<T> IRepository<T, TKey>.List => _collection.AsQueryable();
 
         public T Find(TKey Id)
-        {
+        { 
             return _collection.FirstOrDefault<T>(_ => _.Id.Equals(Id));
         }
 
@@ -47,8 +47,7 @@ namespace core.Extensions.Data.Repository
         {
             _collection = _collection.Select(_ => _.Id.Equals(entity.Id) ? entity : _).ToList();
             Save();
-            //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Update);
-            entity.OnChange(EntityChangeEventContext.ActionTypes.Update);
+            //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Update);            
         }
 
         public void Delete(T entity)

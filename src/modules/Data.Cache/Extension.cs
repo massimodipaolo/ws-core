@@ -46,7 +46,11 @@ namespace core.Extensions.Data.Cache
             //DI
             serviceCollection.AddSingleton(typeof(ICache), clientType);
             serviceCollection.TryAddTransient(typeof(ICacheRepository<,>), typeof(Repository.CachedRepository<,>));
+            /*
             serviceCollection.TryAddTransient(typeof(IEntityChangeEvent<,>), typeof(Repository.EntityChangeHandler<,>));
+            serviceCollection.TryAddTransient(typeof(IEntityChangeEvent<>), typeof(Repository.EntityChangeHandler<>));
+            serviceCollection.TryAddTransient(typeof(IEntityChangeEvent), typeof(Repository.EntityChangeHandler));
+            */
         }
     }
 }

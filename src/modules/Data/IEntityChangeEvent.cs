@@ -7,7 +7,11 @@ namespace core.Extensions.Data
     {
     }
 
-    public interface ISomeActionEventHandler : IEventHandler<string>
+    public interface IEntityChangeEvent<TKey> : IEventHandler<EntityChangeEventContext> where TKey : IEquatable<TKey>
+    {
+    }
+
+    public interface IEntityChangeEvent : IEventHandler<EntityChangeEventContext>
     {
     }
 

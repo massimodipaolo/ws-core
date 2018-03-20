@@ -103,7 +103,7 @@ namespace core
                      $"ProcessorCount: {Environment.ProcessorCount}\n" +
                      $"Extensions: {string.Join(" | ", ExtensionManager.GetInstances<core.Extensions.Base.Extension>().OrderBy(ext => ext.Priority).Select(ext => $"{ext.Name} [{ext.Priority}]"))}\n" +
                      //$"Configurations:\n {string.Join(" | ", _config.AsEnumerable().OrderBy(conf => conf.Key).Select(conf => $"{conf.Key} = {conf.Value}\n"))}\n" +
-                     //$"Services: {string.Join(" | ", _services.Select(srv=> $"{srv.ServiceType.FullName}:{srv.Lifetime}:{srv.ImplementationType?.FullName}"))}\n" +
+                     $"Services: {string.Join(" | ", _services.Select(srv=> $"{srv.ServiceType.FullName}:{srv.Lifetime}:{srv.ImplementationType?.FullName}"))}\n" +
                      "";
 
                  await context.Response.WriteAsync(msg);
