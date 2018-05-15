@@ -8,7 +8,7 @@
 		<RootNamespace>core.Extensions.Data.Mongo</RootNamespace>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="MongoDB.Driver" Version="2.5.0" />
+		<PackageReference Include="MongoDB.Driver" Version="2.6.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Data\Data.csproj" />

@@ -17,8 +17,8 @@
 		<None Include="Extension.cs" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.0.2" />
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.2" />
 		<PackageReference Include="System.ValueTuple" Version="4.4.0" />
 		<PackageReference Include="ExtCore.Infrastructure" Version="3.2.0" />
 		<PackageReference Include="ExtCore.Events" Version="3.2.0" />
