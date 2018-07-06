@@ -10,7 +10,7 @@ namespace core.Extensions.Data
         IQueryable<T> List { get; }
         T Find(TKey Id);
         void Add(T entity);
-        void Update(T entity);
+        void Update(T entity);        
         void Delete(T entity);
     }
 }

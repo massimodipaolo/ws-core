@@ -1,11 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <PackageVersion>1.0.3</PackageVersion>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackageVersion>1.0.4</PackageVersion>
     <PackageId>app.core.Extensions.Data.FileSystem</PackageId>
     <AssemblyName>app.core.Extensions.Data.FileSystem</AssemblyName>
-    <RootNamespace>core.Extensions.Data.FileSystem</RootNamespace>  
+    <RootNamespace>core.Extensions.Data.FileSystem</RootNamespace>
+    <Authors>Massimo Di Paolo</Authors>
+    <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
+    <Description></Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>.net core 2.1</PackageReleaseNotes>
+    <PackageTags></PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

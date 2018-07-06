@@ -203,4 +203,3 @@ _Pvt_Extensions
 #/tests
 # Task Secret
 .env
-/src/modules/Data.Cache.Memcached/netcoreapp2.0

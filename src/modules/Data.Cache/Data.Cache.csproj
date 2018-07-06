@@ -1,13 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <PackageVersion>1.0.1</PackageVersion>
-    <PackageReleaseNotes>Expose cache repository Key</PackageReleaseNotes>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackageVersion>1.0.2</PackageVersion>    
     <PackageId>app.core.Extensions.Data.Cache</PackageId>
     <AssemblyName>app.core.Extensions.Data.Cache</AssemblyName>
     <RootNamespace>core.Extensions.Data.Cache</RootNamespace>
+    <Authors>Massimo Di Paolo</Authors>
+    <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
+    <Description></Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>.net core 2.1</PackageReleaseNotes>
+    <PackageTags></PackageTags>
   </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj" />
     <ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />

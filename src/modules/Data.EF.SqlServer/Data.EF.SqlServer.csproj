@@ -1,11 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <PackageVersion>1.0.0</PackageVersion>
     <PackageId>app.core.Extensions.Data.EF.SqlServer</PackageId>
     <AssemblyName>app.core.Extensions.Data.EF.SqlServer</AssemblyName>
-    <RootNamespace>core.Extensions.Data.EF.SqlServer</RootNamespace>  
+    <RootNamespace>core.Extensions.Data.EF.SqlServer</RootNamespace>
+    <Authors>Massimo Di Paolo</Authors>
+    <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
+    <Description></Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <PackageTags></PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
