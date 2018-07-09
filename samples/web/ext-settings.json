@@ -1,9 +1,13 @@
 ﻿{
+  "__$schema": "../../src/modules/extensionbase/json-schema.json#",
   "$schema": "https://raw.githubusercontent.com/massimodipaolo/app-core/master/src/modules/ExtensionBase/json-schema.json",
   "extConfig": {
     "folder": "Extensions",
     "enableShutDownOnChange": false,
     "assemblies": {
+      "app.core.Extensions.Cors": {
+        "priority": 2
+      },
       "app.core.Extensions.StaticFiles": {
         "priority": 1,
         "options": {
