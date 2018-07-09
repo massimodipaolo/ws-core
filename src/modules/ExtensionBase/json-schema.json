@@ -68,6 +68,58 @@
           "type": "object",
           "properties": {
             "app.core.Extensions.Api": { "$ref": "#/definitions/assembly" },
+            "app.core.Extensions.Cors": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "polices": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": { "type": "string" },
+                          "origins": {
+                            "type": "array",
+                            "items": { "type": "string" },
+                            "description": "To allow one or more specific origins"
+                          },
+                          "methods": {
+                            "type": "array",
+                            "items": {
+                              "enum": [ "GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE" ]                              
+                            },
+                            "uniqueItems": true
+                          },
+                          "headers": {
+                            "type": "array",
+                            "items": { "type": "string" },
+                            "description": "To whitelist specific headers"
+                          },
+                          "exposedHeaders": {
+                            "type": "array",
+                            "items": { "type": "string" },
+                            "description": "The CORS spec calls simple response headers. Specify other headers available to the application"
+                          },
+                          "allowCredentials": {
+                            "type": "boolean",
+                            "description": " Credentials include cookies as well as HTTP authentication schemes"
+                          },
+                          "preflightMaxAgeInSeconds": {
+                            "type": "integer",
+                            "description": "Value in seconds. The Access-Control-Max-Age header specifies how long the response to the preflight request can be cached"
+                          }
+                        },
+                        "required": ["name"]
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "app.core.Extensions.Data": { "$ref": "#/definitions/assembly" },
             "app.core.Extensions.Data.Cache": {
               "allOf": [
