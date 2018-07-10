@@ -9,13 +9,13 @@ namespace core.Extensions.Cors
     public class Extension : Base.Extension
     {
         private Options _options => GetOptions<Options>();
-        private IEnumerable<Options.PolicyOption> _namedPolicies => _options.Policies.Where(_ => !string.IsNullOrEmpty(_.Name));
+        private IEnumerable<Options.PolicyOption> _namedPolicies => _options?.Policies?.Where(_ => !string.IsNullOrEmpty(_.Name));
 
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
             base.Execute(serviceCollection, serviceProvider);
 
-            if (_namedPolicies.Any())
+            if (_namedPolicies != null && _namedPolicies.Any())  
             {
                 serviceCollection.AddCors(opt =>
                 {
@@ -23,17 +23,17 @@ namespace core.Extensions.Cors
                     {
                         opt.AddPolicy(p.Name, _ =>
                         {
-                            var _origins = p.Origins.Where(__ => !string.IsNullOrEmpty(__));
-                            if (_origins.Any()) { _.WithOrigins(_origins.ToArray()); } else { _.AllowAnyOrigin(); };
+                            var _origins = p.Origins?.Where(__ => !string.IsNullOrEmpty(__));
+                            if (_origins != null && _origins.Any()) { _.WithOrigins(_origins.ToArray()); } else { _.AllowAnyOrigin(); };
 
-                            var _methods = p.Methods.Where(__ => !string.IsNullOrEmpty(__));
-                            if (_methods.Any()) { _.WithMethods(_methods.ToArray()); } else { _.AllowAnyMethod(); };
+                            var _methods = p.Methods?.Where(__ => !string.IsNullOrEmpty(__));
+                            if (_methods != null && _methods.Any()) { _.WithMethods(_methods.ToArray()); } else { _.AllowAnyMethod(); };
 
-                            var _headers = p.Headers.Where(__ => !string.IsNullOrEmpty(__));
-                            if (_headers.Any()) { _.WithHeaders(_headers.ToArray()); } else { _.AllowAnyHeader(); };
+                            var _headers = p.Headers?.Where(__ => !string.IsNullOrEmpty(__));
+                            if (_headers != null && _headers.Any()) { _.WithHeaders(_headers.ToArray()); } else { _.AllowAnyHeader(); };
 
-                            var _exposedHeaders = p.ExposedHeaders.Where(__ => !string.IsNullOrEmpty(__));
-                            if (_exposedHeaders.Any()) { _.WithExposedHeaders(_exposedHeaders.ToArray()); };
+                            var _exposedHeaders = p.ExposedHeaders?.Where(__ => !string.IsNullOrEmpty(__));
+                            if (_exposedHeaders != null && _exposedHeaders.Any()) { _.WithExposedHeaders(_exposedHeaders.ToArray()); };
 
                             if (p.AllowCredentials) { _.AllowCredentials(); } else { _.DisallowCredentials(); };
 
@@ -51,7 +51,7 @@ namespace core.Extensions.Cors
         {
             base.Execute(applicationBuilder, serviceProvider);
 
-            if (_namedPolicies.Any())
+            if (_namedPolicies != null && _namedPolicies.Any())
                 foreach (var p in _namedPolicies)
                     applicationBuilder.UseCors(p.Name);
             else

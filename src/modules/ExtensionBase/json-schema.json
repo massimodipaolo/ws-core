@@ -90,7 +90,7 @@
                           "methods": {
                             "type": "array",
                             "items": {
-                              "enum": [ "GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE" ]                              
+                              "enum": [ "GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE" ]
                             },
                             "uniqueItems": true
                           },
@@ -109,11 +109,11 @@
                             "description": " Credentials include cookies as well as HTTP authentication schemes"
                           },
                           "preflightMaxAgeInSeconds": {
-                            "type": "integer",
+                            "type": "integer", 
                             "description": "Value in seconds. The Access-Control-Max-Age header specifies how long the response to the preflight request can be cached"
                           }
                         },
-                        "required": ["name"]
+                        "required": [ "name" ]
                       }
                     }
                   }
@@ -238,6 +238,73 @@
             },
             "app.core.Extensions.Identity": { "$ref": "#/definitions/assembly" },
             "app.core.Extensions.Message": { "$ref": "#/definitions/assembly" },
+            "app.core.Extensions.Spa": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "rootPath": {
+                      "type": "string",
+                      "description": "Path relative to the application root, of the directory in which the physical files are located. If the specified directory does not exist, then the SpaStaticFiles middleware will not serve any static files.",
+                      "default": "Client/dist/browser"
+                    },
+                    "defaultPage": {
+                      "type": "string",
+                      "description": "Default page that hosts your SPA user interface",
+                      "default": "/index.html"
+                    },
+                    "sourcePath": {
+                      "type": "string",
+                      "description": "Path, relative to the application working directory, of the directory that contains the SPA source files during development. The directory may not exist in published applications",
+                      "default": "Client"
+                    },
+                    "startupTimeoutInSeconds": {
+                      "type": "integer",
+                      "description": "Maximum duration that a request will wait for the SPA to become ready to serve to the client",
+                      "default": 90
+                    },
+                    "spaDevelopmentServer": {
+                      "type": "string",
+                      "description": "Use only in development! Forward incoming requests to a local development server,i.e. http://localhost:4200."
+                    },
+                    "cliServerScript": {
+                      "type": "string",
+                      "description": "Use only in development! The name of the script in your package.json file that launches the Angular CLI process, i.e. start. This handles requests by passing them through to an instance of the Angular CLI server; alternative to spaDevelopmentServer"
+                    },                    
+                    "predendering": {
+                      "type": "object",
+                      "properties": {
+                        "bootModulePath": {
+                          "type": "string",
+                          "description": "Path, relative to your application root, of the JavaScript file containing prerendering logic",
+                          "default": "Client/dist/server/main.js"
+                        },
+                        "bootModuleBuilderScript": {
+                          "type": "string",
+                          "description": "Use only in development! npm script that the prerenderer will invoke before looking for the boot module file, i.e. build:server "
+                        },
+                        "excludeUrls": {
+                          "type": "array",
+                          "items": { "type": "string" },
+                          "description": "\"Array of URL prefixes for which prerendering should not run, i.e. \"/sockjs-node\"\""
+                        },
+                        "contextData": {
+                          "type": "array",
+                          "items": {
+                            "enum": [ "features", "items", "request", "session", "user", "webSockets" ]
+                          },
+                          "description": "Pass additional context data to the prerendering entrypoint code",
+                          "uniqueItems": true
+                        }
+                      }
+                    }                    
+                  }
+                }
+              }
+            },
             "app.core.Extensions.StaticFiles": {
               "allOf": [
                 { "$ref": "#/definitions/assembly" }

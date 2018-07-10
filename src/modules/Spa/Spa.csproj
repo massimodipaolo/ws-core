@@ -1,8 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackageVersion>1.0.0</PackageVersion>
+    <PackageId>app.core.Extensions.Spa</PackageId>
+    <AssemblyName>app.core.Extensions.Spa</AssemblyName>
+    <RootNamespace>core.Extensions.Spa</RootNamespace>
+    <Authors>Massimo Di Paolo</Authors>
+    <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
+    <Description></Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <PackageTags>spa, single page application</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
