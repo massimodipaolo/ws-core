@@ -2,7 +2,7 @@
   
     <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.0.2</PackageVersion>
+    <PackageVersion>1.0.3</PackageVersion>
     <PackageId>app.core</PackageId>
     <AssemblyName>app.core</AssemblyName>
     <RootNamespace>core</RootNamespace>
@@ -12,7 +12,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description>Base project for extandable .net core web application.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>      
-    <PackageReleaseNotes>.net core 2.1</PackageReleaseNotes>    
+    <PackageReleaseNotes>Add module secretKey</PackageReleaseNotes>    
     <PackageTags>app-core,core</PackageTags>    
   </PropertyGroup>
   

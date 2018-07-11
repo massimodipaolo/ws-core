@@ -11,7 +11,7 @@ namespace core.Extensions.Spa
         public int StartupTimeoutInSeconds { get; set; } = 90;
         public string SpaDevelopmentServer { get; set; } // http://localhost:4200
         public string CliServerScript { get; set; } // start
-        public PrerenderingOptions Predendering { get; set; }        
+        public PrerenderingOptions Prerendering { get; set; }        
 
         public class PrerenderingOptions
         {

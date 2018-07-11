@@ -12,6 +12,10 @@ namespace core.Extensions.Base
         public static string SectionRoot { get; set; } = "ExtConfig";
         public bool EnableShutDownOnChange { get; set; } = false;
         public IDictionary<string,Assembly> Assemblies { get; set; }
+        /// <summary>
+        /// Secret key to perform admin tasks or view reserved data
+        /// </summary>
+        public string SecretKey { get; set; }
 
         public class Assembly
         {

@@ -273,8 +273,8 @@
                     "cliServerScript": {
                       "type": "string",
                       "description": "Use only in development! The name of the script in your package.json file that launches the Angular CLI process, i.e. start. This handles requests by passing them through to an instance of the Angular CLI server; alternative to spaDevelopmentServer"
-                    },                    
-                    "predendering": {
+                    },
+                    "prerendering": {
                       "type": "object",
                       "properties": {
                         "bootModulePath": {
@@ -300,7 +300,7 @@
                           "uniqueItems": true
                         }
                       }
-                    }                    
+                    }
                   }
                 }
               }

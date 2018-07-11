@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 
@@ -9,77 +10,97 @@ namespace core.Extensions.Spa
     public class Extension : Base.Extension
     {
         private Options _options => GetOptions<Options>();
+        
 
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
-            base.Execute(serviceCollection, serviceProvider);
-
-            serviceCollection.AddSpaStaticFiles(_ =>
+            base.Execute(serviceCollection, serviceProvider); 
+            
+            try
             {
-                _.RootPath = _options.RootPath;
-            });
-            if (_options.Predendering != null)
-                serviceCollection.AddSpaPrerenderer();
+                if (_options != null)
+                {
+                    serviceCollection.AddSpaStaticFiles(_ =>
+                    {
+                        _.RootPath = _options.RootPath;
+                    });
+                    if (_options.Prerendering != null)
+                        serviceCollection.AddSpaPrerenderer();
+                }
+            } catch(Exception ex)
+            {
+                _logger.LogError($"{ex.Message} /n {ex.Source} /n {ex.StackTrace} /n {ex.InnerException}");
+            }
+            
         }
 
         public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
         {
             base.Execute(applicationBuilder, serviceProvider);
 
-            applicationBuilder.UseSpaStaticFiles();
-            applicationBuilder.UseSpa(_ =>
+            try
             {
-                _.Options.DefaultPage = _options.DefaultPage;
-                _.Options.SourcePath = _options.SourcePath;
-                _.Options.StartupTimeout = TimeSpan.FromSeconds(_options.StartupTimeoutInSeconds);
-
-                if (!string.IsNullOrEmpty(_options.SpaDevelopmentServer))
-                    _.UseProxyToSpaDevelopmentServer(new Uri(_options.SpaDevelopmentServer));
-                else if (!string.IsNullOrEmpty(_options.CliServerScript))
-                    _.UseAngularCliServer(npmScript: _options.CliServerScript);
-
-                if (_options.Predendering != null)
+                if (_options != null)
                 {
-                    _.UseSpaPrerendering(conf =>
+                    applicationBuilder.UseSpaStaticFiles();
+                    applicationBuilder.UseSpa(_ =>
                     {
-                        if (!string.IsNullOrEmpty(_options.Predendering.BootModuleBuilderScript))
-                            conf.BootModuleBuilder = new AngularCliBuilder(npmScript: _options.Predendering.BootModuleBuilderScript);
-                        conf.BootModulePath = _options.Predendering.BootModulePath;
-                        conf.ExcludeUrls = _options.Predendering.ExcludeUrls;
-                        if (_options.Predendering.ContextData.Any())
+                        _.Options.DefaultPage = _options.DefaultPage;
+                        _.Options.SourcePath = _options.SourcePath;
+                        _.Options.StartupTimeout = TimeSpan.FromSeconds(_options.StartupTimeoutInSeconds);
+
+                        if (!string.IsNullOrEmpty(_options.SpaDevelopmentServer))
+                            _.UseProxyToSpaDevelopmentServer(new Uri(_options.SpaDevelopmentServer));
+                        else if (!string.IsNullOrEmpty(_options.CliServerScript))
+                            _.UseAngularCliServer(npmScript: _options.CliServerScript);
+
+                        if (_options.Prerendering != null)
                         {
-                            conf.SupplyData = (ctx, data) =>
+                            _.UseSpaPrerendering(conf =>
                             {
-                                foreach (var p in _options.Predendering.ContextData)
+                                if (!string.IsNullOrEmpty(_options.Prerendering.BootModuleBuilderScript))
+                                    conf.BootModuleBuilder = new AngularCliBuilder(npmScript: _options.Prerendering.BootModuleBuilderScript);
+                                conf.BootModulePath = _options.Prerendering.BootModulePath;
+                                conf.ExcludeUrls = _options.Prerendering.ExcludeUrls;
+                                if (_options.Prerendering.ContextData != null && _options.Prerendering.ContextData.Any())
                                 {
-                                    switch (p)
+                                    conf.SupplyData = (ctx, data) =>
                                     {
-                                        case "features":
-                                            data[p] = ctx.Features;
-                                            break;
-                                        case "items":
-                                            data[p] = ctx.Items;
-                                            break;
-                                        case "request":
-                                            data[p] = ctx.Request;
-                                            break;
-                                        case "session":
-                                            data[p] = ctx.Session;
-                                            break;
-                                        case "user":
-                                            data[p] = ctx.User;
-                                            break;
-                                        case "webSockets":
-                                            data[p] = ctx.WebSockets;
-                                            break;
-                                    }
+                                        foreach (var p in _options.Prerendering.ContextData)
+                                        {
+                                            switch (p)
+                                            {
+                                                case "features":
+                                                    data[p] = ctx.Features;
+                                                    break;
+                                                case "items":
+                                                    data[p] = ctx.Items;
+                                                    break;
+                                                case "request":
+                                                    data[p] = ctx.Request;
+                                                    break;
+                                                case "session":
+                                                    data[p] = ctx.Session;
+                                                    break;
+                                                case "user":
+                                                    data[p] = ctx.User;
+                                                    break;
+                                                case "webSockets":
+                                                    data[p] = ctx.WebSockets;
+                                                    break;
+                                            }
+                                        }
+                                    };
                                 }
-                            };
+                            });
                         }
+
                     });
                 }
-
-            });
+            } catch(Exception ex)
+            {
+                _logger.LogError($"{ex.Message} /n {ex.Source} /n {ex.StackTrace} /n {ex.InnerException}");
+            }
         }
     }
 
