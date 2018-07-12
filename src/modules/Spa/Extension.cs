@@ -49,11 +49,6 @@ namespace core.Extensions.Spa
                         _.Options.SourcePath = _options.SourcePath;
                         _.Options.StartupTimeout = TimeSpan.FromSeconds(_options.StartupTimeoutInSeconds);
 
-                        if (!string.IsNullOrEmpty(_options.SpaDevelopmentServer))
-                            _.UseProxyToSpaDevelopmentServer(new Uri(_options.SpaDevelopmentServer));
-                        else if (!string.IsNullOrEmpty(_options.CliServerScript))
-                            _.UseAngularCliServer(npmScript: _options.CliServerScript);
-
                         if (_options.Prerendering != null)
                         {
                             _.UseSpaPrerendering(conf =>
@@ -94,6 +89,11 @@ namespace core.Extensions.Spa
                                 }
                             });
                         }
+
+                        if (!string.IsNullOrEmpty(_options.SpaDevelopmentServer))
+                            _.UseProxyToSpaDevelopmentServer(new Uri(_options.SpaDevelopmentServer));
+                        else if (!string.IsNullOrEmpty(_options.CliServerScript))
+                            _.UseAngularCliServer(npmScript: _options.CliServerScript);
 
                     });
                 }
