@@ -22,6 +22,7 @@ namespace core
         protected ILoggerFactory _logger { get; set; }
         protected DateTime _uptime = DateTime.Now;
         private string _extLastConfigAssembliesSerialized { get; set; }
+        protected Action<IApplicationBuilder> _info { get; set; }
 
         public Startup(IHostingEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory)
         {
@@ -83,39 +84,36 @@ namespace core
                     { App = app, Lifetime = applicationLifetime, Configuration = extConfig }
                     );
             });
-
-            app.Map("/info", _ => _.Run(async (context) =>
-             {
-                 var msg = @"
+            
+            _info = _ => _.Run(async(context) => {
+                var msg = @"
 ..####...#####...#####............####....####...#####...######.
 .##..##..##..##..##..##..........##..##..##..##..##..##..##.....
 .######..#####...#####...######..##......##..##..#####...####...
 .##..##..##......##..............##..##..##..##..##..##..##.....
 .##..##..##......##...............####....####...##..##..######.
 ................................................................
-";               
+";
 
-                 msg +=
-                     "\n" +
-                     $"Uptime: {_uptime}\n" +
-                     $"ApplicationName: {_env.ApplicationName}\n" +
-                     $"Environment: {_env.EnvironmentName}\n" +
-                     $"MachineName: {Environment.MachineName}\n" +
-                     $"ProcessorCount: {Environment.ProcessorCount}\n" +
-                     $"RemoteIpAddress: {(context.Features.FirstOrDefault(kvp => kvp.Key.ToString() == "Microsoft.AspNetCore.Http.Features.IHttpConnectionFeature").Value as Microsoft.AspNetCore.Http.Features.IHttpConnectionFeature)?.RemoteIpAddress}\n" +
+                msg +=
+                    "\n" +
+                    $"Uptime: {_uptime}\n" +
+                    $"ApplicationName: {_env.ApplicationName}\n" +
+                    $"Environment: {_env.EnvironmentName}\n" +
+                    $"MachineName: {Environment.MachineName}\n" +
+                    $"ProcessorCount: {Environment.ProcessorCount}\n" +
+                    $"RemoteIpAddress: {(context.Features.FirstOrDefault(kvp => kvp.Key.ToString() == "Microsoft.AspNetCore.Http.Features.IHttpConnectionFeature").Value as Microsoft.AspNetCore.Http.Features.IHttpConnectionFeature)?.RemoteIpAddress}\n" +
+                    "";
+
+                if (context.Request.QueryString != null && !string.IsNullOrEmpty(extMonitor.CurrentValue.SecretKey) && context.Request.QueryString.Value == $"?{extMonitor.CurrentValue.SecretKey}")
+                    msg += "\n" +
+                     $"Extensions: {string.Join(" | ", ExtensionManager.GetInstances<core.Extensions.Base.Extension>().OrderBy(ext => ext.Priority).Select(ext => $"{ext.Name} [{ext.Priority}]"))}\n" +
+                     $"Configurations:\n {string.Join(" | ", _config.AsEnumerable().Where(conf => !new string[] { "connectionstring", "password", "pwd" }.Any(s => conf.Key.ToLower().Contains(s)))?.OrderBy(conf => conf.Key)?.Select(conf => $"{conf.Key} = {conf.Value}\n"))}\n" +
+                     $"Services: {string.Join(" | ", _services.Select(srv => $"{srv.ServiceType.FullName}:{srv.Lifetime}:{srv.ImplementationType?.FullName}"))}\n" +
                      "";
 
-                 if (context.Request.QueryString != null && !string.IsNullOrEmpty(extMonitor.CurrentValue.SecretKey) && context.Request.QueryString.Value == $"?{extMonitor.CurrentValue.SecretKey}")
-                     msg += "\n" +
-                      $"Extensions: {string.Join(" | ", ExtensionManager.GetInstances<core.Extensions.Base.Extension>().OrderBy(ext => ext.Priority).Select(ext => $"{ext.Name} [{ext.Priority}]"))}\n" +
-                      $"Configurations:\n {string.Join(" | ", _config.AsEnumerable().Where(conf => !new string[] { "connectionstring", "password", "pwd" }.Any(s => conf.Key.ToLower().Contains(s)))?.OrderBy(conf => conf.Key)?.Select(conf => $"{conf.Key} = {conf.Value}\n"))}\n" +                      
-                      $"Services: {string.Join(" | ", _services.Select(srv => $"{srv.ServiceType.FullName}:{srv.Lifetime}:{srv.ImplementationType?.FullName}"))}\n" +
-                      "";
-
-                 await context.Response.WriteAsync(msg);
-             }));
-
-
+                await context.Response.WriteAsync(msg);
+            });
         }
 
     }
