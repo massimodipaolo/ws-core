@@ -9,7 +9,7 @@ namespace core.Extensions.Base
     public class Configuration
     {
         public static string Folder { get; set; } = "Extensions";
-        public static string SectionRoot { get; set; } = "ExtConfig";
+        public static string SectionRoot { get; set; } = "extConfig";
         public bool EnableShutDownOnChange { get; set; } = false;
         public IDictionary<string,Assembly> Assemblies { get; set; }
         /// <summary>
