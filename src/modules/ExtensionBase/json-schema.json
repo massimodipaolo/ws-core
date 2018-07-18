@@ -67,7 +67,50 @@
         "assemblies": {
           "type": "object",
           "properties": {
-            "app.core.Extensions.Api": { "$ref": "#/definitions/assembly" },
+            "app.core.Extensions.Api": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "session": {
+                      "type": "object",
+                      "properties": {
+                        "idleTimeoutInMinutes": {
+                          "default": 20,
+                          "description": "The IdleTimeout indicates how long the session can be idle before its contents are abandoned. Each session access resets the timeout. Note this only applies to the content of the session, not the cookie.",
+                          "type": "integer"
+                        },
+                        "cookie": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "description": "The name of the cookie."
+                            },
+                            "path": {
+                              "type": "string",
+                              "description": "The cookie path."
+                            },
+                            "domain": {
+                              "type": "string",
+                              "description": "The domain to associate the cookie with."
+                            },
+                            "httpOnly": {
+                              "type": "boolean",
+                              "description": "Indicates whether a cookie is accessible by client-side script.",
+                              "default": true
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "app.core.Extensions.Cors": {
               "allOf": [
                 { "$ref": "#/definitions/assembly" }
@@ -109,7 +152,7 @@
                             "description": " Credentials include cookies as well as HTTP authentication schemes"
                           },
                           "preflightMaxAgeInSeconds": {
-                            "type": "integer", 
+                            "type": "integer",
                             "description": "Value in seconds. The Access-Control-Max-Age header specifies how long the response to the preflight request can be cached"
                           }
                         },
