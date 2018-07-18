@@ -23,12 +23,11 @@ namespace core.Extensions.Api
                 services.AddSession(opt => {
                     var _cookie = _session.Cookie;
                     if (_cookie != null)
-                    {
-                        if (string.IsNullOrEmpty(_cookie.Name))
-                            opt.Cookie.Name = _cookie.Name;
-                        if (string.IsNullOrEmpty(_cookie.Path))
+                    {                        
+                        opt.Cookie.Name = _cookie.Name;
+                        if (!string.IsNullOrEmpty(_cookie.Path))
                             opt.Cookie.Path = _cookie.Path;
-                        if (string.IsNullOrEmpty(_cookie.Domain))
+                        if (!string.IsNullOrEmpty(_cookie.Domain))
                             opt.Cookie.Domain = _cookie.Domain;
                         opt.Cookie.HttpOnly = _cookie.HttpOnly;
                     }
