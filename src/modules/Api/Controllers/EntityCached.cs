@@ -21,33 +21,33 @@ namespace core.Extensions.Api.Controllers
         public EntityCachedControllerWithMethods(IRepository<T, TKey> repository, ICacheRepository<T, TKey> cached) : base(repository, cached) { }
 
         [HttpGet]
-        public IActionResult Get()
+        public virtual IActionResult Get()
         {
             return Ok(_cachedRepository.List);
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(TKey id)
+        public virtual IActionResult Get(TKey id)
         {
             return Ok(_cachedRepository.Find(id));
         }
 
         [HttpPost]
-        public void Post([FromBody]T entity)
+        public virtual void Post([FromBody]T entity)
         {
             _cachedRepository.Add(entity);
             //base.Post(entity);
         }
 
         [HttpPut("{id}")]
-        public void Put(TKey id, [FromBody]T entity)
+        public virtual void Put(TKey id, [FromBody]T entity)
         {
             _cachedRepository.Update(entity);
             //base.Put(id,entity);
         }
 
         [HttpDelete("{id}")]
-        public void Delete([FromBody]T entity)
+        public virtual void Delete([FromBody]T entity)
         {
             _cachedRepository.Delete(entity);
             //base.Delete(entity);
