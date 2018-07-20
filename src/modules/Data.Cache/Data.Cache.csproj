@@ -2,7 +2,7 @@
   
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.0.2</PackageVersion>    
+    <PackageVersion>1.0.3</PackageVersion>    
     <PackageId>app.core.Extensions.Data.Cache</PackageId>
     <AssemblyName>app.core.Extensions.Data.Cache</AssemblyName>
     <RootNamespace>core.Extensions.Data.Cache</RootNamespace>
@@ -10,8 +10,8 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.net core 2.1</PackageReleaseNotes>
-    <PackageTags></PackageTags>
+    <PackageReleaseNotes>Query / Merge methods</PackageReleaseNotes>
+    <PackageTags></PackageTags> 
   </PropertyGroup>
   
   <ItemGroup>

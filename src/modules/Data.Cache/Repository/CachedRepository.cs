@@ -39,9 +39,26 @@ namespace core.Extensions.Data.Repository
             return _collection.FirstOrDefault(_ => _.Id.Equals(Id));
         }
 
+        public IQueryable<T> Query(FormattableString command)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Add(T entity)
         {
             _collection.Add(entity);
+            Save();
+        }
+
+        public void Update(T entity)
+        {
+            _collection = _collection.Select(_ => _.Id.Equals(entity.Id) ? entity : _).ToList();
+            Save();
+        }
+
+        public void Merge(IEnumerable<T> entities)
+        {
+            _collection = entities.Union(_collection, new EntityComparer<T, TKey>()).ToList();
             Save();
         }
 
@@ -51,16 +68,10 @@ namespace core.Extensions.Data.Repository
             Save();
         }
 
-        public void Update(T entity)
-        {
-            _collection = _collection.Select(_ => _.Id.Equals(entity.Id) ? entity : _).ToList();
-            Save();
-        }
         private void Save()
         {
             _cache.Set(_collectionKey, _collection);
         }
-
     }
 
     public class EntityChangeHandler<T,TKey> : IEntityChangeEvent<T,TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>

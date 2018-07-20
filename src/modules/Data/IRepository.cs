@@ -9,8 +9,10 @@ namespace core.Extensions.Data
     {
         IQueryable<T> List { get; }
         T Find(TKey Id);
+        IQueryable<T> Query(FormattableString command);
         void Add(T entity);
-        void Update(T entity);        
+        void Update(T entity);
+        void Merge(IEnumerable<T> entities);
         void Delete(T entity);
     }
 }

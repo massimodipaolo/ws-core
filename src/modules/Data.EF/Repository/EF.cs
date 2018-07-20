@@ -1,6 +1,8 @@
 ﻿using core.Extensions.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace core.Extensions.Data.Repository
@@ -23,6 +25,11 @@ namespace core.Extensions.Data.Repository
             return List.SingleOrDefault(_ => _.Id.Equals(Id));
         }
 
+        public IQueryable<T> Query(FormattableString command)
+        {
+            return _context.Set<T>().FromSql(command);
+        }
+
         public void Add(T entity)
         {
             if (entity != null)
@@ -41,6 +48,13 @@ namespace core.Extensions.Data.Repository
                 _context.SaveChanges();
                 //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Update);
             }
+        }
+
+        public void Merge(IEnumerable<T> entities)
+        {   
+            _collection.UpdateRange(entities.Intersect(_collection));
+            _collection.AddRange(entities.Except(_collection));         
+            _context.SaveChanges();               
         }
 
         public void Delete(T entity)

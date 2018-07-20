@@ -3,7 +3,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netcoreapp2.1</TargetFramework>
-		<PackageVersion>1.0.2</PackageVersion>
+		<PackageVersion>1.0.3</PackageVersion>
 		<PackageId>app.core.Extensions.Data</PackageId>
 		<AssemblyName>app.core.Extensions.Data</AssemblyName>
 		<RootNamespace>core.Extensions.Data</RootNamespace>
@@ -11,8 +11,8 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.net core 2.1</PackageReleaseNotes>    
-    <PackageTags></PackageTags>
+    <PackageReleaseNotes>Query / Merge methods</PackageReleaseNotes>    
+    <PackageTags></PackageTags> 
   </PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
@@ -21,4 +21,4 @@
 	  <Compile Remove="IIdentity.cs" />
 	  <Compile Remove="EntityChangeHandler.cs" />
 	</ItemGroup>
-</Project>
+</Project> 
