@@ -20,14 +20,14 @@ namespace core.Extensions.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            var tKeys = new KeyValuePair<Type, string>[] {
-                new KeyValuePair<Type,string>(typeof(IEntity<int>),"int"),
-                new KeyValuePair<Type,string>(typeof(IEntity<long>),"bigint"),
-                new KeyValuePair<Type, string>(typeof(IEntity<Guid>),"uniqueidentifier"),
-                new KeyValuePair<Type, string>(typeof(IEntity<string>),"varchar")
+            var tKeys = new KeyValuePair<Type, int>[] {
+                new KeyValuePair<Type,int>(typeof(IEntity<int>),11),
+                new KeyValuePair<Type,int>(typeof(IEntity<long>),20),
+                new KeyValuePair<Type, int>(typeof(IEntity<Guid>),36),
+                new KeyValuePair<Type, int>(typeof(IEntity<string>),255)
             };
 
-            foreach (KeyValuePair<Type, string> tKey in tKeys)
+            foreach (KeyValuePair<Type, int> tKey in tKeys)
             {
                 foreach (Type type in Base.Util.GetAllTypesOf(tKey.Key)/*.Where(_ => _ != typeof(Entity<Guid>))*/)
                 {
@@ -36,7 +36,9 @@ namespace core.Extensions.Data
                         modelBuilder.Entity(type)
                                     .ToTable(type.Name)
                                     .Property("Id").HasColumnName("Id")
-                                    .HasColumnType(tKey.Value)
+                                    .IsUnicode(false)
+                                    .HasMaxLength(tKey.Value)
+                                    //.HasColumnType(tKey.Value)
                                     .HasDefaultValue()
                                     ;
                     }
