@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.net core 2.1</PackageReleaseNotes>
+    <PackageReleaseNotes>.net core 2.1; Merge / Query</PackageReleaseNotes>
     <PackageTags></PackageTags>
   </PropertyGroup>
 
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Data\Data.csproj" />
+    <ProjectReference Include="..\Data\Data.csproj" /> 
     <ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
   </ItemGroup>
 

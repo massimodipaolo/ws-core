@@ -32,6 +32,11 @@ namespace core.Extensions.Data.Repository
             return _collection.Find(_ => _.Id.Equals(Id)).FirstOrDefault();
         }
 
+        public IQueryable<T> Query(FormattableString command)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Add(T entity)
         {
             _collection.InsertOne(entity);
@@ -44,11 +49,22 @@ namespace core.Extensions.Data.Repository
             //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Update);
         }
 
+        public void Merge(IEnumerable<T> entities)
+        {
+            _collection.Find(_ => true).ForEachAsync(_ =>
+            {
+                var entity = entities.FirstOrDefault(__ => __.Id.Equals(_.Id));
+                if (entity != null)
+                    Update(entity);
+                else
+                    Add(entity);
+            });
+        }
+
         public void Delete(T entity)
         {
             _collection.DeleteOne(_ => _.Id.Equals(entity.Id));
             //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Delete);
         }
-
     }
 }

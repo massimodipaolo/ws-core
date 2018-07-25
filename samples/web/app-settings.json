@@ -1,6 +1,3 @@
 ﻿{
-  "Modules": {
-    // Please keep in mind that you have to change '\' to '/' on Linux-based systems
-    "Path": "Extensions"
-  }
+  "appConfig":  {}
 }

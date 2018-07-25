@@ -2,7 +2,7 @@
   
     <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.0.4</PackageVersion>
+    <PackageVersion>1.0.5</PackageVersion>
     <PackageId>app.core</PackageId>
     <AssemblyName>app.core</AssemblyName>
     <RootNamespace>core</RootNamespace>
@@ -12,7 +12,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description>Base project for extandable .net core web application.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>      
-    <PackageReleaseNotes>Remove /info map; add Action</PackageReleaseNotes>    
+    <PackageReleaseNotes>Inject App Configuration</PackageReleaseNotes>    
     <PackageTags>app-core,core</PackageTags>    
   </PropertyGroup>
   

@@ -14,15 +14,14 @@ using Microsoft.Extensions.Options;
 
 namespace core
 {
-    public class Startup
+    public class Startup<TOptions> where TOptions: IAppConfiguration
     {
         protected IHostingEnvironment _env { get; set; }
         protected IConfiguration _config;
         private IServiceCollection _services;
         protected ILoggerFactory _logger { get; set; }
         protected DateTime _uptime = DateTime.Now;
-        private string _extLastConfigAssembliesSerialized { get; set; }
-        protected Action<IApplicationBuilder> _info { get; set; }
+        private string _extLastConfigAssembliesSerialized { get; set; }        
 
         public Startup(IHostingEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory)
         {
@@ -41,18 +40,18 @@ namespace core
 
             _services.AddSingleton<IConfiguration>(_config);
 
-            _services.Configure<Configuration>(_config.GetSection(Configuration.SectionRoot));
+            _services.Configure<core.Extensions.Base.Configuration>(_config.GetSection(core.Extensions.Base.Configuration.SectionRoot));
 
             core.Extensions.Base.Extension.Init(_services, _services.BuildServiceProvider());
 
-            _services.AddExtCore(_config[$"{Configuration.SectionRoot}:Folder"] != null ? $"{_env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{_config[$"{Configuration.SectionRoot}:Folder"]}" : null);
+            _services.AddExtCore(_config[$"{core.Extensions.Base.Configuration.SectionRoot}:Folder"] != null ? $"{_env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{_config[$"{core.Extensions.Base.Configuration.SectionRoot}:Folder"]}" : null);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public virtual void Configure(IApplicationBuilder app, IOptionsMonitor<Extensions.Base.Configuration> extMonitor, IApplicationLifetime applicationLifetime)
+        public virtual void Configure(IApplicationBuilder app, IOptionsMonitor<TOptions> appConfigMonitor, IOptionsMonitor<Extensions.Base.Configuration> extConfigMonitor, IApplicationLifetime applicationLifetime)
         {
             //Error handling
-            if (_env.IsDevelopment())
+            if (_env.IsDevelopment() || _env.IsEnvironment("Local") || (_config.GetSection("appConfig")?.GetValue<bool>("DeveloperExceptionPage") ?? false))
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -61,15 +60,15 @@ namespace core
 
             Func<IDictionary<string, Extensions.Base.Configuration.Assembly>, string> _extSerialize = list => string.Join(" | ", list.Where(ext => ext.Value.Priority > 0).OrderBy(ext => ext.Value.Priority).Select(_ => _.Key));
 
-            _extLastConfigAssembliesSerialized = _extSerialize(extMonitor.CurrentValue.Assemblies);
+            _extLastConfigAssembliesSerialized = _extSerialize(extConfigMonitor.CurrentValue.Assemblies);
 
-            extMonitor.OnChange(extConfig =>
+            extConfigMonitor.OnChange(extConfig =>
             {
 
                 var _extCurrentAssembliesSerialized = _extSerialize(extConfig.Assemblies);
                 var isUpdatable = _extCurrentAssembliesSerialized == _extLastConfigAssembliesSerialized;
 
-                _logger.CreateLogger("extMonitor").LogWarning($"Config changed {DateTime.Now}; Is updatable: {isUpdatable} ");
+                _logger.CreateLogger("extConfigMonitor").LogWarning($"Config changed {DateTime.Now}; Is updatable: {isUpdatable} ");
 
                 if (isUpdatable)
                     _extLastConfigAssembliesSerialized = _extCurrentAssembliesSerialized;
@@ -84,48 +83,7 @@ namespace core
                     { App = app, Lifetime = applicationLifetime, Configuration = extConfig }
                     );
             });
-            
-            _info = _ => _.Run(async(context) => {
-                var msg = @"
-..####...#####...#####............####....####...#####...######.
-.##..##..##..##..##..##..........##..##..##..##..##..##..##.....
-.######..#####...#####...######..##......##..##..#####...####...
-.##..##..##......##..............##..##..##..##..##..##..##.....
-.##..##..##......##...............####....####...##..##..######.
-................................................................
-";
-                try 
-                {
-                    msg +=
-                        "\n" +
-                        $"Uptime: {_uptime}\n" +
-                        $"ApplicationName: {_env.ApplicationName}\n" +
-                        $"Environment: {_env.EnvironmentName}\n" +
-                        $"MachineName: {Environment.MachineName}\n" +
-                        $"ProcessorCount: {Environment.ProcessorCount}\n" +
-                        $"RemoteIpAddress: {(context.Features.FirstOrDefault(kvp => kvp.Key.ToString() == "Microsoft.AspNetCore.Http.Features.IHttpConnectionFeature").Value as Microsoft.AspNetCore.Http.Features.IHttpConnectionFeature)?.RemoteIpAddress}\n" +
-                        "";
 
-                    var secretKey = _config[$"{Configuration.SectionRoot}:SecretKey"];                    
-                    if (context.Request.QueryString != null && !string.IsNullOrEmpty(secretKey) && context.Request.QueryString.Value == $"?{secretKey}")
-                        msg += "\n" +
-                         $"Extensions: {string.Join(" | ", ExtensionManager.GetInstances<core.Extensions.Base.Extension>().OrderBy(ext => ext.Priority).Select(ext => $"{ext.Name} [{ext.Priority}]"))}\n" +
-                         $"Configurations:\n {string.Join(" | ", _config.AsEnumerable().Where(conf => !new string[] { "connectionstring", "password", "pwd" }.Any(s => conf.Key.ToLower().Contains(s)))?.OrderBy(conf => conf.Key)?.Select(conf => $"{conf.Key} = {conf.Value}\n"))}\n" +
-                         $"Services: {string.Join(" | ", _services.Select(srv => $"{srv.ServiceType.FullName}:{srv.Lifetime}:{srv.ImplementationType?.FullName}"))}\n" +
-                         "";
-                } catch(Exception ex)
-                {
-                    msg +=
-                        "\n" +
-                        $"{ex.Message}\n" +
-                        $"{ex.Source}\n" +
-                        $"{ex.StackTrace}\n" +
-                        $"{ex.InnerException}\n" +
-                        "";
-                }
-
-                await context.Response.WriteAsync(msg);
-            });
         }
 
     }

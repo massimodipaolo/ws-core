@@ -36,18 +36,29 @@ namespace core.Extensions.Data.Repository
             return _collection.FirstOrDefault<T>(_ => _.Id.Equals(Id));
         }
 
+        public IQueryable<T> Query(FormattableString command)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Add(T entity)
         {
             _collection.Add(entity);
             Save();
             //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Create);
-        }
+        }        
 
         public void Update(T entity)
         {
             _collection = _collection.Select(_ => _.Id.Equals(entity.Id) ? entity : _).ToList();
             Save();
             //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Update);            
+        }
+
+        public void Merge(IEnumerable<T> entities)
+        {            
+            _collection = entities.Union(_collection, new EntityComparer<T, TKey>()).ToList();
+            Save();
         }
 
         public void Delete(T entity)

@@ -15,7 +15,7 @@ namespace core
 
         public static IWebHost BuildWebHost(string[] args, Assembly assembly) =>
             WebHostBuilder(args, assembly)
-            .UseStartup<Startup>()
+            .UseStartup<Startup<AppConfig>>()
             .Build();
 
         public static IWebHostBuilder WebHostBuilder(string[] args, Assembly assembly) =>
@@ -38,7 +38,7 @@ namespace core
             .ConfigureLogging((ctx, logging) =>
             {
                 logging.AddConfiguration(ctx.Configuration.GetSection("Logging"));
-                if (ctx.HostingEnvironment.IsDevelopment())
+                if (ctx.HostingEnvironment.IsDevelopment() || ctx.HostingEnvironment.IsEnvironment("Local"))
                 {
                     logging.AddDebug();
                 }
