@@ -51,10 +51,17 @@ namespace core.Extensions.Data.Repository
         }
 
         public void Merge(IEnumerable<T> entities)
-        {   
-            _collection.UpdateRange(entities.Intersect(_collection));
-            _collection.AddRange(entities.Except(_collection));         
-            _context.SaveChanges();               
+        {
+            if (entities != null && entities.Any())
+            {
+                foreach (var entity in entities)
+                    if (_collection.Any(_ => _.Id.Equals(entity.Id)))
+                        _collection.Update(entity);
+                    else
+                        _collection.Add(entity);
+
+                _context.SaveChanges();
+            }
         }
 
         public void Delete(T entity)

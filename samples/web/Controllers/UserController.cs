@@ -3,6 +3,7 @@ using core.Extensions.Data;
 using core.Extensions.Data.Cache;
 using Microsoft.AspNetCore.Mvc;
 using core.Extensions.Api.Controllers;
+using System.Collections.Generic;
 
 namespace web.Controllers
 {
@@ -10,6 +11,14 @@ namespace web.Controllers
     public class UserController : EntityControllerWithMethods<User, Guid>
     {
         public UserController(IRepository<User, Guid> repository) : base(repository) { }
+
+        [HttpPost]
+        [Route("merge")]
+        public IActionResult Merge([FromBody]IEnumerable<User> items)
+        {
+            _repository.Merge(items);
+            return Ok();
+        }
     }
 
     [Route("api/cache/user")]
