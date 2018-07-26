@@ -36,18 +36,27 @@
           ]
         }
       },
-      "app.core.Extensions.Data.EF.SqlServer": {
-        "priority": 30,
+      "app.core.Extensions.Data.EF": {
+        "priority": 19,
         "options": {
-          "connections": [
+          "mappings": [
             {
-              "name": "default",
-              "connectionString": ""
+              "name": "User",
+              "table": "_User",
+              "schema": "test",
+              "IdColumnName": "Id",
+              "properties": [
+                {
+                  "name": "Company",
+                  "column": "_Company"
+                },
+                {"name": "ToIgnore", "ignore": true}
+              ]
             }
           ]
         }
       },
-      "app.core.Extensions.Data.EF.MySql": {
+      "app.core.Extensions.Data.EF.SqlServer": {
         "priority": 20,
         "options": {
           "connections": [
@@ -58,8 +67,19 @@
           ]
         }
       },
-      "app.core.Extensions.Data.Mongo": {
+      "app.core.Extensions.Data.EF.MySql": {
         "priority": 30,
+        "options": {
+          "connections": [
+            {
+              "name": "default",
+              "connectionString": ""
+            }
+          ]
+        }
+      },
+      "app.core.Extensions.Data.Mongo": {
+        "priority": 40,
         "options": {
           "connections": [
             {
@@ -70,11 +90,11 @@
           ]
         }
       },
-      "app.core.Extensions.Data.FileSystem": { "priority": 3 },
+      "app.core.Extensions.Data.FileSystem": { "priority": 50 },
       "app.core.Extensions.Data.Cache": {
         "priority": 4,
         "options": {
-          "type": "Redis",
+          "type": "Memory",
           "redisOptions": {
             "configuration": "",
             "instanceName": "master"

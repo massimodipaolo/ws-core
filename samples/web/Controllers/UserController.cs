@@ -7,7 +7,7 @@ using core.Extensions.Api.Controllers;
 namespace web.Controllers
 {
     [Route("api/user")]
-    public class UserController : EntityController<User, Guid>
+    public class UserController : EntityControllerWithMethods<User, Guid>
     {
         public UserController(IRepository<User, Guid> repository) : base(repository) { }
     }
@@ -21,7 +21,9 @@ namespace web.Controllers
 
     public class User : Entity<Guid>
     {
-        public string Name { get; set; }
+        public string Name { get; set; }     
+        public string Company { get; set; }
+        public string ToIgnore { get; set; }
         public bool Active { get; set; } = true;
     }
 

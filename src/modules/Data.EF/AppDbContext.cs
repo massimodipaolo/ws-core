@@ -27,20 +27,33 @@ namespace core.Extensions.Data
                 new KeyValuePair<Type, int>(typeof(IEntity<string>),255)
             };
 
+            EF.Options options = new EF.Extension()._options;
             foreach (KeyValuePair<Type, int> tKey in tKeys)
             {
                 foreach (Type type in Base.Util.GetAllTypesOf(tKey.Key)/*.Where(_ => _ != typeof(Entity<Guid>))*/)
                 {
                     try
                     {
-                        modelBuilder.Entity(type)
-                                    .ToTable(type.Name)
-                                    .Property("Id").HasColumnName("Id")
+                        EF.Options.MappingConfig opt = options.Mappings.FirstOrDefault(_ => _.Name == type.Name);
+
+                        var entityBuilder = modelBuilder.Entity(type)
+                                    .ToTable(opt?.Table ?? type.Name, opt?.Schema ?? "dbo");
+
+                        entityBuilder.Property("Id").HasColumnName(opt?.IdColumnName ?? "Id")
                                     .IsUnicode(false)
                                     .HasMaxLength(tKey.Value)
                                     //.HasColumnType(tKey.Value)
-                                    .HasDefaultValue()
-                                    ;
+                                    .HasDefaultValue();
+
+                        foreach (var p in opt?.Properties)
+                        {
+                            if (p.Ignore)
+                                entityBuilder.Ignore(p.Name);
+                            else
+                                entityBuilder.Property(p.Name).HasColumnName(string.IsNullOrEmpty(p.Column) ? p.Name : p.Column);
+                        }
+
+
                     }
                     catch { }
                 }
