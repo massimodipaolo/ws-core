@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 namespace core.Extensions.Data
-{
+{    
     public class AppDbContext : DbContext
     {
         static AppDbContext()
@@ -19,6 +19,13 @@ namespace core.Extensions.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            //Ignore common unsupported array of primitive types
+            modelBuilder
+                .Ignore<int[]>()
+                .Ignore<long[]>()
+                .Ignore<Guid[]>()
+                .Ignore<string[]>();
 
             var tKeys = new KeyValuePair<Type, int>[] {
                 new KeyValuePair<Type,int>(typeof(IEntity<int>),11),
