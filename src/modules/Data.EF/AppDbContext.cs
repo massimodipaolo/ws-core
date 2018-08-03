@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 namespace core.Extensions.Data
-{    
+{   
     public class AppDbContext : DbContext
     {
         static AppDbContext()
@@ -20,21 +20,31 @@ namespace core.Extensions.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            //Ignore common unsupported array of primitive types
+            EF.Options options = new EF.Extension()._options;            
+
+            // Ignore common unsupported array of primitive types
             modelBuilder
                 .Ignore<int[]>()
                 .Ignore<long[]>()
                 .Ignore<Guid[]>()
                 .Ignore<string[]>();
 
+            // Ignore custom type
+            foreach (var type in options.Ignore)
+            {
+                Type t = Type.GetType(type);
+                if (t != null)
+                    modelBuilder.Ignore(t);
+            }                
+
+            // Mappings
             var tKeys = new KeyValuePair<Type, int>[] {
                 new KeyValuePair<Type,int>(typeof(IEntity<int>),11),
                 new KeyValuePair<Type,int>(typeof(IEntity<long>),20),
                 new KeyValuePair<Type, int>(typeof(IEntity<Guid>),36),
                 new KeyValuePair<Type, int>(typeof(IEntity<string>),255)
             };
-
-            EF.Options options = new EF.Extension()._options;
+            
             foreach (KeyValuePair<Type, int> tKey in tKeys)
             {
                 foreach (Type type in Base.Util.GetAllTypesOf(tKey.Key)/*.Where(_ => _ != typeof(Entity<Guid>))*/)

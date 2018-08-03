@@ -7,6 +7,7 @@ namespace core.Extensions.Data.EF
 {
     public class Options: IOptions
     {
+        public string[] Ignore { get; set; }
         public IEnumerable<MappingConfig> Mappings { get; set; }
         public class MappingConfig
         {
