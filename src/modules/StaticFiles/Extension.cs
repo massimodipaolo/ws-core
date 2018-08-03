@@ -29,7 +29,7 @@ namespace core.Extensions.StaticFiles
                         try
                         {
                             //TODO: Inject IFileProvider (or ServiceLocator serviceProvider.GetService<IFileProvider>()): https://docs.microsoft.com/en-us/aspnet/core/fundamentals/file-providers
-                            StaticFileOptions.FileProvider = new PhysicalFileProvider(Path.Combine(ContentPath, opt.Path));
+                            StaticFileOptions.FileProvider = new PhysicalFileProvider(opt.IsRelativePath ? Path.Combine(ContentPath, opt.Path) : opt.Path);
                         } catch(Exception ex) {
                             _logger.LogError(ex.Message);
                         }
