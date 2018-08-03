@@ -17,7 +17,7 @@ namespace core.Extensions.StaticFiles
             public Dictionary<string, string> MIMEtypes { get; set; }
             public String[] DefaultFiles { get; set; }
             public bool EnableDirectoryBrowser { get; set; } = false;
-            public bool IsRelativePath => Path != null && System.Text.RegularExpressions.Regex.IsMatch(Path, @"^([a-z]:)*(\/*(\.*[a-z0-9]+\/)*(\.*[a-z0-9]+))");
+            public bool? IsRelativePath { get; set; }
         }
     }
 }

@@ -433,6 +433,7 @@
                             "additionalProperties": { "type": "string" }
                           },
                           "path": { "type": "string" },
+                          "isRelativePath": { "type": "boolean" },
                           "requestPath": { "type": "string" },
                           "defaultFiles": {
                             "type": "array",
