@@ -42,6 +42,8 @@ namespace core
 
             _services.Configure<core.Extensions.Base.Configuration>(_config.GetSection(core.Extensions.Base.Configuration.SectionRoot));
 
+            _services.AddSingleton<core.IRazorEngineBuilder, core.RazorEngineBuilder>();
+
             core.Extensions.Base.Extension.Init(_services, _services.BuildServiceProvider());
 
             _services.AddExtCore(_config[$"{core.Extensions.Base.Configuration.SectionRoot}:Folder"] != null ? $"{_env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{_config[$"{core.Extensions.Base.Configuration.SectionRoot}:Folder"]}" : null);

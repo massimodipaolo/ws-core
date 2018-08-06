@@ -2,7 +2,7 @@
   
     <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.0.5</PackageVersion>
+    <PackageVersion>1.1.0</PackageVersion>
     <PackageId>app.core</PackageId>
     <AssemblyName>app.core</AssemblyName>
     <RootNamespace>core</RootNamespace>
@@ -13,12 +13,12 @@
     <Description>Base project for extandable .net core web application.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>      
     <PackageReleaseNotes>Inject App Configuration</PackageReleaseNotes>    
-    <PackageTags>app-core,core</PackageTags>    
-  </PropertyGroup>
+    <PackageTags>add default Razor engine</PackageTags>    
+  </PropertyGroup> 
   
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.1.1" />
@@ -26,7 +26,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
-    <PackageReference Include="ExtCore.WebApplication" Version="3.2.0" /> 
+    <PackageReference Include="ExtCore.WebApplication" Version="3.3.0" />
+    <PackageReference Include="RazorLight" Version="2.0.0-beta1" /> 
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot/" />
