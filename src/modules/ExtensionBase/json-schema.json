@@ -75,6 +75,23 @@
                 "options": {
                   "type": "object",
                   "properties": {
+                    "serialization": {
+                      "type": "object",
+                      "properties": {
+                        "nullValueHandling": {
+                          "enum": [ "Ignore", "Include" ],
+                          "default": "Ignore"
+                        },
+                        "formatting": {
+                          "enum": [ "None", "Indented" ],
+                          "default": "None"
+                        },
+                        "referenceLoopHandling": {
+                          "enum": [ "Error", "Ignore", "Serialize" ],
+                          "default": "Error"
+                        }
+                      }
+                    },
                     "session": {
                       "type": "object",
                       "properties": {
@@ -102,6 +119,46 @@
                               "type": "boolean",
                               "description": "Indicates whether a cookie is accessible by client-side script.",
                               "default": true
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "documentation": {
+                      "type": "object",
+                      "properties": {
+                        "routePrefix": {
+                          "type": "string",
+                          "default": "swagger"
+                        },
+                        "versions": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "default": "v{index}"
+                              },
+                              "title": {
+                                "type": "string",
+                                "default": "API v{index}"
+                              }
+                            }
+                          }
+                        },
+                        "xmlComments": {
+                          "type": "object",
+                          "description": "To include Xml Comments, open the Properties dialog for your project, click the \"Build\" tab and ensure that \"XML documentation file\" is checked.\n This will produce a file containing all XML comments at build-time.\nAt this point, any classes or methods that are NOT annotated with XML comments will trigger a build warning.\n To suppress this, enter the warning code 1591 into the \"Suppress warnings\" field in the properties dialog.",
+                          "required": ["fileName"],
+                          "properties": {                            
+                            "fileName": {
+                              "type": "string",
+                              "description": "i.e. api.xml\nCheck PropertyGroup>DocumentationFile value in your .csproj file."
+                            },
+                            "includeControllerComments": {
+                              "type": "boolean",
+                              "default": false
                             }
                           }
                         }

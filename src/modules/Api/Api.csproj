@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.0.4</PackageVersion>
+    <PackageVersion>1.1.0</PackageVersion>
     <PackageId>app.core.Extensions.Api</PackageId>
     <AssemblyName>app.core.Extensions.Api</AssemblyName>
     <RootNamespace>core.Extensions.Api</RootNamespace>
@@ -10,9 +10,13 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Virtual methods in entity cache controllers</PackageReleaseNotes>
+    <PackageReleaseNotes>add Swagger; add serialization options</PackageReleaseNotes>
     <PackageTags></PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />

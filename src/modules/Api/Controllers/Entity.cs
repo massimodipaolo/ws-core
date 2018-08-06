@@ -20,14 +20,21 @@ namespace core.Extensions.Api.Controllers
     {
         public EntityControllerWithMethods(IRepository<T, TKey> repository): base(repository) {}
 
-        [HttpGet]
+        /// <summary>
+        /// Retrieves a IQueryable<typeparamref name="T"/>
+        /// </summary>
+        /// <remarks>Awesomeness!</remarks>
+        /// <response code="200">Product created</response>
+        /// <response code="400">Product has missing/invalid values</response>
+        /// <response code="500">Oops! Can't create your product right now</response>
+        [HttpGet]        
         public virtual IActionResult Get()
         {
             return Ok(_repository.List);
         }
 
-        [HttpGet("{id}")]
-        public virtual IActionResult Get(TKey id)
+        [HttpGet("{id}")]            
+        public virtual IActionResult GetById(TKey id)
         {
             return Ok(_repository.Find(id));
         }

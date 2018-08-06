@@ -36,6 +36,16 @@
           ]
         }
       },
+      "app.core.Extensions.Api": {
+        "priority": 2,
+        "options": {
+          "serialization": {
+            "nullValueHandling": "Ignore",
+            "formatting": "Indented",
+            "referenceLoopHandling": "Ignore"
+          },"documentation": {"routePrefix": "swagga", "versions": [{"id": "v-1", "title": "app sample api"}], "xmlComments": { "fileName": "web.xml","includeControllerComments": true}}
+        }
+      },
       "app.core.Extensions.Data.EF": {
         "priority": 19,
         "options": {
@@ -50,13 +60,16 @@
                   "name": "Company",
                   "column": "_Company"
                 },
-                {"name": "ToIgnore", "ignore": true}
+                {
+                  "name": "ToIgnore",
+                  "ignore": true
+                }
               ]
             }
           ]
         }
       },
-      "app.core.Extensions.Data.EF.SqlServer": {
+      "__app.core.Extensions.Data.EF.SqlServer": {
         "priority": 20,
         "options": {
           "connections": [
@@ -67,7 +80,7 @@
           ]
         }
       },
-      "app.core.Extensions.Data.EF.MySql": {
+      "__app.core.Extensions.Data.EF.MySql": {
         "priority": 30,
         "options": {
           "connections": [
@@ -78,7 +91,7 @@
           ]
         }
       },
-      "app.core.Extensions.Data.Mongo": {
+      "__app.core.Extensions.Data.Mongo": {
         "priority": 40,
         "options": {
           "connections": [

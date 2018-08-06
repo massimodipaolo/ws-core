@@ -27,7 +27,7 @@ namespace core.Extensions.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public virtual IActionResult Get(TKey id)
+        public virtual IActionResult GetById(TKey id)
         {
             return Ok(_cachedRepository.Find(id));
         }
