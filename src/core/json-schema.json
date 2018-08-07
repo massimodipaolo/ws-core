@@ -1,0 +1,41 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "JSON Schema for app-core base configuration",
+  "type": "object",
+  "required": [ "appConfig" ],
+  "properties": {
+    "appConfig": {
+      "type": "object",
+      "properties": {
+        "developerExceptionPage": {
+          "type": "boolean",
+          "description": "Use developer exception page.\ni.e. for production debugging",
+          "default": false
+        },
+        "razorEngine": {
+          "type": "object",          
+          "properties": {
+            "namespaces": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "List of default namespaces to include.",
+              "default": "System"
+            },            
+            "dynamicTemplates": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"                                
+              }
+            },
+            "assemblies": {
+              "type": "array",
+              "items": { "type": "string", "uniqueItems": true},
+              "description": "Array of addictionaly assembly paths to load.\nMicrosoft.CodeAnalysis.MetadataReference.CreateFromFile(\"path-to-your-assembly\") is used."
+            }
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

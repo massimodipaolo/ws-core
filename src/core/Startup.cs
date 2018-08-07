@@ -11,17 +11,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using RazorLight.Extensions;
 
 namespace core
 {
-    public class Startup<TOptions> where TOptions: IAppConfiguration
+    public class Startup<TOptions> where TOptions : class, IAppConfiguration
     {
         protected IHostingEnvironment _env { get; set; }
         protected IConfiguration _config;
         private IServiceCollection _services;
         protected ILoggerFactory _logger { get; set; }
         protected DateTime _uptime = DateTime.Now;
-        private string _extLastConfigAssembliesSerialized { get; set; }        
+        private string _extLastConfigAssembliesSerialized { get; set; }
+        protected string appConfigSectionRoot { get; set; } = "appConfig";
 
         public Startup(IHostingEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory)
         {
@@ -42,7 +44,26 @@ namespace core
 
             _services.Configure<core.Extensions.Base.Configuration>(_config.GetSection(core.Extensions.Base.Configuration.SectionRoot));
 
-            _services.AddSingleton<core.IRazorEngineBuilder, core.RazorEngineBuilder>();
+            _services.Configure<TOptions>(_config.GetSection(appConfigSectionRoot));
+
+            var _razorConfig = _config.GetSection(appConfigSectionRoot).Get<TOptions>().ToExpando().FirstOrDefault(_ => _.Key == "RazorEngine").Value as AppConfig.RazorEngineOptions ?? new AppConfig.RazorEngineOptions();
+            _services.AddRazorLight(() => {
+                var _builder = new RazorLight.RazorLightEngineBuilder()
+                    .AddDefaultNamespaces(_razorConfig.Namespaces?.ToArray() ?? new[] { "System" });
+                if (_razorConfig.DynamicTemplates != null && _razorConfig.DynamicTemplates.Any())
+                    _builder.AddDynamicTemplates(_razorConfig.DynamicTemplates);
+                if (_razorConfig.Assemblies != null && _razorConfig.Assemblies.Any()) {
+                    try
+                    {
+                        _razorConfig.AdditionalMetadataReferences = new HashSet<Microsoft.CodeAnalysis.MetadataReference>(_razorConfig.Assemblies.Select(path => (Microsoft.CodeAnalysis.MetadataReference)Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(path)));
+                        _builder.AddMetadataReferences(_razorConfig.AdditionalMetadataReferences.ToArray());
+                    }
+                    catch { }
+                }
+                return _builder
+                    .UseMemoryCachingProvider()
+                    .Build();
+            });
 
             core.Extensions.Base.Extension.Init(_services, _services.BuildServiceProvider());
 
@@ -53,7 +74,7 @@ namespace core
         public virtual void Configure(IApplicationBuilder app, IOptionsMonitor<TOptions> appConfigMonitor, IOptionsMonitor<Extensions.Base.Configuration> extConfigMonitor, IApplicationLifetime applicationLifetime)
         {
             //Error handling
-            if (_env.IsDevelopment() || _env.IsEnvironment("Local") || (_config.GetSection("appConfig")?.GetValue<bool>("DeveloperExceptionPage") ?? false))
+            if (_env.IsDevelopment() || _env.IsEnvironment("Local") || (appConfigMonitor.CurrentValue?.DeveloperExceptionPage ?? false))
             {
                 app.UseDeveloperExceptionPage();
             }

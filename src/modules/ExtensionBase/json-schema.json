@@ -150,8 +150,8 @@
                         "xmlComments": {
                           "type": "object",
                           "description": "To include Xml Comments, open the Properties dialog for your project, click the \"Build\" tab and ensure that \"XML documentation file\" is checked.\n This will produce a file containing all XML comments at build-time.\nAt this point, any classes or methods that are NOT annotated with XML comments will trigger a build warning.\n To suppress this, enter the warning code 1591 into the \"Suppress warnings\" field in the properties dialog.",
-                          "required": ["fileName"],
-                          "properties": {                            
+                          "required": [ "fileName" ],
+                          "properties": {
                             "fileName": {
                               "type": "string",
                               "description": "i.e. api.xml\nCheck PropertyGroup>DocumentationFile value in your .csproj file."
@@ -313,60 +313,62 @@
                   "properties": {
                     "ignore": {
                       "type": "array",
-                      "description": "Excludes the given entity type from the model. This method is typically used to remove types from the model that were added by convention., i.e. `MyNamespace.MyClass, MyAssembly`", "items": { "type": "string"}},
-                      "mappings": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "name": {
-                              "type": "string",
-                              "description": "Entity name, case sensitive",
-                              "default": "typeof(T).Name"
-                            },
-                            "table": {
-                              "type": "string",
-                              "description": "Specify a table name",
-                              "default": "typeof(T).Name"
-                            },
-                            "schema": {
-                              "type": "string",
-                              "description": "Specify a database schema",
-                              "default": "dbo"
-                            },
-                            "IdColumnName": {
-                              "type": "string",
-                              "description": "Map Id property to column name",
-                              "default": "Id"
-                            },
-                            "properties": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "name": {
-                                    "type": "string",
-                                    "description": "Name of the property, case sensitive"
-                                  },
-                                  "column": {
-                                    "type": "string",
-                                    "description": "Name of the database column representing the property"
-                                  },
-                                  "ignore": {
-                                    "type": "boolean",
-                                    "default": false,
-                                    "description": "Excludes the given property from the entity type"
-                                  }
-                                },
-                                "required": [ "name" ]
-                              }
-
-                            }
+                      "description": "Excludes the given entity type from the model. This method is typically used to remove types from the model that were added by convention., i.e. `MyNamespace.MyClass, MyAssembly`",
+                      "items": { "type": "string" }
+                    },
+                    "mappings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Entity name, case sensitive",
+                            "default": "typeof(T).Name"
                           },
-                          "required": [ "name" ]
-                        }
+                          "table": {
+                            "type": "string",
+                            "description": "Specify a table name",
+                            "default": "typeof(T).Name"
+                          },
+                          "schema": {
+                            "type": "string",
+                            "description": "Specify a database schema",
+                            "default": "dbo"
+                          },
+                          "IdColumnName": {
+                            "type": "string",
+                            "description": "Map Id property to column name",
+                            "default": "Id"
+                          },
+                          "properties": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "description": "Name of the property, case sensitive"
+                                },
+                                "column": {
+                                  "type": "string",
+                                  "description": "Name of the database column representing the property"
+                                },
+                                "ignore": {
+                                  "type": "boolean",
+                                  "default": false,
+                                  "description": "Excludes the given property from the entity type"
+                                }
+                              },
+                              "required": [ "name" ]
+                            }
+
+                          }
+                        },
+                        "required": [ "name" ]
                       }
                     }
+                  }
                 }
               }
             },
@@ -511,16 +513,17 @@
                   }
                 }
               }
-            },
-            "additionalProperties": {
-              "type": [
-                "string",
-                "object"
-              ],
-              "$ref": "#/definitions/assembly"
             }
+          },
+          "additionalProperties": {
+            "type": [
+              "string",
+              "object"
+            ],
+            "$ref": "#/definitions/assembly"
           }
         }
       }
     }
   }
+}
