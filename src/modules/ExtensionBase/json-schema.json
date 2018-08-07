@@ -126,15 +126,16 @@
                     },
                     "documentation": {
                       "type": "object",
+                      "required": ["endpoints"],
                       "properties": {
                         "routePrefix": {
                           "type": "string",
                           "default": "swagger"
                         },
-                        "versions": {
+                        "endpoints": {
                           "type": "array",
                           "items": {
-                            "type": "object",
+                            "type": "object",                            
                             "properties": {
                               "id": {
                                 "type": "string",
@@ -144,7 +145,10 @@
                                 "type": "string",
                                 "default": "API v{index}"
                               },
-                              "version": { "type": "string" }
+                              "version": {
+                                "type": "string",
+                                "default": "{id}"
+                              }
                             }
                           }
                         },

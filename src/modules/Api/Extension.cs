@@ -52,7 +52,7 @@ namespace core.Extensions.Api
             {
                 services.AddSwaggerGen(opt =>
                 {
-                    foreach (var doc in _doc.Endpoints.Select((e, i) => new { e, i }))
+                    foreach (var doc in _doc.Endpoints?.Select((e, i) => new { e, i }))
                     {
                         var _id = string.IsNullOrEmpty(doc.e.Id) ? $"v{doc.i + 1}" : doc.e.Id;
                         opt.SwaggerDoc(
@@ -100,7 +100,7 @@ namespace core.Extensions.Api
                 applicationBuilder.UseSwaggerUI(opt =>
                 {
                     opt.RoutePrefix = _doc.RoutePrefix;
-                    foreach (var doc in _doc.Endpoints.Select((e, i) => new { e, i }))
+                    foreach (var doc in _doc.Endpoints?.Select((e, i) => new { e, i }))
                     {
                         var _id = string.IsNullOrEmpty(doc.e.Id) ? $"v{doc.i + 1}" : doc.e.Id;
                         opt.SwaggerEndpoint($"/{_doc.RoutePrefix}/{_id}/swagger.json", string.IsNullOrEmpty(doc.e.Title) ? $"API v{doc.i + 1}" : doc.e.Title);                        
