@@ -12,16 +12,24 @@ namespace core.Extensions.Message
     }
     public class Message
     {
-        public Message(){}
+        public Message() { }
 
-        public MessageAddress Sender { get; set; }
-        public IEnumerable<MessageAddress> Recipients { get; set; }
+        public Actor Sender { get; set; }
+        public IEnumerable<Actor> Recipients { get; set; }
         public string Subject { get; set; }
         public string Content { get; set; }
-        public class MessageAddress
+        public class Actor
         {
             public string Name { get; set; }
             public string Address { get; set; }
+            public ActorType Type { get; set; } = ActorType.Primary;
+
+        }
+        public enum ActorType
+        {
+            Primary,
+            Subscriber,
+            Logging
         }
     }
 
