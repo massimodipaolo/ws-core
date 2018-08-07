@@ -31,6 +31,16 @@
         }
       }
     },
+    "endpoint": {
+      "type": "object",
+      "required": ["address"],
+      "properties": {
+        "address": { "type": "string" },
+        "port": { "type": "integer" },
+        "username": { "type": "string" },
+        "password": { "type":  "string"}
+      }
+    },
     "entryExpirationInMinutes": {
       "type": "object",
       "properties": {
@@ -411,7 +421,26 @@
               "$ref": "#/definitions/assembly"
             },
             "app.core.Extensions.Identity": { "$ref": "#/definitions/assembly" },
-            "app.core.Extensions.Message": { "$ref": "#/definitions/assembly" },
+            "app.core.Extensions.Message": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "senders": {
+                      "type": "array",
+                      "items": { "$ref": "#/definitions/endpoint" }
+                    },
+                    "receivers": {
+                      "type": "array",
+                      "items": { "$ref": "#/definitions/endpoint" }
+                    }
+                  }
+                }
+              }
+            },
             "app.core.Extensions.Spa": {
               "allOf": [
                 { "$ref": "#/definitions/assembly" }

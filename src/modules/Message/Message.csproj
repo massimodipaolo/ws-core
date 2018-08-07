@@ -13,11 +13,15 @@
     <PackageReleaseNotes>First release</PackageReleaseNotes>
     <PackageTags>extension message, email, smtp</PackageTags>    
   </PropertyGroup>
-
+ 
   <PropertyGroup>
     <NoWarn>1701;1702;1705;1591</NoWarn>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.0.6" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
