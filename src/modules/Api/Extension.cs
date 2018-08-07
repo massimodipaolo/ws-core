@@ -52,15 +52,15 @@ namespace core.Extensions.Api
             {
                 services.AddSwaggerGen(opt =>
                 {
-                    foreach (var version in _doc.Versions.Select((v, i) => new { v, i }))
+                    foreach (var doc in _doc.Endpoints.Select((e, i) => new { e, i }))
                     {
-                        var _version = string.IsNullOrEmpty(version.v.Id) ? $"v{version.i + 1}" : version.v.Id;
+                        var _id = string.IsNullOrEmpty(doc.e.Id) ? $"v{doc.i + 1}" : doc.e.Id;
                         opt.SwaggerDoc(
-                            _version,
+                            _id,
                             new Swashbuckle.AspNetCore.Swagger.Info()
                             {
-                                Title = string.IsNullOrEmpty(version.v.Title) ? $"API v{version.i + 1}" : version.v.Title,
-                                Version = _version
+                                Title = string.IsNullOrEmpty(doc.e.Title) ? $"API v{doc.i + 1}" : doc.e.Title,
+                                Version = doc.e.Version ?? _id
                             }
                             );
                     }
@@ -100,10 +100,10 @@ namespace core.Extensions.Api
                 applicationBuilder.UseSwaggerUI(opt =>
                 {
                     opt.RoutePrefix = _doc.RoutePrefix;
-                    foreach (var version in _doc.Versions.Select((v, i) => new { v, i }))
+                    foreach (var doc in _doc.Endpoints.Select((e, i) => new { e, i }))
                     {
-                        var _version = string.IsNullOrEmpty(version.v.Id) ? $"v{version.i + 1}" : version.v.Id;
-                        opt.SwaggerEndpoint($"/{_doc.RoutePrefix}/{_version}/swagger.json", string.IsNullOrEmpty(version.v.Title) ? $"API v{version.i + 1}" : version.v.Title);                        
+                        var _id = string.IsNullOrEmpty(doc.e.Id) ? $"v{doc.i + 1}" : doc.e.Id;
+                        opt.SwaggerEndpoint($"/{_doc.RoutePrefix}/{_id}/swagger.json", string.IsNullOrEmpty(doc.e.Title) ? $"API v{doc.i + 1}" : doc.e.Title);                        
                     }
                 });
             }

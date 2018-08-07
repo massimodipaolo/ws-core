@@ -34,12 +34,13 @@ namespace core.Extensions.Api
         public class DocumentationOptions
         {
             public string RoutePrefix { get; set; } = "swagger";
-            public IEnumerable<Version> Versions { get; set; }
+            public IEnumerable<EndpointOptions> Endpoints { get; set; }
             public XmlCommentsOptions XmlComments { get; set; }
-            public class Version
+            public class EndpointOptions
             {
                 public string Id { get; set; }
                 public string Title { get; set; }
+                public string Version { get; set; }
             }
             public class XmlCommentsOptions {
                 public string FileName { get; set; }
