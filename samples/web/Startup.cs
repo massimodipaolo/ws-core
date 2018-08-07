@@ -10,22 +10,21 @@ using Microsoft.AspNetCore.Http;
 
 namespace web
 {
-    public class Startup: core.Startup<AppConfig>
+    public class Startup : core.Startup<AppConfig>
     {
         public Startup(IHostingEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory) : base(hostingEnvironment, configuration, loggerFactory)
         {
-            
+
         }
 
-        public override void ConfigureServices(IServiceCollection services) 
+        public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
-
-            services.Configure<AppConfig>(_config.GetSection("appConfig"));
         }
 
-        public override void Configure(IApplicationBuilder app, IOptionsMonitor<AppConfig> appConfigMonitor, IOptionsMonitor<core.Extensions.Base.Configuration> extConfigMonitor, IApplicationLifetime applicationLifetime) {
-            base.Configure(app,appConfigMonitor, extConfigMonitor, applicationLifetime);            
+        public override void Configure(IApplicationBuilder app, IOptionsMonitor<AppConfig> appConfigMonitor, IOptionsMonitor<core.Extensions.Base.Configuration> extConfigMonitor, IApplicationLifetime applicationLifetime)
+        {
+            base.Configure(app, appConfigMonitor, extConfigMonitor, applicationLifetime);
         }
 
     }
