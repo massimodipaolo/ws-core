@@ -1,6 +1,6 @@
 ﻿{
-  "__$schema": "../../src/modules/extensionbase/json-schema.json#",
-  "$schema": "https://raw.githubusercontent.com/massimodipaolo/app-core/master/src/modules/ExtensionBase/json-schema.json",
+  "$schema": "../../src/modules/extensionbase/json-schema.json#",
+  "__$schema": "https://raw.githubusercontent.com/massimodipaolo/app-core/master/src/modules/ExtensionBase/json-schema.json",
   "extConfig": {
     "folder": "Extensions",
     "enableShutDownOnChange": false,
@@ -43,10 +43,24 @@
             "nullValueHandling": "Ignore",
             "formatting": "Indented",
             "referenceLoopHandling": "Ignore"
-          },"documentation": {"routePrefix": "swagga", "versions": [{"id": "v-1", "title": "app sample api"}], "xmlComments": { "fileName": "web.xml","includeControllerComments": true}}
+          },
+          "documentation": {
+            "routePrefix": "swagger",
+            "endpoints": [
+              {
+                "id": "public",
+                "title": "app sample api",
+                "version": "v1"
+              }
+            ],
+            "xmlComments": {
+              "fileName": "web.xml",
+              "includeControllerComments": true
+            }
+          }
         }
       },
-      "app.core.Extensions.Data.EF": {
+      "__app.core.Extensions.Data.EF": {
         "priority": 19,
         "options": {
           "mappings": [
@@ -107,7 +121,7 @@
       "app.core.Extensions.Data.Cache": {
         "priority": 4,
         "options": {
-          "type": "Memory",
+          "type": "SqlServer",
           "redisOptions": {
             "configuration": "",
             "instanceName": "master"

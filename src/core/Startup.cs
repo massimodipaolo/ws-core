@@ -46,13 +46,15 @@ namespace core
 
             _services.Configure<TOptions>(_config.GetSection(appConfigSectionRoot));
 
-            var _razorConfig = _config.GetSection(appConfigSectionRoot).Get<TOptions>().ToExpando().FirstOrDefault(_ => _.Key == "RazorEngine").Value as AppConfig.RazorEngineOptions ?? new AppConfig.RazorEngineOptions();
-            _services.AddRazorLight(() => {
+            var _razorConfig = _config.GetSection(appConfigSectionRoot).Get<TOptions>()?.ToExpando()?.FirstOrDefault(_ => _.Key == "RazorEngine").Value as AppConfig.RazorEngineOptions ?? new AppConfig.RazorEngineOptions();
+            _services.AddRazorLight(() =>
+            {
                 var _builder = new RazorLight.RazorLightEngineBuilder()
-                    .AddDefaultNamespaces(_razorConfig.Namespaces?.ToArray() ?? new[] { "System" });
-                if (_razorConfig.DynamicTemplates != null && _razorConfig.DynamicTemplates.Any())
+                    .AddDefaultNamespaces(_razorConfig?.Namespaces?.ToArray() ?? new[] { "System" });
+                if (_razorConfig?.DynamicTemplates != null && _razorConfig.DynamicTemplates.Any())
                     _builder.AddDynamicTemplates(_razorConfig.DynamicTemplates);
-                if (_razorConfig.Assemblies != null && _razorConfig.Assemblies.Any()) {
+                if (_razorConfig?.Assemblies != null && _razorConfig.Assemblies.Any())
+                {
                     try
                     {
                         _razorConfig.AdditionalMetadataReferences = new HashSet<Microsoft.CodeAnalysis.MetadataReference>(_razorConfig.Assemblies.Select(path => (Microsoft.CodeAnalysis.MetadataReference)Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(path)));

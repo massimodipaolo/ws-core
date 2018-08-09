@@ -40,8 +40,9 @@ namespace core.Extensions.Api
             var _serialization = _options.Serialization ?? new Options.SerializationOptions();
             services
                 .AddMvc()
-                .AddJsonOptions(opt => {
-                    var _setting = opt.SerializerSettings;                    
+                .AddJsonOptions(opt =>
+                {
+                    var _setting = opt.SerializerSettings;
                     _setting.NullValueHandling = _serialization.NullValueHandling;
                     _setting.Formatting = _serialization.Formatting;
                     _setting.ReferenceLoopHandling = _serialization.ReferenceLoopHandling;
@@ -54,21 +55,21 @@ namespace core.Extensions.Api
                 {
                     foreach (var doc in _doc.Endpoints?.Select((e, i) => new { e, i }))
                     {
-                        var _id = string.IsNullOrEmpty(doc.e.Id) ? $"v{doc.i + 1}" : doc.e.Id;
+                        var _id = string.IsNullOrEmpty(doc.e?.Id) ? $"v{doc.i + 1}" : doc.e?.Id;
                         opt.SwaggerDoc(
                             _id,
                             new Swashbuckle.AspNetCore.Swagger.Info()
                             {
-                                Title = string.IsNullOrEmpty(doc.e.Title) ? $"API v{doc.i + 1}" : doc.e.Title,
-                                Version = doc.e.Version ?? _id
+                                Title = string.IsNullOrEmpty(doc.e?.Title) ? $"API v{doc.i + 1}" : doc.e?.Title,
+                                Version = doc.e?.Version ?? _id
                             }
                             );
                     }
 
                     //Xml comments
-                    if (_doc.XmlComments != null && string.IsNullOrEmpty(_doc.XmlComments.FileName))
+                    if (_doc.XmlComments != null && !string.IsNullOrEmpty(_doc.XmlComments.FileName))
                     {
-                        var filePath = System.IO.Path.Combine(System.AppContext.BaseDirectory, _doc.XmlComments.FileName);                        
+                        var filePath = System.IO.Path.Combine(System.AppContext.BaseDirectory, _doc.XmlComments.FileName);
                         opt.IncludeXmlComments(filePath, includeControllerXmlComments: _doc.XmlComments.IncludeControllerComments);
                     }
 
@@ -103,7 +104,7 @@ namespace core.Extensions.Api
                     foreach (var doc in _doc.Endpoints?.Select((e, i) => new { e, i }))
                     {
                         var _id = string.IsNullOrEmpty(doc.e.Id) ? $"v{doc.i + 1}" : doc.e.Id;
-                        opt.SwaggerEndpoint($"/{_doc.RoutePrefix}/{_id}/swagger.json", string.IsNullOrEmpty(doc.e.Title) ? $"API v{doc.i + 1}" : doc.e.Title);                        
+                        opt.SwaggerEndpoint($"/{_doc.RoutePrefix}/{_id}/swagger.json", string.IsNullOrEmpty(doc.e.Title) ? $"API v{doc.i + 1}" : doc.e.Title);
                     }
                 });
             }

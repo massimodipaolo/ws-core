@@ -28,4 +28,7 @@
     <ProjectReference Include="..\..\src\modules\Data.EF.MySql\Data.EF.MySql.csproj" />
     <ProjectReference Include="..\..\src\modules\Data.EF.SqlServer\Data.EF.SqlServer.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\folder\" />
+  </ItemGroup>
 </Project>

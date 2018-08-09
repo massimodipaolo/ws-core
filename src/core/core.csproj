@@ -2,7 +2,7 @@
   
     <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.1.2</PackageVersion>
+    <PackageVersion>1.1.3</PackageVersion>
     <PackageId>app.core</PackageId>
     <AssemblyName>app.core</AssemblyName>
     <RootNamespace>core</RootNamespace>

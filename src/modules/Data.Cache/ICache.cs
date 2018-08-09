@@ -6,6 +6,7 @@ namespace core.Extensions.Data.Cache
 {
     public interface ICache
     {
+        ISet<string> Keys { get; }
         object Get(string key);
         T Get<T>(string key);
         void Set(string key, object value);

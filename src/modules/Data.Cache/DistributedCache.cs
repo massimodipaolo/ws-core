@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace core.Extensions.Data.Cache
 {
@@ -17,6 +18,8 @@ namespace core.Extensions.Data.Cache
         {
             _client = client;
         }
+
+        public ISet<string> Keys => Get<HashSet<string>>(_keyCollection) ?? new HashSet<string>();
 
         public object Get(string key)
         {
@@ -49,34 +52,35 @@ namespace core.Extensions.Data.Cache
             }
             _client.Set(key, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)), _options);
 
-            SyncAllKeys(key);
+            if (key != _keyCollection && !Keys.Contains(key))
+                SyncKeys(Keys.Append(key).ToHashSet<string>());
 
-        }
-
-        private void SyncAllKeys(string key)
-        {
-            if (key != _keyCollection)
-            {
-                var _all_keys = Get<List<string>>(_keyCollection) ?? new List<string>();                
-                if (!_all_keys.Contains(key))
-                {
-                    _all_keys.Add(key);
-                    Set(_keyCollection, _all_keys, new CacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(30) });
-                }
-            }
         }
 
         public void Remove(string key)
+        {
+            _client.Remove(key);
+
+            if (Keys.Contains(key))
+                SyncKeys(Keys.Where(_ => _ != key).ToHashSet<string>());
+        }
+
+        public void RemoveAndSkipSync(string key)
         {
             _client.Remove(key);
         }
 
         public void Clear()
         {
-            foreach (var k in Get<List<string>>(_keyCollection))
-                Remove(k);
+            foreach (var k in Keys)
+                RemoveAndSkipSync(k);
 
-            Set(_keyCollection, new List<string>(), new CacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(30) });
+            SyncKeys(new HashSet<string>());
+        }
+
+        private void SyncKeys(HashSet<string> keys)
+        {
+            Set(_keyCollection, keys, new CacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(30) });
         }
     }
 }

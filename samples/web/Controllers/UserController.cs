@@ -22,7 +22,7 @@ namespace web.Controllers
         /// <param name="items"></param>
         /// <returns><code>204</code></returns>                
         [HttpPost]
-        [Route("merge")]        
+        [Route("merge")]
         public IActionResult Merge([FromBody]IEnumerable<User> items)
         {
             _repository.Merge(items);
@@ -84,6 +84,55 @@ namespace web.Controllers
         {
             _cache.Clear();
             return Ok();
+        }
+
+    }
+
+
+    [Route("api/[controller]")]
+    public class CacheController : ControllerBase
+    {
+        private ICache _cache;
+        public CacheController(ICache cache)
+        {
+            _cache = cache;
+        }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok(_cache.Keys);
+        }
+
+        [HttpGet]
+        [Route("clear")]
+        public IActionResult Clear(string key)
+        {
+            _cache.Clear();
+            return Ok(_cache.Keys);
+        }
+
+        [HttpGet]
+        [Route("get/{key}")]
+        public IActionResult GetKey(string key)
+        {
+            return Ok(_cache.Get<object>(key));
+        }
+
+        [HttpGet]
+        [Route("set/{key}")]
+        public IActionResult SetKey(string key)
+        {
+            _cache.Set(key, $"{key}-{DateTime.UtcNow}", CacheEntryOptions.Expiration.Fast);
+            return Ok(_cache.Keys);
+        }
+
+        [HttpGet]
+        [Route("remove/{key}")]
+        public IActionResult RemoveKey(string key)
+        {
+            _cache.Remove(key);
+            return Ok(_cache.Keys);
         }
 
     }
