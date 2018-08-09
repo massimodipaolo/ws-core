@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.0.4</PackageVersion>
+    <PackageVersion>1.0.5</PackageVersion>
     <PackageId>app.core.Extensions.Data.FileSystem</PackageId>
     <AssemblyName>app.core.Extensions.Data.FileSystem</AssemblyName>
     <RootNamespace>core.Extensions.Data.FileSystem</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.net core 2.1; Merge / Query</PackageReleaseNotes>
+    <PackageReleaseNotes>Export IFileProvider</PackageReleaseNotes>
     <PackageTags></PackageTags>
   </PropertyGroup>
 

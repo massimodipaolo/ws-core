@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.0.1</PackageVersion> 
+    <PackageVersion>1.0.2</PackageVersion> 
     <PackageId>app.core.Extensions.Spa</PackageId>
     <AssemblyName>app.core.Extensions.Spa</AssemblyName>
     <RootNamespace>core.Extensions.Spa</RootNamespace>

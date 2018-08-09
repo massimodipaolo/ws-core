@@ -29,7 +29,7 @@ namespace core.Extensions.StaticFiles
                         try
                         {
                             //TODO: Inject IFileProvider (or ServiceLocator serviceProvider.GetService<IFileProvider>()): https://docs.microsoft.com/en-us/aspnet/core/fundamentals/file-providers
-                            StaticFileOptions.FileProvider = new PhysicalFileProvider((opt.IsRelativePath ?? ((opt.Path != null && System.Text.RegularExpressions.Regex.IsMatch(opt.Path, @"^([a-z]:)*(\/*(\.*[a-z0-9]+\/)*(\.*[a-z0-9]+))")))) ? Path.Combine(ContentPath, opt.Path) : opt.Path);
+                            StaticFileOptions.FileProvider = opt.FileProvider(_env);
                         } catch(Exception ex) {
                             _logger.LogError(ex.Message);
                         }
@@ -105,7 +105,5 @@ namespace core.Extensions.StaticFiles
                 applicationBuilder.UseStaticFiles(setting.StaticFileOptions);
             }            
         }
-
-        private string ContentPath => _env?.ContentRootPath ?? Directory.GetCurrentDirectory();
     }
 }

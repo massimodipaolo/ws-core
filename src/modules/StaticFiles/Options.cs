@@ -1,7 +1,9 @@
-﻿using System;
+﻿using core.Extensions.Base;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.FileProviders;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using core.Extensions.Base;
+using System.IO;
 
 namespace core.Extensions.StaticFiles
 {
@@ -18,6 +20,8 @@ namespace core.Extensions.StaticFiles
             public String[] DefaultFiles { get; set; }
             public bool EnableDirectoryBrowser { get; set; } = false;
             public bool? IsRelativePath { get; set; }
+            public string Root(IHostingEnvironment env) => (IsRelativePath ?? ((Path != null && System.Text.RegularExpressions.Regex.IsMatch(Path, @"^([a-z]:)*(\/*(\.*[a-z0-9]+\/)*(\.*[a-z0-9]+))")))) ? System.IO.Path.Combine(env?.ContentRootPath ?? Directory.GetCurrentDirectory(), Path) : Path;
+            public IFileProvider FileProvider(IHostingEnvironment env) => new PhysicalFileProvider(Root(env));
         }
     }
 }

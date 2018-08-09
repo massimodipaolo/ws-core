@@ -2,7 +2,7 @@
   
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.0.4</PackageVersion>    
+    <PackageVersion>1.0.5</PackageVersion>    
     <PackageId>app.core.Extensions.Data.Cache</PackageId>
     <AssemblyName>app.core.Extensions.Data.Cache</AssemblyName>
     <RootNamespace>core.Extensions.Data.Cache</RootNamespace>

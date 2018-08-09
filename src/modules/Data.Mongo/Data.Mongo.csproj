@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netcoreapp2.1</TargetFramework>
-		<PackageVersion>1.0.2</PackageVersion>
+		<PackageVersion>1.0.3</PackageVersion>
 		<PackageId>app.core.Extensions.Data.Mongo</PackageId>
 		<AssemblyName>app.core.Extensions.Data.Mongo</AssemblyName>
 		<RootNamespace>core.Extensions.Data.Mongo</RootNamespace>

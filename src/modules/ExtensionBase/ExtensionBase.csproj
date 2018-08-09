@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netcoreapp2.1</TargetFramework>
-		<PackageVersion>2.0.2</PackageVersion>
+		<PackageVersion>2.0.3</PackageVersion>
 		<PackageId>app.core.Extensions.Base</PackageId>
 		<AssemblyName>app.core.Extensions.Base</AssemblyName>
     <RootNamespace>core.Extensions.Base</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
 		<Description>Base extension module, derived from ExtCore by Dmitry Sikorsky</Description>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.net core 2.1</PackageReleaseNotes>		
+    <PackageReleaseNotes>change priority setter</PackageReleaseNotes>		
 		<PackageTags>extension base</PackageTags>		
 		<PreBuildEvent />
 	</PropertyGroup>
