@@ -11,9 +11,9 @@ namespace core.Extensions.Message
 {
     public class EmailMessage : IMessage
     {
-        private ILogger<IMessage> _logger { get; set; }
+        private ILogger<EmailMessage> _logger { get; set; }
         private IMessageConfiguration _config { get; set; }
-        public EmailMessage(ILogger<IMessage> logger, IMessageConfiguration config)
+        public EmailMessage(ILogger<EmailMessage> logger, IMessageConfiguration config)
         {
             _logger = logger;
             _config = config;
@@ -21,7 +21,7 @@ namespace core.Extensions.Message
         public async Task SendAsync(Message message)
         {
             var sender = _config.Senders.FirstOrDefault();
-            if (sender != null && string.IsNullOrEmpty(sender.Address))
+            if (sender != null && !string.IsNullOrEmpty(sender.Address))
             {
                 var mime = new MimeMessage();
                 mime.From.Add(new MailboxAddress(message.Sender.Name, message.Sender.Address));
@@ -47,7 +47,7 @@ namespace core.Extensions.Message
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError(ex.Message);
+                        _logger.LogError(ex,"Send email error");                        
                     }
                     finally
                     {
