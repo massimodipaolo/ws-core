@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 namespace core.Extensions.Data
-{   
+{
     public class AppDbContext : DbContext
     {
         static AppDbContext()
@@ -20,7 +20,7 @@ namespace core.Extensions.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            EF.Options options = new EF.Extension()._options;            
+            EF.Options options = new EF.Extension()._options;
 
             // Ignore common unsupported array of primitive types
             modelBuilder
@@ -35,7 +35,7 @@ namespace core.Extensions.Data
                 Type t = Type.GetType(type);
                 if (t != null)
                     modelBuilder.Ignore(t);
-            }                
+            }
 
             // Mappings
             var tKeys = new KeyValuePair<Type, int>[] {
@@ -44,7 +44,7 @@ namespace core.Extensions.Data
                 new KeyValuePair<Type, int>(typeof(IEntity<Guid>),36),
                 new KeyValuePair<Type, int>(typeof(IEntity<string>),255)
             };
-            
+
             foreach (KeyValuePair<Type, int> tKey in tKeys)
             {
                 foreach (Type type in Base.Util.GetAllTypesOf(tKey.Key)/*.Where(_ => _ != typeof(Entity<Guid>))*/)
@@ -62,13 +62,14 @@ namespace core.Extensions.Data
                                     //.HasColumnType(tKey.Value)
                                     .HasDefaultValue();
 
-                        foreach (var p in opt?.Properties)
-                        {
-                            if (p.Ignore)
-                                entityBuilder.Ignore(p.Name);
-                            else
-                                entityBuilder.Property(p.Name).HasColumnName(string.IsNullOrEmpty(p.Column) ? p.Name : p.Column);
-                        }
+                        if (opt?.Properties != null)
+                            foreach (var p in opt.Properties)
+                            {
+                                if (p.Ignore)
+                                    entityBuilder.Ignore(p.Name);
+                                else
+                                    entityBuilder.Property(p.Name).HasColumnName(string.IsNullOrEmpty(p.Column) ? p.Name : p.Column);
+                            }
 
 
                     }
