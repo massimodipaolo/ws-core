@@ -99,6 +99,14 @@
                         "referenceLoopHandling": {
                           "enum": [ "Error", "Ignore", "Serialize" ],
                           "default": "Error"
+                        },
+                        "dateParseHandling": {
+                          "enum": [ "None", "DateTime", "DateTimeOffset" ],
+                          "default": "DateTime"
+                        },
+                        "dateTimeZoneHandling": {
+                          "enum": [ "Local", "Utc", "Unspecified", "RoundtripKind" ],
+                          "default": "RoundtripKind"
                         }
                       }
                     },

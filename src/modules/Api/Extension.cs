@@ -46,6 +46,8 @@ namespace core.Extensions.Api
                     _setting.NullValueHandling = _serialization.NullValueHandling;
                     _setting.Formatting = _serialization.Formatting;
                     _setting.ReferenceLoopHandling = _serialization.ReferenceLoopHandling;
+                    _setting.DateParseHandling = _serialization.DateParseHandling;
+                    _setting.DateTimeZoneHandling = _serialization.DateTimeZoneHandling;
                 });
 
             var _doc = _options.Documentation;
