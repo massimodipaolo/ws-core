@@ -28,17 +28,21 @@
               "database": { "type": "string" }
             }
           }
-        }
+        },
+        "serviceLifetime": {
+          "enum": [ "Singleton", "Scoped", "Transient" ],
+          "default": "Scoped"
+        }        
       }
     },
     "endpoint": {
       "type": "object",
-      "required": ["address"],
+      "required": [ "address" ],
       "properties": {
         "address": { "type": "string" },
         "port": { "type": "integer" },
         "username": { "type": "string" },
-        "password": { "type":  "string"}
+        "password": { "type": "string" }
       }
     },
     "entryExpirationInMinutes": {
@@ -61,7 +65,7 @@
           "default": 1440
         }
       }
-    }
+    }    
   },
   "required": [ "extConfig" ],
   "properties": {
@@ -411,7 +415,7 @@
               ],
               "properties": {
                 "options": {
-                  "$ref": "#/definitions/dbConnection"
+                  "$ref": "#/definitions/dbConnection"                  
                 }
               }
             },

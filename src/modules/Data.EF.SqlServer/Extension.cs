@@ -23,7 +23,7 @@ namespace core.Extensions.Data.EF.SqlServer
                     _.Connections = connections;
                 });
                 */
-                serviceCollection.AddDbContext<AppDbContext>(_ => _.UseSqlServer(connections.FirstOrDefault().ConnectionString));
+                serviceCollection.AddDbContext<AppDbContext>(_ => _.UseSqlServer(connections.FirstOrDefault().ConnectionString),_options.ServiceLifetime);                
                 serviceCollection.PostConfigure<AppDbContext>(_ => _.Database.EnsureCreated());
                 serviceCollection.TryAddTransient(typeof(IRepository<,>), typeof(Repository.EF<,>));
             }
