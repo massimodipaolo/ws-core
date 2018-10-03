@@ -54,11 +54,29 @@ namespace core.Extensions.Data.Repository
         {
             if (entities != null && entities.Any())
             {
+                var joined = _collection
+                    .Join(entities, c => c.Id, e => e.Id, (c, e) => new { c, e })
+                    .ToList();
+
+                var toUpdate = joined
+                    .Where(_ => !_.c.Equals(_.e)) // First fast check
+                    .Where(_ => Newtonsoft.Json.JsonConvert.SerializeObject(_.c) != Newtonsoft.Json.JsonConvert.SerializeObject(_.e)) // Deeper comparison
+                    .Select(_ => _.e);
+                if (toUpdate != null && toUpdate.Any())
+                    _collection.UpdateRange(toUpdate);
+
+                var toAdd = entities.Except(joined.Select(_ => _.e), new EntityComparer<T, TKey>());
+                if (toAdd != null && toAdd.Any())
+                    _collection.AddRange(toAdd);
+
                 foreach (var entity in entities)
-                    if (_collection.Any(_ => _.Id.Equals(entity.Id)))
+                {
+                    var found = _collection.FirstOrDefault(_ => _.Id.Equals(entity.Id));
+                    if (null != found && !entity.Equals(found))                        
                         _collection.Update(entity);
                     else
                         _collection.Add(entity);
+                }                    
 
                 _context.SaveChanges();
             }
