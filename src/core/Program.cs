@@ -20,7 +20,7 @@ namespace core
 
         public static IWebHostBuilder WebHostBuilder(string[] args, Assembly assembly) =>
             new WebHostBuilder()
-            .UseKestrel()
+            .UseKestrel(_ => { _.AddServerHeader = false; })
             .UseContentRoot(Directory.GetCurrentDirectory())
             .ConfigureAppConfiguration((ctx, config) =>
             {
