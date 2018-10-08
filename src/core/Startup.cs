@@ -93,7 +93,7 @@ namespace core
                 var _extCurrentAssembliesSerialized = _extSerialize(extConfig.Assemblies);
                 var isUpdatable = _extCurrentAssembliesSerialized == _extLastConfigAssembliesSerialized;
 
-                _logger.CreateLogger<Extensions.Base.Configuration>().LogWarning($"Config changed {DateTime.Now}; Is updatable: {isUpdatable} ");
+                _logger.CreateLogger<Extensions.Base.Configuration>().LogInformation($"Config changed {DateTime.Now}; Is updatable: {isUpdatable} ");
 
                 if (isUpdatable)
                     _extLastConfigAssembliesSerialized = _extCurrentAssembliesSerialized;
