@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+  <PropertyGroup> 
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.0.2</PackageVersion> 
+    <PackageVersion>1.0.3</PackageVersion> 
     <PackageId>app.core.Extensions.Spa</PackageId>
     <AssemblyName>app.core.Extensions.Spa</AssemblyName>
     <RootNamespace>core.Extensions.Spa</RootNamespace>
@@ -12,14 +12,15 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>Execute order</PackageReleaseNotes>
     <PackageTags>spa, single page application</PackageTags>
-  </PropertyGroup>
+  </PropertyGroup>  
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
   </ItemGroup>  
 
-  <ItemGroup>
+  <ItemGroup>    
     <ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
+    <ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />  
   </ItemGroup>
 
 </Project>

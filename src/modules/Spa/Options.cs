@@ -14,7 +14,9 @@ namespace core.Extensions.Spa
         public PrerenderingOptions Prerendering { get; set; }        
 
         public class PrerenderingOptions
-        {
+        { 
+            public bool Enable { get; set; } = true;
+            public bool CacheResponse { get; set; } = false;
             public string BootModulePath { get; set; } = $"{_clientFolder}/dist/server/main.js";
             public string BootModuleBuilderScript { get; set; }
             public string[] ExcludeUrls { get; set; }

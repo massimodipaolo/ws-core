@@ -492,6 +492,15 @@
                     "prerendering": {
                       "type": "object",
                       "properties": {
+                        "enable": {
+                          "type": "boolean",
+                          "default": true
+                        },
+                        "cacheResponse": {
+                          "type": "boolean",
+                          "description": "Cache prerendering output, injecting app ICache implementation",
+                          "default": false
+                        },
                         "bootModulePath": {
                           "type": "string",
                           "description": "Path, relative to your application root, of the JavaScript file containing prerendering logic",
@@ -509,7 +518,7 @@
                         "contextData": {
                           "type": "array",
                           "items": {
-                            "enum": [ "features", "items", "request", "session", "user", "webSockets" ]
+                            "enum": [ "features", "items", "session", "user", "webSockets" ]
                           },
                           "description": "Pass additional context data to the prerendering entrypoint code",
                           "uniqueItems": true

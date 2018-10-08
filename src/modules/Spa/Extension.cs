@@ -36,20 +36,26 @@ namespace core.Extensions.Spa
 
         public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
         {
-            base.Execute(applicationBuilder, serviceProvider);
+            base.Execute(applicationBuilder, serviceProvider); 
 
             try
             {
                 if (_options != null)
                 {
                     applicationBuilder.UseSpaStaticFiles();
+
+                    if (_options.Prerendering != null && _options.Prerendering.Enable && _options.Prerendering.CacheResponse)
+                    {
+                        applicationBuilder.UseMiddleware<ResponseCacheMiddleware>();
+                    };
+
                     applicationBuilder.UseSpa(_ =>
                     {
                         _.Options.DefaultPage = _options.DefaultPage;
                         _.Options.SourcePath = _options.SourcePath;
                         _.Options.StartupTimeout = TimeSpan.FromSeconds(_options.StartupTimeoutInSeconds);
 
-                        if (_options.Prerendering != null)
+                        if (_options.Prerendering != null && _options.Prerendering.Enable)
                         {
                             _.UseSpaPrerendering(conf =>
                             {
@@ -70,9 +76,7 @@ namespace core.Extensions.Spa
                                                     break;
                                                 case "items":
                                                     data[p] = ctx.Items;
-                                                    break;
-                                                case "request":
-                                                    data[p] = ctx.Request;
+                                                    break;                                                
                                                     break;
                                                 case "session":
                                                     data[p] = ctx.Session;
