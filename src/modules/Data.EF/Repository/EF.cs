@@ -67,16 +67,7 @@ namespace core.Extensions.Data.Repository
 
                 var toAdd = entities.Except(joined.Select(_ => _.e), new EntityComparer<T, TKey>());
                 if (toAdd != null && toAdd.Any())
-                    _collection.AddRange(toAdd);
-
-                foreach (var entity in entities)
-                {
-                    var found = _collection.FirstOrDefault(_ => _.Id.Equals(entity.Id));
-                    if (null != found && !entity.Equals(found))                        
-                        _collection.Update(entity);
-                    else
-                        _collection.Add(entity);
-                }                    
+                    _collection.AddRange(toAdd);                   
 
                 _context.SaveChanges();
             }
