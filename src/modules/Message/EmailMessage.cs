@@ -18,6 +18,11 @@ namespace core.Extensions.Message
             _logger = logger;
             _config = config;
         }
+        public class EmailMessageModel
+        {
+            public bool IsHtml { get; set; } = true;
+        }
+
         public async Task SendAsync(Message message)
         {
             var sender = _config.Senders.FirstOrDefault();
@@ -30,10 +35,35 @@ namespace core.Extensions.Message
                 mime.Bcc.AddRange(message.Recipients.Where(_ => _.Type == Message.ActorType.Logging).Select(x => new MailboxAddress(x.Name, x.Address)));
 
                 mime.Subject = message.Subject;
-                mime.Body = new TextPart(TextFormat.Html)
+
+                var model = (EmailMessageModel)message.Model ?? new EmailMessageModel();
+
+                var body = new TextPart(model.IsHtml ? TextFormat.Html : TextFormat.Plain)
                 {
                     Text = message.Content
                 };
+
+                var attachments = message.Attachments?.Where(_ => _.Content.Length > 0);
+                if (attachments != null && attachments.Any())
+                {                    
+                    var multipart = new Multipart("mixed");
+                    multipart.Add(body);
+
+                    foreach(var attachment in attachments)
+                    {   
+                        multipart.Add(new MimePart()
+                        {
+                            FileName = attachment.Name ?? Guid.NewGuid().ToString(),
+                            Content = new MimeContent(new System.IO.MemoryStream(attachment.Content)),
+                            ContentDisposition = new ContentDisposition(ContentDisposition.Attachment),
+                            ContentTransferEncoding = ContentEncoding.Base64
+                        });
+                    }
+                    
+                    mime.Body = multipart;
+                }
+                else
+                    mime.Body = body;
 
                 using (var client = new MailKit.Net.Smtp.SmtpClient())
                 {

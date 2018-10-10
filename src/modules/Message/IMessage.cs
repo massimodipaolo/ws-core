@@ -18,6 +18,12 @@ namespace core.Extensions.Message
         public IEnumerable<Actor> Recipients { get; set; }
         public string Subject { get; set; }
         public string Content { get; set; }
+        public IEnumerable<Attachment> Attachments { get; set; }
+
+        /// <summary>
+        /// Implementation-specific model
+        /// </summary>
+        public dynamic Model { get; set; }
         public class Actor
         {
             public string Name { get; set; }
@@ -30,6 +36,12 @@ namespace core.Extensions.Message
             Primary,
             Subscriber,
             Logging
+        }
+
+        public class Attachment
+        {
+            public string Name { get; set; }
+            public byte[] Content { get; set; }
         }
     }
 
