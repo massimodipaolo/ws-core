@@ -21,9 +21,9 @@ namespace core.Extensions.Message
         public IEnumerable<Attachment> Attachments { get; set; }
 
         /// <summary>
-        /// Implementation-specific model
+        /// Implementation-specific properties
         /// </summary>
-        public dynamic Model { get; set; }
+        public dynamic Arguments { get; set; }
         public class Actor
         {
             public string Name { get; set; }

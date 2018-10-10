@@ -2,7 +2,7 @@
 
   <PropertyGroup> 
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.0.2</PackageVersion>  
+    <PackageVersion>1.0.3</PackageVersion>  
     <PackageId>app.core.Extensions.Message</PackageId>
     <AssemblyName>app.core.Extensions.Message</AssemblyName>
     <RootNamespace>core.Extensions.Message</RootNamespace>

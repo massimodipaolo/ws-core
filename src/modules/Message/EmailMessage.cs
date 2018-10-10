@@ -36,7 +36,7 @@ namespace core.Extensions.Message
 
                 mime.Subject = message.Subject;
 
-                var model = (EmailMessageModel)message.Model ?? new EmailMessageModel();
+                var model = (EmailMessageModel)message.Arguments ?? new EmailMessageModel();
 
                 var body = new TextPart(model.IsHtml ? TextFormat.Html : TextFormat.Plain)
                 {
