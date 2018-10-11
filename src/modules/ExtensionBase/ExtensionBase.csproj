@@ -13,7 +13,7 @@
     <PackageReleaseNotes>change priority setter</PackageReleaseNotes>		
 		<PackageTags>extension base</PackageTags>		
 		<PreBuildEvent />
-	</PropertyGroup>
+	</PropertyGroup>  
 	<ItemGroup>
 		<None Include="Extension.cs" />
 	</ItemGroup>

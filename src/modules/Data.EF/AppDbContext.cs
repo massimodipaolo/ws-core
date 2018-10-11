@@ -63,14 +63,18 @@ namespace core.Extensions.Data
                                     .HasDefaultValue();
 
                         if (opt?.Properties != null)
-                            foreach (var p in opt.Properties)
+                            foreach (var p in opt.Properties.Where(_ => !string.IsNullOrEmpty(_.Name)))
                             {
                                 if (p.Ignore)
                                     entityBuilder.Ignore(p.Name);
                                 else
-                                    entityBuilder.Property(p.Name).HasColumnName(string.IsNullOrEmpty(p.Column) ? p.Name : p.Column);
+                                    try
+                                    {
+                                        if (!string.IsNullOrEmpty(p.Column))
+                                            entityBuilder.Property(p.Name).HasColumnName(p.Column);
+                                    }
+                                    catch { }
                             }
-
 
                     }
                     catch { }
