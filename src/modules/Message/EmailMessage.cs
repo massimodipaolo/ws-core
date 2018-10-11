@@ -36,7 +36,7 @@ namespace core.Extensions.Message
 
                 mime.Subject = message.Subject;
 
-                var model = Newtonsoft.Json.JsonConvert.DeserializeObject<EmailMessageModel>(Newtonsoft.Json.JsonConvert.SerializeObject(message.Arguments));
+                var model = message.Arguments != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<EmailMessageModel>(Newtonsoft.Json.JsonConvert.SerializeObject(message.Arguments)) : new EmailMessageModel();
 
                 var body = new TextPart(model.IsHtml ? TextFormat.Html : TextFormat.Plain)
                 {
