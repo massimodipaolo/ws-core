@@ -12,12 +12,12 @@ namespace core.Extensions.Spa
     public class ResponseCacheMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ICache _cache;        
+        private readonly ICache _cache;
 
         public ResponseCacheMiddleware(ICache cache, RequestDelegate next)
         {
             _next = next;
-            _cache = cache;            
+            _cache = cache;
         }
 
         public async Task Invoke(HttpContext ctx)
@@ -40,15 +40,17 @@ namespace core.Extensions.Spa
 
                     await _next(ctx);
 
+                    // fill response
+                    ctx.Response.Body.Seek(0, SeekOrigin.Begin);
+                    string text = await new StreamReader(ctx.Response.Body).ReadToEndAsync();
+                    ctx.Response.Body.Seek(0, SeekOrigin.Begin);
+
                     // set cache
                     if (ctx.Response.StatusCode == 200)
-                    {
-                        ctx.Response.Body.Seek(0, SeekOrigin.Begin);
-                        string text = await new StreamReader(ctx.Response.Body).ReadToEndAsync();
-                        ctx.Response.Body.Seek(0, SeekOrigin.Begin);
-                        _cache.Set(key, text, CacheEntryOptions.Expiration.Never);                        
-                        await ctx.Response.Body.CopyToAsync(stream);
-                    }
+                        _cache.Set(key, text, CacheEntryOptions.Expiration.Never);
+
+                    await ctx.Response.Body.CopyToAsync(stream);
+
                 }
             }
             else

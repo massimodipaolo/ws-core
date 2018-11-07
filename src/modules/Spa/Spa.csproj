@@ -2,9 +2,9 @@
 
   <PropertyGroup> 
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.0.3</PackageVersion> 
+    <PackageVersion>1.0.4</PackageVersion> 
     <PackageId>app.core.Extensions.Spa</PackageId>
-    <AssemblyName>app.core.Extensions.Spa</AssemblyName>
+    <AssemblyName>app.core.Extensions.Spa</AssemblyName> 
     <RootNamespace>core.Extensions.Spa</RootNamespace>
     <Authors>Massimo Di Paolo</Authors>
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>

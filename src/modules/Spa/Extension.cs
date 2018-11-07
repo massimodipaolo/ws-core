@@ -76,8 +76,7 @@ namespace core.Extensions.Spa
                                                     break;
                                                 case "items":
                                                     data[p] = ctx.Items;
-                                                    break;                                                
-                                                    break;
+                                                    break;                                                                                                    
                                                 case "session":
                                                     data[p] = ctx.Session;
                                                     break;
