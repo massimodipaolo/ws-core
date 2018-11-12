@@ -429,7 +429,7 @@
                 }
               }
             },
-            "app.core.Extensions.FileSystem": {
+            "app.core.Extensions.Data.FileSystem": {
               "$ref": "#/definitions/assembly"
             },
             "app.core.Extensions.Identity": { "$ref": "#/definitions/assembly" },
