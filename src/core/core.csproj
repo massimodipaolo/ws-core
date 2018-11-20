@@ -2,8 +2,8 @@
   
     <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.1.6</PackageVersion>
-    <PackageId>app.core</PackageId> 
+    <PackageVersion>1.1.7</PackageVersion>
+    <PackageId>app.core</PackageId>  
     <AssemblyName>app.core</AssemblyName>
     <RootNamespace>core</RootNamespace>
     <Product>app-core</Product> 
@@ -13,8 +13,8 @@
     <Description>Base project for extandable .net core web application.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>      
     <PackageReleaseNotes>Inject App Configuration</PackageReleaseNotes>    
-    <PackageTags>update Kestrel</PackageTags>    
-  </PropertyGroup>  
+    <PackageTags>Remove RazorLight pkg, waiting for a new release: https://github.com/toddams/RazorLight/issues/103 </PackageTags>    
+  </PropertyGroup>   
    
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.1.1" />
@@ -26,21 +26,20 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
-    <PackageReference Include="ExtCore.WebApplication" Version="3.3.0" />
-    <PackageReference Include="RazorLight" Version="2.0.0-beta1" /> 
+    <PackageReference Include="ExtCore.WebApplication" Version="3.3.0" />  
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot/" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot/**/*.*" Pack="false" />
-    <Content Update="**/*.json" Pack="false" />
-    <Content Update="*.config" Pack="false" />
+    <Content Update="**/*.json" Pack="false" /> 
+    <Content Update="*.config" Pack="false" /> 
     <Folder Update="Files/">
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </Folder>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\modules\ExtensionBase\ExtensionBase.csproj" />
-  </ItemGroup>
-</Project>
+  </ItemGroup>   
+</Project> 

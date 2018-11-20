@@ -11,7 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using RazorLight.Extensions;
 
 namespace core
 {
@@ -46,6 +45,7 @@ namespace core
 
             _services.Configure<TOptions>(_config.GetSection(appConfigSectionRoot));
 
+            /*
             var _razorConfig = _config.GetSection(appConfigSectionRoot).Get<TOptions>()?.ToExpando()?.FirstOrDefault(_ => _.Key == "RazorEngine").Value as AppConfig.RazorEngineOptions ?? new AppConfig.RazorEngineOptions();
             _services.AddRazorLight(() =>
             {
@@ -66,6 +66,7 @@ namespace core
                     .UseMemoryCachingProvider()
                     .Build();
             });
+            */
 
             core.Extensions.Base.Extension.Init(_services, _services.BuildServiceProvider());
 
