@@ -10,12 +10,12 @@ namespace core.Extensions.Spa
     public class Extension : Base.Extension
     {
         private Options _options => GetOptions<Options>();
-        
+
 
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
-            base.Execute(serviceCollection, serviceProvider); 
-            
+            base.Execute(serviceCollection, serviceProvider);
+
             try
             {
                 if (_options != null)
@@ -27,16 +27,17 @@ namespace core.Extensions.Spa
                     if (_options.Prerendering != null)
                         serviceCollection.AddSpaPrerenderer();
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _logger.LogError($"{ex.Message} /n {ex.Source} /n {ex.StackTrace} /n {ex.InnerException}");
             }
-            
+
         }
 
         public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
         {
-            base.Execute(applicationBuilder, serviceProvider); 
+            base.Execute(applicationBuilder, serviceProvider);
 
             try
             {
@@ -44,9 +45,9 @@ namespace core.Extensions.Spa
                 {
                     applicationBuilder.UseSpaStaticFiles();
 
-                    if (_options.Prerendering != null && _options.Prerendering.Enable && _options.Prerendering.CacheResponse)
+                    if (_options.Prerendering != null && _options.Prerendering.Enable && _options.Prerendering.CacheResponse != null && _options.Prerendering.CacheResponse.Enable)
                     {
-                        applicationBuilder.UseMiddleware<ResponseCacheMiddleware>();
+                        applicationBuilder.UseMiddleware<ResponseCacheMiddleware>(_options.Prerendering.CacheResponse);
                     };
 
                     applicationBuilder.UseSpa(_ =>
@@ -76,7 +77,7 @@ namespace core.Extensions.Spa
                                                     break;
                                                 case "items":
                                                     data[p] = ctx.Items;
-                                                    break;                                                                                                    
+                                                    break;
                                                 case "session":
                                                     data[p] = ctx.Session;
                                                     break;
@@ -100,7 +101,8 @@ namespace core.Extensions.Spa
 
                     });
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _logger.LogError($"{ex.Message} /n {ex.Source} /n {ex.StackTrace} /n {ex.InnerException}");
             }

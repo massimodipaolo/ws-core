@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,11 +14,13 @@ namespace core.Extensions.Spa
     {
         private readonly RequestDelegate _next;
         private readonly ICache _cache;
+        private readonly Options.PrerenderingOptions.CacheResponseOptions _options;
 
-        public ResponseCacheMiddleware(ICache cache, RequestDelegate next)
+        public ResponseCacheMiddleware(ICache cache, RequestDelegate next, Options.PrerenderingOptions.CacheResponseOptions options)
         {
             _next = next;
             _cache = cache;
+            _options = options;
         }
 
         public async Task Invoke(HttpContext ctx)
@@ -62,9 +65,17 @@ namespace core.Extensions.Spa
         private bool IsCachable(HttpContext ctx)
         {
             var rq = ctx.Request;
+
             return
-                string.IsNullOrWhiteSpace(rq.QueryString.Value) && // don't cache parameterized path
-                string.IsNullOrWhiteSpace(System.IO.Path.GetExtension(rq.Path)); // only extensionless resources
+                (
+                    (!_options.SkipQueryStringPath || string.IsNullOrWhiteSpace(rq.QueryString.Value)) // don't cache parameterized path
+                    && (!_options.SkipFilePath || string.IsNullOrWhiteSpace(System.IO.Path.GetExtension(rq.Path))) // only extensionless resource
+                    && (_options.ExcludePaths == null || !_options.ExcludePaths.Any(_ => rq.Path.StartsWithSegments(_))) // exclude specific prefixes
+                )
+                ||
+                (
+                    _options.IncludePaths != null && _options.IncludePaths.Any(_ => rq.Path.StartsWithSegments(_)) // always include these prefixes
+                );
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using core.Extensions.Base;
 
 namespace core.Extensions.Spa
-{    
+{
     public class Options : IOptions
     {
         private const string _clientFolder = "Client";
@@ -11,16 +11,44 @@ namespace core.Extensions.Spa
         public int StartupTimeoutInSeconds { get; set; } = 90;
         public string SpaDevelopmentServer { get; set; } // http://localhost:4200
         public string CliServerScript { get; set; } // start
-        public PrerenderingOptions Prerendering { get; set; }        
+        public PrerenderingOptions Prerendering { get; set; }
 
         public class PrerenderingOptions
-        { 
+        {
             public bool Enable { get; set; } = true;
-            public bool CacheResponse { get; set; } = false;
+            public CacheResponseOptions CacheResponse { get; set; }
             public string BootModulePath { get; set; } = $"{_clientFolder}/dist/server/main.js";
             public string BootModuleBuilderScript { get; set; }
             public string[] ExcludeUrls { get; set; }
             public string[] ContextData { get; set; }
+
+            public class CacheResponseOptions
+            {
+                public bool Enable { get; set; } = true;
+                /// <summary>
+                /// Don't cache parameterized path
+                /// <see cref="T:core.Extensions.Spa.Options.PrerenderingOptions.CacheResponseOptions"/> skip query
+                /// string path.
+                /// </summary>
+                /// <value><c>true</c> if skip query string path; otherwise, <c>false</c>.</value>
+                public bool SkipQueryStringPath { get; set; } = true;
+                /// <summary>
+                /// Limit to extensionless path
+                /// <see cref="T:core.Extensions.Spa.Options.PrerenderingOptions.CacheResponseOptions"/> skip file path.
+                /// </summary>
+                /// <value><c>true</c> if skip file path; otherwise, <c>false</c>.</value>
+                public bool SkipFilePath { get; set; } = true;
+                /// <summary>
+                /// Gets or sets an array of path prefixes for which cache is disabled.
+                /// </summary>
+                /// <value>The exclude paths.</value>
+                public string[] ExcludePaths { get; set; }
+                /// <summary>
+                /// Gets or sets an array of path prefixes for which cache is always enabled.
+                /// </summary>
+                /// <value>The include paths.</value>
+                public string[] IncludePaths { get; set; }
+            }
         }
 
     }
