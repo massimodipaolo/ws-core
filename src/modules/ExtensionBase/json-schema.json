@@ -511,7 +511,7 @@
                             },
                             "skipFilePath": {
                               "type": "boolean",
-                              "description": "If true, dont'cache extensionless path",
+                              "description": "If true, cache only extensionless path",
                               "default": true
                             },
                             "excludePaths": {
