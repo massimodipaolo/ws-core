@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.1</TargetFramework>
-        <PackageVersion>1.1.0</PackageVersion>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <PackageVersion>1.1.1</PackageVersion>
         <PackageId>app.core.Extensions.Data.Cache.Memcached</PackageId>
         <AssemblyName>app.core.Extensions.Data.Cache.Memcached</AssemblyName>
         <RootNamespace>core.Extensions.Data.Cache.Memcached</RootNamespace>
@@ -12,7 +12,7 @@
         </Description>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageReleaseNotes>First release</PackageReleaseNotes>
-        <PackageTags>add ISet Keys</PackageTags>
+        <PackageTags>.net core 2.2</PackageTags>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />

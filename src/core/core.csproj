@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
     <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.1.7</PackageVersion>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <PackageVersion>1.1.9</PackageVersion>
     <PackageId>app.core</PackageId>  
     <AssemblyName>app.core</AssemblyName>
     <RootNamespace>core</RootNamespace>
@@ -12,21 +12,21 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description>Base project for extandable .net core web application.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>      
-    <PackageReleaseNotes>Inject App Configuration</PackageReleaseNotes>    
-    <PackageTags>Remove RazorLight pkg, waiting for a new release: https://github.com/toddams/RazorLight/issues/103 </PackageTags>    
+    <PackageReleaseNotes>Remove RazorLight pkg, waiting for a new release: https://github.com/toddams/RazorLight/issues/103 </PackageReleaseNotes>    
+    <PackageTags></PackageTags>    
   </PropertyGroup>   
    
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
-    <PackageReference Include="ExtCore.WebApplication" Version="3.3.0" />  
+  <ItemGroup>    
+    <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />    
+    <PackageReference Include="ExtCore.WebApplication" Version="4.0.0" />  
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot/" />

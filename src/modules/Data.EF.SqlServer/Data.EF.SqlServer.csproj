@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.0.6</PackageVersion>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <PackageVersion>1.0.7</PackageVersion>
     <PackageId>app.core.Extensions.Data.EF.SqlServer</PackageId>
     <AssemblyName>app.core.Extensions.Data.EF.SqlServer</AssemblyName>
     <RootNamespace>core.Extensions.Data.EF.SqlServer</RootNamespace>
@@ -10,9 +10,13 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Add ServiceLifetime option</PackageReleaseNotes>
+    <PackageReleaseNotes>.net core 2.2</PackageReleaseNotes>
     <PackageTags></PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Data.EF\Data.EF.csproj" />

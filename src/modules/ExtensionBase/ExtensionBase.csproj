@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFramework>netcoreapp2.1</TargetFramework>
-		<PackageVersion>2.0.3</PackageVersion>
+	<PropertyGroup>  
+		<TargetFramework>netcoreapp2.2</TargetFramework>
+		<PackageVersion>2.0.4</PackageVersion>   
 		<PackageId>app.core.Extensions.Base</PackageId>
 		<AssemblyName>app.core.Extensions.Base</AssemblyName>
     <RootNamespace>core.Extensions.Base</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
 		<Description>Base extension module, derived from ExtCore by Dmitry Sikorsky</Description>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>change priority setter</PackageReleaseNotes>		
+    <PackageReleaseNotes>.netcore 2.2</PackageReleaseNotes>		
 		<PackageTags>extension base</PackageTags>		
 		<PreBuildEvent />
 	</PropertyGroup>  
@@ -18,10 +18,11 @@
 		<None Include="Extension.cs" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.1.1" />
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
 		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
-		<PackageReference Include="ExtCore.Infrastructure" Version="3.3.0" />
-		<PackageReference Include="ExtCore.Events" Version="3.3.0" />
+		<PackageReference Include="ExtCore.Infrastructure" Version="4.0.0" />
+		<PackageReference Include="ExtCore.Events" Version="4.0.0" />
 	</ItemGroup>
 </Project>

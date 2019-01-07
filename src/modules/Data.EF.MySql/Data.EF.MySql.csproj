@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>netcoreapp2.1</TargetFramework>
-		<PackageVersion>1.0.7</PackageVersion>
+		<TargetFramework>netcoreapp2.2</TargetFramework>
+		<PackageVersion>1.0.8</PackageVersion>
 		<PackageId>app.core.Extensions.Data.EF.MySql</PackageId>
 		<AssemblyName>app.core.Extensions.Data.EF.MySql</AssemblyName>
 		<RootNamespace>core.Extensions.Data.EF.MySql</RootNamespace>
@@ -10,13 +10,13 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Add ServiceLifetime option</PackageReleaseNotes>
+    <PackageReleaseNotes>.net core 2.2</PackageReleaseNotes>
     <PackageTags></PackageTags>
   </PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Data.EF\Data.EF.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
+	  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.4" />
 	</ItemGroup>
 </Project>

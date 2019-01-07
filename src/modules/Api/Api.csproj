@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.1.4</PackageVersion>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <PackageVersion>1.1.5</PackageVersion>
     <PackageId>app.core.Extensions.Api</PackageId>
     <AssemblyName>app.core.Extensions.Api</AssemblyName>
     <RootNamespace>core.Extensions.Api</RootNamespace>
@@ -10,12 +10,14 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Add Date format options</PackageReleaseNotes>
+    <PackageReleaseNotes>.net core 2.2</PackageReleaseNotes>
     <PackageTags></PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>

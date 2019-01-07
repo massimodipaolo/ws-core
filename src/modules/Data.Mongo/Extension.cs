@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using SF = Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson;

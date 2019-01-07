@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup> 
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageVersion>1.0.7</PackageVersion> 
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <PackageVersion>1.0.8</PackageVersion> 
     <PackageId>app.core.Extensions.Data.EF</PackageId>
     <AssemblyName>app.core.Extensions.Data.EF</AssemblyName>
     <RootNamespace>core.Extensions.Data.EF</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description>DbContext and IRepository interface for EF-based extensions</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <PackageReleaseNotes>.net core 2.2</PackageReleaseNotes>
     <PackageTags>EF merge</PackageTags>
   </PropertyGroup>
 
@@ -19,5 +19,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repository\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.0" />
   </ItemGroup>
 </Project>

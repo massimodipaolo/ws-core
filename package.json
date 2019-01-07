@@ -2,10 +2,11 @@
   "name": "app-core",
   "version": "1.1.0",
   "private": true,
-  "dependencies": {    
+  "dependencies": {
+    "dotenv": "4.0.0",
+    "event-stream": "3.3.4",
     "gulp": "3.9.1",
     "gulp-watch": "4.3.11",
-    "event-stream": "3.3.4",    
-    "dotenv": "4.0.0"
+    "natives": "^1.1.4"
   }
 }
