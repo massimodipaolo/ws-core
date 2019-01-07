@@ -12,7 +12,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description>Base project for extandable .net core web application.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>      
-    <PackageReleaseNotes>Remove RazorLight pkg, waiting for a new release: https://github.com/toddams/RazorLight/issues/103 </PackageReleaseNotes>    
+    <PackageReleaseNotes>.net core 2.2 </PackageReleaseNotes>    
     <PackageTags></PackageTags>    
   </PropertyGroup>   
    

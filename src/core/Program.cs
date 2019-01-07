@@ -20,7 +20,8 @@ namespace core
 
         public static IWebHostBuilder WebHostBuilder(string[] args, Assembly assembly) =>
             new WebHostBuilder()
-            .UseKestrel(_ => { _.AddServerHeader = false; })
+            .UseKestrel((ctx, opt) => { opt.AddServerHeader = false; })
+            //.ConfigureKestrel((ctx,opt) => { opt.AddServerHeader = false; }) // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel?view=aspnetcore-2.2#how-to-use-kestrel-in-aspnet-core-apps
             .UseContentRoot(Directory.GetCurrentDirectory())
             .ConfigureAppConfiguration((ctx, config) =>
             {
