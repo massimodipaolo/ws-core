@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netcoreapp2.2</TargetFramework>
-        <PackageVersion>1.1.1</PackageVersion>
+        <PackageVersion>1.1.2</PackageVersion>
         <PackageId>app.core.Extensions.Data.Cache.Memcached</PackageId>
         <AssemblyName>app.core.Extensions.Data.Cache.Memcached</AssemblyName>
         <RootNamespace>core.Extensions.Data.Cache.Memcached</RootNamespace>
@@ -11,13 +11,13 @@
         <Description>
         </Description>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-        <PackageReleaseNotes>First release</PackageReleaseNotes>
-        <PackageTags>.net core 2.2</PackageTags>
+        <PackageReleaseNotes>Update reference</PackageReleaseNotes>
+        <PackageTags></PackageTags>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="EnyimMemcachedCore" Version="2.1.8" />
+        <PackageReference Include="EnyimMemcachedCore" Version="2.1.12" />
     </ItemGroup>
 </Project>

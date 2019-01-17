@@ -29,13 +29,17 @@ namespace core.Extensions.Data
                 .Ignore<Guid[]>()
                 .Ignore<string[]>();
 
-            // Ignore custom type
-            foreach (var type in options.Ignore)
-            {
-                Type t = Type.GetType(type);
-                if (t != null)
-                    modelBuilder.Ignore(t);
-            }
+            // Ignore custom type      
+            if (options != null && options.Ignore != null && options.Ignore.Length > 0)
+                foreach (var type in options.Ignore)
+                {
+                    try
+                    {
+                        Type t = Type.GetType(type);
+                        if (t != null)
+                            modelBuilder.Ignore(t);
+                    } catch { }                    
+                }
 
             // Mappings
             var tKeys = new KeyValuePair<Type, int>[] {
@@ -51,7 +55,7 @@ namespace core.Extensions.Data
                 {
                     try
                     {
-                        EF.Options.MappingConfig opt = options.Mappings.FirstOrDefault(_ => _.Name == type.Name);
+                        EF.Options.MappingConfig opt = (options?.Mappings ?? new List<EF.Options.MappingConfig>()).FirstOrDefault(_ => _.Name == type.Name);
 
                         var entityBuilder = modelBuilder.Entity(type)
                                     .ToTable(opt?.Table ?? type.Name, opt?.Schema ?? "dbo");
