@@ -8,7 +8,7 @@ using core.Extensions.Data.Mongo;
 
 namespace core.Extensions.Data.Repository
 {
-    public class Mongo<T, TKey> : IRepository<T, TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>
+    public class Mongo<T, TKey> : IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         private Mongo.Options _config;
         IMongoCollection<T> _collection;

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace core.Extensions.Data
 {
-    public interface IRepository<T, TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>
+    public interface IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         IQueryable<T> List { get; }
         T Find(TKey Id);

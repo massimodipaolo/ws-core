@@ -11,7 +11,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.net core 2.2</PackageReleaseNotes>    
+    <PackageReleaseNotes>Fix IRepository generic T specification</PackageReleaseNotes>    
     <PackageTags></PackageTags> 
   </PropertyGroup>
 	<ItemGroup>

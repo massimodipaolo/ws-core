@@ -2,7 +2,7 @@
 
   <PropertyGroup> 
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.0.9</PackageVersion> 
+    <PackageVersion>1.0.10</PackageVersion> 
     <PackageId>app.core.Extensions.Data.EF</PackageId>
     <AssemblyName>app.core.Extensions.Data.EF</AssemblyName>
     <RootNamespace>core.Extensions.Data.EF</RootNamespace>

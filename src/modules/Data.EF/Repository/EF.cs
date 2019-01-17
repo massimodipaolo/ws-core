@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace core.Extensions.Data.Repository
 {
-    public class EF<T, TKey> : IRepository<T, TKey> where T : Entity<TKey> where TKey : IEquatable<TKey>
+    public class EF<T, TKey> : IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         private readonly AppDbContext _context;
         private DbSet<T> _collection;

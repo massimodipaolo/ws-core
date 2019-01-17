@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace core.Extensions.Api.Controllers
 {
-    public class EntityCachedController<T, TKey> : EntityController<T, TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>
+    public class EntityCachedController<T, TKey> : EntityController<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         protected ICacheRepository<T, TKey> _cachedRepository;
 
@@ -16,7 +16,7 @@ namespace core.Extensions.Api.Controllers
     }
 
     [Route("api/cache/[controller]")]
-    public class EntityCachedControllerWithMethods<T, TKey> : EntityCachedController<T, TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>
+    public class EntityCachedControllerWithMethods<T, TKey> : EntityCachedController<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         public EntityCachedControllerWithMethods(IRepository<T, TKey> repository, ICacheRepository<T, TKey> cached) : base(repository, cached) { }
 

@@ -5,7 +5,7 @@ using core.Extensions.Data;
 
 namespace core.Extensions.Api.Controllers
 {
-    public class EntityController<T, TKey> : ControllerBase where T : IEntity<TKey> where TKey : IEquatable<TKey>
+    public class EntityController<T, TKey> : ControllerBase where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         protected IRepository<T, TKey> _repository;
 
@@ -16,7 +16,7 @@ namespace core.Extensions.Api.Controllers
     }
 
     [Route("api/[controller]")]
-    public class EntityControllerWithMethods<T, TKey> : EntityController<T, TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>
+    public class EntityControllerWithMethods<T, TKey> : EntityController<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         public EntityControllerWithMethods(IRepository<T, TKey> repository): base(repository) {}
 

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.0.6</PackageVersion>
+    <PackageVersion>1.0.7</PackageVersion>
     <PackageId>app.core.Extensions.Data.FileSystem</PackageId>
     <AssemblyName>app.core.Extensions.Data.FileSystem</AssemblyName>
     <RootNamespace>core.Extensions.Data.FileSystem</RootNamespace>

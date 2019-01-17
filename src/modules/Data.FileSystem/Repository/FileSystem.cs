@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace core.Extensions.Data.Repository
 {
-    public class FileSystem<T, TKey> : IRepository<T, TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>
+    public class FileSystem<T, TKey> : IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         private List<T> _collection = new List<T>();
         private string _path { get; set; }

@@ -7,7 +7,7 @@ namespace core.Extensions.Data.Repository
 {
 
 
-    public class CachedRepository<T, TKey> : ICacheRepository<T, TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>
+    public class CachedRepository<T, TKey> : ICacheRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         internal static ICache _cache { get; set; }
         private string _collectionKey => CachedRepository<T, TKey>.Key;
@@ -74,7 +74,7 @@ namespace core.Extensions.Data.Repository
         }
     }
 
-    public class EntityChangeHandler<T,TKey> : IEntityChangeEvent<T,TKey> where T : IEntity<TKey> where TKey : IEquatable<TKey>
+    public class EntityChangeHandler<T,TKey> : IEntityChangeEvent<T,TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         public int Priority => 0;
 
