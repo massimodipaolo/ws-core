@@ -50,13 +50,20 @@ namespace core.Extensions.Data.Repository
             }
         }
 
-        public void Merge(IEnumerable<T> entities)
+        public void Merge(IEnumerable<T> entities, RepositoryMergeOperation operation = RepositoryMergeOperation.Upsert)
         {
             if (entities != null && entities.Any())
             {
                 var joined = _collection
                     .Join(entities, c => c.Id, e => e.Id, (c, e) => new { c, e })
                     .ToList();
+
+                if (operation == RepositoryMergeOperation.Sync)
+                {
+                    var toDelete = _collection.Where(_ => !entities.Any(__ => __.Id.Equals(_.Id)));
+                    if (toDelete != null && toDelete.Any())
+                        _collection.RemoveRange(toDelete);
+                }
 
                 var toUpdate = joined
                     .Where(_ => !_.c.Equals(_.e)) // First fast check
@@ -65,7 +72,7 @@ namespace core.Extensions.Data.Repository
                 if (toUpdate != null && toUpdate.Any())
                     _collection.UpdateRange(toUpdate);
 
-                var toAdd = entities.Except(joined.Select(_ => _.e), new EntityComparer<T, TKey>());
+                var toAdd = joined != null && joined.Any() ? entities.Except(joined.Select(_ => _.e), new EntityComparer<T, TKey>()) : entities;
                 if (toAdd != null && toAdd.Any())
                     _collection.AddRange(toAdd);                   
 

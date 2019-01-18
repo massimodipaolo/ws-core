@@ -12,7 +12,13 @@ namespace core.Extensions.Data
         IQueryable<T> Query(FormattableString command);
         void Add(T entity);
         void Update(T entity);
-        void Merge(IEnumerable<T> entities);
+        void Merge(IEnumerable<T> entities, RepositoryMergeOperation operation = RepositoryMergeOperation.Upsert);
         void Delete(T entity);
+    }
+
+    public enum RepositoryMergeOperation
+    {
+        Upsert,
+        Sync
     }
 }

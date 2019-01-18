@@ -3,7 +3,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>  
 		<TargetFramework>netcoreapp2.2</TargetFramework>
-		<PackageVersion>1.0.5</PackageVersion>
+		<PackageVersion>1.0.6</PackageVersion> 
 		<PackageId>app.core.Extensions.Data</PackageId>
 		<AssemblyName>app.core.Extensions.Data</AssemblyName>
 		<RootNamespace>core.Extensions.Data</RootNamespace>
@@ -11,7 +11,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Fix IRepository generic T specification</PackageReleaseNotes>    
+    <PackageReleaseNotes>Add Merge operation options (upsert / sync)</PackageReleaseNotes>    
     <PackageTags></PackageTags> 
   </PropertyGroup>
 	<ItemGroup>

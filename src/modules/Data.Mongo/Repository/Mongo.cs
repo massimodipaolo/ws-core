@@ -39,18 +39,20 @@ namespace core.Extensions.Data.Repository
 
         public void Add(T entity)
         {
-            _collection.InsertOne(entity);
-            //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Create);
+            _collection.InsertOne(entity);            
         }
 
         public void Update(T entity)
         {
-            _collection.ReplaceOneAsync(_ => _.Id.Equals(entity.Id), entity, new UpdateOptions { IsUpsert = true });
-            //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Update);
+            _collection.ReplaceOneAsync(_ => _.Id.Equals(entity.Id), entity, new UpdateOptions { IsUpsert = true });            
         }
 
-        public void Merge(IEnumerable<T> entities)
+        public void Merge(IEnumerable<T> entities, RepositoryMergeOperation operation = RepositoryMergeOperation.Upsert)
         {
+            if (operation == RepositoryMergeOperation.Sync)
+            {
+                _collection.Find(_ => !entities.Any(__ => __.Id.Equals(_.Id))).ForEachAsync(_ => Delete(_));
+            }
             _collection.Find(_ => true).ForEachAsync(_ =>
             {
                 var entity = entities.FirstOrDefault(__ => __.Id.Equals(_.Id));

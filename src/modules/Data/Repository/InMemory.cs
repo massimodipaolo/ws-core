@@ -38,9 +38,17 @@ namespace core.Extensions.Data.Repository
             _collection = _collection.Select(_ => _.Id.Equals(entity.Id) ? entity : _).ToList();
         }
 
-        public void Merge(IEnumerable<T> entities)
-        {            
-            _collection = entities.Union(_collection,new EntityComparer<T,TKey>()).ToList();            
+        public void Merge(IEnumerable<T> entities, RepositoryMergeOperation operation = RepositoryMergeOperation.Upsert)
+        {
+            switch (operation)
+            {
+                case RepositoryMergeOperation.Upsert:
+                    _collection = entities.Union(_collection, new EntityComparer<T, TKey>()).ToList();
+                    break;
+                case RepositoryMergeOperation.Sync:
+                    _collection = entities.ToList();
+                    break;
+            }                  
         }
 
         public void Delete(T entity)

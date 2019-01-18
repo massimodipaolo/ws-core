@@ -56,9 +56,17 @@ namespace core.Extensions.Data.Repository
             Save();
         }
 
-        public void Merge(IEnumerable<T> entities)
+        public void Merge(IEnumerable<T> entities, RepositoryMergeOperation operation = RepositoryMergeOperation.Upsert)
         {
-            _collection = entities.Union(_collection, new EntityComparer<T, TKey>()).ToList();
+            switch (operation)
+            {
+                case RepositoryMergeOperation.Upsert:
+                    _collection = entities.Union(_collection, new EntityComparer<T, TKey>()).ToList();
+                    break;
+                case RepositoryMergeOperation.Sync:
+                    _collection = entities.ToList();
+                    break;
+            }
             Save();
         }
 
@@ -74,7 +82,7 @@ namespace core.Extensions.Data.Repository
         }
     }
 
-    public class EntityChangeHandler<T,TKey> : IEntityChangeEvent<T,TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
+    public class EntityChangeHandler<T, TKey> : IEntityChangeEvent<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         public int Priority => 0;
 
@@ -82,9 +90,9 @@ namespace core.Extensions.Data.Repository
         {
 
             var entity = (T)ctx.Entity;
-            
+
             ICache _cache = CachedRepository<T, TKey>._cache;
-            
+
             // sync entity
             string _key = CachedRepository<T, TKey>.EntityKey(entity.Id);
             switch (ctx.Action)
@@ -99,7 +107,7 @@ namespace core.Extensions.Data.Repository
             }
 
             // sync entity collection
-            CachedRepository<T, TKey>._cache.Clear();            
+            CachedRepository<T, TKey>._cache.Clear();
         }
     }
 
@@ -114,13 +122,13 @@ namespace core.Extensions.Data.Repository
         }
 
     }
-        public class EntityChangeHandler : IEntityChangeEvent
+    public class EntityChangeHandler : IEntityChangeEvent
     {
         public int Priority => 0;
 
         public void HandleEvent(EntityChangeEventContext ctx)
         {
-            var entity = ctx.Entity;            
+            var entity = ctx.Entity;
         }
     }
 
