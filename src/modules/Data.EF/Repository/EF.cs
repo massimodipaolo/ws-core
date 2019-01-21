@@ -1,4 +1,5 @@
 ﻿using core.Extensions.Data;
+using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Extensions;
 using System;
@@ -52,31 +53,28 @@ namespace core.Extensions.Data.Repository
 
         public void Merge(IEnumerable<T> entities, RepositoryMergeOperation operation = RepositoryMergeOperation.Upsert)
         {
-            if (entities != null && entities.Any())
+            if (entities != null)
             {
-                var joined = _collection
-                    .Join(entities, c => c.Id, e => e.Id, (c, e) => new { c, e })
-                    .ToList();
-
-                if (operation == RepositoryMergeOperation.Sync)
+                var bulkConfig = new BulkConfig()
                 {
-                    var toDelete = _collection.Where(_ => !entities.Any(__ => __.Id.Equals(_.Id)));
-                    if (toDelete != null && toDelete.Any())
-                        _collection.RemoveRange(toDelete);
+                    UseTempDB = true,                    
+                    UpdateByProperties = new[] { "Id" }.ToList()
+                };
+
+                using (var transaction = _context.Database.BeginTransaction())
+                {
+                    switch (operation)
+                    {
+                        case RepositoryMergeOperation.Upsert:
+                            _context.BulkInsertOrUpdate<T>(entities.ToList(), bulkConfig);
+                            break;
+                        case RepositoryMergeOperation.Sync:
+                            _context.BulkInsertOrUpdateOrDelete<T>(entities.ToList(), bulkConfig);
+                            break;
+                    }
+                    transaction.Commit();
                 }
 
-                var toUpdate = joined
-                    .Where(_ => !_.c.Equals(_.e)) // First fast check
-                    .Where(_ => Newtonsoft.Json.JsonConvert.SerializeObject(_.c) != Newtonsoft.Json.JsonConvert.SerializeObject(_.e)) // Deeper comparison
-                    .Select(_ => _.e);
-                if (toUpdate != null && toUpdate.Any())
-                    _collection.UpdateRange(toUpdate);
-
-                var toAdd = joined != null && joined.Any() ? entities.Except(joined.Select(_ => _.e), new EntityComparer<T, TKey>()) : entities;
-                if (toAdd != null && toAdd.Any())
-                    _collection.AddRange(toAdd);                   
-
-                _context.SaveChanges();
             }
         }
 

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.1.0</PackageVersion>
+    <PackageVersion>1.2.1</PackageVersion>
     <PackageId>app.core.Extensions.Data.EF.SqlServer</PackageId>
     <AssemblyName>app.core.Extensions.Data.EF.SqlServer</AssemblyName>
     <RootNamespace>core.Extensions.Data.EF.SqlServer</RootNamespace>
