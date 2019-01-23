@@ -55,10 +55,12 @@ namespace core.Extensions.Data.Repository
         {
             if (entities != null)
             {
+                #warning Put in options
                 var bulkConfig = new BulkConfig()
                 {
                     UseTempDB = true,                    
-                    UpdateByProperties = new[] { "Id" }.ToList()
+                    UpdateByProperties = new[] { "Id" }.ToList(),
+                    BulkCopyTimeout = 180
                 };
 
                 using (var transaction = _context.Database.BeginTransaction())
