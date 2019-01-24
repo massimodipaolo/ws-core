@@ -432,7 +432,16 @@
             "app.core.Extensions.Data.FileSystem": {
               "$ref": "#/definitions/assembly"
             },
-            "app.core.Extensions.Identity": { "$ref": "#/definitions/assembly" },
+            "app.core.Extensions.Identity": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "$ref": "#/definitions/dbConnection"
+                }
+              }
+            },
             "app.core.Extensions.Message": {
               "allOf": [
                 { "$ref": "#/definitions/assembly" }
