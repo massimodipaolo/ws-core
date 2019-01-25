@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>0.0.1</PackageVersion>
+    <PackageVersion>0.0.1</PackageVersion>  
     <PackageId>app.core.Extensions.Identity</PackageId>
     <AssemblyName>app.core.Extensions.Identity</AssemblyName>
     <RootNamespace>core.Extensions.Identity</RootNamespace>
@@ -11,7 +11,7 @@
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <PackageTags>IdentityServer wrapper</PackageTags>
+    <PackageTags>IdentityServer wrapper: inMemory ext</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

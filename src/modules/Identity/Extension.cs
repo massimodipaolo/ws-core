@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +16,7 @@ namespace core.Extensions.Identity
             base.Execute(serviceCollection, serviceProvider);
 
             var builder = serviceCollection.AddIdentityServer();
-            if (_options.InMemory != null)
+            if (_options.InMemory != null && _options.InMemory.Enable)
             {
                 builder
                     .AddInMemoryIdentityResources(_options.InMemory.IdentityResources)
@@ -28,6 +29,15 @@ namespace core.Extensions.Identity
                 if (_options.InMemory.Caching)
                     builder.AddInMemoryCaching();
             }
+
+            if (_options.DeveloperSigningCredential)
+                builder.AddDeveloperSigningCredential();
+
+            if (_options.JwtBearerClientAuthentication)
+                builder.AddJwtBearerClientAuthentication();
+
+            if (_options.TestUsers != null && _options.TestUsers.Any())
+                builder.AddTestUsers(_options.TestUsers.ToList());
         }
 
         public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
