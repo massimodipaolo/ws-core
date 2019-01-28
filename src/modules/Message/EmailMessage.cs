@@ -11,9 +11,9 @@ namespace core.Extensions.Message
 {
     public class EmailMessage : IMessage
     {
-        private ILogger<EmailMessage> _logger { get; set; }
+        private ILogger<IMessage> _logger { get; set; }
         private IMessageConfiguration _config { get; set; }
-        public EmailMessage(ILogger<EmailMessage> logger, IMessageConfiguration config)
+        public EmailMessage(ILogger<IMessage> logger, IMessageConfiguration config)
         {
             _logger = logger;
             _config = config;
@@ -25,6 +25,8 @@ namespace core.Extensions.Message
 
         public async Task SendAsync(Message message)
         {
+            async Task connect(MailKit.Net.Smtp.SmtpClient _client, Options.Endpoint _sender) => await _client.ConnectAsync(_sender.Address, _sender.Port == 0 ? 25 : _sender.Port, MailKit.Security.SecureSocketOptions.Auto).ConfigureAwait(false);
+
             var sender = _config.Senders.FirstOrDefault();
             if (sender != null && !string.IsNullOrEmpty(sender.Address))
             {
@@ -36,6 +38,7 @@ namespace core.Extensions.Message
 
                 mime.Subject = message.Subject;
 
+                // msg properties
                 var model = message.Arguments != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<EmailMessageModel>(Newtonsoft.Json.JsonConvert.SerializeObject(message.Arguments)) : new EmailMessageModel();
 
                 var body = new TextPart(model.IsHtml ? TextFormat.Html : TextFormat.Plain)
@@ -68,8 +71,16 @@ namespace core.Extensions.Message
                 using (var client = new MailKit.Net.Smtp.SmtpClient())
                 {
                     try
-                    {
-                        await client.ConnectAsync(sender.Address, sender.Port == 0 ? 25 : sender.Port, MailKit.Security.SecureSocketOptions.Auto).ConfigureAwait(false);
+                    {                        
+                        try
+                        {                            
+                            await connect(client, sender);
+                        } catch (MailKit.Security.SslHandshakeException ex)
+                        {
+                            _logger.LogWarning(ex, "Smtp Tls connection");
+                            client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                            await connect(client, sender);
+                        }                        
                         client.AuthenticationMechanisms.Remove("XOAUTH2");
                         if (!string.IsNullOrEmpty(sender.UserName) && !string.IsNullOrEmpty(sender.Password))
                             await client.AuthenticateAsync(sender.UserName, sender.Password).ConfigureAwait(false);
@@ -85,8 +96,8 @@ namespace core.Extensions.Message
                     }
                 }
             }
-
         }
+
         public async Task<IEnumerable<Message>> ReceiveAsync()
         {
             var receiver = _config.Receivers.FirstOrDefault();

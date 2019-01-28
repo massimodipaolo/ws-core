@@ -2,7 +2,7 @@
 
   <PropertyGroup> 
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.0.6</PackageVersion>  
+    <PackageVersion>1.0.7</PackageVersion>     
     <PackageId>app.core.Extensions.Message</PackageId>
     <AssemblyName>app.core.Extensions.Message</AssemblyName>
     <RootNamespace>core.Extensions.Message</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description>Send/Receive message via email</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.net core 2.2</PackageReleaseNotes>
+    <PackageReleaseNotes>Trust server certificate on ssl handshake error</PackageReleaseNotes>
     <PackageTags>extension message, email, smtp</PackageTags>    
   </PropertyGroup>
  
