@@ -2,15 +2,15 @@
 
   <PropertyGroup> 
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.0.6</PackageVersion>
+    <PackageVersion>1.0.7</PackageVersion>    
     <PackageId>app.core.Extensions.StaticFiles</PackageId>
-    <AssemblyName>app.core.Extensions.StaticFiles</AssemblyName>
+    <AssemblyName>app.core.Extensions.StaticFiles</AssemblyName>       
     <RootNamespace>core.Extensions.StaticFiles</RootNamespace>
     <Authors>Massimo Di Paolo</Authors>
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description>This extension enables the web app to serve static files. A physical file provider is used.</Description>    
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.netcore 2.2</PackageReleaseNotes>        
+    <PackageReleaseNotes>Fix null options</PackageReleaseNotes>        
     <PackageTags>static files staticfiles </PackageTags>      
   </PropertyGroup>
 

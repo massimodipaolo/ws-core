@@ -17,77 +17,94 @@ namespace core.Extensions.StaticFiles
         private IEnumerable<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)> Settings
         {
             get
-            {                
+            {
                 Options opts = GetOptions<Options>();
                 var res = new List<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)>();
+
+                if (opts == null || opts.Paths == null || !opts.Paths.Any())
+                {
+                    opts = new Options()
+                    {
+                        Paths = new Options.FolderOption[] {
+                        new Options.FolderOption() {}
+                    }
+                    };
+                }
+
                 foreach (var opt in opts.Paths)
                 {
-                    //StaticFileOptions
-                    var StaticFileOptions = new StaticFileOptions();
-                    if (!string.IsNullOrEmpty(opt.Path))
+                    if (opt != null)
                     {
-                        try
+                        //StaticFileOptions
+                        var StaticFileOptions = new StaticFileOptions();
+                        if (!string.IsNullOrEmpty(opt.Path))
                         {
-                            //TODO: Inject IFileProvider (or ServiceLocator serviceProvider.GetService<IFileProvider>()): https://docs.microsoft.com/en-us/aspnet/core/fundamentals/file-providers
-                            StaticFileOptions.FileProvider = opt.FileProvider(_env);
-                        } catch(Exception ex) {
-                            _logger.LogError(ex.Message);
+                            try
+                            {
+                                //TODO: Inject IFileProvider (or ServiceLocator serviceProvider.GetService<IFileProvider>()): https://docs.microsoft.com/en-us/aspnet/core/fundamentals/file-providers
+                                StaticFileOptions.FileProvider = opt.FileProvider(_env);
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.LogError(ex.Message);
+                            }
                         }
-                    }
-                    if (!string.IsNullOrEmpty(opt.RequestPath))
-                        StaticFileOptions.RequestPath = new PathString(opt.RequestPath);
-                    if (opt.Headers != null)
-                    {
-                        StaticFileOptions.OnPrepareResponse = ctx =>
+                        if (!string.IsNullOrEmpty(opt.RequestPath))
+                            StaticFileOptions.RequestPath = new PathString(opt.RequestPath);
+                        if (opt.Headers != null)
                         {
-                            foreach (var h in opt.Headers)
-                                ctx.Context.Response.Headers.Append(h.Key, h.Value);
-                        };
-                    }
-                    if (opt.MIMEtypes != null)
-                    {
-                        var provider = new FileExtensionContentTypeProvider();
-                        foreach (var t in opt.MIMEtypes)
-                            provider.Mappings[t.Key] = t.Value;
-                        StaticFileOptions.ContentTypeProvider = provider;
-                    }
+                            StaticFileOptions.OnPrepareResponse = ctx =>
+                            {
+                                foreach (var h in opt.Headers)
+                                    ctx.Context.Response.Headers.Append(h.Key, h.Value);
+                            };
+                        }
+                        if (opt.MIMEtypes != null)
+                        {
+                            var provider = new FileExtensionContentTypeProvider();
+                            foreach (var t in opt.MIMEtypes)
+                                provider.Mappings[t.Key] = t.Value;
+                            StaticFileOptions.ContentTypeProvider = provider;
+                        }
 
-                    //DirectoryBrowser
-                    DirectoryBrowserOptions DirectoryBrowserOptions = null;
-                    if (opt.EnableDirectoryBrowser)
-                    {
-                        DirectoryBrowserOptions = new DirectoryBrowserOptions();
-                        if (!string.IsNullOrEmpty(opt.Path))
-                            DirectoryBrowserOptions.FileProvider = StaticFileOptions.FileProvider;
-                        if (!string.IsNullOrEmpty(opt.RequestPath))
-                            DirectoryBrowserOptions.RequestPath = StaticFileOptions.RequestPath;
-                    }
+                        //DirectoryBrowser
+                        DirectoryBrowserOptions DirectoryBrowserOptions = null;
+                        if (opt.EnableDirectoryBrowser)
+                        {
+                            DirectoryBrowserOptions = new DirectoryBrowserOptions();
+                            if (!string.IsNullOrEmpty(opt.Path))
+                                DirectoryBrowserOptions.FileProvider = StaticFileOptions.FileProvider;
+                            if (!string.IsNullOrEmpty(opt.RequestPath))
+                                DirectoryBrowserOptions.RequestPath = StaticFileOptions.RequestPath;
+                        }
 
-                    //DefaultFiles
-                    DefaultFilesOptions DefaultFilesOptions = null;
-                    if (opt.DefaultFiles?.Length > 0)
-                    {
-                        DefaultFilesOptions = new DefaultFilesOptions();
-                        if (!string.IsNullOrEmpty(opt.Path))
-                            DefaultFilesOptions.FileProvider = StaticFileOptions.FileProvider;
-                        if (!string.IsNullOrEmpty(opt.RequestPath))
-                            DefaultFilesOptions.RequestPath = StaticFileOptions.RequestPath;
-                        DefaultFilesOptions.DefaultFileNames.Clear();
-                        foreach (var f in opt.DefaultFiles)
-                            DefaultFilesOptions.DefaultFileNames.Add(f);
-                    }
+                        //DefaultFiles
+                        DefaultFilesOptions DefaultFilesOptions = null;
+                        if (opt.DefaultFiles?.Length > 0)
+                        {
+                            DefaultFilesOptions = new DefaultFilesOptions();
+                            if (!string.IsNullOrEmpty(opt.Path))
+                                DefaultFilesOptions.FileProvider = StaticFileOptions.FileProvider;
+                            if (!string.IsNullOrEmpty(opt.RequestPath))
+                                DefaultFilesOptions.RequestPath = StaticFileOptions.RequestPath;
+                            DefaultFilesOptions.DefaultFileNames.Clear();
+                            foreach (var f in opt.DefaultFiles)
+                                DefaultFilesOptions.DefaultFileNames.Add(f);
+                        }
 
-                    res.Add((StaticFileOptions, DirectoryBrowserOptions, DefaultFilesOptions));
+                        res.Add((StaticFileOptions, DirectoryBrowserOptions, DefaultFilesOptions));
+                    }
                 }
+
                 return res;
             }
         }
 
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
-            base.Execute(serviceCollection, serviceProvider);            
+            base.Execute(serviceCollection, serviceProvider);
             if (Settings.Any(_ => _.DirectoryBrowserOptions != null))
-                serviceCollection.AddDirectoryBrowser();   
+                serviceCollection.AddDirectoryBrowser();
         }
 
         public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
@@ -96,14 +113,14 @@ namespace core.Extensions.StaticFiles
 
             foreach (var setting in Settings)
             {
-                if (setting.DefaultFilesOptions != null)                    
+                if (setting.DefaultFilesOptions != null)
                     applicationBuilder.UseDefaultFiles(setting.DefaultFilesOptions);
 
                 if (setting.DirectoryBrowserOptions != null)
                     applicationBuilder.UseDirectoryBrowser(setting.DirectoryBrowserOptions);
 
                 applicationBuilder.UseStaticFiles(setting.StaticFileOptions);
-            }            
+            }
         }
     }
 }
