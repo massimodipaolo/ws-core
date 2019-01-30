@@ -104,7 +104,10 @@
       "type": "object",
       "properties": {
         "description": { "type": "string" },
-        "value": { "type": "string" },
+        "value": {
+          "type": "string",
+          "description": "\"Convert.ToBase64String(System.Security.Cryptography.SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(\"secret\")))\""
+        },
         "expiration": {
           "type": "string",
           "format": "date-time"
@@ -550,7 +553,7 @@
                               },
                               "allowedGrantTypes": {
                                 "type": "array",
-                                "items": { "enum": [ "AuthorizationCode", "ClientCredentials", "DeviceFlow", "Hybrid", "Implicit", "ResourceOwnerPassword" ] },
+                                "items": { "enum": [ "authorization_code", "client_credentials", "hybrid", "implicit", "password", "urn:ietf:params:oauth:grant-type:device_code" ] },
                                 "uniqueItems": true
                               },
                               "allowedScopes": {
