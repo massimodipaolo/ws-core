@@ -13,6 +13,7 @@ namespace core.Extensions.Message
     {
         private ILogger<IMessage> _logger { get; set; }
         private IMessageConfiguration _config { get; set; }
+        private string[] _trustServerCerticate = new string[] { };
         public EmailMessage(ILogger<IMessage> logger, IMessageConfiguration config)
         {
             _logger = logger;
@@ -25,7 +26,6 @@ namespace core.Extensions.Message
 
         public async Task SendAsync(Message message)
         {
-            async Task connect(MailKit.Net.Smtp.SmtpClient _client, Options.Endpoint _sender) => await _client.ConnectAsync(_sender.Address, _sender.Port == 0 ? 25 : _sender.Port, MailKit.Security.SecureSocketOptions.Auto).ConfigureAwait(false);
 
             var sender = _config.Senders.FirstOrDefault();
             if (sender != null && !string.IsNullOrEmpty(sender.Address))
@@ -48,12 +48,12 @@ namespace core.Extensions.Message
 
                 var attachments = message.Attachments?.Where(_ => _.Content.Length > 0);
                 if (attachments != null && attachments.Any())
-                {                    
+                {
                     var multipart = new Multipart("mixed");
                     multipart.Add(body);
 
-                    foreach(var attachment in attachments)
-                    {   
+                    foreach (var attachment in attachments)
+                    {
                         multipart.Add(new MimePart()
                         {
                             FileName = attachment.Name ?? Guid.NewGuid().ToString(),
@@ -62,7 +62,7 @@ namespace core.Extensions.Message
                             ContentTransferEncoding = ContentEncoding.Base64
                         });
                     }
-                    
+
                     mime.Body = multipart;
                 }
                 else
@@ -71,24 +71,29 @@ namespace core.Extensions.Message
                 using (var client = new MailKit.Net.Smtp.SmtpClient())
                 {
                     try
-                    {                        
-                        try
-                        {                            
-                            await connect(client, sender);
-                        } catch (MailKit.Security.SslHandshakeException ex)
-                        {
-                            _logger.LogWarning(ex, "Smtp Tls connection");
+                    {
+                        if (sender.SkipCertificateValidation)
                             client.ServerCertificateValidationCallback = (s, c, h, e) => true;
-                            await connect(client, sender);
-                        }                        
+
+                        await client.ConnectAsync(sender.Address, sender.Port == 0 ? 25 : sender.Port, sender.EnableSsl ? MailKit.Security.SecureSocketOptions.Auto : MailKit.Security.SecureSocketOptions.None);
+
                         client.AuthenticationMechanisms.Remove("XOAUTH2");
                         if (!string.IsNullOrEmpty(sender.UserName) && !string.IsNullOrEmpty(sender.Password))
                             await client.AuthenticateAsync(sender.UserName, sender.Password).ConfigureAwait(false);
+
                         await client.SendAsync(mime).ConfigureAwait(false);
                     }
+                    catch (Exception ex) when (ex is MailKit.Security.SslHandshakeException || ex is System.Net.Sockets.SocketException || ex is MailKit.ProtocolException)
+                    {
+                        _logger.LogError(ex, "Smtp connection error");
+                    }
+                    catch (Exception ex) when (ex is MailKit.Security.AuthenticationException || ex is MailKit.Security.SaslException)
+                    {
+                        _logger.LogError(ex, "Smtp authentication error");
+                    }                    
                     catch (Exception ex)
                     {
-                        _logger.LogError(ex,"Send email error");                        
+                        _logger.LogWarning(ex, "Send email error");
                     }
                     finally
                     {
