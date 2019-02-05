@@ -227,6 +227,17 @@
                             }
                           }
                         },
+                        "securityDefinitions": {
+                          "type": "object",
+                          "description": "Add one or more security definitions, describing how your api is protected",
+                          "properties": {
+                            "bearer": {
+                              "type": "boolean",
+                              "description": "Add Authorization header for bearer token",
+                              "default": false
+                            }
+                          }
+                        },
                         "xmlComments": {
                           "type": "object",
                           "description": "To include Xml Comments, open the Properties dialog for your project, click the \"Build\" tab and ensure that \"XML documentation file\" is checked.\n This will produce a file containing all XML comments at build-time.\nAt this point, any classes or methods that are NOT annotated with XML comments will trigger a build warning.\n To suppress this, enter the warning code 1591 into the \"Suppress warnings\" field in the properties dialog.",

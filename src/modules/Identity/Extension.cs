@@ -15,13 +15,34 @@ namespace core.Extensions.Identity
         {
             base.Execute(serviceCollection, serviceProvider);
 
-            var builder = serviceCollection.AddIdentityServer();
+            /*
+            serviceCollection.Configure<IISOptions>(iis =>
+            {                
+                iis.AuthenticationDisplayName = "Windows";
+                iis.AutomaticAuthentication = false;
+            });
+            */
+
+            var builder = serviceCollection.AddIdentityServer(opt =>
+            {
+                opt.Events.RaiseSuccessEvents = true;
+                opt.Events.RaiseFailureEvents = true;
+                opt.Events.RaiseErrorEvents = true;
+                opt.Events.RaiseInformationEvents = true;                
+            });
             if (_options.InMemory != null && _options.InMemory.Enable)
             {
-                builder
-                    .AddInMemoryIdentityResources(_options.InMemory.IdentityResources)
-                    .AddInMemoryApiResources(_options.InMemory.ApiResources)
-                    .AddInMemoryClients(_options.InMemory.Clients);
+                if (_options.InMemory.IdentityResources != null)
+                    builder
+                        .AddInMemoryIdentityResources(_options.InMemory.IdentityResources);
+
+                if (_options.InMemory.ApiResources != null)
+                    builder
+                        .AddInMemoryApiResources(_options.InMemory.ApiResources);
+
+                if (_options.InMemory.Clients != null)
+                    builder                        
+                        .AddInMemoryClients(_options.InMemory.Clients);                    
 
                 if (_options.InMemory.PersistedGrants)
                     builder.AddInMemoryPersistedGrants();
@@ -34,10 +55,11 @@ namespace core.Extensions.Identity
                 builder.AddDeveloperSigningCredential();
 
             if (_options.JwtBearerClientAuthentication)
-                builder.AddJwtBearerClientAuthentication();
+                builder
+                    .AddJwtBearerClientAuthentication();                    
 
             if (_options.TestUsers != null && _options.TestUsers.Any())
-                builder.AddTestUsers(_options.TestUsers.ToList());
+                builder.AddTestUsers(_options.TestUsers.ToList());            
         }
 
         public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
@@ -45,6 +67,7 @@ namespace core.Extensions.Identity
             base.Execute(applicationBuilder, serviceProvider);
 
             applicationBuilder.UseIdentityServer();
+            
         }        
     }
 }

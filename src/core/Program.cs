@@ -22,7 +22,7 @@ namespace core
             new WebHostBuilder()
             .UseKestrel((ctx, opt) => { opt.AddServerHeader = false; })
             //.ConfigureKestrel((ctx,opt) => { opt.AddServerHeader = false; }) // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel?view=aspnetcore-2.2#how-to-use-kestrel-in-aspnet-core-apps
-            .UseContentRoot(Directory.GetCurrentDirectory())
+            .UseContentRoot(Directory.GetCurrentDirectory())     // issue with in-process hosting https://github.com/aspnet/AspNetCore/issues/4206                   
             .ConfigureAppConfiguration((ctx, config) =>
             {
                 var _env = ctx.HostingEnvironment;

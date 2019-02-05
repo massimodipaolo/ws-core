@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.1.7</PackageVersion>
+    <PackageVersion>1.1.8</PackageVersion>
     <PackageId>app.core.Extensions.Api</PackageId>
     <AssemblyName>app.core.Extensions.Api</AssemblyName>
     <RootNamespace>core.Extensions.Api</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.net core 2.2</PackageReleaseNotes>
+    <PackageReleaseNotes>Add bearer auth</PackageReleaseNotes>
     <PackageTags></PackageTags>
   </PropertyGroup>
 
@@ -18,6 +18,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="4.5.3" />
   </ItemGroup>
 
   <ItemGroup>

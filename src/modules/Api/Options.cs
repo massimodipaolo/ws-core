@@ -38,6 +38,7 @@ namespace core.Extensions.Api
             public string RoutePrefix { get; set; } = "swagger";
             public IEnumerable<EndpointOptions> Endpoints { get; set; }
             public XmlCommentsOptions XmlComments { get; set; }
+            public SecurityDefinitionsOptions SecurityDefinitions { get; set; }
             public class EndpointOptions
             {
                 public string Id { get; set; }
@@ -48,7 +49,12 @@ namespace core.Extensions.Api
                 public string FileName { get; set; }
                 public bool IncludeControllerComments { get; set; } = false;
             }
+            public class SecurityDefinitionsOptions
+            {
+                public bool Bearer { get; set; } = false;
+            }
         }
+        
 
     }
 }

@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Swashbuckle.AspNetCore.Filters;
+using Swashbuckle.AspNetCore.Filters.Extensions;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace core.Extensions.Api
 {
@@ -68,6 +72,22 @@ namespace core.Extensions.Api
                             );
                     }
 
+                    if (_doc.SecurityDefinitions != null)
+                    {
+                        if (_doc.SecurityDefinitions.Bearer)
+                            opt.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                            {
+                                Description = "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
+                                In = "header",
+                                Name = "Authorization",
+                                Type = "apiKey"
+                            });
+
+                        opt.OperationFilter<SecurityRequirementsOperationFilter>();
+                    }
+
+
+
                     //Xml comments
                     if (_doc.XmlComments != null && !string.IsNullOrEmpty(_doc.XmlComments.FileName))
                     {
@@ -108,6 +128,7 @@ namespace core.Extensions.Api
                         var _id = string.IsNullOrEmpty(doc.e.Id) ? $"v{doc.i + 1}" : doc.e.Id;
                         opt.SwaggerEndpoint($"/{_doc.RoutePrefix}/{_id}/swagger.json", string.IsNullOrEmpty(doc.e.Title) ? $"API v{doc.i + 1}" : doc.e.Title);
                     }
+
                 });
             }
         }
