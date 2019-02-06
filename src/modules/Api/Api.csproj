@@ -2,16 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.1.8</PackageVersion>
+    <PackageVersion>1.1.11</PackageVersion>
     <PackageId>app.core.Extensions.Api</PackageId>
     <AssemblyName>app.core.Extensions.Api</AssemblyName>
-    <RootNamespace>core.Extensions.Api</RootNamespace>
-    <Authors>Massimo Di Paolo</Authors>
+    <RootNamespace>core.Extensions.Api</RootNamespace>     
+    <Authors>Massimo Di Paolo</Authors>   
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
-    <Description></Description>
+    <Description></Description>    
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Add bearer auth</PackageReleaseNotes>
-    <PackageTags></PackageTags>
+    <PackageReleaseNotes>Add bearer auth</PackageReleaseNotes>         
+    <PackageTags></PackageTags>               
   </PropertyGroup>
 
   <ItemGroup>

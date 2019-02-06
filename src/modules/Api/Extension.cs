@@ -7,9 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Swashbuckle.AspNetCore.Filters;
-using Swashbuckle.AspNetCore.Filters.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace core.Extensions.Api
 {
@@ -59,6 +57,13 @@ namespace core.Extensions.Api
             {
                 services.AddSwaggerGen(opt =>
                 {
+                    //Xml comments
+                    if (_doc.XmlComments != null && !string.IsNullOrEmpty(_doc.XmlComments.FileName))
+                    {
+                        var filePath = System.IO.Path.Combine(System.AppContext.BaseDirectory, _doc.XmlComments.FileName);
+                        opt.IncludeXmlComments(filePath, includeControllerXmlComments: _doc.XmlComments.IncludeControllerComments);
+                    }
+
                     foreach (var doc in _doc.Endpoints?.Select((e, i) => new { e, i }))
                     {
                         var _id = string.IsNullOrEmpty(doc.e?.Id) ? $"v{doc.i + 1}" : doc.e?.Id;
@@ -74,7 +79,10 @@ namespace core.Extensions.Api
 
                     if (_doc.SecurityDefinitions != null)
                     {
+                        opt.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();                        
+
                         if (_doc.SecurityDefinitions.Bearer)
+                        {
                             opt.AddSecurityDefinition("Bearer", new ApiKeyScheme
                             {
                                 Description = "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
@@ -82,17 +90,11 @@ namespace core.Extensions.Api
                                 Name = "Authorization",
                                 Type = "apiKey"
                             });
-
-                        opt.OperationFilter<SecurityRequirementsOperationFilter>();
-                    }
-
-
-
-                    //Xml comments
-                    if (_doc.XmlComments != null && !string.IsNullOrEmpty(_doc.XmlComments.FileName))
-                    {
-                        var filePath = System.IO.Path.Combine(System.AppContext.BaseDirectory, _doc.XmlComments.FileName);
-                        opt.IncludeXmlComments(filePath, includeControllerXmlComments: _doc.XmlComments.IncludeControllerComments);
+                            opt.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
+                            {
+                                { "Bearer", new string[] { } }
+                            });
+                        }
                     }
 
                 });
