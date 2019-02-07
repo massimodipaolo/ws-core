@@ -412,6 +412,10 @@
                       "items": {
                         "type": "object",
                         "properties": {
+                          "namespace": {
+                            "type": "string",
+                            "description": "Entity namespace (case sensitive) or leave empty"                            
+                          },
                           "name": {
                             "type": "string",
                             "description": "Entity name, case sensitive",

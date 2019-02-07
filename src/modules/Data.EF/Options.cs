@@ -11,6 +11,7 @@ namespace core.Extensions.Data.EF
         public IEnumerable<MappingConfig> Mappings { get; set; }
         public class MappingConfig
         {
+            public string NameSpace { get; set; }
             public string Name { get; set; }
             public string Table { get; set; }
             public string Schema { get; set; }

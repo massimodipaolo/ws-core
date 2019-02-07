@@ -55,7 +55,11 @@ namespace core.Extensions.Data
                 {
                     try
                     {
-                        EF.Options.MappingConfig opt = (options?.Mappings ?? new List<EF.Options.MappingConfig>()).FirstOrDefault(_ => _.Name == type.Name);
+                        EF.Options.MappingConfig opt = (options?.Mappings ?? new List<EF.Options.MappingConfig>())
+                        .FirstOrDefault(_ =>
+                            _.Name == type.Name
+                            && (string.IsNullOrEmpty(_.NameSpace) || _.NameSpace == type.Namespace)
+                        );
 
                         var entityBuilder = modelBuilder.Entity(type)
                                     .ToTable(opt?.Table ?? type.Name, opt?.Schema ?? "dbo");
@@ -81,7 +85,9 @@ namespace core.Extensions.Data
                             }
 
                     }
-                    catch { }
+                    catch(Exception ex) {
+                        throw ex;
+                    }
                 }
             }
         }
