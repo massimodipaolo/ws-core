@@ -52,6 +52,7 @@ namespace core.Extensions.Api
             public class SecurityDefinitionsOptions
             {
                 public bool Bearer { get; set; } = false;
+                public string[] Cookies { get; set; }
             }
         }
         
