@@ -414,7 +414,7 @@
                         "properties": {
                           "namespace": {
                             "type": "string",
-                            "description": "Entity namespace (case sensitive) or leave empty"                            
+                            "description": "Entity namespace (case sensitive) or leave empty"
                           },
                           "name": {
                             "type": "string",
@@ -483,7 +483,32 @@
               ],
               "properties": {
                 "options": {
-                  "$ref": "#/definitions/dbConnection"
+                  "allOf": [
+                    { "$ref": "#/definitions/dbConnection" }
+                  ],
+                  "properties": {
+                    "merge": {
+                      "type": "object",
+                      "description": "Repository merge implementation",
+                      "properties": {
+                        "useTempDb": {
+                          "type": "boolean",
+                          "default": true
+                        },
+                        "updateByProperties": {
+                          "type": "array",
+                          "items": { "type": "string" },
+                          "uniqueItems": true,
+                          "default": "[Id]"
+                        },
+                        "bulkCopyTimeout": {
+                          "type": "number",
+                          "default": 180,
+                          "description": "Operation timeout in seconds"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             },

@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netcoreapp2.2</TargetFramework>
-		<PackageVersion>1.0.6</PackageVersion>
+		<PackageVersion>1.0.7</PackageVersion>
 		<PackageId>app.core.Extensions.Data.Mongo</PackageId>
 		<AssemblyName>app.core.Extensions.Data.Mongo</AssemblyName>
 		<RootNamespace>core.Extensions.Data.Mongo</RootNamespace>
@@ -14,7 +14,7 @@
     <PackageTags></PackageTags>
   </PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="MongoDB.Driver" Version="2.7.2" />
+		<PackageReference Include="MongoDB.Driver" Version="2.7.3" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Data\Data.csproj" />

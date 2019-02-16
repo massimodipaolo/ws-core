@@ -8,7 +8,7 @@ namespace core.Extensions.Data.EF.SqlServer
 {
     public class Extension : Base.Extension
     {
-        private Options _options => GetOptions<Options>();
+        public Options _options => GetOptions<Options>();
 
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
@@ -26,7 +26,7 @@ namespace core.Extensions.Data.EF.SqlServer
                 */
                 serviceCollection.AddDbContext<AppDbContext>(_ => _.UseSqlServer(connections.FirstOrDefault().ConnectionString),_options.ServiceLifetime);                
                 serviceCollection.PostConfigure<AppDbContext>(_ => _.Database.EnsureCreated());
-                serviceCollection.TryAddTransient(typeof(IRepository<,>), typeof(Repository.EF<,>));
+                serviceCollection.TryAddTransient(typeof(IRepository<,>), typeof(Repository.EF.SqlServer<,>));
             }
         }
     }
