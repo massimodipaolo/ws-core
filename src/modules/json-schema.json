@@ -35,6 +35,20 @@
         }
       }
     },
+    "efIncludeNavigationPropertiesOperation": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "except": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Fully qualified name of the type, including its namespace but not its assembly"
+        }
+      }
+    },
     "endpoint": {
       "type": "object",
       "required": [ "address" ],
@@ -462,8 +476,18 @@
                         },
                         "required": [ "name" ]
                       }
+                    },
+                    "includeNavigationProperties": {
+                      "type": "object",
+                      "properties": {
+                        "list": {
+                          "$ref": "#/definitions/efIncludeNavigationPropertiesOperation"
+                        },
+                        "find": {
+                          "$ref": "#/definitions/efIncludeNavigationPropertiesOperation"
+                        }
+                      }
                     }
-                  }
                 }
               }
             },

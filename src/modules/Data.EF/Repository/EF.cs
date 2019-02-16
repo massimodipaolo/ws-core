@@ -7,6 +7,7 @@ namespace core.Extensions.Data.Repository
 {
     public class EF<T, TKey> : IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
+        private static core.Extensions.Data.EF.Options.IncludeNavigationPropertiesConfig _includeOptions { get; set; } = new core.Extensions.Data.EF.Extension()._options?.IncludeNavigationProperties ?? new core.Extensions.Data.EF.Options.IncludeNavigationPropertiesConfig();
         protected readonly AppDbContext _context;
         protected DbSet<T> _collection;
 
@@ -16,11 +17,25 @@ namespace core.Extensions.Data.Repository
             _collection = _context.Set<T>();
         }
 
-        public IQueryable<T> List => _collection.AsNoTracking().AsQueryable();
+        private bool _evaluateEagerOperation(core.Extensions.Data.EF.Options.IncludeNavigationPropertiesConfig.Operation op)
+            => (op?.Enabled ?? false) ^ (op?.Except ?? new List<string>()).Contains(typeof(T).FullName);
+
+        private IQueryable<T> _query(bool eager = false)
+        {
+            var query = _collection.AsNoTracking().AsQueryable();
+            if (eager)
+            {
+                foreach (var property in _context.Model.FindEntityType(typeof(T)).GetNavigations())
+                    query = query.Include(property.Name);
+            }
+            return query;
+        }
+
+        public IQueryable<T> List => _query(_evaluateEagerOperation(_includeOptions.List));
 
         public T Find(TKey Id)
         {
-            return List.SingleOrDefault(_ => _.Id.Equals(Id));
+            return _query(_evaluateEagerOperation(_includeOptions.Find)).SingleOrDefault(_ => _.Id.Equals(Id));
         }
 
         public IQueryable<T> Query(FormattableString command)

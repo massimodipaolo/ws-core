@@ -9,6 +9,7 @@ namespace core.Extensions.Data.EF
     {
         public string[] Ignore { get; set; }
         public IEnumerable<MappingConfig> Mappings { get; set; }
+        public IncludeNavigationPropertiesConfig IncludeNavigationProperties { get; set; }
         public class MappingConfig
         {
             public string NameSpace { get; set; }
@@ -22,6 +23,15 @@ namespace core.Extensions.Data.EF
                 public string Name { get; set; }
                 public string Column { get; set; }
                 public bool Ignore { get; set; } = false;
+            }
+        }
+        public class IncludeNavigationPropertiesConfig {
+            public Operation List { get; set; }
+            public Operation Find { get; set; } 
+            public class Operation
+            {
+                public bool Enabled { get; set; }
+                public IEnumerable<string> Except { get; set; }
             }
         }
     }
