@@ -4,9 +4,9 @@ using System.Linq;
 using core.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace core.Extensions.Api
@@ -69,7 +69,7 @@ namespace core.Extensions.Api
                         var _id = string.IsNullOrEmpty(doc.e?.Id) ? $"v{doc.i + 1}" : doc.e?.Id;
                         opt.SwaggerDoc(
                             _id,
-                            new Swashbuckle.AspNetCore.Swagger.Info()
+                            new Microsoft.OpenApi.Models.OpenApiInfo()
                             {
                                 Title = string.IsNullOrEmpty(doc.e?.Title) ? $"API v{doc.i + 1}" : doc.e?.Title,
                                 Version = doc.e?.Version ?? _id
@@ -79,22 +79,56 @@ namespace core.Extensions.Api
 
                     if (_doc.SecurityDefinitions != null)
                     {
-                        opt.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();                        
+                        //opt.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
 
                         if (_doc.SecurityDefinitions.Bearer)
                         {
-                            opt.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                            opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                             {
                                 Description = "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
-                                In = "header",
+                                In = ParameterLocation.Header,
                                 Name = "Authorization",
-                                Type = "apiKey"
+                                Type = SecuritySchemeType.ApiKey,
+                                Scheme = "Bearer",
+                                BearerFormat = "JWT"
                             });
-                            opt.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
+                            opt.AddSecurityRequirement(new OpenApiSecurityRequirement
                             {
-                                { "Bearer", new string[] { } }
+                                {
+                                    new OpenApiSecurityScheme
+                                    {
+                                        Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                                    },
+                                    new string[] { }
+                                }
                             });
                         }
+
+                        
+                        if (_doc.SecurityDefinitions.Cookies != null && _doc.SecurityDefinitions.Cookies.Any())
+                        {
+                            foreach (var cookieName in _doc.SecurityDefinitions.Cookies)
+                            {
+                                opt.AddSecurityDefinition(cookieName, new OpenApiSecurityScheme
+                                {
+                                    Description = $"Cookie Auth: {cookieName}",
+                                    In = ParameterLocation.Cookie,
+                                    Name = cookieName,
+                                    Type = SecuritySchemeType.ApiKey                                    
+                                });
+                                opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+                            {
+                                {
+                                    new OpenApiSecurityScheme
+                                    {
+                                        Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = cookieName }
+                                    },
+                                    new string[] { }
+                                }
+                            });
+                            }
+                        }
+                        
                     }
 
                 });
