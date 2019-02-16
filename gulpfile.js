@@ -50,4 +50,4 @@ gulp.task('watch', function () {
     .pipe(pushPkg(es));
 });
 
-gulp.task('default', ['watch']);
+gulp.task('default', gulp.series('watch'));
