@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using core.Extensions.Data.EF;
+using core.Extensions.Data.Repository.EF;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace core.Extensions.Data.Repository
 {
@@ -17,18 +20,24 @@ namespace core.Extensions.Data.Repository
             _collection = _context.Set<T>();
         }
 
+        private IQueryable<T> _list => _collection.AsNoTracking().AsQueryable();
         private bool _evaluateEagerOperation(core.Extensions.Data.EF.Options.IncludeNavigationPropertiesConfig.Operation op)
             => (op?.Enabled ?? false) ^ (op?.Except ?? new List<string>()).Contains(typeof(T).FullName);
 
         private IQueryable<T> _query(bool eager = false)
         {
-            var query = _collection.AsNoTracking().AsQueryable();
+            var query = _list;
             if (eager)
             {
                 foreach (var property in _context.Model.FindEntityType(typeof(T)).GetNavigations())
                     query = query.Include(property.Name);
             }
             return query;
+        }
+
+        public virtual IIncludableJoin<T, TProperty> IncludeJoin<TProperty>(Expression<Func<T, TProperty>> navigationProperty)
+        {
+            return (_list.IncludeJoin(navigationProperty));
         }
 
         public IQueryable<T> List => _query(_evaluateEagerOperation(_includeOptions.List));
