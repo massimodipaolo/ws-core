@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netcoreapp2.2</TargetFramework>
-		<PackageVersion>1.2.6</PackageVersion>   
+		<PackageVersion>1.2.7</PackageVersion>   
 		<PackageId>app.core.Extensions.Data.EF.MySql</PackageId>
 		<AssemblyName>app.core.Extensions.Data.EF.MySql</AssemblyName>
 		<RootNamespace>core.Extensions.Data.EF.MySql</RootNamespace>

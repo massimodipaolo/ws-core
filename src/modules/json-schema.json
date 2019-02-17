@@ -40,12 +40,34 @@
       "properties": {
         "enabled": {
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "Include main navigation propeties"
         },
         "except": {
           "type": "array",
           "items": { "type": "string" },
           "description": "Fully qualified name of the type, including its namespace but not its assembly"
+        },
+        "explicit": {
+          "description": "Custome rules by type",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "entity": {
+                "type": "string",
+                "description": "Fully qualified name of the type, including its namespace but not its assembly"
+              },
+              "paths": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "description": "Array of indented navigation paths to include\ni.e. for Order entity\n[\n [\"OrderDetail\",\"Product\",\"Supplier\"],\n [\"Customer\"]\n]"
+              }
+            }
+          }
         }
       }
     },

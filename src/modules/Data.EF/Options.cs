@@ -30,8 +30,34 @@ namespace core.Extensions.Data.EF
             public Operation Find { get; set; } 
             public class Operation
             {
+                /// <summary>
+                /// Include the main navigation properties
+                /// </summary>
                 public bool Enabled { get; set; }
+                /// <summary>
+                /// List of typeof(T).FullName to exclude from then Enabled directive
+                /// </summary>
                 public IEnumerable<string> Except { get; set; }
+                /// <summary>
+                /// Set custom navigation paths. This setting overrides the Enabled/Except properties
+                /// </summary>
+                public IEnumerable<NavigationPaths> Explicit { get; set; }
+                public class NavigationPaths
+                {
+                    /// <summary>
+                    /// typeof(T).FullName
+                    /// </summary>
+                    public string Entity { get; set; }
+                    /// <summary>
+                    /// Array of indented navigation paths to include
+                    /// i.e. for Order entity
+                    /// [
+                    ///     ["OrderDetail","Product","Supplier"],
+                    ///     ["Customer"]
+                    /// ]
+                    /// </summary>
+                    public IEnumerable<IEnumerable<string>> Paths { get; set; }
+                }
             }
         }
     }

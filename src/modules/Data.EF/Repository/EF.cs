@@ -21,13 +21,19 @@ namespace core.Extensions.Data.Repository
         }
 
         private IQueryable<T> _list => _collection.AsNoTracking().AsQueryable();
-        private bool _evaluateEagerOperation(core.Extensions.Data.EF.Options.IncludeNavigationPropertiesConfig.Operation op)
-            => (op?.Enabled ?? false) ^ (op?.Except ?? new List<string>()).Contains(typeof(T).FullName);
 
-        private IQueryable<T> _query(bool eager = false)
+        private IQueryable<T> _query(core.Extensions.Data.EF.Options.IncludeNavigationPropertiesConfig.Operation op)
         {
             var query = _list;
-            if (eager)
+            var customRule = op?.Explicit?.FirstOrDefault(_ => _.Entity == typeof(T).FullName);
+            // custom navigation properties
+            if (customRule != null && customRule.Paths != null && customRule.Paths.Any(_ => _.Any()))
+            {
+                foreach (var paths in customRule.Paths.Where(_ => _.Any()))
+                    query = query.Include(string.Join('.', paths));
+            }
+            // load main navigation propertire
+            else if ((op?.Enabled ?? false) ^ (op?.Except ?? new List<string>()).Contains(typeof(T).FullName))
             {
                 foreach (var property in _context.Model.FindEntityType(typeof(T)).GetNavigations())
                     query = query.Include(property.Name);
@@ -40,11 +46,11 @@ namespace core.Extensions.Data.Repository
             return (_list.IncludeJoin(navigationProperty));
         }
 
-        public IQueryable<T> List => _query(_evaluateEagerOperation(_includeOptions.List));
+        public IQueryable<T> List => _query(_includeOptions.List);
 
         public T Find(TKey Id)
         {
-            return _query(_evaluateEagerOperation(_includeOptions.Find)).SingleOrDefault(_ => _.Id.Equals(Id));
+            return _query(_includeOptions.Find).SingleOrDefault(_ => _.Id.Equals(Id));
         }
 
         public IQueryable<T> Query(FormattableString command)
