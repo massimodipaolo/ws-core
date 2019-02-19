@@ -46,9 +46,9 @@ namespace core.Extensions.Data.Repository
             return (_list.IncludeJoin(navigationProperty));
         }
 
-        public IQueryable<T> List => _query(_includeOptions.List);
+        public virtual IQueryable<T> List => _query(_includeOptions.List);
 
-        public T Find(TKey Id)
+        public virtual T Find(TKey Id)
         {
             return _query(_includeOptions.Find).SingleOrDefault(_ => _.Id.Equals(Id));
         }
@@ -58,7 +58,7 @@ namespace core.Extensions.Data.Repository
             return _context.Set<T>().FromSql(command);
         }
 
-        public void Add(T entity)
+        public virtual void Add(T entity)
         {
             if (entity != null)
             {
@@ -68,7 +68,7 @@ namespace core.Extensions.Data.Repository
             }
         }
 
-        public void Update(T entity)
+        public virtual void Update(T entity)
         {
             if (entity != null)
             {
@@ -108,7 +108,7 @@ namespace core.Extensions.Data.Repository
             }
         }
 
-        public void Delete(T entity)
+        public virtual void Delete(T entity)
         {
             if (entity != null)
             {

@@ -554,6 +554,46 @@
                           "description": "Operation timeout in seconds"
                         }
                       }
+                    },
+                    "storedProcedure": {
+                      "type": "object",
+                      "description": "Use stored procedure instead of EF methods",
+                      "properties": {
+                        "schema": {
+                          "type": "string",
+                          "description": " Stored procedure schema",
+                          "default": "dbo"
+                        },
+                        "mappings": {
+                          "description": "Map entity type to a set of stored procedure",
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "namespace": { "type": "string" },
+                              "name": {
+                                "type": "string",
+                                "description": "Entity typeof(T).Name"
+                              },
+                              "schema": {
+                                "type": "string",
+                                "description": "Override default"
+                              },
+                              "storedProcedure": {
+                                "type": "string",
+                                "description": "Stored procedure name. Will be trasformed in {schema}.entity_{name}_{method}",
+                                "default": "Entity name"
+                              },
+                              "methods": {
+                                "description": "Call sp for this methods only; If empty: all methods", "default": "all",
+                                "type": "array",
+                                "items": { "enum": [ "list", "find", "add", "update", "merge", "delete" ] },
+                                "uniqueItems": true
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
