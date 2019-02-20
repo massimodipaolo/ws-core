@@ -16,6 +16,7 @@ namespace core.Extensions.Data.Repository.EF
         private static IEnumerable<Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig> _spMappings { get; set; }
         private Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig _sp { get; set; }
         private IServiceProvider _provider { get; set; }
+        private const string _spPrefix = "entity";
         public SqlServer(AppDbContext context, IServiceProvider provider) : base(context)
         {
             if (_spMappings == null)
@@ -82,7 +83,7 @@ namespace core.Extensions.Data.Repository.EF
         public override void Merge(IEnumerable<T> entities, RepositoryMergeOperation operation = RepositoryMergeOperation.Upsert)
         {
             if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Merge) ?? false)                            
-                ExecuteCrudCommand(entities, "merge");            
+                ExecuteMergeCommand(entities, operation);            
             else
                 _Merge(entities, operation);
         }
@@ -129,12 +130,12 @@ namespace core.Extensions.Data.Repository.EF
             }
         }
 
-        private void ExecuteCrudCommand(IEnumerable<T> entities, string action)
+        private void ExecuteMergeCommand(IEnumerable<T> entities, RepositoryMergeOperation operation)
         {
             if (entities != null)
             {
                 var data = Newtonsoft.Json.JsonConvert.SerializeObject(entities);
-                ExecuteCrudCommand(action, data);
+                ExecuteMergeCommand(data, operation);
             }
         }
 
@@ -142,17 +143,29 @@ namespace core.Extensions.Data.Repository.EF
         {
             var param = "@data";
             _db().ExecuteSqlCommand(
-                $"exec {_sp.Schema}.entity_{_sp.StoredProcedure}_{action} {param}",
+                $"exec {_sp.Schema}.{_spPrefix}_{_sp.StoredProcedure}_{action} {param}",
                 new System.Data.SqlClient.SqlParameter(param, data)
                 );
         }
+
+        private void ExecuteMergeCommand(string data, RepositoryMergeOperation operation)
+        {
+            var p1 = "@data";
+            var p2 = "@operation";
+            _db().ExecuteSqlCommand(
+                $"exec {_sp.Schema}.{_spPrefix}_{_sp.StoredProcedure}_merge {p1},{p2}",
+                new System.Data.SqlClient.SqlParameter(p1, data),
+                new System.Data.SqlClient.SqlParameter(p2, operation.ToString())
+                );
+        }
+
 
         private async Task<string> ExecuteScalar(TKey Id)
         {
             var result = new System.Text.StringBuilder();
 
             var cmd = _db().GetDbConnection().CreateCommand();
-            cmd.CommandText = $"{_sp.Schema}.entity_{_sp.StoredProcedure}_select";
+            cmd.CommandText = $"{_sp.Schema}.{_spPrefix}_{_sp.StoredProcedure}_select";
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
             cmd.CommandTimeout = 180;
 
