@@ -104,7 +104,6 @@ namespace core.Extensions.Api
                             });
                         }
 
-                        
                         if (_doc.SecurityDefinitions.Cookies != null && _doc.SecurityDefinitions.Cookies.Any())
                         {
                             foreach (var cookieName in _doc.SecurityDefinitions.Cookies)
@@ -114,7 +113,7 @@ namespace core.Extensions.Api
                                     Description = $"Cookie Auth: {cookieName}",
                                     In = ParameterLocation.Cookie,
                                     Name = cookieName,
-                                    Type = SecuritySchemeType.ApiKey                                    
+                                    Type = SecuritySchemeType.ApiKey
                                 });
                                 opt.AddSecurityRequirement(new OpenApiSecurityRequirement
                             {
@@ -128,7 +127,7 @@ namespace core.Extensions.Api
                             });
                             }
                         }
-                        
+
                     }
 
                 });
@@ -150,22 +149,31 @@ namespace core.Extensions.Api
                 applicationBuilder.UseSwagger(opt =>
                 {
                     opt.RouteTemplate = _doc.RoutePrefix + "/{documentName}/swagger.json";
-                    /*opt.PreSerializeFilters.Add((doc, rq) =>
-                    {
-                        doc.Host = rq.Host.Value;
-                    });*/
+                /*opt.PreSerializeFilters.Add((doc, rq) =>
+                {
+                    doc.Host = rq.Host.Value;
+                });*/                
                 });
 
                 applicationBuilder.UseSwaggerUI(opt =>
                 {
                     opt.RoutePrefix = _doc.RoutePrefix;
+                    opt.DisplayRequestDuration();
+                    if (_doc.Ui != null)
+                    {
+                        var ui = _doc.Ui;
+                        if (!string.IsNullOrEmpty(ui.InjectJs))
+                            opt.InjectJavascript(ui.InjectJs);
+                        if (!string.IsNullOrEmpty(ui.InjectCss))
+                            opt.InjectStylesheet(ui.InjectCss);
+                    }                    
                     foreach (var doc in _doc.Endpoints?.Select((e, i) => new { e, i }))
                     {
                         var _id = string.IsNullOrEmpty(doc.e.Id) ? $"v{doc.i + 1}" : doc.e.Id;
-                        opt.SwaggerEndpoint($"/{_doc.RoutePrefix}/{_id}/swagger.json", string.IsNullOrEmpty(doc.e.Title) ? $"API v{doc.i + 1}" : doc.e.Title);
+                        opt.SwaggerEndpoint($"/{_doc.RoutePrefix}/{_id}/swagger.json", string.IsNullOrEmpty(doc.e.Title) ? $"API v{doc.i + 1}" : doc.e.Title);                        
                     }
 
-                });
+                });                
             }
         }
     }

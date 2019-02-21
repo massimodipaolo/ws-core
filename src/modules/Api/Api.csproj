@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.1.11</PackageVersion>
+    <TargetFramework>netcoreapp2.2</TargetFramework>  
+    <PackageVersion>1.2.0</PackageVersion>
     <PackageId>app.core.Extensions.Api</PackageId>
     <AssemblyName>app.core.Extensions.Api</AssemblyName>
     <RootNamespace>core.Extensions.Api</RootNamespace>     
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>    
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Add bearer auth</PackageReleaseNotes>         
+    <PackageReleaseNotes>Swashbuckle 5, OpenAPI 3</PackageReleaseNotes>         
     <PackageTags></PackageTags>               
   </PropertyGroup>
 

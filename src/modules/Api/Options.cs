@@ -36,9 +36,15 @@ namespace core.Extensions.Api
         public class DocumentationOptions
         {
             public string RoutePrefix { get; set; } = "swagger";
+            public UiOptions Ui { get; set; }
             public IEnumerable<EndpointOptions> Endpoints { get; set; }
             public XmlCommentsOptions XmlComments { get; set; }
             public SecurityDefinitionsOptions SecurityDefinitions { get; set; }
+            public class UiOptions
+            {
+                public string InjectJs { get; set; }
+                public string InjectCss { get; set; }
+            }
             public class EndpointOptions
             {
                 public string Id { get; set; }

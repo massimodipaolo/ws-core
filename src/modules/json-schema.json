@@ -243,6 +243,19 @@
                           "type": "string",
                           "default": "swagger"
                         },
+                        "ui": {
+                          "type": "object",
+                          "properties": {
+                            "injectJs": {
+                              "type": "string",
+                              "description": "Relative path of additional js file, added in wwwroot folder; i.e. \"/swagger-ui/custom.js\""
+                            },
+                            "injectCss": {
+                              "type": "string",
+                              "description": "Relative path of additional css file, added in wwwroot folder; i.e. \"/swagger-ui/custom.css\""
+                            }
+                          }
+                        },
                         "endpoints": {
                           "type": "array",
                           "items": {
@@ -271,6 +284,13 @@
                               "type": "boolean",
                               "description": "Add Authorization header for bearer token",
                               "default": false
+                            },
+                            "cookies": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "uniqueItems": true
+                              }
                             }
                           }
                         },
@@ -585,7 +605,8 @@
                                 "default": "Entity name"
                               },
                               "methods": {
-                                "description": "Call sp for this methods only; If empty: all methods", "default": "all",
+                                "description": "Call sp for this methods only; If empty: all methods",
+                                "default": "all",
                                 "type": "array",
                                 "items": { "enum": [ "list", "find", "add", "update", "merge", "delete" ] },
                                 "uniqueItems": true
