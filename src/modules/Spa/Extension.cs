@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace core.Extensions.Spa
@@ -43,7 +44,19 @@ namespace core.Extensions.Spa
             {
                 if (_options != null)
                 {
-                    applicationBuilder.UseSpaStaticFiles();
+                    if (_options.StaticFilesPaths != null && _options.StaticFilesPaths.Any())
+                    {
+                        foreach(var opt in _options.StaticFilesPaths)
+                        {
+                            if (opt != null)
+                            {
+                                var staticFileOptions = core.Extensions.StaticFiles.Extension.GetStaticFileOptions(opt,Path.Combine(_env?.ContentRootPath ?? Directory.GetCurrentDirectory(), _options.RootPath),_env,_logger);
+                                applicationBuilder.UseSpaStaticFiles(staticFileOptions);
+                            }
+                        }
+                    }
+                    else
+                        applicationBuilder.UseSpaStaticFiles();
 
                     if (_options.Prerendering != null && _options.Prerendering.Enable && _options.Prerendering.CacheResponse != null && _options.Prerendering.CacheResponse.Enable)
                     {

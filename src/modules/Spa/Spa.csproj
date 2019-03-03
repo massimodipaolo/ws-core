@@ -2,7 +2,7 @@
 
   <PropertyGroup> 
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.0.6</PackageVersion> 
+    <PackageVersion>1.1.0</PackageVersion> 
     <PackageId>app.core.Extensions.Spa</PackageId>
     <AssemblyName>app.core.Extensions.Spa</AssemblyName> 
     <RootNamespace>core.Extensions.Spa</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.net core 2.2</PackageReleaseNotes>
+    <PackageReleaseNotes>Add Static files options</PackageReleaseNotes>
     <PackageTags>spa, single page application</PackageTags>
   </PropertyGroup>  
 
@@ -20,7 +20,8 @@
 
   <ItemGroup>    
     <ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
-    <ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />  
+    <ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />
+    <ProjectReference Include="..\StaticFiles\StaticFiles.csproj" />  
   </ItemGroup>
 
 </Project>

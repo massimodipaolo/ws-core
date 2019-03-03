@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using core.Extensions.Base;
+using static core.Extensions.StaticFiles.Options;
+using Microsoft.AspNetCore.Hosting;
 
 namespace core.Extensions.StaticFiles
 {
@@ -36,68 +38,74 @@ namespace core.Extensions.StaticFiles
                     if (opt != null)
                     {
                         //StaticFileOptions
-                        var StaticFileOptions = new StaticFileOptions();
-                        if (!string.IsNullOrEmpty(opt.Path))
-                        {
-                            try
-                            {
-                                //TODO: Inject IFileProvider (or ServiceLocator serviceProvider.GetService<IFileProvider>()): https://docs.microsoft.com/en-us/aspnet/core/fundamentals/file-providers
-                                StaticFileOptions.FileProvider = opt.FileProvider(_env);
-                            }
-                            catch (Exception ex)
-                            {
-                                _logger.LogError(ex.Message);
-                            }
-                        }
-                        if (!string.IsNullOrEmpty(opt.RequestPath))
-                            StaticFileOptions.RequestPath = new PathString(opt.RequestPath);
-                        if (opt.Headers != null)
-                        {
-                            StaticFileOptions.OnPrepareResponse = ctx =>
-                            {
-                                foreach (var h in opt.Headers)
-                                    ctx.Context.Response.Headers.Append(h.Key, h.Value);
-                            };
-                        }
-                        if (opt.MIMEtypes != null)
-                        {
-                            var provider = new FileExtensionContentTypeProvider();
-                            foreach (var t in opt.MIMEtypes)
-                                provider.Mappings[t.Key] = t.Value;
-                            StaticFileOptions.ContentTypeProvider = provider;
-                        }
+                        var staticFileOptions = GetStaticFileOptions(opt, _env?.ContentRootPath ?? Directory.GetCurrentDirectory(),_env,_logger);
 
                         //DirectoryBrowser
-                        DirectoryBrowserOptions DirectoryBrowserOptions = null;
+                        DirectoryBrowserOptions directoryBrowserOptions = null;
                         if (opt.EnableDirectoryBrowser)
                         {
-                            DirectoryBrowserOptions = new DirectoryBrowserOptions();
+                            directoryBrowserOptions = new DirectoryBrowserOptions();
                             if (!string.IsNullOrEmpty(opt.Path))
-                                DirectoryBrowserOptions.FileProvider = StaticFileOptions.FileProvider;
+                                directoryBrowserOptions.FileProvider = staticFileOptions.FileProvider;
                             if (!string.IsNullOrEmpty(opt.RequestPath))
-                                DirectoryBrowserOptions.RequestPath = StaticFileOptions.RequestPath;
+                                directoryBrowserOptions.RequestPath = staticFileOptions.RequestPath;
                         }
 
                         //DefaultFiles
-                        DefaultFilesOptions DefaultFilesOptions = null;
+                        DefaultFilesOptions defaultFilesOptions = null;
                         if (opt.DefaultFiles?.Length > 0)
                         {
-                            DefaultFilesOptions = new DefaultFilesOptions();
+                            defaultFilesOptions = new DefaultFilesOptions();
                             if (!string.IsNullOrEmpty(opt.Path))
-                                DefaultFilesOptions.FileProvider = StaticFileOptions.FileProvider;
+                                defaultFilesOptions.FileProvider = staticFileOptions.FileProvider;
                             if (!string.IsNullOrEmpty(opt.RequestPath))
-                                DefaultFilesOptions.RequestPath = StaticFileOptions.RequestPath;
-                            DefaultFilesOptions.DefaultFileNames.Clear();
+                                defaultFilesOptions.RequestPath = staticFileOptions.RequestPath;
+                            defaultFilesOptions.DefaultFileNames.Clear();
                             foreach (var f in opt.DefaultFiles)
-                                DefaultFilesOptions.DefaultFileNames.Add(f);
+                                defaultFilesOptions.DefaultFileNames.Add(f);
                         }
 
-                        res.Add((StaticFileOptions, DirectoryBrowserOptions, DefaultFilesOptions));
+                        res.Add((staticFileOptions, directoryBrowserOptions, defaultFilesOptions));
                     }
                 }
 
                 return res;
             }
+        }
+
+        public static StaticFileOptions GetStaticFileOptions(StaticFilesFolderOption options,string basePath,IHostingEnvironment env,ILogger logger)
+        {
+            var staticFileOptions = new StaticFileOptions();
+            if (!string.IsNullOrEmpty(options.Path))
+            {
+                try
+                {
+                    //TODO: Inject IFileProvider (or ServiceLocator serviceProvider.GetService<IFileProvider>()): https://docs.microsoft.com/en-us/aspnet/core/fundamentals/file-providers
+                    staticFileOptions.FileProvider = options.FileProvider(basePath);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex.Message);
+                }
+            }
+            if (!string.IsNullOrEmpty(options.RequestPath))
+                staticFileOptions.RequestPath = new PathString(options.RequestPath);
+            if (options.Headers != null)
+            {
+                staticFileOptions.OnPrepareResponse = ctx =>
+                {
+                    foreach (var h in options.Headers)
+                        ctx.Context.Response.Headers.Append(h.Key, h.Value);
+                };
+            }
+            if (options.MIMEtypes != null)
+            {
+                var provider = new FileExtensionContentTypeProvider();
+                foreach (var t in options.MIMEtypes)
+                    provider.Mappings[t.Key] = t.Value;
+                staticFileOptions.ContentTypeProvider = provider;
+            }
+            return staticFileOptions;
         }
 
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
