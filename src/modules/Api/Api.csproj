@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>  
-    <PackageVersion>1.2.0</PackageVersion>
+    <PackageVersion>1.2.1</PackageVersion>
     <PackageId>app.core.Extensions.Api</PackageId>
     <AssemblyName>app.core.Extensions.Api</AssemblyName>
     <RootNamespace>core.Extensions.Api</RootNamespace>     
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>    
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Swashbuckle 5, OpenAPI 3</PackageReleaseNotes>         
+    <PackageReleaseNotes>Fully qualify schema for Swagger</PackageReleaseNotes>         
     <PackageTags></PackageTags>               
   </PropertyGroup>
 

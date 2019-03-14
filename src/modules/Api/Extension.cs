@@ -57,6 +57,7 @@ namespace core.Extensions.Api
             {
                 services.AddSwaggerGen(opt =>
                 {
+                    opt.CustomSchemaIds(_ => _.FullName);
                     //Xml comments
                     if (_doc.XmlComments != null && !string.IsNullOrEmpty(_doc.XmlComments.FileName))
                     {
@@ -158,7 +159,7 @@ namespace core.Extensions.Api
                 applicationBuilder.UseSwaggerUI(opt =>
                 {
                     opt.RoutePrefix = _doc.RoutePrefix;
-                    opt.DisplayRequestDuration();
+                    opt.DisplayRequestDuration();                    
                     if (_doc.Ui != null)
                     {
                         var ui = _doc.Ui;
