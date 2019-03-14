@@ -1,4 +1,9 @@
 ﻿using core.Extensions.Base;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.FileProviders;
+using System.Collections.Generic;
+using System.IO;
+using static core.Extensions.StaticFiles.Options;
 
 namespace core.Extensions.Spa
 {
@@ -11,6 +16,7 @@ namespace core.Extensions.Spa
         public int StartupTimeoutInSeconds { get; set; } = 90;
         public string SpaDevelopmentServer { get; set; } // http://localhost:4200
         public string CliServerScript { get; set; } // start
+        public StaticFilesFolderOption[] StaticFilesPaths { get; set; }
         public PrerenderingOptions Prerendering { get; set; }
 
         public class PrerenderingOptions

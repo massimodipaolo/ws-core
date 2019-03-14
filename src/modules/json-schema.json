@@ -154,6 +154,32 @@
           "default": "SharedSecret"
         }
       }
+    },
+    "staticFilesFolder": {
+      "type": "object",
+      "properties": {
+        "headers": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "path": {
+          "type": "string",
+          "description": "Relative or UNC path"
+        },
+        "isRelativePath": { "type": "boolean" },
+        "requestPath": {
+          "type": "string",
+          "description": "i.e. /downloads"
+        },
+        "mimeTypes": {
+          "type": "object",
+          "patternProperties": { "^\\.[^.]+$": { "type": "string" } },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^\\.[^.]+$"
+          }
+        }
+      }
     }
   },
   "required": [ "extConfig" ],
@@ -828,6 +854,14 @@
                       "type": "string",
                       "description": "Use only in development! The name of the script in your package.json file that launches the Angular CLI process, i.e. start. This handles requests by passing them through to an instance of the Angular CLI server; alternative to spaDevelopmentServer"
                     },
+                    "staticFilesPaths": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          { "$ref": "#/definitions/staticFilesFolder" }
+                        ]
+                      }
+                    },
                     "prerendering": {
                       "type": "object",
                       "properties": {
@@ -904,26 +938,13 @@
                     "paths": {
                       "type": "array",
                       "items": {
-                        "type": "object",
+                        "allOf": [
+                          { "$ref": "#/definitions/staticFilesFolder" }
+                        ],
                         "properties": {
-                          "headers": {
-                            "type": "object",
-                            "additionalProperties": { "type": "string" }
-                          },
-                          "path": { "type": "string" },
-                          "isRelativePath": { "type": "boolean" },
-                          "requestPath": { "type": "string" },
                           "defaultFiles": {
                             "type": "array",
                             "items": { "type": "string" }
-                          },
-                          "mimeTypes": {
-                            "type": "object",
-                            "patternProperties": { "^\\.[^.]+$": { "type": "string" } },
-                            "additionalProperties": {
-                              "type": "string",
-                              "pattern": "^\\.[^.]+$"
-                            }
                           },
                           "enableDirectoryBrowser": { "type": "boolean" }
                         }
