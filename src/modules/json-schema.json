@@ -636,6 +636,27 @@
                                 "type": "array",
                                 "items": { "enum": [ "list", "find", "add", "update", "merge", "delete" ] },
                                 "uniqueItems": true
+                              },
+                              "commandTimeOut": {
+                                "type": "object",
+                                "description": "Maximum execution time in seconds",
+                                "properties": {
+                                  "read": {
+                                    "type": "number",
+                                    "default": 120,
+                                    "description": "For List,Find methods"
+                                  },
+                                  "write": {
+                                    "type": "number",
+                                    "default": 60,
+                                    "description": "For Add,Update,Delete methods"
+                                  },
+                                  "sync": {
+                                    "type": "number",
+                                    "default": 180,
+                                    "description": "For Merge method"
+                                  }
+                                }
                               }
                             }
                           }

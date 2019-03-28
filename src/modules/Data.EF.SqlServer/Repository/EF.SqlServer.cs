@@ -142,6 +142,7 @@ namespace core.Extensions.Data.Repository.EF
         private void ExecuteCrudCommand(string action, string data)
         {
             var param = "@data";
+            _db().SetCommandTimeout(_sp.CommandTimeOut?.Write ?? 60);
             _db().ExecuteSqlCommand(
                 $"exec [{_sp.Schema}].{_spPrefix}_{_sp.StoredProcedure}_{action} {param}",
                 new System.Data.SqlClient.SqlParameter(param, data)
@@ -152,6 +153,7 @@ namespace core.Extensions.Data.Repository.EF
         {
             var p1 = "@data";
             var p2 = "@operation";
+            _db().SetCommandTimeout(_sp.CommandTimeOut?.Sync ?? 180);
             _db().ExecuteSqlCommand(
                 $"exec [{_sp.Schema}].{_spPrefix}_{_sp.StoredProcedure}_merge {p1},{p2}",
                 new System.Data.SqlClient.SqlParameter(p1, data),
@@ -167,7 +169,7 @@ namespace core.Extensions.Data.Repository.EF
             var cmd = _db().GetDbConnection().CreateCommand();
             cmd.CommandText = $"[{_sp.Schema}].{_spPrefix}_{_sp.StoredProcedure}_select";
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.CommandTimeout = 180;
+            cmd.CommandTimeout = _sp.CommandTimeOut?.Read ?? 120;
 
             var param = cmd.CreateParameter();
             param.ParameterName = "@id";

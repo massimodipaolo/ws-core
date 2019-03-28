@@ -45,6 +45,16 @@ namespace core.Extensions.Data.EF.SqlServer
                     Merge,
                     Delete
                 }
+
+                public CommandTimeOutConfig CommandTimeOut { get; set; }
+                /// <summary>
+                /// Max execution time in seconds
+                /// </summary>
+                public class CommandTimeOutConfig {
+                    public int Read { get; set; } 
+                    public int Write { get; set; }
+                    public int Sync { get; set; } 
+                }
             }
         }
         public MergeConfig Merge { get; set; }
