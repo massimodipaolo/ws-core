@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.2.10</PackageVersion>
+    <PackageVersion>1.2.11</PackageVersion>
     <PackageId>app.core.Extensions.Data.EF.SqlServer</PackageId>
     <AssemblyName>app.core.Extensions.Data.EF.SqlServer</AssemblyName>
     <RootNamespace>core.Extensions.Data.EF.SqlServer</RootNamespace>
@@ -15,8 +15,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EFCore.BulkExtensions" Version="2.4.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.3" />
+    <PackageReference Include="EFCore.BulkExtensions" Version="2.4.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
   </ItemGroup>
 
   <ItemGroup>

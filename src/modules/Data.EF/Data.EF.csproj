@@ -2,7 +2,7 @@
 
   <PropertyGroup> 
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.2.8</PackageVersion> 
+    <PackageVersion>1.2.9</PackageVersion> 
     <PackageId>app.core.Extensions.Data.EF</PackageId>   
     <AssemblyName>app.core.Extensions.Data.EF</AssemblyName>
     <RootNamespace>core.Extensions.Data.EF</RootNamespace>
@@ -18,6 +18,6 @@
     <ProjectReference Include="..\Data\Data.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.4" />
   </ItemGroup>
 </Project>
