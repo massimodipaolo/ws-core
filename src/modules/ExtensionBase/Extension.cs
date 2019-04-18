@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace core.Extensions.Base
+namespace Ws.Core.Extensions.Base
 {
     public class Extension : ExtCore.Infrastructure.ExtensionBase, IConfigureAction, IConfigureServicesAction
     {
@@ -30,7 +30,7 @@ namespace core.Extensions.Base
         protected string AssemblyName => GetType().GetTypeInfo().Assembly.GetName().Name;
 
         protected IEnumerable<Configuration.Assembly> Extensions => _config.GetSection($"{Configuration.SectionRoot}:Assemblies")?
-                                           .Get<IDictionary<string, core.Extensions.Base.Configuration.Assembly>>()?
+                                           .Get<IDictionary<string, Extensions.Base.Configuration.Assembly>>()?
                                            .OrderBy(_ => _.Value.Priority)?
                                            .Select(_ => new Configuration.Assembly() { Name = _.Key, Priority = _.Value.Priority });
                                            //.Select((e,i) => new Configuration.Assembly() {Name = e.Key,Priority=i});

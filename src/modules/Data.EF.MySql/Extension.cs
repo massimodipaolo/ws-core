@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace core.Extensions.Data.EF.MySql
+namespace Ws.Core.Extensions.Data.EF.MySql
 {
     public class Extension : Base.Extension
     {

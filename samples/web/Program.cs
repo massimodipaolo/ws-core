@@ -7,10 +7,8 @@ namespace web
 
         public static void Main(string[] args)
         {
-            var host = core.Program.WebHostBuilder(args, typeof(Program).Assembly)
-                .UseStartup<Startup>()
-                .Build();
-            host.Run();
+            Ws.Core.NLog.Program.Configure<AppConfig>();
+            Ws.Core.NLog.Program.Main(args);
         }
     }
 }

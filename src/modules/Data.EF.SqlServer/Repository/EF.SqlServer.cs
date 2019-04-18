@@ -6,9 +6,10 @@ using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using core.Extensions.Data.EF.SqlServer.Extensions;
+using Ws.Core.Extensions;
+using Ws.Core.Extensions.Data.EF.SqlServer.Extensions;
 
-namespace core.Extensions.Data.Repository.EF
+namespace Ws.Core.Extensions.Data.Repository.EF
 {
     public class SqlServer<T, TKey> : EF<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
@@ -21,7 +22,7 @@ namespace core.Extensions.Data.Repository.EF
         {
             if (_spMappings == null)
             {
-                var _spConfig = (_options?.StoredProcedure ?? new core.Extensions.Data.EF.SqlServer.Options.StoredProcedureConfig());
+                var _spConfig = (_options?.StoredProcedure ?? new Data.EF.SqlServer.Options.StoredProcedureConfig());
                 _spMappings = _spConfig
                             .Mappings?
                             .Select(_ =>
@@ -31,7 +32,7 @@ namespace core.Extensions.Data.Repository.EF
                                 return _;
                             })
                             ??
-                            new List<core.Extensions.Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig>()
+                            new List<Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig>()
                             ;
             }
 

@@ -1,9 +1,9 @@
-﻿using core.Extensions.Base;
+﻿using Ws.Core.Extensions.Base;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace core.Extensions.Data.EF
+namespace Ws.Core.Extensions.Data.EF
 {
     public class Options: IOptions
     {

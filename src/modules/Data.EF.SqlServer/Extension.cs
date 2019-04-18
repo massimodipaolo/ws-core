@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace core.Extensions.Data.EF.SqlServer
+namespace Ws.Core.Extensions.Data.EF.SqlServer
 {
     public class Extension : Base.Extension
     {

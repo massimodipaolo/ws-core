@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace core.Extensions.Data
+namespace Ws.Core.Extensions.Data
 {
     public interface IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {

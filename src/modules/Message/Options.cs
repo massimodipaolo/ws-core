@@ -1,9 +1,9 @@
-﻿using core.Extensions.Base;
+﻿using Ws.Core.Extensions.Base;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace core.Extensions.Message
+namespace Ws.Core.Extensions.Message
 {
     public interface IMessageConfiguration
     {

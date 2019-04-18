@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using core.Extensions.Base;
+using Ws.Core.Extensions.Base;
 using ExtCore.Infrastructure;
 using ExtCore.WebApplication.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace core
+namespace Ws.Core
 {
     public class Startup<TOptions> where TOptions : class, IAppConfiguration
     {
@@ -41,7 +41,7 @@ namespace core
 
             _services.AddSingleton<IConfiguration>(_config);
 
-            _services.Configure<core.Extensions.Base.Configuration>(_config.GetSection(core.Extensions.Base.Configuration.SectionRoot));
+            _services.Configure<Core.Extensions.Base.Configuration>(_config.GetSection(Core.Extensions.Base.Configuration.SectionRoot));
 
             _services.Configure<TOptions>(_config.GetSection(appConfigSectionRoot));
 
@@ -68,9 +68,9 @@ namespace core
             });
             */
 
-            core.Extensions.Base.Extension.Init(_services, _services.BuildServiceProvider());
+            Extensions.Base.Extension.Init(_services, _services.BuildServiceProvider());
 
-            _services.AddExtCore(_config[$"{core.Extensions.Base.Configuration.SectionRoot}:Folder"] != null ? $"{_env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{_config[$"{core.Extensions.Base.Configuration.SectionRoot}:Folder"]}" : null);
+            _services.AddExtCore(_config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"] != null ? $"{_env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{_config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"]}" : null);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,7 +104,7 @@ namespace core
                     applicationLifetime.StopApplication();
                 }
                 else
-                    ExtCore.Events.Event<core.Extensions.Base.IConfigurationChangeEvent, core.Extensions.Base.ConfigurationChangeContext>
+                    ExtCore.Events.Event<Extensions.Base.IConfigurationChangeEvent, Extensions.Base.ConfigurationChangeContext>
                     .Broadcast(new Extensions.Base.ConfigurationChangeContext()
                     { App = app, Lifetime = applicationLifetime, Configuration = extConfig }
                     );

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using core.Extensions.Data;
+using Ws.Core.Extensions.Data;
 
-namespace core.Extensions.Api.Controllers
+namespace Ws.Core.Extensions.Api.Controllers
 {
     public class EntityController<T, TKey> : ControllerBase where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {

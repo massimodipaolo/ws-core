@@ -1,8 +1,8 @@
 ﻿using System;
-using core.Extensions.Data;
-using core.Extensions.Data.Cache;
+using Ws.Core.Extensions.Data;
+using Ws.Core.Extensions.Data.Cache;
 using Microsoft.AspNetCore.Mvc;
-using core.Extensions.Api.Controllers;
+using Ws.Core.Extensions.Api.Controllers;
 using System.Collections.Generic;
 
 namespace web.Controllers

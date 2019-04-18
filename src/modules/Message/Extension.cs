@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace core.Extensions.Message
+namespace Ws.Core.Extensions.Message
 {
     public class Extension: Base.Extension
     {

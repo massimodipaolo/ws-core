@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace core.Extensions.Data.EF
+namespace Ws.Core.Extensions.Data.EF
 {
     class Extension: Base.Extension
     {

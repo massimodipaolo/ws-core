@@ -8,7 +8,7 @@ var gulp = require('gulp'),
 
 // #region NuGet
 var nuget = {
-    paths: ['src/core/bin/Release/*.nupkg', 'src/modules/**/bin/Release/*.nupkg'],
+    paths: ['src/core*/bin/Release/*.nupkg', 'src/modules/**/bin/Release/*.nupkg'],
     exe: process.env.NUGET_EXE, //path to your NuGet cmd, i.e. "C:\Program Files\nuget\nuget.exe"
     host: 'https://pkg.websolute.it/api/v2/package/',
     token: process.env.NUGET_TOKEN

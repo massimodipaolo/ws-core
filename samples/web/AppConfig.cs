@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace web
 {
-    public class AppConfig : core.AppConfig
+    public class AppConfig : Ws.Core.AppConfig
     {
     }
 }

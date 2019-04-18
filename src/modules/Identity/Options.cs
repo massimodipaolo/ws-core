@@ -1,10 +1,10 @@
-﻿using core.Extensions.Base;
+﻿using Ws.Core.Extensions.Base;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using IdentityServer4.Models;
 
-namespace core.Extensions.Identity
+namespace Ws.Core.Extensions.Identity
 {
     class Options : IOptions
     {

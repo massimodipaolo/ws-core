@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace core.Extensions.Cors
+namespace Ws.Core.Extensions.Cors
 {
     public class Extension : Base.Extension
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Logging;
-using core.Extensions.Base;
+using Ws.Core.Extensions.Base;
 using System.Collections.Generic;
 
-namespace core.Extensions.StaticFiles
+namespace Ws.Core.Extensions.StaticFiles
 {
     public class OptionsChangeHandler: Base.ConfigurationChangeHandler
     {

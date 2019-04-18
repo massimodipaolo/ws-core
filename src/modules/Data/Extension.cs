@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace core.Extensions.Data
+namespace Ws.Core.Extensions.Data
 {
     class Extension : Base.Extension
     {

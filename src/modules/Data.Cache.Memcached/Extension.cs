@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace core.Extensions.Data.Cache.Memcached
+namespace Ws.Core.Extensions.Data.Cache.Memcached
 {
     public class Extension : Base.Extension
     {
@@ -17,7 +17,7 @@ namespace core.Extensions.Data.Cache.Memcached
             {
                 // default entry expiration
                 if (Options.EntryExpirationInMinutes == null)
-                    Options.EntryExpirationInMinutes = new core.Extensions.Data.Cache.Options.Duration();
+                    Options.EntryExpirationInMinutes = new Core.Extensions.Data.Cache.Options.Duration();
 
                 // init/override default cache profile
                 //CacheEntryOptions.Expiration.Set();

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace core.Extensions.Data.FileSystem
+namespace Ws.Core.Extensions.Data.FileSystem
 {
     public class Extension : Base.Extension
     {

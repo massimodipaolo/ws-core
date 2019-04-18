@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace core.Extensions.Data
+namespace Ws.Core.Extensions.Data
 {
     public class AppDbContext : DbContext
     {

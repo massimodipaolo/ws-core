@@ -1,7 +1,7 @@
-﻿using core.Extensions.Base;
+﻿using Ws.Core.Extensions.Base;
 using System.Collections.Generic;
 
-namespace core.Extensions.Api
+namespace Ws.Core.Extensions.Api
 {
     public class Options : IOptions
     {

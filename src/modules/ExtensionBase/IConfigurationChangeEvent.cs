@@ -1,6 +1,6 @@
 ﻿using ExtCore.Events;
 
-namespace core.Extensions.Base
+namespace Ws.Core.Extensions.Base
 {
     public interface IConfigurationChangeEvent : IEventHandler<ConfigurationChangeContext>
     {

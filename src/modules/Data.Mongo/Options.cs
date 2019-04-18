@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using core.Extensions.Base;
+using Ws.Core.Extensions.Base;
 
-namespace core.Extensions.Data.Mongo
+namespace Ws.Core.Extensions.Data.Mongo
 {
     public class Options : IOptions
     {
-        public IEnumerable<core.Extensions.Data.DbConnection> Connections { get; set; }
+        public IEnumerable<Extensions.Data.DbConnection> Connections { get; set; }
     }
 }

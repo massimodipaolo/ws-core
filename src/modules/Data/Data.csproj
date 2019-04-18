@@ -3,10 +3,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>  
 		<TargetFramework>netcoreapp2.2</TargetFramework>
-		<PackageVersion>1.0.6</PackageVersion> 
-		<PackageId>app.core.Extensions.Data</PackageId>
-		<AssemblyName>app.core.Extensions.Data</AssemblyName>
-		<RootNamespace>core.Extensions.Data</RootNamespace>
+		<PackageVersion>1.0.0</PackageVersion> 
+		<PackageId>Ws.Core.Extensions.Data</PackageId>
+		<AssemblyName>Ws.Core.Extensions.Data</AssemblyName>
+		<RootNamespace>Ws.Core.Extensions.Data</RootNamespace>
     <Authors>Massimo Di Paolo</Authors>
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
@@ -14,11 +14,14 @@
     <PackageReleaseNotes>Add Merge operation options (upsert / sync)</PackageReleaseNotes>    
     <PackageTags></PackageTags> 
   </PropertyGroup>
-	<ItemGroup>
+
+  <PropertyGroup>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>  
+  
+  <ItemGroup>
 		<ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Compile Remove="IIdentity.cs" />
-	  <Compile Remove="EntityChangeHandler.cs" />
-	</ItemGroup>
+
 </Project> 

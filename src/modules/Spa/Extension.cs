@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace core.Extensions.Spa
+namespace Ws.Core.Extensions.Spa
 {
     public class Extension : Base.Extension
     {
@@ -50,7 +50,7 @@ namespace core.Extensions.Spa
                         {
                             if (opt != null)
                             {
-                                var staticFileOptions = core.Extensions.StaticFiles.Extension.GetStaticFileOptions(opt,Path.Combine(_env?.ContentRootPath ?? Directory.GetCurrentDirectory(), _options.RootPath),_env,_logger);
+                                var staticFileOptions = Core.Extensions.StaticFiles.Extension.GetStaticFileOptions(opt,Path.Combine(_env?.ContentRootPath ?? Directory.GetCurrentDirectory(), _options.RootPath),_env,_logger);
                                 applicationBuilder.UseSpaStaticFiles(staticFileOptions);
                             }
                         }

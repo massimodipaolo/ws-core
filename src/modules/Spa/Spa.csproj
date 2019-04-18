@@ -2,16 +2,21 @@
 
   <PropertyGroup> 
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.1.0</PackageVersion> 
-    <PackageId>app.core.Extensions.Spa</PackageId>
-    <AssemblyName>app.core.Extensions.Spa</AssemblyName> 
-    <RootNamespace>core.Extensions.Spa</RootNamespace>
+    <PackageVersion>1.0.0</PackageVersion> 
+    <PackageId>Ws.Core.Extensions.Spa</PackageId>
+    <AssemblyName>Ws.Core.Extensions.Spa</AssemblyName> 
+    <RootNamespace>Ws.Core.Extensions.Spa</RootNamespace>
     <Authors>Massimo Di Paolo</Authors>
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>Add Static files options</PackageReleaseNotes>
     <PackageTags>spa, single page application</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>  
 
   <ItemGroup>

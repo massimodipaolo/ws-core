@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Enyim.Caching;
 using System.Linq;
 
-namespace core.Extensions.Data.Cache.Memcached
+namespace Ws.Core.Extensions.Data.Cache.Memcached
 {
-    public class MemcachedCache : core.Extensions.Data.Cache.ICache
+    public class MemcachedCache : Ws.Core.Extensions.Data.Cache.ICache
     {
         readonly IMemcachedClient _client;
         private static string _keyCollection = "___all_keys";

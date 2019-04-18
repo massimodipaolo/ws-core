@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-namespace core.Extensions.Data.Cache
+namespace Ws.Core.Extensions.Data.Cache
 {
     public class DistributedCache : ICache
     {

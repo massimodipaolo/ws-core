@@ -1,5 +1,5 @@
 ﻿using System;
-namespace core.Extensions.Data
+namespace Ws.Core.Extensions.Data
 {
     public class DbConnection
     {

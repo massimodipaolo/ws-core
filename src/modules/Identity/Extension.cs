@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace core.Extensions.Identity
+namespace Ws.Core.Extensions.Identity
 {
     public class Extension: Base.Extension
     {

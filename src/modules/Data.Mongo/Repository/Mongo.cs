@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 using System.Linq;
 using Microsoft.Extensions.Options;
-using core.Extensions.Data.Mongo;
+using Ws.Core.Extensions.Data.Mongo;
 
-namespace core.Extensions.Data.Repository
+namespace Ws.Core.Extensions.Data.Repository
 {
     public class Mongo<T, TKey> : IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
@@ -19,7 +19,7 @@ namespace core.Extensions.Data.Repository
             return new MongoClient(_db.ConnectionString).GetDatabase(_db.Database).GetCollection<T>(typeof(T).Name);
         }
 
-        public Mongo(IOptions<core.Extensions.Data.Mongo.Options> config)
+        public Mongo(IOptions<Extensions.Data.Mongo.Options> config)
         {
             _config = config.Value;
             _collection = getCollectionByConnection("default");

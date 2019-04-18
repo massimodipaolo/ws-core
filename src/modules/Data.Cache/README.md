@@ -51,7 +51,7 @@ public class SomeEntityCacheController : EntityCachedController<SomeEntity> {
 ## Sample configuration
 
 ```json
-      "app.core.Extensions.Data.Cache": {
+      "Ws.Core.Extensions.Data.Cache": {
         "priority": 3,
         "options": {
           "type": "Redis",

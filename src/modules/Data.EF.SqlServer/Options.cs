@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using core.Extensions.Base;
+using Ws.Core.Extensions.Base;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace core.Extensions.Data.EF.SqlServer
+namespace Ws.Core.Extensions.Data.EF.SqlServer
 {
     public class Options : IOptions
     {
-        public IEnumerable<core.Extensions.Data.DbConnection> Connections { get; set; }
+        public IEnumerable<Data.DbConnection> Connections { get; set; }
         public ServiceLifetime ServiceLifetime { get; set; } = ServiceLifetime.Scoped;
         public StoredProcedureConfig StoredProcedure { get; set; }
         public class StoredProcedureConfig {
@@ -68,7 +68,7 @@ namespace core.Extensions.Data.EF.SqlServer
 
 }
 
-namespace core.Extensions.Data.EF.SqlServer.Extensions
+namespace Ws.Core.Extensions.Data.EF.SqlServer.Extensions
 {
     public static class OptionExtensions
     {

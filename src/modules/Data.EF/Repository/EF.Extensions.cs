@@ -1,4 +1,4 @@
-﻿using core.Extensions.Data.EF;
+﻿using Ws.Core.Extensions.Data.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace core.Extensions.Data.Repository.EF
+namespace Ws.Core.Extensions.Data.Repository.EF
 {
     /// <summary>
     /// https://stackoverflow.com/a/43928098/11074305 by https://stackoverflow.com/users/488397/steve 

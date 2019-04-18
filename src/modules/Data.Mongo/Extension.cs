@@ -8,7 +8,7 @@ using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson;
 using Microsoft.Extensions.DependencyModel;
 
-namespace core.Extensions.Data.Mongo
+namespace Ws.Core.Extensions.Data.Mongo
 {
     public class Extension : Base.Extension
     {
@@ -24,14 +24,14 @@ namespace core.Extensions.Data.Mongo
             if (connections != null && connections.Any())
             {
 
-                BsonClassMap.RegisterClassMap<core.Extensions.Data.Entity<int>>(cm =>
+                BsonClassMap.RegisterClassMap<Extensions.Data.Entity<int>>(cm =>
                {
                    cm.AutoMap();
                    cm.MapIdMember(c => c.Id);
                    cm.IdMemberMap.SetSerializer(new Int32Serializer(BsonType.Int32));
                });
 
-                BsonClassMap.RegisterClassMap<core.Extensions.Data.Entity<long>>(cm =>
+                BsonClassMap.RegisterClassMap<Extensions.Data.Entity<long>>(cm =>
                 {
                     cm.AutoMap();
                     cm.MapIdMember(c => c.Id);
@@ -39,14 +39,14 @@ namespace core.Extensions.Data.Mongo
                 });
 
 
-                BsonClassMap.RegisterClassMap<core.Extensions.Data.Entity<Guid>>(cm =>
+                BsonClassMap.RegisterClassMap<Extensions.Data.Entity<Guid>>(cm =>
                 {
                     cm.AutoMap();
                     cm.MapIdMember(c => c.Id);
                     cm.IdMemberMap.SetSerializer(new GuidSerializer(BsonType.String));
                 });
 
-                BsonClassMap.RegisterClassMap<core.Extensions.Data.Entity<string>>(cm =>
+                BsonClassMap.RegisterClassMap<Extensions.Data.Entity<string>>(cm =>
                 {
                     cm.AutoMap();
                     cm.MapIdMember(c => c.Id);

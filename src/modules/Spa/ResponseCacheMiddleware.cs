@@ -1,4 +1,4 @@
-﻿using core.Extensions.Data.Cache;
+﻿using Ws.Core.Extensions.Data.Cache;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace core.Extensions.Spa
+namespace Ws.Core.Extensions.Spa
 {
     public class ResponseCacheMiddleware
     {

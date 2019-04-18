@@ -2,10 +2,10 @@
   
 	<PropertyGroup>
 		<TargetFramework>netcoreapp2.2</TargetFramework>
-		<PackageVersion>1.0.2</PackageVersion>
-		<PackageId>app.core.Extensions.Cors</PackageId>
-		<AssemblyName>app.core.Extensions.Cors</AssemblyName>
-		<RootNamespace>core.Extensions.Cors</RootNamespace>
+		<PackageVersion>1.0.0</PackageVersion>
+		<PackageId>Ws.Core.Extensions.Cors</PackageId>
+		<AssemblyName>Ws.Core.Extensions.Cors</AssemblyName>
+		<RootNamespace>Ws.Core.Extensions.Cors</RootNamespace>
     <Authors>Massimo Di Paolo</Authors>
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>

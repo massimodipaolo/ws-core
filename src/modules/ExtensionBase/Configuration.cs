@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace core.Extensions.Base
+namespace Ws.Core.Extensions.Base
 {    
     public class Configuration
     {

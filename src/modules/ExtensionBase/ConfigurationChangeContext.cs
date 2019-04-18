@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace core.Extensions.Base
+namespace Ws.Core.Extensions.Base
 {
     public class ConfigurationChangeContext
     {

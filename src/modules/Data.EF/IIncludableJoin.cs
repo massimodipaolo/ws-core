@@ -6,7 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace core.Extensions.Data.EF
+namespace Ws.Core.Extensions.Data.EF
 {
     public interface IIncludableJoin<out TEntity, out TProperty> : IQueryable<TEntity>
     {

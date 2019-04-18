@@ -1,9 +1,9 @@
 ﻿using System;
-using core.Extensions.Data;
-using core.Extensions.Data.Cache;
+using Ws.Core.Extensions.Data;
+using Ws.Core.Extensions.Data.Cache;
 using Microsoft.AspNetCore.Mvc;
 
-namespace core.Extensions.Api.Controllers
+namespace Ws.Core.Extensions.Api.Controllers
 {
     public class EntityCachedController<T, TKey> : EntityController<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {

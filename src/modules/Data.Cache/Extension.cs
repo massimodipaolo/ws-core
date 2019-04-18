@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace core.Extensions.Data.Cache
+namespace Ws.Core.Extensions.Data.Cache
 {
     public class Extension : Base.Extension
     {

@@ -20,7 +20,7 @@ Settings
 ## Sample configuration
 
 ```json
-     "app.core.Extensions.StaticFiles": {
+     "Ws.Core.Extensions.StaticFiles": {
         "priority": 1,
         "options": {
           "paths": [

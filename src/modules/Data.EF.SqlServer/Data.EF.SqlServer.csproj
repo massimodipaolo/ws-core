@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.2.11</PackageVersion>
-    <PackageId>app.core.Extensions.Data.EF.SqlServer</PackageId>
-    <AssemblyName>app.core.Extensions.Data.EF.SqlServer</AssemblyName>
-    <RootNamespace>core.Extensions.Data.EF.SqlServer</RootNamespace>
+    <PackageVersion>1.0.0</PackageVersion>
+    <PackageId>Ws.Core.Extensions.Data.EF.SqlServer</PackageId>
+    <AssemblyName>Ws.Core.Extensions.Data.EF.SqlServer</AssemblyName>
+    <RootNamespace>Ws.Core.Extensions.Data.EF.SqlServer</RootNamespace>
     <Authors>Massimo Di Paolo</Authors>
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
@@ -13,6 +13,11 @@
     <PackageReleaseNotes>Nuget update; fix sp schema name</PackageReleaseNotes>
     <PackageTags></PackageTags>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>  
 
   <ItemGroup>
     <PackageReference Include="EFCore.BulkExtensions" Version="2.4.5" />

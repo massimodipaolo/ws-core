@@ -2,17 +2,17 @@
 
   <PropertyGroup> 
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.0.9</PackageVersion>     
-    <PackageId>app.core.Extensions.Message</PackageId>
-    <AssemblyName>app.core.Extensions.Message</AssemblyName>
-    <RootNamespace>core.Extensions.Message</RootNamespace>
+    <PackageVersion>1.0.0</PackageVersion>     
+    <PackageId>Ws.Core.Extensions.Message</PackageId>
+    <AssemblyName>Ws.Core.Extensions.Message</AssemblyName>
+    <RootNamespace>Ws.Core.Extensions.Message</RootNamespace>
     <Authors>Massimo Di Paolo</Authors>
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description>Send/Receive message via email</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>Ssl options</PackageReleaseNotes>
     <PackageTags>extension message, email, smtp</PackageTags>    
-  </PropertyGroup>
+  </PropertyGroup> 
  
   <PropertyGroup>
     <NoWarn>1701;1702;1705;1591</NoWarn>
@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="2.1.2" />
+    <PackageReference Include="MailKit" Version="2.1.4" />
   </ItemGroup>
 
   <ItemGroup>

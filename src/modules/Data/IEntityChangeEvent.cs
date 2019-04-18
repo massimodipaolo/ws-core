@@ -1,7 +1,7 @@
 ﻿using System;
 using ExtCore.Events;
 
-namespace core.Extensions.Data
+namespace Ws.Core.Extensions.Data
 {
     public interface IEntityChangeEvent<T,TKey> : IEventHandler<EntityChangeEventContext> where T : IEntity<TKey> where TKey : IEquatable<TKey>
     {

@@ -8,11 +8,11 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Logging;
-using core.Extensions.Base;
-using static core.Extensions.StaticFiles.Options;
+using Ws.Core.Extensions.Base;
+using static Ws.Core.Extensions.StaticFiles.Options;
 using Microsoft.AspNetCore.Hosting;
 
-namespace core.Extensions.StaticFiles
+namespace Ws.Core.Extensions.StaticFiles
 {
     public class Extension : Base.Extension
     {

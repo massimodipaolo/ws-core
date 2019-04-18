@@ -5,10 +5,10 @@
     "folder": "Extensions",
     "enableShutDownOnChange": false,
     "assemblies": {
-      "app.core.Extensions.Cors": {
+      "Ws.Core.Extensions.Cors": {
         "priority": 2
       },
-      "app.core.Extensions.StaticFiles": {
+      "Ws.Core.Extensions.StaticFiles": {
         "priority": 1,
         "options": {
           "paths": [
@@ -36,7 +36,7 @@
           ]
         }
       },
-      "app.core.Extensions.Api": {
+      "Ws.Core.Extensions.Api": {
         "priority": 2,
         "options": {
           "serialization": {
@@ -60,7 +60,7 @@
           }
         }
       },
-      "__app.core.Extensions.Data.EF": {
+      "__Ws.Core.Extensions.Data.EF": {
         "priority": 19,
         "options": {
           "mappings": [
@@ -83,7 +83,7 @@
           ]
         }
       },
-      "__app.core.Extensions.Data.EF.SqlServer": {
+      "__Ws.Core.Extensions.Data.EF.SqlServer": {
         "priority": 20,
         "options": {
           "connections": [
@@ -94,7 +94,7 @@
           ]
         }
       },
-      "__app.core.Extensions.Data.EF.MySql": {
+      "__Ws.Core.Extensions.Data.EF.MySql": {
         "priority": 30,
         "options": {
           "connections": [
@@ -105,7 +105,7 @@
           ]
         }
       },
-      "__app.core.Extensions.Data.Mongo": {
+      "__Ws.Core.Extensions.Data.Mongo": {
         "priority": 40,
         "options": {
           "connections": [
@@ -117,11 +117,11 @@
           ]
         }
       },
-      "app.core.Extensions.Data.FileSystem": { "priority": 50 },
-      "app.core.Extensions.Data.Cache": {
+      "Ws.Core.Extensions.Data.FileSystem": { "priority": 50 },
+      "Ws.Core.Extensions.Data.Cache": {
         "priority": 4,
         "options": {
-          "type": "SqlServer",
+          "type": "Distributed",
           "redisOptions": {
             "configuration": "",
             "instanceName": "master"
@@ -139,7 +139,7 @@
           }
         }
       },
-      "__app.core.Extensions.Data.Cache.Memcached": {
+      "__Ws.Core.Extensions.Data.Cache.Memcached": {
         "priority": 5,
         "options": {
           "client": {

@@ -1,17 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup> 
+  <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.2.9</PackageVersion> 
-    <PackageId>app.core.Extensions.Data.EF</PackageId>   
-    <AssemblyName>app.core.Extensions.Data.EF</AssemblyName>
-    <RootNamespace>core.Extensions.Data.EF</RootNamespace>
+    <PackageVersion>1.0.0</PackageVersion>
+    <PackageId>Ws.Core.Extensions.Data.EF</PackageId>
+    <AssemblyName>Ws.Core.Extensions.Data.EF</AssemblyName>
+    <RootNamespace>Ws.Core.Extensions.Data.EF</RootNamespace>
     <Authors>Massimo Di Paolo</Authors>
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description>DbContext and IRepository interface for EF-based extensions</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>Nuget update</PackageReleaseNotes>
     <PackageTags>EF data mapper</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

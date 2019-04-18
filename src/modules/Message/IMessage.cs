@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace core.Extensions.Message
+namespace Ws.Core.Extensions.Message
 {
     public interface IMessage
     {

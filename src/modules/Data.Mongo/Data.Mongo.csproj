@@ -2,10 +2,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netcoreapp2.2</TargetFramework>
-		<PackageVersion>1.0.7</PackageVersion>
-		<PackageId>app.core.Extensions.Data.Mongo</PackageId>
-		<AssemblyName>app.core.Extensions.Data.Mongo</AssemblyName>
-		<RootNamespace>core.Extensions.Data.Mongo</RootNamespace>
+		<PackageVersion>1.0.0</PackageVersion>
+		<PackageId>Ws.Core.Extensions.Data.Mongo</PackageId>
+		<AssemblyName>Ws.Core.Extensions.Data.Mongo</AssemblyName>
+		<RootNamespace>Ws.Core.Extensions.Data.Mongo</RootNamespace>
     <Authors>Massimo Di Paolo</Authors>
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
@@ -13,8 +13,14 @@
     <PackageReleaseNotes>Add Merge operation options (upsert / sync)</PackageReleaseNotes>
     <PackageTags></PackageTags>
   </PropertyGroup>
-	<ItemGroup>
-		<PackageReference Include="MongoDB.Driver" Version="2.7.3" />
+
+  <PropertyGroup>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+  
+  <ItemGroup>
+		<PackageReference Include="MongoDB.Driver" Version="2.8.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Data\Data.csproj" />

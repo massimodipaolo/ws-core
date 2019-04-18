@@ -1,4 +1,4 @@
-﻿namespace core.Extensions.Base
+﻿namespace Ws.Core.Extensions.Base
 {
     public class ConfigurationChangeHandler : IConfigurationChangeEvent
     {

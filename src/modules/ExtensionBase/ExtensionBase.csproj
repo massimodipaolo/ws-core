@@ -2,10 +2,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>  
 		<TargetFramework>netcoreapp2.2</TargetFramework>
-		<PackageVersion>2.0.4</PackageVersion>   
-		<PackageId>app.core.Extensions.Base</PackageId>
-		<AssemblyName>app.core.Extensions.Base</AssemblyName>
-    <RootNamespace>core.Extensions.Base</RootNamespace>
+		<PackageVersion>1.0.0</PackageVersion>   
+		<PackageId>Ws.Core.Extensions.Base</PackageId>
+		<AssemblyName>Ws.Core.Extensions.Base</AssemblyName>
+    <RootNamespace>Ws.Core.Extensions.Base</RootNamespace>
     <Authors>Massimo Di Paolo</Authors>
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
 		<Description>Base extension module, derived from ExtCore by Dmitry Sikorsky</Description>
@@ -13,11 +13,14 @@
     <PackageReleaseNotes>.netcore 2.2</PackageReleaseNotes>		
 		<PackageTags>extension base</PackageTags>		
 		<PreBuildEvent />
-	</PropertyGroup>  
-	<ItemGroup>
-		<None Include="Extension.cs" />
-	</ItemGroup>
-	<ItemGroup>
+	</PropertyGroup>
+
+  <PropertyGroup>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+  
+  <ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />

@@ -25,7 +25,7 @@ https://docs.microsoft.com/en-us/aspnet/core/fundamentals/static-files
 Sample configuration
 --------------------
 
-      "app.core.Extensions.StaticFiles": {
+      "Ws.Core.Extensions.StaticFiles": {
         "priority": 1,
         "options": {
           "paths": [

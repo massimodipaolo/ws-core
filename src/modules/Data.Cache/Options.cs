@@ -3,9 +3,9 @@ using Microsoft.Extensions.Caching.SqlServer;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using core.Extensions.Base;
+using Ws.Core.Extensions.Base;
 
-namespace core.Extensions.Data.Cache
+namespace Ws.Core.Extensions.Data.Cache
 {
     public class Options: IOptions
     {

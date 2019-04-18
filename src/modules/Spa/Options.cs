@@ -1,11 +1,11 @@
-﻿using core.Extensions.Base;
+﻿using Ws.Core.Extensions.Base;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.FileProviders;
 using System.Collections.Generic;
 using System.IO;
-using static core.Extensions.StaticFiles.Options;
+using static Ws.Core.Extensions.StaticFiles.Options;
 
-namespace core.Extensions.Spa
+namespace Ws.Core.Extensions.Spa
 {
     public class Options : IOptions
     {

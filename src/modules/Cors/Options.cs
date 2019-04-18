@@ -1,6 +1,6 @@
-﻿using core.Extensions.Base;
+﻿using Ws.Core.Extensions.Base;
 
-namespace core.Extensions.Cors
+namespace Ws.Core.Extensions.Cors
 {
     public class Options : IOptions
     {

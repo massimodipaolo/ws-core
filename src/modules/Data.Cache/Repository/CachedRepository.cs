@@ -1,12 +1,10 @@
 ﻿using System;
-using core.Extensions.Data.Cache;
+using Ws.Core.Extensions.Data.Cache;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace core.Extensions.Data.Repository
+namespace Ws.Core.Extensions.Data.Repository
 {
-
-
     public class CachedRepository<T, TKey> : ICacheRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         internal static ICache _cache { get; set; }

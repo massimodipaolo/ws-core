@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Linq;
 
-namespace core.Extensions.Data.Cache
+namespace Ws.Core.Extensions.Data.Cache
 {
     public class MemoryCache : ICache
     {

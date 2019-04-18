@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace core.Extensions.Data.Cache
+namespace Ws.Core.Extensions.Data.Cache
 {
     public interface ICache
     {
