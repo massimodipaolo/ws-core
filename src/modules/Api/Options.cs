@@ -5,19 +5,9 @@ namespace Ws.Core.Extensions.Api
 {
     public class Options : IOptions
     {
-        public SerializationOptions Serialization { get; set; }
+        public Ws.Core.Shared.Serialization.Options Serialization { get; set; } = new Ws.Core.Shared.Serialization.Options();
         public SessionOptions Session { get; set; }
         public DocumentationOptions Documentation { get; set; }
-
-
-        public class SerializationOptions
-        {
-            public Newtonsoft.Json.NullValueHandling NullValueHandling { get; set; } = Newtonsoft.Json.NullValueHandling.Ignore;
-            public Newtonsoft.Json.Formatting Formatting { get; set; } = Newtonsoft.Json.Formatting.None;
-            public Newtonsoft.Json.ReferenceLoopHandling ReferenceLoopHandling { get; set; } = Newtonsoft.Json.ReferenceLoopHandling.Error;
-            public Newtonsoft.Json.DateParseHandling DateParseHandling { get; set; } = Newtonsoft.Json.DateParseHandling.DateTime;
-            public Newtonsoft.Json.DateTimeZoneHandling DateTimeZoneHandling { get; set; } = Newtonsoft.Json.DateTimeZoneHandling.RoundtripKind;
-        }
 
         public class SessionOptions
         {

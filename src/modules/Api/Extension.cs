@@ -38,18 +38,13 @@ namespace Ws.Core.Extensions.Api
                     opt.IdleTimeout = TimeSpan.FromMinutes(_session.IdleTimeoutInMinutes);
                 });
             }
-
-            var _serialization = _options.Serialization ?? new Options.SerializationOptions();
+            
             services
                 .AddMvc()
                 .AddJsonOptions(opt =>
                 {
                     var _setting = opt.SerializerSettings;
-                    _setting.NullValueHandling = _serialization.NullValueHandling;
-                    _setting.Formatting = _serialization.Formatting;
-                    _setting.ReferenceLoopHandling = _serialization.ReferenceLoopHandling;
-                    _setting.DateParseHandling = _serialization.DateParseHandling;
-                    _setting.DateTimeZoneHandling = _serialization.DateTimeZoneHandling;
+                    _options.Serialization.FromJsonSerializerSettings(ref _setting);
                 });
 
             var _doc = _options.Documentation;

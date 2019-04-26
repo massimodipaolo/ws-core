@@ -4,18 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Ws.Core.Extensions.Data.Repository
 {
     public class FileSystem<T, TKey> : IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         private List<T> _collection = new List<T>();
+        private static Data.FileSystem.Options _options { get; set; } = new Data.FileSystem.Extension()._options ?? new Data.FileSystem.Options();        
         private string _path { get; set; }
 
         public FileSystem(IHostingEnvironment env, ILoggerFactory logger)
-        {
-            _path = System.IO.Path.Combine(env.ContentRootPath, "Files/Entity", $"{typeof(T).Name}.json");
+        {            
+            _path = System.IO.Path.Combine(env.ContentRootPath, _options.Folder, $"{typeof(T).Name}.json");
 
             using (var stream = File.Open(_path, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite))
             using (var reader = new StreamReader(stream))
@@ -78,11 +78,8 @@ namespace Ws.Core.Extensions.Data.Repository
 
         private void Save()
         {
-            var jsonSetting = new Newtonsoft.Json.JsonSerializerSettings()
-            {
-                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore,
-                NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
-            };
+
+            var jsonSetting = _options?.Serialization?.ToJsonSerializerSettings();
             File.WriteAllText(_path, Newtonsoft.Json.JsonConvert.SerializeObject(_collection, jsonSetting));
         }
     }

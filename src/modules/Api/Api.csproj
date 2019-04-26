@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>  
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.0.1</PackageVersion>
     <PackageId>Ws.Core.Extensions.Api</PackageId>
     <AssemblyName>Ws.Core.Extensions.Api</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Api</RootNamespace>     
@@ -29,5 +29,7 @@
     <ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />
     <ProjectReference Include="..\Data\Data.csproj" />
   </ItemGroup>
+
+  <Import Project="..\..\shared\Serialization\Serialization.projitems" Label="Shared" />
 
 </Project>

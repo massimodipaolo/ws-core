@@ -55,7 +55,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity", "src\modules\Ide
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "core.NLog", "src\core.NLog\core.NLog.csproj", "{C0582A25-E24F-429F-92AD-78B54158D708}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{72F2A867-A2F5-40EE-8B63-00D2E7634D03}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Serialization", "src\shared\Serialization\Serialization.shproj", "{BEBEC343-27A0-432A-97A4-D0EE58174B45}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "StaticFilesFolder", "src\shared\StaticFilesFolder\StaticFilesFolder.shproj", "{F0B64CF6-D886-4A3E-B49A-DB3828F8F4E5}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\shared\Serialization\Serialization.projitems*{bebec343-27a0-432a-97a4-d0ee58174b45}*SharedItemsImports = 13
+		src\shared\StaticFilesFolder\StaticFilesFolder.projitems*{f0b64cf6-d886-4a3e-b49a-db3828f8f4e5}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -152,6 +162,9 @@ Global
 		{D641E4B4-AEBB-4493-937B-682283515164} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
 		{DB1C3A17-F40D-4BB0-BF25-8EE885837DC7} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
 		{C0582A25-E24F-429F-92AD-78B54158D708} = {2EC986FB-3831-46DF-AFF0-D6AE6128C55E}
+		{72F2A867-A2F5-40EE-8B63-00D2E7634D03} = {2EC986FB-3831-46DF-AFF0-D6AE6128C55E}
+		{BEBEC343-27A0-432A-97A4-D0EE58174B45} = {72F2A867-A2F5-40EE-8B63-00D2E7634D03}
+		{F0B64CF6-D886-4A3E-B49A-DB3828F8F4E5} = {72F2A867-A2F5-40EE-8B63-00D2E7634D03}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1713483-7DCD-42EB-A437-F0BBBAC5F4EF}

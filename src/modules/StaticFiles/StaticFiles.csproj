@@ -2,7 +2,7 @@
 
   <PropertyGroup> 
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.0.0</PackageVersion>    
+    <PackageVersion>1.0.1</PackageVersion>    
     <PackageId>Ws.Core.Extensions.StaticFiles</PackageId>
     <AssemblyName>Ws.Core.Extensions.StaticFiles</AssemblyName>       
     <RootNamespace>Ws.Core.Extensions.StaticFiles</RootNamespace>
@@ -31,5 +31,7 @@
   <ItemGroup>
     <None Update="readme.txt" Pack="true" PackagePath=""></None>
   </ItemGroup>
+
+  <Import Project="..\..\shared\StaticFilesFolder\StaticFilesFolder.projitems" Label="Shared" />
 
 </Project>

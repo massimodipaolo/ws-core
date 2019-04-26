@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.FileProviders;
 using System.Collections.Generic;
 using System.IO;
-using static Ws.Core.Extensions.StaticFiles.Options;
 
 namespace Ws.Core.Extensions.Spa
 {
@@ -16,7 +15,7 @@ namespace Ws.Core.Extensions.Spa
         public int StartupTimeoutInSeconds { get; set; } = 90;
         public string SpaDevelopmentServer { get; set; } // http://localhost:4200
         public string CliServerScript { get; set; } // start
-        public StaticFilesFolderOption[] StaticFilesPaths { get; set; }
+        public Ws.Core.Shared.StaticFilesFolder.Options[] StaticFilesPaths { get; set; }
         public PrerenderingOptions Prerendering { get; set; }
 
         public class PrerenderingOptions

@@ -50,7 +50,7 @@ namespace Ws.Core.Extensions.Spa
                         {
                             if (opt != null)
                             {
-                                var staticFileOptions = Core.Extensions.StaticFiles.Extension.GetStaticFileOptions(opt,Path.Combine(_env?.ContentRootPath ?? Directory.GetCurrentDirectory(), _options.RootPath),_env,_logger);
+                                var staticFileOptions = opt.GetStaticFileOptions(Path.Combine(_env?.ContentRootPath ?? Directory.GetCurrentDirectory(), _options.RootPath),_env,_logger);
                                 applicationBuilder.UseSpaStaticFiles(staticFileOptions);
                             }
                         }

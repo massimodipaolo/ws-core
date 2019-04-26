@@ -155,6 +155,32 @@
         }
       }
     },
+    "serialization": {
+      "type": "object",
+      "description": "Serialization settings",
+      "properties": {
+        "nullValueHandling": {
+          "enum": [ "Ignore", "Include" ],
+          "default": "Ignore"
+        },
+        "formatting": {
+          "enum": [ "None", "Indented" ],
+          "default": "None"
+        },
+        "referenceLoopHandling": {
+          "enum": [ "Error", "Ignore", "Serialize" ],
+          "default": "Error"
+        },
+        "dateParseHandling": {
+          "enum": [ "None", "DateTime", "DateTimeOffset" ],
+          "default": "DateTime"
+        },
+        "dateTimeZoneHandling": {
+          "enum": [ "Local", "Utc", "Unspecified", "RoundtripKind" ],
+          "default": "RoundtripKind"
+        }
+      }
+    },
     "staticFilesFolder": {
       "type": "object",
       "properties": {
@@ -204,31 +230,7 @@
                 "options": {
                   "type": "object",
                   "properties": {
-                    "serialization": {
-                      "type": "object",
-                      "properties": {
-                        "nullValueHandling": {
-                          "enum": [ "Ignore", "Include" ],
-                          "default": "Ignore"
-                        },
-                        "formatting": {
-                          "enum": [ "None", "Indented" ],
-                          "default": "None"
-                        },
-                        "referenceLoopHandling": {
-                          "enum": [ "Error", "Ignore", "Serialize" ],
-                          "default": "Error"
-                        },
-                        "dateParseHandling": {
-                          "enum": [ "None", "DateTime", "DateTimeOffset" ],
-                          "default": "DateTime"
-                        },
-                        "dateTimeZoneHandling": {
-                          "enum": [ "Local", "Utc", "Unspecified", "RoundtripKind" ],
-                          "default": "RoundtripKind"
-                        }
-                      }
-                    },
+                    "serialization": { "$ref": "#/definitions/serialization" },
                     "session": {
                       "type": "object",
                       "properties": {
@@ -678,7 +680,22 @@
               }
             },
             "Ws.Core.Extensions.Data.FileSystem": {
-              "$ref": "#/definitions/assembly"
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "folder": {
+                      "type": "string",
+                      "description": "Folder of stored files, relative to ContentRootPath",
+                      "default": "Files/Entity"
+                    },
+                    "serialization": { "$ref": "#/definitions/serialization" }
+                  }
+                }
+              }
             },
             "Ws.Core.Extensions.Identity": {
               "allOf": [

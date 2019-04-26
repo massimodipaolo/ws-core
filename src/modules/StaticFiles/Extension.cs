@@ -38,7 +38,7 @@ namespace Ws.Core.Extensions.StaticFiles
                     if (opt != null)
                     {
                         //StaticFileOptions
-                        var staticFileOptions = GetStaticFileOptions(opt, _env?.ContentRootPath ?? Directory.GetCurrentDirectory(),_env,_logger);
+                        var staticFileOptions = opt.GetStaticFileOptions(_env?.ContentRootPath ?? Directory.GetCurrentDirectory(),_env,_logger);
 
                         //DirectoryBrowser
                         DirectoryBrowserOptions directoryBrowserOptions = null;
@@ -71,41 +71,6 @@ namespace Ws.Core.Extensions.StaticFiles
 
                 return res;
             }
-        }
-
-        public static StaticFileOptions GetStaticFileOptions(StaticFilesFolderOption options,string basePath,IHostingEnvironment env,ILogger logger)
-        {
-            var staticFileOptions = new StaticFileOptions();
-            if (!string.IsNullOrEmpty(options.Path))
-            {
-                try
-                {
-                    //TODO: Inject IFileProvider (or ServiceLocator serviceProvider.GetService<IFileProvider>()): https://docs.microsoft.com/en-us/aspnet/core/fundamentals/file-providers
-                    staticFileOptions.FileProvider = options.FileProvider(basePath);
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex.Message);
-                }
-            }
-            if (!string.IsNullOrEmpty(options.RequestPath))
-                staticFileOptions.RequestPath = new PathString(options.RequestPath);
-            if (options.Headers != null)
-            {
-                staticFileOptions.OnPrepareResponse = ctx =>
-                {
-                    foreach (var h in options.Headers)
-                        ctx.Context.Response.Headers.Append(h.Key, h.Value);
-                };
-            }
-            if (options.MIMEtypes != null)
-            {
-                var provider = new FileExtensionContentTypeProvider();
-                foreach (var t in options.MIMEtypes)
-                    provider.Mappings[t.Key] = t.Value;
-                staticFileOptions.ContentTypeProvider = provider;
-            }
-            return staticFileOptions;
         }
 
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)

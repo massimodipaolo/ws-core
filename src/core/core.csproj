@@ -31,7 +31,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />    
-    <PackageReference Include="ExtCore.WebApplication" Version="4.0.0" />  
+    <PackageReference Include="ExtCore.WebApplication" Version="4.0.0" />
+    <!--<ProjectReference Include="..\..\..\..\GitHub\ExtCore\src\ExtCore.WebApplication\ExtCore.WebApplication.csproj" />-->
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot/**/*.*" Pack="false" />
@@ -41,7 +42,7 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </Folder>
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup>    
     <ProjectReference Include="..\modules\ExtensionBase\ExtensionBase.csproj" />
   </ItemGroup>   
 </Project> 
