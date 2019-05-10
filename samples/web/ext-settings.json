@@ -5,9 +5,6 @@
     "folder": "Extensions",
     "enableShutDownOnChange": false,
     "assemblies": {
-      "Ws.Core.Extensions.Cors": {
-        "priority": 2
-      },
       "Ws.Core.Extensions.StaticFiles": {
         "priority": 1,
         "options": {
@@ -16,25 +13,12 @@
               "headers": {
                 "Cache-Control": "public,max-age=43200"
               }
-            },
-            {
-              "path": "wwwroot/folder",
-              "requestPath": "/download",
-              "headers": {
-                "Cache-Control": "public,max-age=86400"
-              },
-              "defaultFiles": [
-                "index.html",
-                "default.htm"
-              ],
-              "mimeTypes": {
-                ".myapp": "application/x-msdownload",
-                ".htm3": "text/html"
-              },
-              "enableDirectoryBrowser": true
             }
           ]
         }
+      },
+      "Ws.Core.Extensions.Cors": {
+        "priority": 2
       },
       "Ws.Core.Extensions.Api": {
         "priority": 2,
@@ -49,7 +33,12 @@
             "endpoints": [
               {
                 "id": "public",
-                "title": "app sample api",
+                "title": "public api",
+                "version": "v1"
+              },
+              {
+                "id": "admin",
+                "title": "admin api",
                 "version": "v1"
               }
             ],
@@ -83,36 +72,13 @@
           ]
         }
       },
-      "__Ws.Core.Extensions.Data.EF.SqlServer": {
+      "Ws.Core.Extensions.Data.EF.SqlServer": {
         "priority": 20,
         "options": {
           "connections": [
             {
               "name": "default",
-              "connectionString": ""
-            }
-          ]
-        }
-      },
-      "__Ws.Core.Extensions.Data.EF.MySql": {
-        "priority": 30,
-        "options": {
-          "connections": [
-            {
-              "name": "default",
-              "connectionString": ""
-            }
-          ]
-        }
-      },
-      "__Ws.Core.Extensions.Data.Mongo": {
-        "priority": 40,
-        "options": {
-          "connections": [
-            {
-              "name": "default",
-              "connectionString": "",
-              "database": "app-core"
+              "connectionString": "Server=.,14331;Database=PUCBM-Hub;User Id=PUCBM-Hub;Password=460C7F93-371B-41BC-A57F-123025589042;MultipleActiveResultSets=true"
             }
           ]
         }

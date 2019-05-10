@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\core\core.csproj" />
     <ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />
     <ProjectReference Include="..\Data\Data.csproj" />
   </ItemGroup>

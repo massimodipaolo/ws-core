@@ -20,7 +20,7 @@ namespace Ws.Core
         protected IConfiguration _config;
         private IServiceCollection _services;
         protected ILoggerFactory _logger { get; set; }
-        protected DateTime _uptime = DateTime.Now;
+        public static DateTime _uptime = DateTime.Now;
         private string _extLastConfigAssembliesSerialized { get; set; }
         protected string appConfigSectionRoot { get; set; } = "appConfig";
 

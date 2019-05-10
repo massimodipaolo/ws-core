@@ -11,9 +11,9 @@ namespace web.Controllers
     /// Awesome user controller
     /// </summary>
     [Route("api/user")]
-    public class UserController : EntityControllerWithMethods<User, Guid>
+    public class TestController : EntityControllerWithMethods<User, Guid>
     {
-        public UserController(IRepository<User, Guid> repository) : base(repository) { }
+        public TestController(IRepository<User, Guid> repository) : base(repository) { }
 
         /// <summary>
         /// Merge a list of users to the current IQueryable List
