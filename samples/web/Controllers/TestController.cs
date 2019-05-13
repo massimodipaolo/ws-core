@@ -4,9 +4,26 @@ using Ws.Core.Extensions.Data.Cache;
 using Microsoft.AspNetCore.Mvc;
 using Ws.Core.Extensions.Api.Controllers;
 using System.Collections.Generic;
+using web.Code;
+using System.Linq;
 
 namespace web.Controllers
 {
+
+    public class PageController : EntityControllerWithMethods<Page, int>
+    {
+        public PageController(IRepository<Page, int> repository) : base(repository) { }
+             
+        [HttpGet]
+        [Route("filter")]
+        public IActionResult ListFilter()
+        {
+            return Ok(_repository.List.Where(_ => _.Title.Any(__ => __.Text.StartsWith("Luca"))));
+        }
+        
+    }
+
+
     /// <summary>
     /// Awesome user controller
     /// </summary>

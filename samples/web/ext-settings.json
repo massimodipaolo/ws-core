@@ -78,7 +78,7 @@
           "connections": [
             {
               "name": "default",
-              "connectionString": "Server=.,14331;Database=PUCBM-Hub;User Id=PUCBM-Hub;Password=460C7F93-371B-41BC-A57F-123025589042;MultipleActiveResultSets=true"
+              "connectionString": "Server=.,14331;Database=Ws-Core;User Id=Ws-Core-Usr;Password=5876ee62-d2a9-4e61-8c3a-88d41f4543e8;MultipleActiveResultSets=true"
             }
           ]
         }
