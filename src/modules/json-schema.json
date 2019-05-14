@@ -178,6 +178,23 @@
         "dateTimeZoneHandling": {
           "enum": [ "Local", "Utc", "Unspecified", "RoundtripKind" ],
           "default": "RoundtripKind"
+        },
+        "converters": {
+          "type": "array",
+          "description": "List of assembly/JsonConvert type to apply",
+          "items": {
+            "type": "object",
+            "properties": {
+              "assembly": {
+                "type": "string",
+                "description": "Assembly full name, i.e. web"
+              },
+              "type": {
+                "type": "string",
+                "description": "JsonConverter class full name, i.e. web.Code.LocaleJsonConverter"
+              }
+            }
+          }
         }
       }
     },
