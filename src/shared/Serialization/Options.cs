@@ -65,8 +65,7 @@ namespace Ws.Core.Shared.Serialization
                             var obj = (Newtonsoft.Json.JsonConverter)Activator.CreateInstance(
                                 converterType,
                                 new object[] {
-                                    new Microsoft.AspNetCore.Http.HttpContextAccessor(),
-                                    settings
+                                    new Microsoft.AspNetCore.Http.HttpContextAccessor()                                    
                                 });                            
                             settings.Converters.Add(obj);
                         }

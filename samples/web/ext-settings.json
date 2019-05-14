@@ -25,7 +25,7 @@
         "options": {
           "serialization": {
             "nullValueHandling": "Ignore",
-            "formatting": "Indented",
+            "formatting": "None",
             "referenceLoopHandling": "Ignore",
             "converters": [
               {

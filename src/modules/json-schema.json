@@ -191,7 +191,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "JsonConverter class full name, i.e. web.Code.LocaleJsonConverter"
+                "description": "JsonConverter class full name, i.e. web.Code.LocaleJsonConverter\nNote: class needs a ctor with params object[] args"
               }
             }
           }

@@ -19,20 +19,25 @@ namespace web.Code
     public class LocaleJsonConverter : JsonConverter
     {
         private static IHttpContextAccessor _context;
-        private string _language => _context?.HttpContext?.Request?.Query["locale"];        
+        private string _language => _context?.HttpContext?.Request?.Query["locale"];
         public LocaleJsonConverter(params object[] args)
         {
-            _context = (IHttpContextAccessor)args.AsEnumerable().FirstOrDefault(_ => typeof(IHttpContextAccessor).IsAssignableFrom(_.GetType()));
+            _context = GetFromArgs<IHttpContextAccessor>(args);
+        }
+
+        private T GetFromArgs<T>(object[] args)
+        {
+            return (T)args.AsEnumerable().FirstOrDefault(_ => typeof(T).IsAssignableFrom(_.GetType()));
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {   
+        {
             writer.WriteValue(((IEnumerable<LocaleText>)value).FirstOrDefault(_ => _.LanguageId == _language)?.Text);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            if (reader.Value != null)                
+            if (reader.Value != null)
                 return new List<LocaleText>() { new LocaleText() { LanguageId = _language, Text = reader.Value.ToString() } };
             else
                 return null;
