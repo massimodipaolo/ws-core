@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Ws.Core.Extensions.Data.EF;
 
 namespace Ws.Core.Extensions.Data
 {
@@ -32,14 +33,17 @@ namespace Ws.Core.Extensions.Data
             // Ignore custom type      
             if (options != null && options.Ignore != null && options.Ignore.Length > 0)
                 foreach (var type in options.Ignore)
-                {
                     try
                     {
                         Type t = Type.GetType(type);
                         if (t != null)
                             modelBuilder.Ignore(t);
                     } catch { }                    
-                }
+
+            // JsonConvert: map field with text columun, serializing/deserializing value
+            IEnumerable<Type> jsonConvertTypes = null;
+            if (options != null && options.JsonConvert != null && options.JsonConvert.Length > 0)
+                jsonConvertTypes = options.JsonConvert.Select(_ => Type.GetType(_));
 
             // Mappings
             var tKeys = new KeyValuePair<Type, int>[] {
@@ -51,7 +55,7 @@ namespace Ws.Core.Extensions.Data
 
             foreach (KeyValuePair<Type, int> tKey in tKeys)
             {
-                foreach (Type type in Base.Util.GetAllTypesOf(tKey.Key)/*.Where(_ => _ != typeof(Entity<Guid>))*/)
+                foreach (Type type in Base.Util.GetAllTypesOf(tKey.Key))
                 {
                     try
                     {
@@ -61,23 +65,37 @@ namespace Ws.Core.Extensions.Data
                             && (string.IsNullOrEmpty(_.NameSpace) || _.NameSpace == type.Namespace)
                         );
 
+                        // Map to db schema,table
                         var entityBuilder = modelBuilder.Entity(type)
                                     .ToTable(opt?.Table ?? type.Name, opt?.Schema ?? "dbo");
 
+                        // Map Id column
                         entityBuilder.Property("Id").HasColumnName(opt?.IdColumnName ?? "Id")
                                     .IsUnicode(false)
                                     .HasMaxLength(tKey.Value)
                                     //.HasColumnType(tKey.Value)
                                     .HasDefaultValue();
 
+                        // Map complex type (or interface) on a text column, serializing/deserializing value
+                        if (jsonConvertTypes != null && jsonConvertTypes.Any())
+                            foreach (var property in type.GetProperties()
+                                .Where(p => jsonConvertTypes
+                                    .Any(jT => jT.IsInterface ? jT.IsAssignableFrom(p.PropertyType) : jT == p.PropertyType)
+                                    )
+                                )
+                                modelBuilder.Entity(type).Property(property.Name).HasJsonConversion(property.PropertyType);
+
+                        // Fine settings by property
                         if (opt?.Properties != null)
                             foreach (var p in opt.Properties.Where(_ => !string.IsNullOrEmpty(_.Name)))
                             {
+                                // Ignore field
                                 if (p.Ignore)
                                     entityBuilder.Ignore(p.Name);
                                 else
                                     try
                                     {
+                                        // Custom map
                                         if (!string.IsNullOrEmpty(p.Column))
                                             entityBuilder.Property(p.Name).HasColumnName(p.Column);
                                     }
