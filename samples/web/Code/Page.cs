@@ -9,7 +9,7 @@ namespace web.Code
     public class Page: Entity<int>
     {
         public string Mnemonic { get; set; }
-        public IEnumerable<LocaleText> Title { get; set; }
+        public LocaleTexts Title { get; set; }
         public LocaleTexts Abstract { get; set; }
         public DateTime StartAt { get; set; }
         public DateTime EndAt { get; set; }

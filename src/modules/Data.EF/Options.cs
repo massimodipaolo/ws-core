@@ -7,7 +7,14 @@ namespace Ws.Core.Extensions.Data.EF
 {
     public class Options: IOptions
     {
+        /// <summary>
+        /// Excludes the given entity type from the model. This method is typically used to remove types from the model that were added by convention., i.e. `MyNamespace.MyClass, MyAssembly`
+        /// </summary>
         public string[] Ignore { get; set; }
+        /// <summary>
+        /// Serialize/deserialize type, mapped on a text column
+        /// </summary>
+        public string[] JsonConvert { get; set; }
         public IEnumerable<MappingConfig> Mappings { get; set; }
         public IncludeNavigationPropertiesConfig IncludeNavigationProperties { get; set; }
         public class MappingConfig

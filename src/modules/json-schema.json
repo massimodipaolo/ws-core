@@ -508,6 +508,11 @@
                       "description": "Excludes the given entity type from the model. This method is typically used to remove types from the model that were added by convention., i.e. `MyNamespace.MyClass, MyAssembly`",
                       "items": { "type": "string" }
                     },
+                    "jsonConvert": {
+                      "type": "array",
+                      "description": "Serialize/deserialize type, mapped on a text column, i.e. `MyNamespace.MyClass, MyAssembly`\nInterface can be listed too",
+                      "items": { "type": "string" }
+                    },
                     "mappings": {
                       "type": "array",
                       "items": {

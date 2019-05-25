@@ -12,7 +12,7 @@ namespace Ws.Core.Extensions.Base
         {
         }
 
-        public static IEnumerable<Type> GetAllTypesOf<T>()
+        public static IEnumerable<Type> GetAllTypesOf<T>() where T:class
         {
             return GetAllTypesOf(typeof(T));
         }

@@ -6,13 +6,14 @@ using System.Linq;
 
 namespace web.Code
 {
+    public interface IJsonConvertible { }
     public class LocaleText
     {
         public string LanguageId { get; set; }
         public string Text { get; set; }
     }
 
-    public class LocaleTexts : List<LocaleText>
+    public class LocaleTexts : List<LocaleText>, IJsonConvertible
     {
     }
 

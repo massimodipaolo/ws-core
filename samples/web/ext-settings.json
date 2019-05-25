@@ -55,9 +55,10 @@
           }
         }
       },
-      "__Ws.Core.Extensions.Data.EF": {
+      "Ws.Core.Extensions.Data.EF": {
         "priority": 399,
         "options": {
+          "jsonConvert": [ "web.Code.IJsonConvertible, web" ],
           "mappings": [
             {
               "name": "User",
