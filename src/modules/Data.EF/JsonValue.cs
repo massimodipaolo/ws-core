@@ -28,8 +28,9 @@ namespace Ws.Core.Extensions.Data.EF
             JsonValueComparer<object> comparer = new JsonValueComparer<object>(
                 (l, r) => JsonConvert.SerializeObject(l, type, _jsonSettings) == JsonConvert.SerializeObject(r, type, _jsonSettings),
                 v => v == null ? 0 : JsonConvert.SerializeObject(v, type, _jsonSettings).GetHashCode(),
-                v => JsonConvert.DeserializeObject(JsonConvert.SerializeObject(v, type, _jsonSettings)),
-                type
+                //v => v == null ? default : JsonConvert.DeserializeObject(JsonConvert.SerializeObject(v, type, _jsonSettings), type, _jsonSettings),
+                type,
+                _jsonSettings
             );
 
             propertyBuilder.HasConversion(converter);
@@ -57,15 +58,22 @@ namespace Ws.Core.Extensions.Data.EF
     public class JsonValueComparer<T> : ValueComparer<T>
     {
         private Type _type { get; set; }
+        private JsonSerializerSettings _jsonSettings { get; set; }
         public JsonValueComparer(
             Expression<Func<T, T, bool>> equalsExpression,
             Expression<Func<T, int>> hashCodeExpression,
-            Expression<Func<T, T>> snapshotExpression,
-            Type type
-            ) : base(equalsExpression, hashCodeExpression, snapshotExpression)
+            //Expression<Func<T, T>> snapshotExpression,
+            Type type,
+            JsonSerializerSettings jsonSettings
+            ) : base(equalsExpression, hashCodeExpression/*, snapshotExpression*/)
         {
             _type = type;
+            _jsonSettings = jsonSettings;
         }
         public override Type Type => _type;
+        public override object Snapshot(object instance)
+        {
+            return instance == null ? default : JsonConvert.DeserializeObject(JsonConvert.SerializeObject(instance, _type, _jsonSettings), _type, _jsonSettings);
+        }
     }
 }

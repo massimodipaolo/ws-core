@@ -30,6 +30,7 @@ namespace Ws.Core.Extensions.Data.EF
                 public string Name { get; set; }
                 public string Column { get; set; }
                 public bool Ignore { get; set; } = false;
+                public bool? JsonConvert { get; set; }
             }
         }
         public class IncludeNavigationPropertiesConfig {

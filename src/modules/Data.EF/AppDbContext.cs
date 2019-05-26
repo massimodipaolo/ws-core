@@ -83,7 +83,8 @@ namespace Ws.Core.Extensions.Data
                                     .Any(jT => jT.IsInterface ? jT.IsAssignableFrom(p.PropertyType) : jT == p.PropertyType)
                                     )
                                 )
-                                modelBuilder.Entity(type).Property(property.Name).HasJsonConversion(property.PropertyType);
+                                if (null == opt?.Properties?.FirstOrDefault(_ => _.Name==property.Name && _.JsonConvert.HasValue && _.JsonConvert.Value==false))
+                                    entityBuilder.Property(property.Name).HasJsonConversion(property.PropertyType);
 
                         // Fine settings by property
                         if (opt?.Properties != null)
@@ -100,6 +101,10 @@ namespace Ws.Core.Extensions.Data
                                             entityBuilder.Property(p.Name).HasColumnName(p.Column);
                                     }
                                     catch { }
+
+                                // Map specific property on a text column, serializing/deserializing value
+                                if (p.JsonConvert.HasValue && p.JsonConvert.Value == true)
+                                    entityBuilder.Property(p.Name).HasJsonConversion(type.GetProperty(p.Name).PropertyType);
                             }
 
                     }

@@ -61,18 +61,11 @@
           "jsonConvert": [ "web.Code.IJsonConvertible, web" ],
           "mappings": [
             {
-              "name": "User",
-              "table": "_User",
-              "schema": "test",
-              "IdColumnName": "Id",
+              "name": "Page",
               "properties": [
                 {
-                  "name": "Company",
-                  "column": "_Company"
-                },
-                {
-                  "name": "ToIgnore",
-                  "ignore": true
+                  "name": "Meta",                  
+                  "jsonConvert": true
                 }
               ]
             }

@@ -11,10 +11,18 @@ namespace web.Code
         public string Mnemonic { get; set; }
         public LocaleTexts Title { get; set; }
         public LocaleTexts Abstract { get; set; }
-        public DateTime StartAt { get; set; }
-        public DateTime EndAt { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime ModifiedAt { get; set; }
-        public bool Enabled { get; set; }
+        public Meta Meta { get; set; }
+        public DateTime? StartAt { get; set; }
+        public DateTime? EndAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? ModifiedAt { get; set; }
+        public bool? Enabled { get; set; } = true;
+    }
+
+    public class Meta
+    {
+        public LocaleTexts Title { get; set; }
+        public LocaleTexts Description { get; set; }
+        public LocaleTexts Keywords { get; set; }
     }
 }

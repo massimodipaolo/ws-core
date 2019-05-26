@@ -559,6 +559,11 @@
                                   "type": "boolean",
                                   "default": false,
                                   "description": "Excludes the given property from the entity type"
+                                },
+                                "jsonConvert": {
+                                  "type": "boolean",
+                                  "default": null,
+                                  "description": "Map property with text columun, serializing/deserializing value"
                                 }
                               },
                               "required": [ "name" ]
