@@ -12,7 +12,7 @@ using Ws.Core.Extensions.Data.Cache;
 
 namespace Ws.Core.Extensions.Api.Controllers
 {
-    public class DiagnosticController<TConfig> : BaseController where TConfig: class, Ws.Core.IAppConfiguration
+    public class DiagnosticController<TConfig> : BaseController where TConfig: class, Ws.Core.IAppConfiguration, new()
     {
         private ICache _cache;
         private IConfiguration _config;

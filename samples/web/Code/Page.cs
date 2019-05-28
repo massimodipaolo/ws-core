@@ -9,8 +9,8 @@ namespace web.Code
     public class Page: Entity<int>
     {
         public string Mnemonic { get; set; }
-        public LocaleTexts Title { get; set; }
-        public LocaleTexts Abstract { get; set; }
+        public LocaleText Title { get; set; }
+        public LocaleText Abstract { get; set; }
         public Meta Meta { get; set; }
         public DateTime? StartAt { get; set; }
         public DateTime? EndAt { get; set; }
@@ -21,8 +21,8 @@ namespace web.Code
 
     public class Meta
     {
-        public LocaleTexts Title { get; set; }
-        public LocaleTexts Description { get; set; }
-        public LocaleTexts Keywords { get; set; }
+        public LocaleText Title { get; set; }
+        public LocaleText Description { get; set; }
+        public LocaleText Keywords { get; set; }
     }
 }

@@ -2,17 +2,17 @@
   
     <PropertyGroup>    
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.0.0</PackageVersion>  
+    <PackageVersion>1.1.0</PackageVersion>  
     <PackageId>Ws.Core</PackageId>  
     <AssemblyName>Ws.Core</AssemblyName>
     <RootNamespace>Ws.Core</RootNamespace>
     <Product>Ws-core</Product> 
-    <Authors>Massimo Di Paolo</Authors>    
+    <Authors>Massimo Di Paolo</Authors>     
     <Company>Websolute spa</Company> 
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description>Base project for extandable .net core web application.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>      
-    <PackageReleaseNotes>IISIntegration 2.2.1 </PackageReleaseNotes>    
+    <PackageReleaseNotes>Expose app info</PackageReleaseNotes>    
     <PackageTags></PackageTags>    
   </PropertyGroup> 
 

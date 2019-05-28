@@ -86,7 +86,7 @@ namespace Ws.Core.Extensions.Data
                                 if (null == opt?.Properties?.FirstOrDefault(_ => _.Name==property.Name && _.JsonConvert.HasValue && _.JsonConvert.Value==false))
                                     entityBuilder.Property(property.Name).HasJsonConversion(property.PropertyType);
 
-                        // Fine settings by property
+                        // Property based settings
                         if (opt?.Properties != null)
                             foreach (var p in opt.Properties.Where(_ => !string.IsNullOrEmpty(_.Name)))
                             {

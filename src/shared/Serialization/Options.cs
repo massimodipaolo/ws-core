@@ -15,7 +15,7 @@ namespace Ws.Core.Shared.Serialization
         /// <summary>
         /// List of assembly/JsonConvert type to apply
         /// </summary>
-        public JsonConverterDiscover[] Converters { get; set; }
+        public JsonConverterDiscover[] Converters { get; set; } = new JsonConverterDiscover[] { };
 
         public class JsonConverterDiscover
         {
@@ -51,28 +51,29 @@ namespace Ws.Core.Shared.Serialization
         }
 
         private void AddConverters(ref Newtonsoft.Json.JsonSerializerSettings settings)
-        {            
-            foreach (var converter in Converters)
-            {
-                var assembly = AppDomain.CurrentDomain.GetAssemblies().AsEnumerable().Where(_ => _.FullName?.Split(',')[0] == converter.Assembly).FirstOrDefault();
-                if (null != assembly)
-                {
-                    try
+        {
+            if (Converters != null && Converters.Any())
+                foreach (var converter in Converters.Where(_ => _ != null))
+                {                    
+                    var assembly = AppDomain.CurrentDomain.GetAssemblies().AsEnumerable().Where(_ => _.FullName?.Split(',')[0] == converter.Assembly).FirstOrDefault();
+                    if (null != assembly)
                     {
-                        Type converterType = System.Reflection.Assembly.LoadFrom(assembly.Location).GetType(converter.Type);
-                        if (typeof(Newtonsoft.Json.JsonConverter).IsAssignableFrom(converterType))
-                        {                            
-                            var obj = (Newtonsoft.Json.JsonConverter)Activator.CreateInstance(
-                                converterType,
-                                new object[] {
-                                    new Microsoft.AspNetCore.Http.HttpContextAccessor()                                    
-                                });                            
-                            settings.Converters.Add(obj);
+                        try
+                        {
+                            Type converterType = System.Reflection.Assembly.LoadFrom(assembly.Location).GetType(converter.Type);
+                            if (typeof(Newtonsoft.Json.JsonConverter).IsAssignableFrom(converterType))
+                            {
+                                var obj = (Newtonsoft.Json.JsonConverter)Activator.CreateInstance(
+                                    converterType,
+                                    new object[] {
+                                    new Microsoft.AspNetCore.Http.HttpContextAccessor()
+                                    });
+                                settings.Converters.Add(obj);
+                            }
                         }
+                        catch { }
                     }
-                    catch {}                    
                 }
-            }
         }
 
     }
