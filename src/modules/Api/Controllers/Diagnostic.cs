@@ -61,7 +61,7 @@ namespace Ws.Core.Extensions.Api.Controllers
                     },
                     remoteIpAddress = _ctx.HttpContext?.Connection?.RemoteIpAddress.ToString()
                 },
-                cache = _cache.Keys?.Count,
+                cache = _cache.Keys != null ? _cache.Keys.Count() : 0,
                 environment = new { _env.ApplicationName, _env.EnvironmentName, _env.ContentRootPath, _env.WebRootPath },
                 config = new
                 {

@@ -19,7 +19,7 @@ namespace Ws.Core.Extensions.Data.Cache
             _client = client;
         }
 
-        public ISet<string> Keys => Get<HashSet<string>>(_keyCollection) ?? new HashSet<string>();
+        public IEnumerable<string> Keys => Get<HashSet<string>>(_keyCollection) ?? new HashSet<string>();
 
         public object Get(string key)
         {
@@ -51,7 +51,6 @@ namespace Ws.Core.Extensions.Data.Cache
                 _options.SlidingExpiration = options.SlidingExpiration;
             }
             _client.Set(key, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)), _options);
-
             if (key != _keyCollection && !Keys.Contains(key))
                 SyncKeys(Keys.Append(key).ToHashSet<string>());
 

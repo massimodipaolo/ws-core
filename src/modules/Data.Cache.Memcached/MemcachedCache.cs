@@ -15,7 +15,7 @@ namespace Ws.Core.Extensions.Data.Cache.Memcached
             _client = client;
         }
 
-        public ISet<string> Keys => Get<HashSet<string>>(_keyCollection) ?? new HashSet<string>();
+        public IEnumerable<string> Keys => Get<HashSet<string>>(_keyCollection) ?? new HashSet<string>();
 
         public object Get(string key)
         {

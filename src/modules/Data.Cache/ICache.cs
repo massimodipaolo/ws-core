@@ -6,7 +6,7 @@ namespace Ws.Core.Extensions.Data.Cache
 {
     public interface ICache
     {
-        ISet<string> Keys { get; }
+        IEnumerable<string> Keys { get; }
         object Get(string key);
         T Get<T>(string key);
         void Set(string key, object value);
