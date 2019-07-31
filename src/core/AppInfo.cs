@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Ws.Core
 {
-    public class AppInfo<TConfig> where TConfig: class, IAppConfiguration
+    public class AppInfo<TConfig> where TConfig: class, IAppConfiguration, new()
     {
         public static IHostingEnvironment Env { get; private set; }
         public static IConfiguration Config { get; private set; }
@@ -22,8 +22,8 @@ namespace Ws.Core
         public static IApplicationBuilder App { get; private set; }
         public static IServiceCollection Services { get; set; }
         public static IServiceProvider ServiceProvider { get; set; }
-        public static IOptionsMonitor<TConfig> AppConfigMonitor { get; private set; }
-        public static IOptions<AppConfig> AppConfig { get; private set; }
+        public static IOptionsMonitor<TConfig> AppConfigMonitor { get; private set; } 
+        public static IOptions<TConfig> AppConfig { get; private set; }
         public static IOptionsMonitor<Core.Extensions.Base.Configuration> ExtConfigMonitor { get; private set; }
         public static IApplicationLifetime ApplicationLifetime { get; private set; }
         public static IHttpContextAccessor HttpContextAccessor => ServiceProvider.GetService<IHttpContextAccessor>();
@@ -50,7 +50,7 @@ namespace Ws.Core
             if (appConfigMonitor != null)
             {
                 AppConfigMonitor = appConfigMonitor;
-                AppConfig = ServiceProvider?.GetService<IOptions<AppConfig>>();
+                AppConfig = ServiceProvider?.GetService<IOptions<TConfig>>();
             }
             if (extConfigMonitor != null) ExtConfigMonitor = extConfigMonitor;
             if (applicationLifetime != null) ApplicationLifetime = applicationLifetime;

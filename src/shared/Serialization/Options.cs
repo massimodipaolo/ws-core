@@ -53,8 +53,8 @@ namespace Ws.Core.Shared.Serialization
         private void AddConverters(ref Newtonsoft.Json.JsonSerializerSettings settings)
         {
             if (Converters != null && Converters.Any())
-                foreach (var converter in Converters.Where(_ => null != _))
-                {
+                foreach (var converter in Converters.Where(_ => _ != null))
+                {                    
                     var assembly = AppDomain.CurrentDomain.GetAssemblies().AsEnumerable().Where(_ => _.FullName?.Split(',')[0] == converter.Assembly).FirstOrDefault();
                     if (null != assembly)
                     {

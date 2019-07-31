@@ -12,7 +12,7 @@ namespace Ws.Core.Extensions.Data.EF
         /// </summary>
         public string[] Ignore { get; set; }
         /// <summary>
-        /// Serialize/deserialize type, mapped on a text column
+        /// Serialize/deserialize type/interface, mapped on a text column
         /// </summary>
         public string[] JsonConvert { get; set; }
         public IEnumerable<MappingConfig> Mappings { get; set; }
