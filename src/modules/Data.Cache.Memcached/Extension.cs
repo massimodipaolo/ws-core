@@ -27,6 +27,7 @@ namespace Ws.Core.Extensions.Data.Cache.Memcached
 
                 //DI
                 serviceCollection.AddSingleton(typeof(ICache), typeof(MemcachedCache));
+                serviceCollection.AddSingleton(typeof(ICache<>), typeof(MemcachedCache<>));
                 serviceCollection.TryAddTransient(typeof(ICacheRepository<,>), typeof(Repository.CachedRepository<,>));
             }
         }

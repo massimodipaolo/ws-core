@@ -14,4 +14,8 @@ namespace Ws.Core.Extensions.Data.Cache
         void Remove(string key);
         void Clear();
     }
+
+    public interface ICache<T> : ICache where T : class
+    {
+    }
 }

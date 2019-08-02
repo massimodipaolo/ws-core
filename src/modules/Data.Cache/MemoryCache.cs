@@ -9,9 +9,12 @@ using System.Collections.Concurrent;
 
 namespace Ws.Core.Extensions.Data.Cache
 {
+    public class MemoryCache<T>: MemoryCache, ICache<T> where T: class {
+        public MemoryCache(IMemoryCache client) : base(client) {}
+    }
     public class MemoryCache : ICache
     {
-        readonly IMemoryCache _client;
+        protected readonly IMemoryCache _client;
         private static CancellationTokenSource _resetCacheToken = new CancellationTokenSource();
         private static IProducerConsumerCollection<string> _keys = new ConcurrentBag<string>();
         public MemoryCache() { }

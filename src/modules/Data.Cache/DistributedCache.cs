@@ -7,9 +7,12 @@ using System.Linq;
 
 namespace Ws.Core.Extensions.Data.Cache
 {
+    public class DistributedCache<T> : DistributedCache, ICache<T> where T : class {
+        public DistributedCache(IDistributedCache client) : base(client) { }
+    }
     public class DistributedCache : ICache
     {
-        readonly IDistributedCache _client;
+        protected readonly IDistributedCache _client;
         private static string _keyCollection = "___all_keys";
 
         public DistributedCache() { }

@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.1.0</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.Cache.Memcached</PackageId>
     <AssemblyName>Ws.Core.Extensions.Data.Cache.Memcached</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Data.Cache.Memcached</RootNamespace>

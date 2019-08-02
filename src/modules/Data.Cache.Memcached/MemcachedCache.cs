@@ -5,11 +5,14 @@ using System.Linq;
 
 namespace Ws.Core.Extensions.Data.Cache.Memcached
 {
-    public class MemcachedCache : Ws.Core.Extensions.Data.Cache.ICache
+    public class MemcachedCache<T> : MemcachedCache, ICache<T> where T : class {
+        public MemcachedCache(IMemcachedClient client): base(client) { }
+    }
+    public class MemcachedCache : ICache
     {
-        readonly IMemcachedClient _client;
+        protected readonly IMemcachedClient _client;
         private static string _keyCollection = "___all_keys";
-
+        public MemcachedCache() { }
         public MemcachedCache(IMemcachedClient client)
         {
             _client = client;

@@ -2,7 +2,7 @@
 
   <PropertyGroup> 
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.0.1</PackageVersion> 
+    <PackageVersion>1.0.2</PackageVersion> 
     <PackageId>Ws.Core.Extensions.Spa</PackageId>
     <AssemblyName>Ws.Core.Extensions.Spa</AssemblyName> 
     <RootNamespace>Ws.Core.Extensions.Spa</RootNamespace>

@@ -23,28 +23,32 @@ namespace Ws.Core.Extensions.Data.Cache
             //CacheEntryOptions.Expiration.Set();
 
             // cache client
-            Type clientType = typeof(DistributedCache);
+            Type implementation = typeof(DistributedCache);
+            Type genericImplementation = typeof(DistributedCache<>);
+
+            // always
+            serviceCollection
+                        .AddMemoryCache()
+                        .AddDistributedMemoryCache();
 
             // service
             switch (_type)
-            {
-                case Options.Types.Distributed:
-                    serviceCollection.AddDistributedMemoryCache();
-                    break;
+            {                
                 case Options.Types.Redis:
                     serviceCollection.AddDistributedRedisCache(_ => { _.Configuration = _options.RedisOptions?.Configuration ?? "localhost:6379"; _.InstanceName = _options.RedisOptions?.InstanceName ?? "master"; });
                     break;
                 case Options.Types.SqlServer:
                     serviceCollection.AddDistributedSqlServerCache(_ => { _.ConnectionString = _options.SqlOptions?.ConnectionString ?? "Server=.;Database=Cache;Trusted_Connection=True;"; _.SchemaName = _options.SqlOptions?.SchemaName ?? "dbo"; _.TableName = _options.SqlOptions?.TableName ?? "Entry"; });
                     break;
-                default:
-                    serviceCollection.AddMemoryCache();
-                    clientType = typeof(MemoryCache);
+                default:                                        
+                    implementation = typeof(MemoryCache);
+                    genericImplementation = typeof(MemoryCache<>);
                     break;
             }
 
             //DI
-            serviceCollection.AddSingleton(typeof(ICache), clientType);
+            serviceCollection.AddSingleton(typeof(ICache), implementation);
+            serviceCollection.AddSingleton(typeof(ICache<>), genericImplementation);
             serviceCollection.TryAddTransient(typeof(ICacheRepository<,>), typeof(Repository.CachedRepository<,>));
             /*
             serviceCollection.TryAddTransient(typeof(IEntityChangeEvent<,>), typeof(Repository.EntityChangeHandler<,>));
