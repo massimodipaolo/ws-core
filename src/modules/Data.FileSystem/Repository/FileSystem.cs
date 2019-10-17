@@ -13,7 +13,7 @@ namespace Ws.Core.Extensions.Data.Repository
         private static Data.FileSystem.Options _options { get; set; } = new Data.FileSystem.Extension()._options ?? new Data.FileSystem.Options();        
         private string _path { get; set; }
 
-        public FileSystem(IHostingEnvironment env, ILoggerFactory logger)
+        public FileSystem(IWebHostEnvironment env, ILoggerFactory logger)
         {            
             _path = System.IO.Path.Combine(env.ContentRootPath, _options.Folder, $"{typeof(T).Name}.json");
 

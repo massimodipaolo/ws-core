@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>  
-		<TargetFramework>netcoreapp2.2</TargetFramework>
+		<TargetFramework>netcoreapp3.0</TargetFramework>
 		<PackageVersion>1.0.0</PackageVersion>   
 		<PackageId>Ws.Core.Extensions.Base</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Base</AssemblyName>
@@ -22,12 +22,13 @@
   
   <ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
 		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
-		<PackageReference Include="ExtCore.Infrastructure" Version="4.0.0" />
+		<PackageReference Include="ExtCore.Infrastructure" Version="5.0.0-alpha1" />
     <!--<ProjectReference Include="..\..\..\..\..\GitHub\ExtCore\src\ExtCore.Infrastructure\ExtCore.Infrastructure.csproj" />-->
-    <PackageReference Include="ExtCore.Events" Version="4.0.0" />
+    <PackageReference Include="ExtCore.Events" Version="5.0.0-alpha1" />
     <!--<ProjectReference Include="..\..\..\..\..\GitHub\ExtCore\src\ExtCore.Events\ExtCore.Events.csproj" />-->
 	</ItemGroup>
  

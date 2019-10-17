@@ -36,7 +36,7 @@ namespace Ws.Core.Shared.StaticFilesFolder
             Path;
         public IFileProvider FileProvider(string basePath) => new PhysicalFileProvider(Root(basePath));
 
-        public StaticFileOptions GetStaticFileOptions(string basePath, IHostingEnvironment env, ILogger logger)
+        public StaticFileOptions GetStaticFileOptions(string basePath, IWebHostEnvironment env, ILogger logger)
         {
             var staticFileOptions = new StaticFileOptions();
             if (!string.IsNullOrEmpty(Path))

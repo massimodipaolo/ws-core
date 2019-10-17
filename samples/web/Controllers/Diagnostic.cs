@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -19,10 +20,10 @@ namespace web.Controllers
         public Diagnostic(
             ICache cache,
             IConfiguration config,
-            IHostingEnvironment env,
+            IWebHostEnvironment env,
             IOptionsMonitor<AppConfig> appConfigMonitor,
             IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor,
-            IApplicationLifetime applicationLifetime,
+            IHostApplicationLifetime applicationLifetime,
             IHttpContextAccessor ctx) :
             base(
                 cache,

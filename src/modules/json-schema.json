@@ -161,7 +161,7 @@
       "properties": {
         "nullValueHandling": {
           "enum": [ "Ignore", "Include" ],
-          "default": "Ignore"
+          "default": "Ignore", 
         },
         "formatting": {
           "enum": [ "None", "Indented" ],

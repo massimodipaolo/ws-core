@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -13,7 +14,7 @@ namespace Ws.Core
 {
     public class AppInfo<TConfig> where TConfig: class, IAppConfiguration, new()
     {
-        public static IHostingEnvironment Env { get; private set; }
+        public static IWebHostEnvironment Env { get; private set; }
         public static IConfiguration Config { get; private set; }
         public static ILoggerFactory LoggerFactory { get; private set; }
         public static ILogger<T> Logger<T>() where T : class => LoggerFactory.CreateLogger<T>();
@@ -25,17 +26,17 @@ namespace Ws.Core
         public static IOptionsMonitor<TConfig> AppConfigMonitor { get; private set; } 
         public static IOptions<TConfig> AppConfig { get; private set; }
         public static IOptionsMonitor<Core.Extensions.Base.Configuration> ExtConfigMonitor { get; private set; }
-        public static IApplicationLifetime ApplicationLifetime { get; private set; }
+        public static IHostApplicationLifetime ApplicationLifetime { get; private set; }
         public static IHttpContextAccessor HttpContextAccessor => ServiceProvider.GetService<IHttpContextAccessor>();
         public static void Set(
-            IHostingEnvironment env = null,
+            IWebHostEnvironment env = null,
             IConfiguration config = null,
             ILoggerFactory loggerFactory = null,
             IApplicationBuilder app = null,
             IServiceCollection services = null,
             IOptionsMonitor<TConfig> appConfigMonitor = null,
             IOptionsMonitor<Core.Extensions.Base.Configuration> extConfigMonitor = null,
-            IApplicationLifetime applicationLifetime = null
+            IHostApplicationLifetime applicationLifetime = null
             )
         {
             if (env != null) Env = env;

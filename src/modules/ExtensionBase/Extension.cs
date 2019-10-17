@@ -16,7 +16,7 @@ namespace Ws.Core.Extensions.Base
         private static IServiceProvider _serviceProvider;
         private static IServiceCollection _serviceCollection;
         protected IConfiguration _config => _serviceProvider?.GetService<IConfiguration>();
-        protected IHostingEnvironment _env => _serviceProvider?.GetService<IHostingEnvironment>();
+        protected IWebHostEnvironment _env => _serviceProvider?.GetService<IWebHostEnvironment>();
         protected ILogger _logger => _serviceProvider?.GetService<ILoggerFactory>()?.CreateLogger("Extension.Logger");
 
         public static void Init(IServiceCollection serviceCollection, IServiceProvider serviceProvider)

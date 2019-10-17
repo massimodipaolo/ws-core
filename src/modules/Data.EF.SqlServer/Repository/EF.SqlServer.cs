@@ -144,9 +144,8 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         {
             var param = "@data";
             _db().SetCommandTimeout(_sp.CommandTimeOut?.Write ?? 60);
-            _db().ExecuteSqlCommand(
-                $"exec [{_sp.Schema}].{_spPrefix}_{_sp.StoredProcedure}_{action} {param}",
-                new System.Data.SqlClient.SqlParameter(param, data)
+            _db().ExecuteSqlInterpolated(
+                $"exec [{_sp.Schema}].{_spPrefix}_{_sp.StoredProcedure}_{action} {data}"
                 );
         }
 
@@ -155,10 +154,8 @@ namespace Ws.Core.Extensions.Data.Repository.EF
             var p1 = "@data";
             var p2 = "@operation";
             _db().SetCommandTimeout(_sp.CommandTimeOut?.Sync ?? 180);
-            _db().ExecuteSqlCommand(
-                $"exec [{_sp.Schema}].{_spPrefix}_{_sp.StoredProcedure}_merge {p1},{p2}",
-                new System.Data.SqlClient.SqlParameter(p1, data),
-                new System.Data.SqlClient.SqlParameter(p2, operation.ToString())
+            _db().ExecuteSqlInterpolated(
+                $"exec [{_sp.Schema}].{_spPrefix}_{_sp.StoredProcedure}_merge {data},{operation.ToString()}"
                 );
         }
 

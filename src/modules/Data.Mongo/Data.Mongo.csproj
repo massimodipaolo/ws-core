@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>netcoreapp2.2</TargetFramework>
+		<TargetFramework>netcoreapp3.0</TargetFramework>
 		<PackageVersion>1.0.0</PackageVersion>
 		<PackageId>Ws.Core.Extensions.Data.Mongo</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Data.Mongo</AssemblyName>
@@ -20,7 +20,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-		<PackageReference Include="MongoDB.Driver" Version="2.8.0" />
+		<PackageReference Include="MongoDB.Driver" Version="2.9.2" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Data\Data.csproj" />

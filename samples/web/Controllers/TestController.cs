@@ -68,7 +68,7 @@ namespace web.Controllers
         public string Name { get; set; }
         /// <example>Websolute</example>
         public string Company { get; set; }
-        public string ToIgnore { get; set; }
+        public LocaleText Bio { get; set; }
         public bool Active { get; set; } = true;
     }
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -16,17 +17,17 @@ namespace Ws.Core.Extensions.Api.Controllers
     {
         private ICache _cache;
         private IConfiguration _config;
-        private IHostingEnvironment _env;
+        private IWebHostEnvironment _env;
         private IOptionsMonitor<TConfig> _appConfigMonitor;
         private IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> _extConfigMonitor;
-        private IApplicationLifetime _applicationLifetime;
+        private IHostApplicationLifetime _applicationLifetime;
         public DiagnosticController(
             ICache cache,
             IConfiguration config,
-            IHostingEnvironment env,
+            IWebHostEnvironment env,
             IOptionsMonitor<TConfig> appConfigMonitor,
             IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor,
-            IApplicationLifetime applicationLifetime,
+            IHostApplicationLifetime applicationLifetime,
             IHttpContextAccessor ctx
             ) : base(ctx)
         {

@@ -39,7 +39,7 @@ namespace Ws.Core
             .ConfigureLogging((ctx, logging) =>
             {
                 logging.AddConfiguration(ctx.Configuration.GetSection("Logging"));
-                if (ctx.HostingEnvironment.IsDevelopment() || ctx.HostingEnvironment.IsEnvironment("Local"))
+                if (ctx.HostingEnvironment.EnvironmentName == "Development" || ctx.HostingEnvironment.EnvironmentName == "Local")
                 {
                     logging.AddDebug();
                 }

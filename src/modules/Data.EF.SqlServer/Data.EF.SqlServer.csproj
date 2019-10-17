@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <PackageVersion>1.1.0</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.EF.SqlServer</PackageId>
     <AssemblyName>Ws.Core.Extensions.Data.EF.SqlServer</AssemblyName>
@@ -20,8 +20,8 @@
   </PropertyGroup>  
 
   <ItemGroup>
-    <PackageReference Include="EFCore.BulkExtensions" Version="2.4.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
+    <PackageReference Include="EFCore.BulkExtensions" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>

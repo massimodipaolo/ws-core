@@ -7,12 +7,13 @@ using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 
 namespace web
 {
     public class Startup : Ws.Core.Startup<AppConfig>
     {
-        public Startup(IHostingEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory) : base(hostingEnvironment, configuration, loggerFactory)
+        public Startup(IWebHostEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory) : base(hostingEnvironment, configuration, loggerFactory)
         {
             _logger.CreateLogger<Startup>().LogInformation("Start");
         }
@@ -32,7 +33,7 @@ namespace web
             Ws.Core.AppInfo<AppConfig>.Set(env: _env, config: _config, loggerFactory: _logger, services: services);
         }
 
-        public override void Configure(IApplicationBuilder app, IOptionsMonitor<AppConfig> appConfigMonitor, IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor, IApplicationLifetime applicationLifetime)
+        public override void Configure(IApplicationBuilder app, IOptionsMonitor<AppConfig> appConfigMonitor, IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor, IHostApplicationLifetime applicationLifetime)
         {
             app.UseResponseCompression();
 

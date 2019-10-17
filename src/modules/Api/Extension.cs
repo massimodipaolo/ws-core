@@ -38,12 +38,14 @@ namespace Ws.Core.Extensions.Api
                     opt.IdleTimeout = TimeSpan.FromMinutes(_session.IdleTimeoutInMinutes);
                 });
             }
-            
+
+
+#warning Endpoint Routing does not support 'IApplicationBuilder.UseMvc(...)'. To use 'IApplicationBuilder.UseMvc' set 'MvcOptions.EnableEndpointRouting = false' inside 'ConfigureServices(...).
             services
-                .AddMvc()
+                .AddMvc(opt => opt.EnableEndpointRouting = false)
                 .AddJsonOptions(opt =>
                 {
-                    var _setting = opt.SerializerSettings;
+                    var _setting = opt.JsonSerializerOptions;
                     _options.Serialization.FromJsonSerializerSettings(ref _setting);
                 });
 
@@ -145,16 +147,16 @@ namespace Ws.Core.Extensions.Api
                 applicationBuilder.UseSwagger(opt =>
                 {
                     opt.RouteTemplate = _doc.RoutePrefix + "/{documentName}/swagger.json";
-                /*opt.PreSerializeFilters.Add((doc, rq) =>
-                {
-                    doc.Host = rq.Host.Value;
-                });*/                
+                    /*opt.PreSerializeFilters.Add((doc, rq) =>
+                    {
+                        doc.Host = rq.Host.Value;
+                    });*/
                 });
 
                 applicationBuilder.UseSwaggerUI(opt =>
                 {
                     opt.RoutePrefix = _doc.RoutePrefix;
-                    opt.DisplayRequestDuration();                    
+                    opt.DisplayRequestDuration();
                     if (_doc.Ui != null)
                     {
                         var ui = _doc.Ui;
@@ -162,14 +164,14 @@ namespace Ws.Core.Extensions.Api
                             opt.InjectJavascript(ui.InjectJs);
                         if (!string.IsNullOrEmpty(ui.InjectCss))
                             opt.InjectStylesheet(ui.InjectCss);
-                    }                    
+                    }
                     foreach (var doc in _doc.Endpoints?.Select((e, i) => new { e, i }))
                     {
                         var _id = string.IsNullOrEmpty(doc.e.Id) ? $"v{doc.i + 1}" : doc.e.Id;
-                        opt.SwaggerEndpoint($"/{_doc.RoutePrefix}/{_id}/swagger.json", string.IsNullOrEmpty(doc.e.Title) ? $"API v{doc.i + 1}" : doc.e.Title);                        
+                        opt.SwaggerEndpoint($"/{_doc.RoutePrefix}/{_id}/swagger.json", string.IsNullOrEmpty(doc.e.Title) ? $"API v{doc.i + 1}" : doc.e.Title);
                     }
 
-                });                
+                });
             }
         }
     }

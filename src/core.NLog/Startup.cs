@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NLOG = NLog;
@@ -12,7 +13,7 @@ namespace Ws.Core.NLog
 {
     public class Startup<TOptions> : Core.Startup<TOptions> where TOptions : class, IAppConfiguration
     {
-        public Startup(IHostingEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory) : base(hostingEnvironment, configuration, loggerFactory)
+        public Startup(IWebHostEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory) : base(hostingEnvironment, configuration, loggerFactory)
         {
             
             // logger config    
@@ -39,7 +40,7 @@ namespace Ws.Core.NLog
             _logger.CreateLogger<Startup<TOptions>>().LogInformation("Start");
         }
 
-        public override void Configure(IApplicationBuilder app, IOptionsMonitor<TOptions> appConfigMonitor, IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor, IApplicationLifetime applicationLifetime)
+        public override void Configure(IApplicationBuilder app, IOptionsMonitor<TOptions> appConfigMonitor, IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor, IHostApplicationLifetime applicationLifetime)
         {
             base.Configure(app, appConfigMonitor, extConfigMonitor, applicationLifetime);
 

@@ -55,7 +55,7 @@ namespace Ws.Core.Extensions.Data.Repository
 
         public IQueryable<T> Query(FormattableString command)
         {
-            return _context.Set<T>().FromSql(command);
+            return _context.Set<T>().FromSqlInterpolated(command);
         }
 
         public virtual void Add(T entity)

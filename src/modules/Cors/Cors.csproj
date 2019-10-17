@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
 	<PropertyGroup>
-		<TargetFramework>netcoreapp2.2</TargetFramework>
+		<TargetFramework>netcoreapp3.0</TargetFramework>
 		<PackageVersion>1.0.0</PackageVersion>
 		<PackageId>Ws.Core.Extensions.Cors</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Cors</AssemblyName>

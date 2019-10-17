@@ -11,12 +11,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Hosting;
 
 namespace Ws.Core
 {
     public class Startup<TOptions> where TOptions : class, IAppConfiguration
     {
-        protected IHostingEnvironment _env { get; set; }
+        protected IWebHostEnvironment _env { get; set; }
         protected IConfiguration _config;
         private IServiceCollection _services;
         protected ILoggerFactory _logger { get; set; }
@@ -24,7 +25,7 @@ namespace Ws.Core
         private string _extLastConfigAssembliesSerialized { get; set; }
         protected string appConfigSectionRoot { get; set; } = "appConfig";
 
-        public Startup(IHostingEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory)
+        public Startup(IWebHostEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory)
         {
             _env = hostingEnvironment;
             _logger = loggerFactory;
@@ -74,10 +75,10 @@ namespace Ws.Core
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public virtual void Configure(IApplicationBuilder app, IOptionsMonitor<TOptions> appConfigMonitor, IOptionsMonitor<Extensions.Base.Configuration> extConfigMonitor, IApplicationLifetime applicationLifetime)
+        public virtual void Configure(IApplicationBuilder app, IOptionsMonitor<TOptions> appConfigMonitor, IOptionsMonitor<Extensions.Base.Configuration> extConfigMonitor, IHostApplicationLifetime applicationLifetime)
         {
             //Error handling
-            if (_env.IsDevelopment() || _env.IsEnvironment("Local") || (appConfigMonitor.CurrentValue?.DeveloperExceptionPage ?? false))
+            if (_env.EnvironmentName == "Development" || _env.EnvironmentName == "Local" || (appConfigMonitor.CurrentValue?.DeveloperExceptionPage ?? false))
             {
                 app.UseDeveloperExceptionPage();
             }
