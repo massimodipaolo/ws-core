@@ -8,14 +8,14 @@ using System.Collections.Generic;
 using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
+using Ws.Core.Extensions.Base;
 
 namespace web
 {
     public class Startup : Ws.Core.Startup<AppConfig>
     {
-        public Startup(IWebHostEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory) : base(hostingEnvironment, configuration, loggerFactory)
+        public Startup(IWebHostEnvironment hostingEnvironment, IConfiguration configuration) : base(hostingEnvironment, configuration)
         {
-            _logger.CreateLogger<Startup>().LogInformation("Start");
         }
 
         public override void ConfigureServices(IServiceCollection services)
@@ -29,24 +29,27 @@ namespace web
             /* override repository */
             // Cms            
             //services.AddTransient(typeof(core.Extensions.Data.IRepository<Server.Models.Page, int>), typeof(core.Extensions.Data.Repository.SqlRepository<Server.Models.Page, int>));
+            services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Controllers.User, Guid>), typeof(Ws.Core.Extensions.Data.Repository.FileSystem<Controllers.User, Guid>));
 
-            Ws.Core.AppInfo<AppConfig>.Set(env: _env, config: _config, loggerFactory: _logger, services: services);
+            Ws.Core.AppInfo<AppConfig>.Set(env: _env, config: _config, services: services);
         }
 
-        public override void Configure(IApplicationBuilder app, IOptionsMonitor<AppConfig> appConfigMonitor, IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor, IHostApplicationLifetime applicationLifetime)
+        public override void Configure(IApplicationBuilder app, IOptionsMonitor<AppConfig> appConfigMonitor, IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor, IHostApplicationLifetime applicationLifetime, ILogger<Ws.Core.Program> logger)
         {
+            logger.LogInformation("Start");
+
             app.UseResponseCompression();
 
             Ws.Core.AppInfo<AppConfig>.Set(app: app, appConfigMonitor: appConfigMonitor, extConfigMonitor: extConfigMonitor, applicationLifetime: applicationLifetime);
 
-            base.Configure(app, appConfigMonitor, extConfigMonitor, applicationLifetime);
+            base.Configure(app, appConfigMonitor, extConfigMonitor, applicationLifetime, logger);
 
             //await Code.AppInfo.Init();
 
             //shutdown
             applicationLifetime.ApplicationStopping.Register(() =>
             {
-                _logger.CreateLogger<Startup>().LogInformation("Shutdown");
+                logger.LogInformation("Shutdown");
             }
             );
         }

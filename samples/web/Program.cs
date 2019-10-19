@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using NLog.Web;
 using System;
+using System.Threading.Tasks;
 
 namespace web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var logger = NLog.Web.NLogBuilder.ConfigureNLog("NLog.config").GetCurrentClassLogger();
 
-            var host = Ws.Core.Program.WebHostBuilder(args, typeof(Program).Assembly)
-                .UseStartup<Startup>()
-                .UseNLog()
-                .Build();
-
             try
             {
-                host.Run();
+                logger.Debug("Init program");
+                var host = Ws.Core.Program.WebHostBuilder(args, typeof(Program).Assembly, typeof(Startup))
+                .UseNLog();
+                await host.Build().RunAsync();
             }
             catch (Exception ex)
             {

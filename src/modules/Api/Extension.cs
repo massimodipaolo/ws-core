@@ -39,15 +39,24 @@ namespace Ws.Core.Extensions.Api
                 });
             }
 
-
-#warning Endpoint Routing does not support 'IApplicationBuilder.UseMvc(...)'. To use 'IApplicationBuilder.UseMvc' set 'MvcOptions.EnableEndpointRouting = false' inside 'ConfigureServices(...).
             services
-                .AddMvc(opt => opt.EnableEndpointRouting = false)
+                .AddControllers()
+                .AddNewtonsoftJson(opt =>
+                {
+                    var _setting = opt.SerializerSettings;
+                    _options.Serialization.FromJsonSerializerSettings(ref _setting);
+                }
+                )
+                /*
                 .AddJsonOptions(opt =>
                 {
                     var _setting = opt.JsonSerializerOptions;
                     _options.Serialization.FromJsonSerializerSettings(ref _setting);
-                });
+                })
+                */
+            ;
+
+            services.AddHealthChecks();
 
             var _doc = _options.Documentation;
             if (_doc != null)
@@ -139,7 +148,11 @@ namespace Ws.Core.Extensions.Api
             if (_options.Session != null)
                 applicationBuilder.UseSession();
 
-            applicationBuilder.UseMvcWithDefaultRoute();
+            applicationBuilder.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHealthChecks("/health");
+                endpoints.MapDefaultControllerRoute();
+            });
 
             var _doc = _options.Documentation;
             if (_doc != null)

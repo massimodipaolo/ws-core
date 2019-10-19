@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\src\core\core.csproj" />
     <ProjectReference Include="..\..\src\modules\Api\Api.csproj" />
     <ProjectReference Include="..\..\src\modules\Data.EF.SqlServer\Data.EF.SqlServer.csproj" />
+    <ProjectReference Include="..\..\src\modules\Data.FileSystem\Data.FileSystem.csproj" />
     <ProjectReference Include="..\..\src\modules\StaticFiles\StaticFiles.csproj" />
   </ItemGroup>
   <ItemGroup>

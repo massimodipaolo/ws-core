@@ -40,7 +40,6 @@ namespace Ws.Core.Shared.Serialization
             return settings;
         }
 
-        /*
         public void FromJsonSerializerSettings(ref Newtonsoft.Json.JsonSerializerSettings settings)
         {
             settings.NullValueHandling = this.NullValueHandling;
@@ -50,24 +49,8 @@ namespace Ws.Core.Shared.Serialization
             settings.DateTimeZoneHandling = this.DateTimeZoneHandling;
             AddConverters(ref settings);
         }
-        */
 
-        public void FromJsonSerializerSettings(ref System.Text.Json.JsonSerializerOptions settings)
-        {
-            /*
-            settings.NullValueHandling = this.NullValueHandling;
-            settings.Formatting = this.Formatting;
-            settings.ReferenceLoopHandling = this.ReferenceLoopHandling;
-            settings.DateParseHandling = this.DateParseHandling;
-            settings.DateTimeZoneHandling = this.DateTimeZoneHandling;
-            */
-            settings.IgnoreNullValues = true;
-            settings.IgnoreReadOnlyProperties = true;
-            settings.WriteIndented = true;
-            AddConverters(ref settings);
-        }
-
-        private void AddConverters(ref System.Text.Json.JsonSerializerOptions settings)
+        private void AddConverters(ref Newtonsoft.Json.JsonSerializerSettings settings)
         {
             if (Converters != null && Converters.Any())
                 foreach (var converter in Converters.Where(_ => _ != null))
@@ -80,14 +63,7 @@ namespace Ws.Core.Shared.Serialization
                             Type converterType = System.Reflection.Assembly.LoadFrom(assembly.Location).GetType(converter.Type);
                             if (typeof(Newtonsoft.Json.JsonConverter).IsAssignableFrom(converterType))
                             {
-                                /*
                                 var obj = (Newtonsoft.Json.JsonConverter)Activator.CreateInstance(
-                                    converterType,
-                                    new object[] {
-                                    new Microsoft.AspNetCore.Http.HttpContextAccessor()
-                                    });
-                                */
-                                var obj = (System.Text.Json.Serialization.JsonConverter)Activator.CreateInstance(
                                     converterType,
                                     new object[] {
                                     new Microsoft.AspNetCore.Http.HttpContextAccessor()

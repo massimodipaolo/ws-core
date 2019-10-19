@@ -20,15 +20,13 @@ namespace Ws.Core
         protected IWebHostEnvironment _env { get; set; }
         protected IConfiguration _config;
         private IServiceCollection _services;
-        protected ILoggerFactory _logger { get; set; }
         public static DateTime _uptime = DateTime.Now;
         private string _extLastConfigAssembliesSerialized { get; set; }
         protected string appConfigSectionRoot { get; set; } = "appConfig";
 
-        public Startup(IWebHostEnvironment hostingEnvironment, IConfiguration configuration, ILoggerFactory loggerFactory)
+        public Startup(IWebHostEnvironment hostingEnvironment, IConfiguration configuration)
         {
             _env = hostingEnvironment;
-            _logger = loggerFactory;
             _config = configuration;
         }
 
@@ -75,7 +73,7 @@ namespace Ws.Core
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public virtual void Configure(IApplicationBuilder app, IOptionsMonitor<TOptions> appConfigMonitor, IOptionsMonitor<Extensions.Base.Configuration> extConfigMonitor, IHostApplicationLifetime applicationLifetime)
+        public virtual void Configure(IApplicationBuilder app, IOptionsMonitor<TOptions> appConfigMonitor, IOptionsMonitor<Extensions.Base.Configuration> extConfigMonitor, IHostApplicationLifetime applicationLifetime, ILogger<Program> logger)
         {
             //Error handling
             if (_env.EnvironmentName == "Development" || _env.EnvironmentName == "Local" || (appConfigMonitor.CurrentValue?.DeveloperExceptionPage ?? false))
@@ -95,7 +93,7 @@ namespace Ws.Core
                 var _extCurrentAssembliesSerialized = _extSerialize(extConfig.Assemblies);
                 var isUpdatable = _extCurrentAssembliesSerialized == _extLastConfigAssembliesSerialized;
 
-                _logger.CreateLogger<Extensions.Base.Configuration>().LogInformation($"Config changed {DateTime.Now}; Is updatable: {isUpdatable} ");
+                logger.LogInformation($"Config changed {DateTime.Now}; Is updatable: {isUpdatable} ");
 
                 if (isUpdatable)
                     _extLastConfigAssembliesSerialized = _extCurrentAssembliesSerialized;

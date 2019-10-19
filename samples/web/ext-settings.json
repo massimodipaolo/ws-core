@@ -83,7 +83,19 @@
           ]
         }
       },
-      "Ws.Core.Extensions.Data.FileSystem": { "priority": 500 },
+      "Ws.Core.Extensions.Data.FileSystem": {
+        "priority": 500,
+        "options": {
+          "serialization": {
+            "converters": [
+              {
+                "assembly": "web",
+                "type": "web.Code.IJsonConvertible"
+              }
+            ]
+          }
+        }
+      },
       "Ws.Core.Extensions.Data.Cache": {
         "priority": 600,
         "options": {
