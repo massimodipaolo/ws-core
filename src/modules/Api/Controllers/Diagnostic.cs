@@ -50,7 +50,7 @@ namespace Ws.Core.Extensions.Api.Controllers
                 info = new
                 {
                     uptime=Startup<TConfig>._uptime,
-                    //app = AppInfo<TConfig>.App,
+                    app = AppInfo<TConfig>.App,
                     env = new
                     {
                         machine = Environment.MachineName,
@@ -88,7 +88,7 @@ namespace Ws.Core.Extensions.Api.Controllers
                     ).
                     OrderBy(_ => _.Priority),
                 //extensions = string.Join(" | ", ExtCore.Infrastructure.ExtensionManager.GetInstances<core.Extensions.Base.Extension>().OrderBy(ext => ext.Priority).Select(ext => $"{ext.Name} [{ext.Priority}]")),
-                services = AppInfo<TConfig>.Services?.Select(_ => new { Type = _.ServiceType.FullName, ImplementationType = _.ImplementationType?.FullName, Lifetime = _.Lifetime.ToString() })
+                services = AppInfo<TConfig>.Services?.Select(_ => new { Type = _.ServiceType,  _.ImplementationType, Lifetime = _.Lifetime.ToString() })
             };
             return Ok(diag);
         }
