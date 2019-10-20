@@ -17,9 +17,9 @@ namespace Ws.Core
         public static IWebHostEnvironment Env { get; private set; }
         public static IConfiguration Config { get; private set; }
         public static ILoggerFactory LoggerFactory { get; private set; }
-        public static ILogger<T> Logger<T>() where T : class => LoggerFactory.CreateLogger<T>();
-        public static ILogger Logger(Type type) => LoggerFactory.CreateLogger(type);
-        public static ILogger Logger(string name) => LoggerFactory.CreateLogger(name);
+        public static ILogger<T> Logger<T>() where T : class => LoggerFactory?.CreateLogger<T>();
+        public static ILogger Logger(Type type) => LoggerFactory?.CreateLogger(type);
+        public static ILogger Logger(string name) => LoggerFactory?.CreateLogger(name);
         public static IApplicationBuilder App { get; private set; }
         public static IServiceCollection Services { get; set; }
         public static IServiceProvider ServiceProvider { get; set; }
@@ -41,8 +41,9 @@ namespace Ws.Core
         {
             if (env != null) Env = env;
             if (config != null) Config = config;
-            if (loggerFactory != null) LoggerFactory = loggerFactory;
             if (app != null) App = app;
+            if (loggerFactory != null) 
+                LoggerFactory = loggerFactory ?? App?.ApplicationServices?.GetRequiredService<ILoggerFactory>();
             if (services != null)
             {
                 Services = services;

@@ -6,6 +6,8 @@ using Ws.Core.Extensions.Api.Controllers;
 using System.Collections.Generic;
 using web.Code;
 using System.Linq;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 namespace web.Controllers
 {
@@ -28,9 +30,9 @@ namespace web.Controllers
     /// Awesome user controller
     /// </summary>
     [Route("api/user")]
-    public class TestController : EntityControllerWithMethods<User, Guid>
+    public class UserController : EntityControllerWithMethods<User, Guid>
     {
-        public TestController(IRepository<User, Guid> repository) : base(repository) { }
+        public UserController(IRepository<User, Guid> repository) : base(repository) { }
 
         /// <summary>
         /// Merge a list of users to the current IQueryable List
@@ -51,36 +53,31 @@ namespace web.Controllers
     /// Cached version of the Awesome user controller
     /// </summary>
     [Route("api/cache/user")]
-    public class UserCacheController : EntityCachedController<User, Guid>
+    public class UserCacheController : EntityCachedControllerWithMethods<User, Guid>
     {
         public UserCacheController(IRepository<User, Guid> repository, ICacheRepository<User, Guid> cachedRepository) : base(repository, cachedRepository) { }
-    }
-
-    /// <summary>
-    /// App user entity
-    /// </summary>
-    public class User : Entity<Guid>
-    {
-        /// <summary>
-        /// First Name + Last Name
-        /// </summary>
-        /// <example>Massimo Di Paolo</example>
-        public string Name { get; set; }
-        /// <example>Websolute</example>
-        public string Company { get; set; }
-        public LocaleText Bio { get; set; }
-        public bool Active { get; set; } = true;
     }
 
     [Route("api/config")]
     public class ConfigController : ControllerBase
     {
         private ICache _cache;
-        private Microsoft.Extensions.Configuration.IConfiguration _config;
+        private Dictionary<string,string> _config;
         public ConfigController(Microsoft.Extensions.Configuration.IConfiguration config, ICache cache)
         {
-            _config = config;
+            _config = config.AsEnumerable()
+                        .Select(conf => new {
+                            conf.Key,
+                            Value = new string[] { "connectionstring", "username", "password", "pwd", "secret", "apikey" }.Any(s => conf.Key.ToLower().Contains(s))
+                                ?
+                                    new string('*', 8)
+                                :
+                                conf.Value
+                        })
+                        .OrderBy(conf => conf.Key)
+                        .ToDictionary(conf => conf.Key, conf => conf.Value);
             _cache = cache;
+            Ws.Core.AppInfo<AppConfig>.LoggerFactory.CreateLogger(nameof(ConfigController)).LogInformation("ConfigController ctor");
         }
 
         [HttpGet]

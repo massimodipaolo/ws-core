@@ -29,7 +29,7 @@ namespace web
             /* override repository */
             // Cms            
             //services.AddTransient(typeof(core.Extensions.Data.IRepository<Server.Models.Page, int>), typeof(core.Extensions.Data.Repository.SqlRepository<Server.Models.Page, int>));
-            services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Controllers.User, Guid>), typeof(Ws.Core.Extensions.Data.Repository.FileSystem<Controllers.User, Guid>));
+            services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Code.User, Guid>), typeof(Ws.Core.Extensions.Data.Repository.FileSystem<Code.User, Guid>));
 
             Ws.Core.AppInfo<AppConfig>.Set(env: _env, config: _config, services: services);
         }
@@ -40,7 +40,7 @@ namespace web
 
             app.UseResponseCompression();
 
-            Ws.Core.AppInfo<AppConfig>.Set(app: app, appConfigMonitor: appConfigMonitor, extConfigMonitor: extConfigMonitor, applicationLifetime: applicationLifetime);
+            Ws.Core.AppInfo<AppConfig>.Set(app: app, appConfigMonitor: appConfigMonitor, extConfigMonitor: extConfigMonitor, loggerFactory: app.ApplicationServices?.GetRequiredService<ILoggerFactory>(), applicationLifetime: applicationLifetime);
 
             base.Configure(app, appConfigMonitor, extConfigMonitor, applicationLifetime, logger);
 
