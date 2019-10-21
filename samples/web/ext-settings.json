@@ -86,11 +86,11 @@
       "Ws.Core.Extensions.Data.FileSystem": {
         "priority": 500,
         "options": {
-          "serialization": {
+          "serialization": {            
             "converters": [
               {
                 "assembly": "web",
-                "type": "web.Code.IJsonConvertible"
+                "type": "web.Code.LocaleJsonConverter"
               }
             ]
           }

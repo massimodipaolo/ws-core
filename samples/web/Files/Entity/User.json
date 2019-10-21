@@ -3,7 +3,17 @@
     "Name": "Massimo & Simone - updated",
     "Active": true,
     "Id": "01c0423e-f36b-1410-8001-800000000000",
-    "Bio": "[{\"Code\":\"it\",\"Text\":\"Massimo è nato nel 1976\"},{\"Code\":\"en\",\"Text\":\"Massimo was born in 1976\"}]"
+    "Bio": 
+      [
+        {
+          "Code": "it",
+          "Text": "Massimo è nato nel 1976"
+        },
+        {
+          "Code": "en",
+          "Text": "Massimo was born in 1976"
+        }
+      ]    
   },
   {
     "Name": "Luca",
