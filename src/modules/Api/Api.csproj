@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageVersion>1.1.1</PackageVersion> 
+    <PackageVersion>3.0.0</PackageVersion> 
     <PackageId>Ws.Core.Extensions.Api</PackageId>
     <AssemblyName>Ws.Core.Extensions.Api</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Api</RootNamespace>     
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright> 
     <Description></Description>    
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Add base/common controllers, add custom converters</PackageReleaseNotes>         
+    <PackageReleaseNotes>.netcore 3</PackageReleaseNotes>
     <PackageTags></PackageTags>                
   </PropertyGroup>
 

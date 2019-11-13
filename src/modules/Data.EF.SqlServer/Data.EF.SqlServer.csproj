@@ -2,15 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageVersion>1.1.0</PackageVersion>
+    <PackageVersion>3.0.0</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.EF.SqlServer</PackageId>
     <AssemblyName>Ws.Core.Extensions.Data.EF.SqlServer</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Data.EF.SqlServer</RootNamespace>
     <Authors>Massimo Di Paolo</Authors>
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Nuget update; fix sp schema name</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>    
+    <PackageReleaseNotes>.netcore 3</PackageReleaseNotes>
     <PackageTags></PackageTags>
   </PropertyGroup>
 
@@ -20,7 +20,7 @@
   </PropertyGroup>  
 
   <ItemGroup>
-    <PackageReference Include="EFCore.BulkExtensions" Version="3.0.0" />
+    <PackageReference Include="EFCore.BulkExtensions" Version="3.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
   </ItemGroup>
 

@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>  
 		<TargetFramework>netcoreapp3.0</TargetFramework>
-		<PackageVersion>1.0.0</PackageVersion>   
+		<PackageVersion>3.0.0</PackageVersion>   
 		<PackageId>Ws.Core.Extensions.Base</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Base</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Base</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
 		<Description>Base extension module, derived from ExtCore by Dmitry Sikorsky</Description>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.netcore 2.2</PackageReleaseNotes>		
+    <PackageReleaseNotes>.netcore 3</PackageReleaseNotes>		
 		<PackageTags>extension base</PackageTags>		
 		<PreBuildEvent />
 	</PropertyGroup>
@@ -24,7 +24,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.0.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
 		<PackageReference Include="ExtCore.Infrastructure" Version="5.0.0-alpha1" />
     <!--<ProjectReference Include="..\..\..\..\..\GitHub\ExtCore\src\ExtCore.Infrastructure\ExtCore.Infrastructure.csproj" />-->

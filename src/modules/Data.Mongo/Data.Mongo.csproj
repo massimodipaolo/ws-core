@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.0</TargetFramework>
-		<PackageVersion>1.0.0</PackageVersion>
+		<PackageVersion>3.0.0</PackageVersion>
 		<PackageId>Ws.Core.Extensions.Data.Mongo</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Data.Mongo</AssemblyName>
 		<RootNamespace>Ws.Core.Extensions.Data.Mongo</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Add Merge operation options (upsert / sync)</PackageReleaseNotes>
+    <PackageReleaseNotes>.netcore 3</PackageReleaseNotes>
     <PackageTags></PackageTags>
   </PropertyGroup>
 
@@ -20,7 +20,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-		<PackageReference Include="MongoDB.Driver" Version="2.9.2" />
+		<PackageReference Include="MongoDB.Driver" Version="2.9.3" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Data\Data.csproj" />

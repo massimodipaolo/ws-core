@@ -2,7 +2,7 @@
 
   <PropertyGroup> 
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageVersion>1.0.1</PackageVersion>    
+    <PackageVersion>3.0.0</PackageVersion>    
     <PackageId>Ws.Core.Extensions.StaticFiles</PackageId>
     <AssemblyName>Ws.Core.Extensions.StaticFiles</AssemblyName>       
     <RootNamespace>Ws.Core.Extensions.StaticFiles</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description>This extension enables the web app to serve static files. A physical file provider is used.</Description>    
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Fix null options</PackageReleaseNotes>        
+    <PackageReleaseNotes>.netcore 3</PackageReleaseNotes>        
     <PackageTags>static files staticfiles </PackageTags>      
   </PropertyGroup>
 

@@ -2,8 +2,8 @@
   
     <PropertyGroup>    
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageVersion>1.1.1</PackageVersion>  
-    <PackageId>Ws.Core</PackageId>  
+    <PackageVersion>3.0.0</PackageVersion>  
+    <PackageId>Ws.Core</PackageId>    
     <AssemblyName>Ws.Core</AssemblyName>
     <RootNamespace>Ws.Core</RootNamespace>
     <Product>Ws-core</Product> 

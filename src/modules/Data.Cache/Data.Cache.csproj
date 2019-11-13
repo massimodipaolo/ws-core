@@ -2,7 +2,7 @@
   
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageVersion>1.1.0</PackageVersion>    
+    <PackageVersion>3.0.0</PackageVersion>    
     <PackageId>Ws.Core.Extensions.Data.Cache</PackageId>
     <AssemblyName>Ws.Core.Extensions.Data.Cache</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Data.Cache</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Add Merge operation options (upsert / sync)</PackageReleaseNotes>
+    <PackageReleaseNotes>.netcore 3</PackageReleaseNotes>
     <PackageTags></PackageTags> 
   </PropertyGroup>
 

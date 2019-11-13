@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.0</TargetFramework>
-		<PackageVersion>1.1.0</PackageVersion>   
+		<PackageVersion>3.0.0</PackageVersion>   
 		<PackageId>Ws.Core.Extensions.Data.EF.MySql</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Data.EF.MySql</AssemblyName>
 		<RootNamespace>Ws.Core.Extensions.Data.EF.MySql</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.net core 2.2</PackageReleaseNotes>
+    <PackageReleaseNotes>.netcore 3</PackageReleaseNotes>
     <PackageTags></PackageTags>
   </PropertyGroup>
 
@@ -23,6 +23,6 @@
 		<ProjectReference Include="..\Data.EF\Data.EF.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
+	  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.6" />
 	</ItemGroup>
 </Project>

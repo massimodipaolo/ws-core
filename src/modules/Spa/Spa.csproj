@@ -2,7 +2,7 @@
 
   <PropertyGroup> 
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageVersion>1.0.2</PackageVersion> 
+    <PackageVersion>3.0.0</PackageVersion> 
     <PackageId>Ws.Core.Extensions.Spa</PackageId>
     <AssemblyName>Ws.Core.Extensions.Spa</AssemblyName> 
     <RootNamespace>Ws.Core.Extensions.Spa</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Add Static files options</PackageReleaseNotes>
+    <PackageReleaseNotes>.netcore 3</PackageReleaseNotes>
     <PackageTags>spa, single page application</PackageTags>
   </PropertyGroup>
 
