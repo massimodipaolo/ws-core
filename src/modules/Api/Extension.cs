@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Ws.Core.Extensions.Api
-{
+{    
     public class Extension : Base.Extension
     {
         private Options _options => GetOptions<Options>();
@@ -56,7 +56,7 @@ namespace Ws.Core.Extensions.Api
                 */
             ;
 
-            services.AddHealthChecks();
+            services.AddHealthChecks();            
 
             var _doc = _options.Documentation;
             if (_doc != null)
@@ -147,11 +147,11 @@ namespace Ws.Core.Extensions.Api
 
             if (_options.Session != null)
                 applicationBuilder.UseSession();
-
+            
             applicationBuilder.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/health");
-                endpoints.MapDefaultControllerRoute();
+                //endpoints.MapDefaultControllerRoute();
             });
 
             var _doc = _options.Documentation;
@@ -164,7 +164,7 @@ namespace Ws.Core.Extensions.Api
                     {
                         doc.Host = rq.Host.Value;
                     });*/
-                });
+                });                
 
                 applicationBuilder.UseSwaggerUI(opt =>
                 {

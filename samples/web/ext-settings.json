@@ -17,6 +17,7 @@
           ]
         }
       },
+      "Ws.Core.Extensions.Routing": {"priority": 150},
       "Ws.Core.Extensions.Cors": {
         "priority": 200
       },
