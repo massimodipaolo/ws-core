@@ -54,9 +54,7 @@ namespace Ws.Core.Extensions.Api
                     _options.Serialization.FromJsonSerializerSettings(ref _setting);
                 })
                 */
-            ;
-
-            services.AddHealthChecks();            
+            ;                  
 
             var _doc = _options.Documentation;
             if (_doc != null)
@@ -146,13 +144,7 @@ namespace Ws.Core.Extensions.Api
             base.Execute(applicationBuilder, serviceProvider);
 
             if (_options.Session != null)
-                applicationBuilder.UseSession();
-            
-            applicationBuilder.UseEndpoints(endpoints =>
-            {
-                endpoints.MapHealthChecks("/health");
-                //endpoints.MapDefaultControllerRoute();
-            });
+                applicationBuilder.UseSession();           
 
             var _doc = _options.Documentation;
             if (_doc != null)
