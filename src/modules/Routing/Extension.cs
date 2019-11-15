@@ -10,6 +10,7 @@ namespace Ws.Core.Extensions.Routing
         //private Options _options => GetOptions<Options>();
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
+            serviceCollection.AddControllers();
             serviceCollection.AddHealthChecks();
         }
         public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
