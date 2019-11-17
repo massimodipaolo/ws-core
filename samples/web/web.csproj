@@ -14,7 +14,7 @@
     <None Remove="wwwroot\folder\**" />
   </ItemGroup>  
   <ItemGroup>
-    <PackageReference Include="NLog.Config" Version="4.6.7" />
+    <PackageReference Include="NLog.Config" Version="4.6.8" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
   </ItemGroup>
   <ItemGroup>

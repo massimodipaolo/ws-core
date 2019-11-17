@@ -31,7 +31,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.0.0" />    
-    <PackageReference Include="ExtCore.WebApplication" Version="5.0.0-alpha1" />
+    <PackageReference Include="ExtCore.WebApplication" Version="5.0.0" />
     <!--<ProjectReference Include="..\..\..\..\GitHub\ExtCore\src\ExtCore.WebApplication\ExtCore.WebApplication.csproj" />-->
   </ItemGroup>
   <ItemGroup>
