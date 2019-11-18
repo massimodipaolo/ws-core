@@ -11,7 +11,7 @@ ENV ASPNETCORE_URLS http://*:5000
 EXPOSE 5000
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.0
+FROM mcr.microsoft.com/dotnet/core/runtime:3.0
 WORKDIR /app/samples/web
 COPY --from=build-env /app/samples/web/out .
 ENTRYPOINT ["dotnet", "web.dll"]
