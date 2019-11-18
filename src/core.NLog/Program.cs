@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using NLog.Web;
 using NLOG = NLog;
 
@@ -22,8 +23,7 @@ namespace Ws.Core.NLog
             
             var logger = loggerFactory.GetCurrentClassLogger();
 
-            var host = Core.Program.WebHostBuilder(args, typeof(Program).Assembly)                
-                .UseStartup(_startupConfigurationType)
+            var host = Core.Program.WebHostBuilder(args, typeof(Program).Assembly, _startupConfigurationType)                                
                 .UseNLog()
                 .Build();
 
