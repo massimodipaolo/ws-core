@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageVersion>3.0.0</PackageVersion>
+    <PackageVersion>3.0.1</PackageVersion>
     <PackageId>Ws.Core.Extensions.Routing</PackageId>
     <AssemblyName>Ws.Core.Extensions.Routing</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Routing</RootNamespace>

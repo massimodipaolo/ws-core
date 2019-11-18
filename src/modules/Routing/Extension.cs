@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -9,18 +10,11 @@ namespace Ws.Core.Extensions.Routing
     {
         //private Options _options => GetOptions<Options>();
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
-        {
-            serviceCollection.AddControllers();
-            serviceCollection.AddHealthChecks();
+        {            
         }
         public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
-        {
+        {         
             applicationBuilder.UseRouting();
-            applicationBuilder.UseEndpoints(endpoints =>
-            {
-                endpoints.MapHealthChecks("/healtz");
-                endpoints.MapDefaultControllerRoute();
-            });
         }
     }
 }

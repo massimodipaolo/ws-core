@@ -15,7 +15,7 @@ namespace Ws.Core.Extensions.Api
     {
         private Options _options => GetOptions<Options>();
         public override void Execute(IServiceCollection services, IServiceProvider serviceProvider)
-        {
+        {            
             base.Execute(services, serviceProvider);
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -54,7 +54,8 @@ namespace Ws.Core.Extensions.Api
                     _options.Serialization.FromJsonSerializerSettings(ref _setting);
                 })
                 */
-            ;                  
+            ;            
+            services.AddHealthChecks();
 
             var _doc = _options.Documentation;
             if (_doc != null)
@@ -140,11 +141,17 @@ namespace Ws.Core.Extensions.Api
         }
 
         public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
-        {
+        {            
             base.Execute(applicationBuilder, serviceProvider);
 
             if (_options.Session != null)
-                applicationBuilder.UseSession();           
+                applicationBuilder.UseSession();
+
+            applicationBuilder.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHealthChecks("/healtz");
+                endpoints.MapDefaultControllerRoute();
+            });
 
             var _doc = _options.Documentation;
             if (_doc != null)
