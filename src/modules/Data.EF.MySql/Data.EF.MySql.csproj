@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.0</TargetFramework>
-		<PackageVersion>3.0.0</PackageVersion>   
+		<PackageVersion>3.0.1</PackageVersion>   
 		<PackageId>Ws.Core.Extensions.Data.EF.MySql</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Data.EF.MySql</AssemblyName>
 		<RootNamespace>Ws.Core.Extensions.Data.EF.MySql</RootNamespace>
@@ -23,6 +23,6 @@
 		<ProjectReference Include="..\Data.EF\Data.EF.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.6" />
+	  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.0.0" />
 	</ItemGroup>
 </Project>
