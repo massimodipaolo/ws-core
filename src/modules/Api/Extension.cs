@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Ws.Core.Extensions;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.OpenApi.Models;
+using System;
+using System.Linq;
 
 namespace Ws.Core.Extensions.Api
-{    
+{
     public class Extension : Base.Extension
     {
         private Options _options => GetOptions<Options>();
@@ -54,8 +51,7 @@ namespace Ws.Core.Extensions.Api
                     _options.Serialization.FromJsonSerializerSettings(ref _setting);
                 })
                 */
-            ;            
-            services.AddHealthChecks();
+            ;                           
 
             var _doc = _options.Documentation;
             if (_doc != null)
@@ -148,8 +144,7 @@ namespace Ws.Core.Extensions.Api
                 applicationBuilder.UseSession();
 
             applicationBuilder.UseEndpoints(endpoints =>
-            {
-                endpoints.MapHealthChecks("/healtz");
+            {                
                 endpoints.MapDefaultControllerRoute();
             });
 

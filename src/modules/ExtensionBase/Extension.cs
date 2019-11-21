@@ -44,8 +44,8 @@ namespace Ws.Core.Extensions.Base
             if (Assembly != null)
                 obj = _config?.GetSection(ConfigSectionPathOptions).Get<T>();            
 
-            if (Option<T>.value == null)
-                Option<T>.value = obj;
+            if (Extension.Option<T>.value == null)
+                Extension.Option<T>.value = obj;
 
             return obj;
         }

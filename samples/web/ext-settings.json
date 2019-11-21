@@ -17,7 +17,7 @@
           ]
         }
       },
-      "Ws.Core.Extensions.Routing": {"priority": 150},
+      "Ws.Core.Extensions.Routing": { "priority": 150 },
       "Ws.Core.Extensions.Cors": {
         "priority": 200
       },
@@ -65,7 +65,7 @@
               "name": "Page",
               "properties": [
                 {
-                  "name": "Meta",                  
+                  "name": "Meta",
                   "jsonConvert": true
                 }
               ]
@@ -87,7 +87,7 @@
       "Ws.Core.Extensions.Data.FileSystem": {
         "priority": 500,
         "options": {
-          "serialization": {            
+          "serialization": {
             "converters": [
               {
                 "assembly": "web",
@@ -117,7 +117,7 @@
             "never": 1440
           }
         }
-      },      
+      },
       "__Ws.Core.Extensions.Data.Cache.Memcached": {
         "priority": 600,
         "options": {
@@ -136,7 +136,8 @@
             "never": 1440
           }
         }
-      }
+      },
+      "Ws.Core.Extensions.HealthCheck": { "priority": 999 }
     }
   }
 }

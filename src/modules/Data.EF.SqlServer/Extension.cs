@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -9,7 +10,7 @@ namespace Ws.Core.Extensions.Data.EF.SqlServer
     public class Extension : Base.Extension
     {
         public Options _options => GetOptions<Options>();
-
+        
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
             base.Execute(serviceCollection, serviceProvider);
@@ -24,6 +25,7 @@ namespace Ws.Core.Extensions.Data.EF.SqlServer
                 });
 
                 */
+                serviceCollection.AddHealthChecks().AddSqlServer(connections.FirstOrDefault().ConnectionString);                
                 serviceCollection.AddDbContext<AppDbContext>(_ => _.UseSqlServer(connections.FirstOrDefault().ConnectionString),_options.ServiceLifetime);                
                 serviceCollection.PostConfigure<AppDbContext>(_ => _.Database.EnsureCreated());
                 serviceCollection.TryAddTransient(typeof(IRepository<,>), typeof(Repository.EF.SqlServer<,>));

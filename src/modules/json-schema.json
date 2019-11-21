@@ -724,6 +724,7 @@
                 }
               }
             },
+            "Ws.Core.Extensions.HealthCheck": { "$ref": "#/definitions/assembly" },
             "Ws.Core.Extensions.Identity": {
               "allOf": [
                 { "$ref": "#/definitions/assembly" }
@@ -883,7 +884,7 @@
                 }
               }
             },
-            "Ws.Core.Extensions.Routing": { "$ref": "#/definitions/assembly"},
+            "Ws.Core.Extensions.Routing": { "$ref": "#/definitions/assembly" },
             "Ws.Core.Extensions.Spa": {
               "allOf": [
                 { "$ref": "#/definitions/assembly" }

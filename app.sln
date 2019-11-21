@@ -65,7 +65,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{58F2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "web", "samples\web\web.csproj", "{463941C8-5B67-433C-94ED-4CE7CB94EDFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Routing", "src\modules\Routing\Routing.csproj", "{8C7A063D-8F14-462C-B3DD-A57B7ABB9CA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Routing", "src\modules\Routing\Routing.csproj", "{8C7A063D-8F14-462C-B3DD-A57B7ABB9CA1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthCheck", "src\modules\HealthCheck\HealthCheck.csproj", "{6E8BDB3E-135D-45E7-AC19-B5D1031714BD}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -153,6 +155,10 @@ Global
 		{8C7A063D-8F14-462C-B3DD-A57B7ABB9CA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C7A063D-8F14-462C-B3DD-A57B7ABB9CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C7A063D-8F14-462C-B3DD-A57B7ABB9CA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E8BDB3E-135D-45E7-AC19-B5D1031714BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E8BDB3E-135D-45E7-AC19-B5D1031714BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E8BDB3E-135D-45E7-AC19-B5D1031714BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E8BDB3E-135D-45E7-AC19-B5D1031714BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -181,6 +187,7 @@ Global
 		{F0B64CF6-D886-4A3E-B49A-DB3828F8F4E5} = {72F2A867-A2F5-40EE-8B63-00D2E7634D03}
 		{463941C8-5B67-433C-94ED-4CE7CB94EDFB} = {58F24CDB-5C30-4EE2-ABCC-0F1CA778A76E}
 		{8C7A063D-8F14-462C-B3DD-A57B7ABB9CA1} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
+		{6E8BDB3E-135D-45E7-AC19-B5D1031714BD} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1713483-7DCD-42EB-A437-F0BBBAC5F4EF}
