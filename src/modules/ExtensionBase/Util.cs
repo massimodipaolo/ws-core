@@ -8,27 +8,41 @@ namespace Ws.Core.Extensions.Base
 {
     public class Util
     {
+        private static IEnumerable<Type>  _allTypes { get; set; }
         public Util()
         {
         }
 
-        public static IEnumerable<Type> GetAllTypesOf<T>() where T:class
+        private static IEnumerable<Type> GetAllTypes()
         {
-            return GetAllTypesOf(typeof(T));
+            if (_allTypes == null)
+            {
+                var platform = Environment.OSVersion.Platform.ToString();
+                var runtimeAssemblyNames = DependencyContext.Default.GetRuntimeAssemblyNames(platform);
+
+                _allTypes = runtimeAssemblyNames
+                    .Select(Assembly.Load)
+                    .SelectMany(a => {
+                        try
+                        {
+                            return a.ExportedTypes;
+                        }
+                        catch
+                        {
+                            return new Type[] { };
+                        }
+                    })?.ToList();
+            }
+            return _allTypes;
         }
+
+        public static IEnumerable<Type> GetAllTypesOf<T>() where T : class 
+            => GetAllTypesOf(typeof(T));
 
         public static IEnumerable<Type> GetAllTypesOf(Type type)
-        {
-            var platform = Environment.OSVersion.Platform.ToString();
-            var runtimeAssemblyNames = DependencyContext.Default.GetRuntimeAssemblyNames(platform);
-
-            var types = runtimeAssemblyNames
-                .Select(Assembly.Load)
-                .SelectMany(a => a.ExportedTypes)
-                .Where(t => type.IsAssignableFrom(t) && !t.IsInterface);
-
-            return types;
-        }
+            => 
+                GetAllTypes()?
+                .Where(t => t != null && type.IsAssignableFrom(t) && !t.IsInterface);
 
     }
 }
