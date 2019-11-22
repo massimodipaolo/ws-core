@@ -15,14 +15,14 @@ namespace web.Controllers
     public class PageController : EntityControllerWithMethods<Page, int>
     {
         public PageController(IRepository<Page, int> repository) : base(repository) { }
-             
+
         [HttpGet]
         [Route("filter")]
         public IActionResult ListFilter()
         {
             return Ok(_repository.List.Where(_ => _.Title.Any(__ => __.Text.StartsWith("Luca"))));
         }
-        
+
     }
 
 
@@ -62,11 +62,12 @@ namespace web.Controllers
     public class ConfigController : ControllerBase
     {
         private ICache _cache;
-        private Dictionary<string,string> _config;
+        private Dictionary<string, string> _config;
         public ConfigController(Microsoft.Extensions.Configuration.IConfiguration config, ICache cache)
         {
             _config = config.AsEnumerable()
-                        .Select(conf => new {
+                        .Select(conf => new
+                        {
                             conf.Key,
                             Value = new string[] { "connectionstring", "username", "password", "pwd", "secret", "apikey" }.Any(s => conf.Key.ToLower().Contains(s))
                                 ?
@@ -149,5 +150,41 @@ namespace web.Controllers
             return Ok(_cache.Keys);
         }
 
+    }
+
+    [Route("hook")]
+    public class HookController : ControllerBase
+    {
+        [HttpPost]
+        public IActionResult Post([FromBody] object data, [FromServices]Ws.Core.Extensions.Message.IMessage notify)
+        {
+            var payload = Newtonsoft.Json.JsonConvert.DeserializeObject<HookMessage>(data.ToString());
+            if (payload != null)
+            {
+                var message = new Ws.Core.Extensions.Message.Message()
+                {
+                    Subject = payload.Title,
+                    Content = payload.Text,
+                    Arguments = payload.IsFailure ? new { Importance = "High" } : null,
+                    Sender = new Ws.Core.Extensions.Message.Message.Actor() { Address = "no-reply@web.local" },
+                    Recipients = new Ws.Core.Extensions.Message.Message.Actor[]
+    {
+                    new Ws.Core.Extensions.Message.Message.Actor() {
+                        Address = "operator@web.local",
+                        Name="DTC",
+                        Type= Ws.Core.Extensions.Message.Message.ActorType.Primary}
+    }
+                };
+                notify.SendAsync(message);
+                return Ok();
+            }
+            return BadRequest();
+        }
+    }
+    public class HookMessage
+    {
+        public string Title { get; set; }
+        public string Text { get; set; }
+        public bool IsFailure { get; set; } = false;
     }
 }

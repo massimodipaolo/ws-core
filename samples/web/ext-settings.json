@@ -79,7 +79,7 @@
           "connections": [
             {
               "name": "default",
-              "connectionString": "Server=.,14331;Database=Ws-Core;User Id=Ws-Core-Usr;Password=5876ee62-d2a9-4e61-8c3a-88d41f4543e8;MultipleActiveResultSets=true"
+              "connectionString": "Server=.,14331;Database=Ws-Core;User Id=Ws-Core-Usr;Password=5876ee62-d2a9-4e61-8c3a-88d41f4543e8;MultipleActiveResultSets=true",
             }
           ]
         }
@@ -100,9 +100,9 @@
       "Ws.Core.Extensions.Data.Cache": {
         "priority": 600,
         "options": {
-          "type": "Distributed",
+          "type": "Redis",
           "redisOptions": {
-            "configuration": "",
+            "_configuration": "",
             "instanceName": "master"
           },
           "sqlOptions": {
@@ -137,7 +137,43 @@
           }
         }
       },
-      "Ws.Core.Extensions.HealthCheck": { "priority": 999 }
+      "Ws.Core.Extensions.Message": {"priority": 600, "options": {"senders": [{ "address": "127.0.0.1", "port": 1025}]}},
+      "Ws.Core.Extensions.HealthCheck": {
+        "priority": 999,
+        "options": {
+          "routeName": "/hc",
+          "authPolicies": [],
+          "authHosts": [],
+          "checks": {
+            "tcp": [
+              {
+                "host": "127.0.0.1",
+                "port": 1080,
+                "name": "mailcatcher"
+              }
+            ]
+          },
+          "ui": {
+            "enabled": true,
+            "endpoints": [
+              {
+                "name": "web",
+                "uri": "http://localhost:32040/hc"
+              }
+            ],
+            "Webhooks": [
+              {
+                "name": "web",
+                "uri": "http://localhost:32040/hook",
+                "payload": "{\"title\": \"The HealthCheck '[[LIVENESS]]' is failing\",\"text\": \"Error message: [[FAILURE]]\r\n[[DESCRIPTIONS]]\",\"isFailure\": true}",
+                "restorePayload": "{\"title\": \"The HealthCheck '[[LIVENESS]]' is recovered\",\"text\": \"All is up and running\"}"
+              }
+            ],
+            "evaluationTimeInSeconds": 60,
+            "minimumSecondsBetweenFailureNotifications": 180
+          }
+        }
+      }
     }
   }
 }

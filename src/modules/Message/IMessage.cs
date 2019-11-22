@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ws.Core.Extensions.Message
 {
-    public interface IMessage
+    public interface IMessage: IHealthCheck
     {
         Task SendAsync(Message message);
         Task<IEnumerable<Message>> ReceiveAsync();

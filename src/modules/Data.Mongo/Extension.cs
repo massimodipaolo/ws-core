@@ -54,6 +54,11 @@ namespace Ws.Core.Extensions.Data.Mongo
                     //cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
                 });
 
+
+                var hcBuilder = serviceCollection.AddHealthChecks();
+                foreach (var conn in connections)
+                    hcBuilder.AddMongoDb(conn.ConnectionString, name: $"mongodb-{conn.Name}");
+
                 serviceCollection.Configure<Options>(_ =>
                 {
                     _.Connections = connections;

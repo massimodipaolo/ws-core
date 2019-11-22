@@ -23,6 +23,7 @@
 		<ProjectReference Include="..\Data.EF\Data.EF.csproj" />
 	</ItemGroup>
 	<ItemGroup>
+	  <PackageReference Include="AspNetCore.HealthChecks.MySql" Version="3.0.0" />
 	  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.0.0" />
 	</ItemGroup>
 </Project>

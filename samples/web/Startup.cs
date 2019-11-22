@@ -14,8 +14,10 @@ namespace web
 {
     public class Startup : Ws.Core.Startup<AppConfig>
     {
+        public static string _appConfigSectionRoot;
         public Startup(IWebHostEnvironment hostingEnvironment, IConfiguration configuration) : base(hostingEnvironment, configuration)
         {
+            _appConfigSectionRoot = appConfigSectionRoot;
         }
 
         public override void ConfigureServices(IServiceCollection services)

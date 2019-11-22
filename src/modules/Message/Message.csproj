@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="2.4.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.Network" Version="3.0.1" />
   </ItemGroup>
 
   <ItemGroup>

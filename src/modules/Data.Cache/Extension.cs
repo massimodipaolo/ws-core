@@ -35,7 +35,11 @@ namespace Ws.Core.Extensions.Data.Cache
             switch (_type)
             {                
                 case Options.Types.Redis:
-                    serviceCollection.AddDistributedRedisCache(_ => { _.Configuration = _options.RedisOptions?.Configuration ?? "localhost:6379"; _.InstanceName = _options.RedisOptions?.InstanceName ?? "master"; });
+                    {
+                        var host = _options.RedisOptions?.Configuration ?? "localhost:6379";
+                        serviceCollection.AddHealthChecks().AddRedis(host,failureStatus: Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded);
+                        serviceCollection.AddDistributedRedisCache(_ => { _.Configuration = host; _.InstanceName = _options.RedisOptions?.InstanceName ?? "master"; });
+                    }
                     break;
                 case Options.Types.SqlServer:
                     serviceCollection.AddDistributedSqlServerCache(_ => { _.ConnectionString = _options.SqlOptions?.ConnectionString ?? "Server=.;Database=Cache;Trusted_Connection=True;"; _.SchemaName = _options.SqlOptions?.SchemaName ?? "dbo"; _.TableName = _options.SqlOptions?.TableName ?? "Entry"; });

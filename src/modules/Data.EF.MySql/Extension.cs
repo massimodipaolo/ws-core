@@ -23,6 +23,10 @@ namespace Ws.Core.Extensions.Data.EF.MySql
                     _.Connections = connections;
                 });
                 */
+                var hcBuilder = serviceCollection.AddHealthChecks();
+                foreach (var conn in connections)
+                    hcBuilder.AddMySql(conn.ConnectionString, name: $"mysql-{conn.Name}");
+
                 serviceCollection.AddDbContext<AppDbContext>(_ => _.UseMySql(connections.FirstOrDefault().ConnectionString),_options.ServiceLifetime);
                 serviceCollection.PostConfigure<AppDbContext>(_ => _.Database.EnsureCreated());
                 serviceCollection.TryAddTransient(typeof(IRepository<,>), typeof(Repository.EF<,>));

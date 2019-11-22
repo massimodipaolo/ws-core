@@ -20,6 +20,7 @@
   </PropertyGroup>
   
   <ItemGroup>
+		<PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="3.0.1" />
 		<PackageReference Include="MongoDB.Driver" Version="2.9.3" />
 	</ItemGroup>
 	<ItemGroup>

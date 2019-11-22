@@ -1,10 +1,13 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Logging;
 using MimeKit;
 using MimeKit.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ws.Core.Extensions.Message
@@ -22,6 +25,7 @@ namespace Ws.Core.Extensions.Message
         public class EmailMessageModel
         {
             public bool IsHtml { get; set; } = true;
+            public MessageImportance Importance { get; set; } = MessageImportance.Low;
         }
 
         public async Task SendAsync(Message message)
@@ -39,12 +43,14 @@ namespace Ws.Core.Extensions.Message
                 mime.Subject = message.Subject;
 
                 // msg properties
-                var model = message.Arguments != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<EmailMessageModel>(Newtonsoft.Json.JsonConvert.SerializeObject(message.Arguments)) : new EmailMessageModel();
+                EmailMessageModel model = message.Arguments != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<EmailMessageModel>(Newtonsoft.Json.JsonConvert.SerializeObject(message.Arguments)) : new EmailMessageModel();
 
                 var body = new TextPart(model.IsHtml ? TextFormat.Html : TextFormat.Plain)
                 {
                     Text = message.Content
                 };
+
+                mime.Importance = model.Importance;
 
                 var attachments = message.Attachments?.Where(_ => _.Content.Length > 0);
                 if (attachments != null && attachments.Any())
@@ -138,5 +144,29 @@ namespace Ws.Core.Extensions.Message
             }
             return null;
         }
+
+        public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
+        {
+            var smtp = _config.Senders?.FirstOrDefault();
+            if (smtp != null)
+            {
+                var options = new HealthChecks.Network.SmtpHealthCheckOptions()
+                {
+                    Host = smtp.Address,
+                    Port = smtp.Port,
+                    AllowInvalidRemoteCertificates = smtp.SkipCertificateValidation,
+                    ConnectionType = 
+                        smtp.EnableSsl ? HealthChecks.Network.Core.SmtpConnectionType.SSL : 
+                        (new int[] { 465, 587, 25 }.Any(_ => _ == smtp.Port) ? 
+                            HealthChecks.Network.Core.SmtpConnectionType.AUTO : 
+                            HealthChecks.Network.Core.SmtpConnectionType.PLAIN)
+                };
+                if (!string.IsNullOrEmpty(smtp.UserName))
+                    options.LoginWith(smtp.UserName, smtp.Password);
+
+                return await new HealthChecks.Network.SmtpHealthCheck(options).CheckHealthAsync(context, cancellationToken);
+            };
+            return await Task.FromResult(HealthCheckResult.Healthy());
+        }      
     }
 }

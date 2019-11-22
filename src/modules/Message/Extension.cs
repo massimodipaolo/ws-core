@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Ws.Core.Extensions.Message
 {
@@ -10,6 +11,7 @@ namespace Ws.Core.Extensions.Message
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
             base.Execute(serviceCollection, serviceProvider);
+            serviceCollection.AddHealthChecks().AddCheck<EmailMessage>("message-email");
             serviceCollection.AddSingleton<IMessageConfiguration>(_options);
             serviceCollection.AddTransient<IMessage, EmailMessage>();
         }        

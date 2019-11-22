@@ -60,7 +60,7 @@ namespace Ws.Core.Extensions.Data
 
             foreach (KeyValuePair<Type, int> tKey in tKeys)
             {
-                var types = Base.Util.GetAllTypesOf(tKey.Key).Where(t => !ignoreTypes?.Distinct().Any(i => i == t) == true);                
+                var types = Base.Util.GetAllTypesOf(tKey.Key)?.Where(t => t != null && !ignoreTypes?.Distinct().Any(i => i == t) == true);                
                 foreach (Type type in types)
                 {   
                         try

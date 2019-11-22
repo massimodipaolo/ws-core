@@ -25,7 +25,10 @@ namespace Ws.Core.Extensions.Data.EF.SqlServer
                 });
 
                 */
-                serviceCollection.AddHealthChecks().AddSqlServer(connections.FirstOrDefault().ConnectionString);                
+                var hcBuilder = serviceCollection.AddHealthChecks();
+                foreach (var conn in connections)
+                    hcBuilder.AddSqlServer(conn.ConnectionString, name: $"sqlserver-{conn.Name}");
+
                 serviceCollection.AddDbContext<AppDbContext>(_ => _.UseSqlServer(connections.FirstOrDefault().ConnectionString),_options.ServiceLifetime);                
                 serviceCollection.PostConfigure<AppDbContext>(_ => _.Database.EnsureCreated());
                 serviceCollection.TryAddTransient(typeof(IRepository<,>), typeof(Repository.EF.SqlServer<,>));
