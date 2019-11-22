@@ -4,11 +4,14 @@ using Ws.Core.Extensions.Base;
 
 namespace Ws.Core.Extensions.HealthCheck
 {
-    public class Options: IOptions
-    { 
-        public string RouteName { get; set; } = "/healtz";
+    public class AuthOptions
+    {
         public IEnumerable<string> AuthPolicies { get; set; }
         public IEnumerable<string> AuthHosts { get; set; }
+    }
+    public class Options: AuthOptions,IOptions
+    { 
+        public string Route { get; set; } = "/healtz";
         public CheckEntries Checks { get; set; }
         public UiOptions Ui { get; set; } = new UiOptions();
         public class CheckEntries
@@ -26,9 +29,16 @@ namespace Ws.Core.Extensions.HealthCheck
         /// https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks/blob/master/samples/HealthChecks.UI.Sample/appsettings.json
         /// https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks/blob/master/src/HealthChecks.UI/Configuration/Options.cs
         /// </summary>
-        public class UiOptions
+        public class UiOptions: AuthOptions
         {
             public bool Enabled { get; set; } = false;
+            public string Route { get; set; } = "/healthchecks-ui";
+            public string RouteApi { get; set; } = "/healthchecks-api";
+            public string RouteWebhook { get; set; } = "/healthchecks-webhooks";
+            /// <summary>
+            /// i.e. wwwroot/healthcheck-ui/style.css
+            /// </summary>
+            public string InjectCss { get; set; }
             public IEnumerable<EndpointOptions> Endpoints { get; set; }
             public IEnumerable<WebhookOptions> Webhooks { get; set; }
             public int EvaluationTimeinSeconds { get; set; } = 60;

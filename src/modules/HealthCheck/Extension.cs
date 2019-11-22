@@ -68,7 +68,7 @@ namespace Ws.Core.Extensions.HealthCheck
 
             applicationBuilder.UseEndpoints(config =>
              {
-                 var builder = config.MapHealthChecks(_options?.RouteName, new HealthCheckOptions
+                 var builder = config.MapHealthChecks(_options?.Route, new HealthCheckOptions
                  {
                      Predicate = _ => true,
                      ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
@@ -86,12 +86,25 @@ namespace Ws.Core.Extensions.HealthCheck
                  var ui = _options.Ui;
                  if (ui != null && ui.Enabled)
                  {
-                     var options = new HealthChecks.UI.Configuration.Options()
-                     {
+                     var ui_builder = config.MapHealthChecksUI(_ => {
+                         _.UIPath = _options.Ui.Route;
+                         _.ApiPath = _options.Ui.RouteApi;
+                         _.WebhookPath = _options.Ui.RouteWebhook;
+                         if (!string.IsNullOrEmpty(_options.Ui.InjectCss))
+                             try
+                             {
+                                 _.AddCustomStylesheet(_options.Ui.InjectCss);
+                             }
+                             catch { }
+                     });
 
-                     };
-                     //options.AddCustomStylesheet();
-                     config.MapHealthChecksUI();
+                     // policy
+                     if (_options.Ui.AuthPolicies != null && _options.Ui.AuthPolicies.Any())
+                         ui_builder.RequireAuthorization(_options.Ui.AuthPolicies.ToArray());
+
+                     // hosts
+                     if (_options.Ui.AuthHosts != null && _options.Ui.AuthHosts.Any())
+                         ui_builder.RequireHost(_options.Ui.AuthHosts.ToArray());
                  }
 
              });     

@@ -141,7 +141,7 @@
       "Ws.Core.Extensions.HealthCheck": {
         "priority": 999,
         "options": {
-          "routeName": "/hc",
+          "route": "/hc",
           "authPolicies": [],
           "authHosts": [],
           "checks": {
@@ -155,6 +155,7 @@
           },
           "ui": {
             "enabled": true,
+            "injectCss": "wwwroot/healthcheck-ui/style.css",
             "endpoints": [
               {
                 "name": "web",
