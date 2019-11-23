@@ -137,32 +137,57 @@
           }
         }
       },
-      "Ws.Core.Extensions.Message": {"priority": 600, "options": {"senders": [{ "address": "127.0.0.1", "port": 1025}]}},
+      "Ws.Core.Extensions.Message": {
+        "priority": 600,
+        "options": {
+          "senders": [
+            {
+              "address": "127.0.0.1",
+              "port": 1025
+            }
+          ]
+        }
+      },
       "Ws.Core.Extensions.HealthCheck": {
         "priority": 999,
         "options": {
-          "route": "/hc",
-          "authPolicies": [],
-          "authHosts": [],
+          "authHosts": [ "localhost:32040" ],
           "checks": {
+            "storage": [
+              {
+                "driver": "C:\\",
+                "minimumFreeMb": 2048,
+                "status": "Degraded",
+                "name": "diskC"
+              }
+            ],
+            "memory": {
+              "maximumAllocatedMb": 500,
+              "status": "Degraded"
+            },
             "tcp": [
               {
                 "host": "127.0.0.1",
-                "port": 1080,
+                "port": 1025,
                 "name": "mailcatcher"
+              },
+              {
+                "host": "127.0.0.1",
+                "port": 14331,
+                "name": "mssql-01"
               }
-            ]
+            ], "http": [{ "url": "https://www.google.com", "name": "outbound", "status": "Unhealthy"}]
           },
           "ui": {
             "enabled": true,
             "injectCss": "wwwroot/healthcheck-ui/style.css",
             "endpoints": [
               {
-                "name": "web",
-                "uri": "http://localhost:32040/hc"
+                "uri": "http://localhost:32040/healtz",
+                "name": "web-app"
               }
             ],
-            "Webhooks": [
+            "webhooks": [
               {
                 "name": "web",
                 "uri": "http://localhost:32040/hook",
@@ -171,7 +196,7 @@
               }
             ],
             "evaluationTimeInSeconds": 60,
-            "minimumSecondsBetweenFailureNotifications": 180
+            "minimumSecondsBetweenFailureNotifications": 3600
           }
         }
       }

@@ -24,18 +24,17 @@ namespace Ws.Core.Extensions.Data.Cache
 
         public IEnumerable<string> Keys => Get<HashSet<string>>(_keyCollection) ?? new HashSet<string>();
 
-        public object Get(string key)
-        {
-            return Get<object>(key);
-        }
+        public object Get(string key) => Get<object>(key);
 
         public T Get<T>(string key)
         {
-            var result = _client.Get(key);
-            if (result != null)
-            {
-                return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(result));
-            }
+            try {
+                var result = _client.Get(key);
+                if (result != null)
+                {
+                    return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(result));
+                }
+            } catch { }
             return default(T);
         }
 
@@ -53,7 +52,9 @@ namespace Ws.Core.Extensions.Data.Cache
                 _options.AbsoluteExpirationRelativeToNow = options.AbsoluteExpirationRelativeToNow;
                 _options.SlidingExpiration = options.SlidingExpiration;
             }
-            _client.Set(key, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)), _options);
+            try {
+                _client.Set(key, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)), _options);
+            } catch { }
             if (key != _keyCollection && !Keys.Contains(key))
                 SyncKeys(Keys.Append(key).ToHashSet<string>());
 
@@ -61,7 +62,7 @@ namespace Ws.Core.Extensions.Data.Cache
 
         public void Remove(string key)
         {
-            _client.Remove(key);
+            try { _client.Remove(key); } catch { }
 
             if (Keys.Contains(key))
                 SyncKeys(Keys.Where(_ => _ != key).ToHashSet<string>());
@@ -69,7 +70,7 @@ namespace Ws.Core.Extensions.Data.Cache
 
         public void RemoveAndSkipSync(string key)
         {
-            _client.Remove(key);
+            try { _client.Remove(key);  } catch { }
         }
 
         public void Clear()

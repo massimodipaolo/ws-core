@@ -16,13 +16,47 @@ namespace Ws.Core.Extensions.HealthCheck
         public UiOptions Ui { get; set; } = new UiOptions();
         public class CheckEntries
         {
-            public IEnumerable<TcpOptions> Tcp { get; set; }
+            public IEnumerable<StorageCheck> Storage { get; set; }
+            public MemoryCheck Memory { get; set; }
+            public IEnumerable<ProcessCheck> Process { get; set; }
+            public IEnumerable<WinServiceCheck> WinService { get; set; }
+            public IEnumerable<TcpCheck> Tcp { get; set; }
+            public IEnumerable<HttpCheck> Http { get; set; }
         }
-        public class TcpOptions
+        public class ProcessCheck: HealthResult
         {
-            public string Name { get; set; }
+            public string ProcessName { get; set; }
+        }
+        public class WinServiceCheck : HealthResult
+        {
+            public string ServiceName { get; set; }
+        }
+        public class TcpCheck : HealthResult
+        {
             public string Host { get; set; }
             public int Port { get; set; }
+        }
+        public class MemoryCheck: HealthResult
+        {
+            public int MaximumAllocatedMb { get; set; }
+        }
+        public class HealthResult
+        {
+            public string Name { get; set; } = Guid.NewGuid().ToString().Substring(0, 8);
+            public Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus Status { get; set; } = Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Unhealthy;
+        }
+
+        public class HttpCheck : HealthResult
+        {
+            public string Url { get; set; }
+        }
+        public class StorageCheck: HealthResult
+        {
+         /// <summary>
+         /// i.e. C:\
+         /// </summary>
+            public string Driver { get; set; }
+            public long MinimumFreeMb { get; set; }
         }
 
         /// <summary>

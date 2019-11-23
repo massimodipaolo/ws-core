@@ -20,18 +20,34 @@ namespace Ws.Core.Extensions.HealthCheck
             var checks = _options.Checks;
             if (checks != null)
             {
-                #warning TODO: storage, memory, process, url
                 // storage
+                if (checks.Storage != null && checks.Storage.Any())
+                    foreach(var storage in checks.Storage)
+                        builder.AddDiskStorageHealthCheck(_ => _.AddDrive(storage.Driver,storage.MinimumFreeMb), $"storage-{storage.Name}",storage.Status);
 
                 // memory
+                if (checks.Memory != null)
+                    builder.AddProcessAllocatedMemoryHealthCheck(checks.Memory.MaximumAllocatedMb, $"memory-allocated", checks.Memory.Status);
+
+                //services
+                if (checks.WinService != null && checks.WinService.Any())
+                    foreach (var service in checks.WinService)
+                        builder.AddWindowsServiceHealthCheck(service.ServiceName, _ => _.Status == System.ServiceProcess.ServiceControllerStatus.Running, $"service-{service.Name}",service.Status);
 
                 // process
+                if (checks.Process != null && checks.Process.Any())
+                    foreach (var process in checks.Process)
+                        builder.AddProcessHealthCheck(process.ProcessName, _ => _.Any(p => p.HasExited==false), $"process-{process.Name}",process.Status);
 
                 // tcp
                 if (checks.Tcp != null && checks.Tcp.Any())
-                    checks.Tcp.AsParallel().ForAll(tcp => builder.AddTcpHealthCheck(_ => _.AddHost(tcp.Host,tcp.Port),$"tcp-{tcp.Name}"));
-
-                // url
+                    foreach (var tcp in checks.Tcp) 
+                        builder.AddTcpHealthCheck(_ => _.AddHost(tcp.Host,tcp.Port),$"tcp-{tcp.Name}",tcp.Status);
+                
+                // http
+                if (checks.Http != null && checks.Http.Any())
+                    foreach (var http in checks.Http)
+                        builder.AddUrlGroup(new Uri(http.Url), $"http-{http.Name}", http.Status);
             }
 
             //ui
@@ -71,7 +87,13 @@ namespace Ws.Core.Extensions.HealthCheck
                  var builder = config.MapHealthChecks(_options?.Route, new HealthCheckOptions
                  {
                      Predicate = _ => true,
-                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
+                     AllowCachingResponses = true,
+                     ResultStatusCodes = { 
+                         [Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Healthy] = 200,
+                         [Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded] = 200,
+                         [Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Unhealthy] = 503
+                     }
                  });
 
                  // policy

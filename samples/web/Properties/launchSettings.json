@@ -24,7 +24,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:32040"
+      "applicationUrl": "http://localhost:32041"
     },
     "prod": {
       "commandName": "Project",
@@ -33,7 +33,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       },
-      "applicationUrl": "http://localhost:32040"
+      "applicationUrl": "http://localhost:32042"
     }
   }
 }
