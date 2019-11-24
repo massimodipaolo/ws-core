@@ -165,6 +165,7 @@
               "maximumAllocatedMb": 500,
               "status": "Degraded"
             },
+            "process": [{ "processName": "iisexpress", "name": "iisexpress", "status": "Degraded"}],
             "tcp": [
               {
                 "host": "127.0.0.1",
@@ -196,7 +197,7 @@
               }
             ],
             "evaluationTimeInSeconds": 60,
-            "minimumSecondsBetweenFailureNotifications": 3600
+            "minimumSecondsBetweenFailureNotifications": 300
           }
         }
       }

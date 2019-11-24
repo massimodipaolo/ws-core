@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,6 +57,7 @@ namespace Ws.Core.Extensions.Api.Controllers
                         machine = Environment.MachineName,
                         os = Environment.OSVersion,
                         processorCount = Environment.ProcessorCount,
+                        drivers = DriveInfo.GetDrives()?.Where(_ => _.IsReady)?.Select(_ => new { _.Name, TotalSizeGb = _.TotalSize / 1024.0 / 1024.0 / 1024.0, AvailableFreeSpaceGb =_.AvailableFreeSpace / 1024.0 / 1024.0 / 1024.0,_.VolumeLabel,_.DriveFormat, DriveType=_.DriveType.ToString()}),
                         systemDirectory = Environment.SystemDirectory,
                         user = $"{Environment.UserDomainName}\\{Environment.UserName}",
                         process = System.Diagnostics.Process.GetCurrentProcess().MainModule

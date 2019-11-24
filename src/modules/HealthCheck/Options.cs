@@ -60,7 +60,6 @@ namespace Ws.Core.Extensions.HealthCheck
         }
 
         /// <summary>
-        /// https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks/blob/master/samples/HealthChecks.UI.Sample/appsettings.json
         /// https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks/blob/master/src/HealthChecks.UI/Configuration/Options.cs
         /// </summary>
         public class UiOptions: AuthOptions
@@ -76,7 +75,7 @@ namespace Ws.Core.Extensions.HealthCheck
             public IEnumerable<EndpointOptions> Endpoints { get; set; }
             public IEnumerable<WebhookOptions> Webhooks { get; set; }
             public int EvaluationTimeinSeconds { get; set; } = 60;
-            public int MinimumSecondsBetweenFailureNotifications { get; set; } = 180;
+            public int MinimumSecondsBetweenFailureNotifications { get; set; } = 300;
             public class EndpointOptions
             {
                 public string Name { get; set; }
