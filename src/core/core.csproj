@@ -2,7 +2,7 @@
   
     <PropertyGroup>    
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageVersion>3.0.0</PackageVersion>  
+    <PackageVersion>3.0.1</PackageVersion>  
     <PackageId>Ws.Core</PackageId>    
     <AssemblyName>Ws.Core</AssemblyName>
     <RootNamespace>Ws.Core</RootNamespace>
@@ -25,12 +25,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.0.0" />    
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.1" />
+    <!--PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.0.0" /-->    
     <PackageReference Include="ExtCore.WebApplication" Version="5.0.0" />
     <!--<ProjectReference Include="..\..\..\..\GitHub\ExtCore\src\ExtCore.WebApplication\ExtCore.WebApplication.csproj" />-->
   </ItemGroup>
