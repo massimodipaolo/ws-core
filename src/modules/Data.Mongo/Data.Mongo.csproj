@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.0</TargetFramework>
-		<PackageVersion>3.0.0</PackageVersion>
+		<PackageVersion>3.0.1</PackageVersion>
 		<PackageId>Ws.Core.Extensions.Data.Mongo</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Data.Mongo</AssemblyName>
 		<RootNamespace>Ws.Core.Extensions.Data.Mongo</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.netcore 3</PackageReleaseNotes>
+    <PackageReleaseNotes>Health check</PackageReleaseNotes>
     <PackageTags></PackageTags>
   </PropertyGroup>
 

@@ -2,7 +2,7 @@
 
   <PropertyGroup> 
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageVersion>3.0.0</PackageVersion>     
+    <PackageVersion>3.0.1</PackageVersion>     
     <PackageId>Ws.Core.Extensions.Message</PackageId>
     <AssemblyName>Ws.Core.Extensions.Message</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Message</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description>Send/Receive message via email</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.netcore 3</PackageReleaseNotes>
+    <PackageReleaseNotes>Health check</PackageReleaseNotes>
     <PackageTags>extension message, email, smtp</PackageTags>    
   </PropertyGroup> 
  

@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>  
 		<TargetFramework>netcoreapp3.0</TargetFramework>
-		<PackageVersion>3.0.0</PackageVersion>   
+		<PackageVersion>3.0.1</PackageVersion>   
 		<PackageId>Ws.Core.Extensions.Base</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Base</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Base</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
 		<Description>Base extension module, derived from ExtCore by Dmitry Sikorsky</Description>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.netcore 3</PackageReleaseNotes>		
+    <PackageReleaseNotes>Health check</PackageReleaseNotes>		
 		<PackageTags>extension base</PackageTags>		
 		<PreBuildEvent />
 	</PropertyGroup>

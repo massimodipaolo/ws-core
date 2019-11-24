@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageVersion>3.0.1</PackageVersion> 
+    <PackageVersion>3.0.2</PackageVersion> 
     <PackageId>Ws.Core.Extensions.Api</PackageId>
     <AssemblyName>Ws.Core.Extensions.Api</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Api</RootNamespace>     
@@ -10,9 +10,9 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright> 
     <Description></Description>    
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.netcore 3</PackageReleaseNotes>
+    <PackageReleaseNotes>health check</PackageReleaseNotes> 
     <PackageTags></PackageTags>                
-  </PropertyGroup>
+  </PropertyGroup>   
 
   <PropertyGroup>
     <NoWarn>1701;1702;1705;1591</NoWarn>

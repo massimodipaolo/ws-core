@@ -9,7 +9,7 @@ var gulp = require('gulp'),
 // #region NuGet
 var nuget = {
     paths: ['src/core*/bin/Release/*.nupkg', 'src/modules/**/bin/Release/*.nupkg'],
-    exe: process.env.NUGET_EXE, //path to your NuGet cmd, i.e. "C:\Program Files\nuget\nuget.exe"
+    //exe: process.env.NUGET_EXE, //path to your NuGet cmd, i.e. "C:\Program Files\nuget\nuget.exe"
     host: 'https://pkg.websolute.it/api/v2/package/',
     token: process.env.NUGET_TOKEN
 }
@@ -24,8 +24,8 @@ pushPkg = function (es) {
         var pkg = _dots.slice(0, _dots.length - 3).join('.'); 
         var version = _dots.reverse().slice(0, 3).reverse().join('.');
 
-        var del = nuget.exe + ' delete ' + pkg + ' ' + version + ' -Source ' + nuget.host + ' -ApiKey ' + nuget.token;
-        var push = nuget.exe + ' push ' + path + ' -Source ' + nuget.host + ' -ApiKey ' + nuget.token;
+        var del = 'nuget delete ' + pkg + ' ' + version + ' -Source ' + nuget.host + ' -ApiKey ' + nuget.token;
+        var push = 'nuget push ' + path + ' -Source ' + nuget.host + ' -ApiKey ' + nuget.token;
 
         exec(del, function (err, stdout, stderr) {
             exec(push, function (err, stdout, stderr) {

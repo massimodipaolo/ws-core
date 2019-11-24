@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageVersion>3.0.1</PackageVersion>
+    <PackageVersion>3.0.2</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.EF.SqlServer</PackageId>
     <AssemblyName>Ws.Core.Extensions.Data.EF.SqlServer</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Data.EF.SqlServer</RootNamespace>
@@ -10,7 +10,7 @@
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>    
-    <PackageReleaseNotes>.netcore 3</PackageReleaseNotes>
+    <PackageReleaseNotes>Health check</PackageReleaseNotes>
     <PackageTags></PackageTags>
   </PropertyGroup>
 
