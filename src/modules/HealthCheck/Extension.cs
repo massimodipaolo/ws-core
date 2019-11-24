@@ -15,15 +15,15 @@ namespace Ws.Core.Extensions.HealthCheck
         {
             base.Execute(serviceCollection, serviceProvider);
             var builder = serviceCollection.AddHealthChecks();
-            
+
             // checks
             var checks = _options.Checks;
             if (checks != null)
             {
                 // storage
                 if (checks.Storage != null && checks.Storage.Any())
-                    foreach(var storage in checks.Storage)
-                        builder.AddDiskStorageHealthCheck(_ => _.AddDrive(storage.Driver,storage.MinimumFreeMb), $"storage-{storage.Name}",storage.Status);
+                    foreach (var storage in checks.Storage)
+                        builder.AddDiskStorageHealthCheck(_ => _.AddDrive(storage.Driver, storage.MinimumFreeMb), $"storage-{storage.Name}", storage.Status);
 
                 // memory
                 if (checks.Memory != null)
@@ -32,18 +32,18 @@ namespace Ws.Core.Extensions.HealthCheck
                 //services
                 if (checks.WinService != null && checks.WinService.Any())
                     foreach (var service in checks.WinService)
-                        builder.AddWindowsServiceHealthCheck(service.ServiceName, _ => _.Status == System.ServiceProcess.ServiceControllerStatus.Running, $"service-{service.Name}",service.Status);
+                        builder.AddWindowsServiceHealthCheck(service.ServiceName, _ => _.Status == System.ServiceProcess.ServiceControllerStatus.Running, $"service-{service.Name}", service.Status);
 
                 // process
                 if (checks.Process != null && checks.Process.Any())
                     foreach (var process in checks.Process)
-                        builder.AddProcessHealthCheck(process.ProcessName, _ => _.Any(p => p.HasExited==false), $"process-{process.Name}",process.Status);
+                        builder.AddProcessHealthCheck(process.ProcessName, _ => _.Any(p => p.HasExited == false), $"process-{process.Name}", process.Status);
 
                 // tcp
                 if (checks.Tcp != null && checks.Tcp.Any())
-                    foreach (var tcp in checks.Tcp) 
-                        builder.AddTcpHealthCheck(_ => _.AddHost(tcp.Host,tcp.Port),$"tcp-{tcp.Name}",tcp.Status);
-                
+                    foreach (var tcp in checks.Tcp)
+                        builder.AddTcpHealthCheck(_ => _.AddHost(tcp.Host, tcp.Port), $"tcp-{tcp.Name}", tcp.Status);
+
                 // http
                 if (checks.Http != null && checks.Http.Any())
                     foreach (var http in checks.Http)
@@ -55,22 +55,22 @@ namespace Ws.Core.Extensions.HealthCheck
             {
                 serviceCollection.AddHealthChecksUI("healthchecksdb", _ =>
                 {
-                    foreach (var endpoint in _options.Ui.Endpoints)
-                        _.AddHealthCheckEndpoint(endpoint.Name, endpoint.Uri);
+                    if (_options.Ui.Endpoints != null && _options.Ui.Endpoints.Any())
+                        foreach (var endpoint in _options.Ui.Endpoints)
+                            _.AddHealthCheckEndpoint(endpoint.Name, endpoint.Uri);
 
-                    foreach (var hook in _options.Ui.Webhooks)
-                        try
-                        {
-                            _.AddWebhookNotification(
-                                hook.Name, 
-                                hook.Uri, 
-                                hook.Payload,
-                                hook.RestorePayload
-                                );
-                        }
-                        catch(Exception ex) {
-                            throw ex;
-                        }
+                    if (_options.Ui.Webhooks != null && _options.Ui.Webhooks.Any())
+                        foreach (var hook in _options.Ui.Webhooks)
+                            try
+                            {
+                                _.AddWebhookNotification(
+                                    hook.Name,
+                                    hook.Uri,
+                                    hook.Payload,
+                                    hook.RestorePayload
+                                    );
+                            }
+                            catch {}
 
                     _.SetEvaluationTimeInSeconds(_options.Ui.EvaluationTimeinSeconds);
                     _.SetMinimumSecondsBetweenFailureNotifications(_options.Ui.MinimumSecondsBetweenFailureNotifications);
@@ -89,7 +89,7 @@ namespace Ws.Core.Extensions.HealthCheck
                      Predicate = _ => true,
                      ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
                      AllowCachingResponses = true,
-                     ResultStatusCodes = { 
+                     ResultStatusCodes = {
                          [Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Healthy] = 200,
                          [Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded] = 200,
                          [Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Unhealthy] = 503
@@ -108,7 +108,8 @@ namespace Ws.Core.Extensions.HealthCheck
                  var ui = _options.Ui;
                  if (ui != null && ui.Enabled)
                  {
-                     var ui_builder = config.MapHealthChecksUI(_ => {
+                     var ui_builder = config.MapHealthChecksUI(_ =>
+                     {
                          _.UIPath = _options.Ui.Route;
                          _.ApiPath = _options.Ui.RouteApi;
                          _.WebhookPath = _options.Ui.RouteWebhook;
@@ -129,7 +130,7 @@ namespace Ws.Core.Extensions.HealthCheck
                          ui_builder.RequireHost(_options.Ui.AuthHosts.ToArray());
                  }
 
-             });     
+             });
         }
     }
 }
