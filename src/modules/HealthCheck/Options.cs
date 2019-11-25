@@ -9,7 +9,7 @@ namespace Ws.Core.Extensions.HealthCheck
         public IEnumerable<string> AuthPolicies { get; set; }
         public IEnumerable<string> AuthHosts { get; set; }
     }
-    public class Options: AuthOptions,IOptions
+    public class Options: IOptions
     {
         public IEnumerable<Route> Routes { get; set; } 
             = new List<Route> { 
