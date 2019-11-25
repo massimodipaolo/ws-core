@@ -765,13 +765,32 @@
               "properties": {
                 "options": {
                   "type": "object",
-                  "allOf": [
-                    { "$ref": "#/definitions/endpointAuth" }
-                  ],
-                  "properties": {
-                    "route": {
-                      "type": "string",
-                      "default": "/healtz"
+                  "properties": {                    
+                    "routes": {
+                      "description": "List of health check routes",
+                      "type": "array",
+                      "default": "2 routes: /healtz for basic app status, with no additional check; /healtz/checks for overall app status, performing all checks",
+                      "items": {
+                        "type": "object",
+                        "allOf": [
+                          { "$ref": "#/definitions/endpointAuth" }
+                        ],
+                        "properties": {
+                          "path": {
+                            "type": "string",
+                            "description": "i.e. /healtz"
+                          },
+                          "contentType": {
+                            "enum": [ "json", "text" ],
+                            "default": "json"
+                          },
+                          "skipChecks": {
+                            "type": "boolean",
+                            "description": "If true skip any defined checks, returning a basic health check",
+                            "default": false
+                          }
+                        }
+                      }
                     },
                     "checks": {
                       "type": "object",

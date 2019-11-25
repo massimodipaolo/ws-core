@@ -10,10 +10,28 @@ namespace Ws.Core.Extensions.HealthCheck
         public IEnumerable<string> AuthHosts { get; set; }
     }
     public class Options: AuthOptions,IOptions
-    { 
-        public string Route { get; set; } = "/healtz";
+    {
+        public IEnumerable<Route> Routes { get; set; } 
+            = new List<Route> { 
+                new Route { Path = "/healtz", ContentType = RouteContentType.text, SkipChecks = true },
+                new Route { Path = "/healtz/checks", ContentType = RouteContentType.json, SkipChecks = false }
+            };
         public CheckEntries Checks { get; set; }
         public UiOptions Ui { get; set; } = new UiOptions();
+        public class Route: AuthOptions
+        {
+            public string Path { get; set; }
+            public RouteContentType ContentType { get; set; } = RouteContentType.json;
+            /// <summary>
+            /// If true skip any defined checks, returning a basic health check endpoint
+            /// </summary>
+            public bool SkipChecks { get; set; } = false;
+        }
+        public enum RouteContentType
+        {
+            json,
+            text
+        }
         public class CheckEntries
         {
             public IEnumerable<StorageCheck> Storage { get; set; }

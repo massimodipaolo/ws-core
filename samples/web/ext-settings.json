@@ -150,8 +150,7 @@
       },
       "Ws.Core.Extensions.HealthCheck": {
         "priority": 999,
-        "options": {
-          "authHosts": [ "localhost:32040" ],
+        "options": {                    
           "checks": {
             "storage": [
               {
@@ -184,7 +183,7 @@
             "injectCss": "wwwroot/healthcheck-ui/style.css",
             "endpoints": [
               {
-                "uri": "http://localhost:32040/healtz",
+                "uri": "http://localhost:32040/healtz/checks",
                 "name": "web-app"
               }
             ],

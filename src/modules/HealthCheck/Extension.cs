@@ -1,7 +1,9 @@
 ﻿using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +72,7 @@ namespace Ws.Core.Extensions.HealthCheck
                                     hook.RestorePayload
                                     );
                             }
-                            catch {}
+                            catch { }
 
                     _.SetEvaluationTimeInSeconds(_options.Ui.EvaluationTimeinSeconds);
                     _.SetMinimumSecondsBetweenFailureNotifications(_options.Ui.MinimumSecondsBetweenFailureNotifications);
@@ -84,25 +86,32 @@ namespace Ws.Core.Extensions.HealthCheck
 
             applicationBuilder.UseEndpoints(config =>
              {
-                 var builder = config.MapHealthChecks(_options?.Route, new HealthCheckOptions
-                 {
-                     Predicate = _ => true,
-                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
-                     AllowCachingResponses = true,
-                     ResultStatusCodes = {
-                         [Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Healthy] = 200,
-                         [Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded] = 200,
-                         [Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Unhealthy] = 503
+                 if (_options.Routes != null && _options.Routes.Any())
+                     foreach (var route in _options.Routes)
+                     {
+                         var opt = new HealthCheckOptions
+                         {
+                             Predicate = _ => !route.SkipChecks,                             
+                             AllowCachingResponses = false,
+                             ResultStatusCodes = {
+                                [HealthStatus.Healthy] = 200,
+                                [HealthStatus.Degraded] = 200,
+                                [HealthStatus.Unhealthy] = 503
+                             }
+                         };
+                         if (route.ContentType == Options.RouteContentType.json)
+                             opt.ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse;
+
+                         var builder = config.MapHealthChecks(route.Path, opt);
+
+                         // policy
+                         if (route.AuthPolicies != null && route.AuthPolicies.Any())
+                             builder.RequireAuthorization(route.AuthPolicies.ToArray());
+
+                         // hosts
+                         if (route.AuthHosts != null && route.AuthHosts.Any())
+                             builder.RequireHost(route.AuthHosts.ToArray());
                      }
-                 });
-
-                 // policy
-                 if (_options?.AuthPolicies != null && _options.AuthPolicies.Any())
-                     builder.RequireAuthorization(_options.AuthPolicies.ToArray());
-
-                 // hosts
-                 if (_options?.AuthHosts != null && _options.AuthHosts.Any())
-                     builder.RequireHost(_options.AuthHosts.ToArray());
 
                  //ui
                  var ui = _options.Ui;
