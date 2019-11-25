@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace Ws.Core.Extensions.HealthCheck
                 if (checks.Storage != null && checks.Storage.Any())
                     foreach(var storage in checks.Storage)
                         builder.AddDiskStorageHealthCheck(_ => _.AddDrive(storage.Driver,storage.MinimumFreeMb), $"storage-{storage.Name}",storage.Status);
-
+                
                 // tcp
                 if (checks.Tcp != null && checks.Tcp.Any())
                     foreach (var tcp in checks.Tcp) 
@@ -40,12 +41,26 @@ namespace Ws.Core.Extensions.HealthCheck
         public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
         {
             base.Execute(applicationBuilder, serviceProvider);
-            
-            applicationBuilder.UseHealthChecks(_options.Route, new HealthCheckOptions()
-            {
-                Predicate = _ => true,
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            });
+
+            if (_options.Routes != null && _options.Routes.Any())
+                foreach (var route in _options.Routes)
+                {
+                    var opt = new HealthCheckOptions
+                    {
+                        Predicate = _ => !route.SkipChecks,
+                        AllowCachingResponses = false,
+                        ResultStatusCodes = {
+                                [HealthStatus.Healthy] = 200,
+                                [HealthStatus.Degraded] = 200,
+                                [HealthStatus.Unhealthy] = 503
+                             }
+                    };
+                    if (route.ContentType == Options.RouteContentType.json)
+                        opt.ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse;
+
+                    applicationBuilder.UseHealthChecks(route.Path, opt);
+                }
+
 
         }
     }
