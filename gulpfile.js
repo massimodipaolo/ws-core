@@ -12,7 +12,7 @@ var nuget = {
     //exe: process.env.NUGET_EXE, //path to your NuGet cmd, i.e. "C:\Program Files\nuget\nuget.exe"
     host: 'https://pkg.websolute.it/api/v2/package/',
     token: process.env.NUGET_TOKEN
-}
+};
 
 pushPkg = function (es) {
     return es.map(function (file, cb) {

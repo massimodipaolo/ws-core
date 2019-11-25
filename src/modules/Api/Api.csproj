@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+  <PropertyGroup> 
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageVersion>3.0.2</PackageVersion> 
+    <PackageVersion>3.0.3</PackageVersion>   
     <PackageId>Ws.Core.Extensions.Api</PackageId>
-    <AssemblyName>Ws.Core.Extensions.Api</AssemblyName>
+    <AssemblyName>Ws.Core.Extensions.Api</AssemblyName> 
     <RootNamespace>Ws.Core.Extensions.Api</RootNamespace>     
     <Authors>Massimo Di Paolo</Authors>   
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright> 
