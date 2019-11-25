@@ -183,7 +183,7 @@
             "injectCss": "wwwroot/healthcheck-ui/style.css",
             "endpoints": [
               {
-                "uri": "http://localhost:32040/healtz/checks",
+                "uri": "http://localhost:32040/healthz/checks",
                 "name": "web-app"
               }
             ],

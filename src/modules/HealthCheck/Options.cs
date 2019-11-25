@@ -13,8 +13,8 @@ namespace Ws.Core.Extensions.HealthCheck
     {
         public IEnumerable<Route> Routes { get; set; } 
             = new List<Route> { 
-                new Route { Path = "/healtz", ContentType = RouteContentType.text, SkipChecks = true },
-                new Route { Path = "/healtz/checks", ContentType = RouteContentType.json, SkipChecks = false }
+                new Route { Path = "/healthz", ContentType = RouteContentType.text, SkipChecks = true },
+                new Route { Path = "/healthz/checks", ContentType = RouteContentType.json, SkipChecks = false }
             };
         public CheckEntries Checks { get; set; }
         public UiOptions Ui { get; set; } = new UiOptions();
