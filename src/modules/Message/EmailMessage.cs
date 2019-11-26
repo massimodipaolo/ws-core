@@ -22,11 +22,13 @@ namespace Ws.Core.Extensions.Message
             _logger = logger;
             _config = config;
         }
+        
+        /*
         public class EmailMessageModel
         {
             public bool IsHtml { get; set; } = true;
-            public MessageImportance Importance { get; set; } = MessageImportance.Low;
         }
+        */
 
         public async Task SendAsync(Message message)
         {
@@ -43,14 +45,24 @@ namespace Ws.Core.Extensions.Message
                 mime.Subject = message.Subject;
 
                 // msg properties
-                EmailMessageModel model = message.Arguments != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<EmailMessageModel>(Newtonsoft.Json.JsonConvert.SerializeObject(message.Arguments)) : new EmailMessageModel();
+                //EmailMessageModel model = message.Arguments != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<EmailMessageModel>(Newtonsoft.Json.JsonConvert.SerializeObject(message.Arguments)) : new EmailMessageModel();
 
-                var body = new TextPart(model.IsHtml ? TextFormat.Html : TextFormat.Plain)
+                var body = new TextPart(string.IsNullOrEmpty(message.Format) || message.Format == "html" ? TextFormat.Html : TextFormat.Plain)
                 {
                     Text = message.Content
                 };
 
-                mime.Importance = model.Importance;
+                switch (message.Priority) {
+                    case MessagePriority.Low:
+                        mime.Importance = MessageImportance.Low;
+                        break;
+                    case MessagePriority.Normal:
+                        mime.Importance = MessageImportance.Normal;
+                        break;
+                    case MessagePriority.High:
+                        mime.Importance = MessageImportance.High;
+                        break;
+                };
 
                 var attachments = message.Attachments?.Where(_ => _.Content.Length > 0);
                 if (attachments != null && attachments.Any())

@@ -20,6 +20,11 @@ namespace Ws.Core.Extensions.Message
         public IEnumerable<Actor> Recipients { get; set; }
         public string Subject { get; set; }
         public string Content { get; set; }
+        public MessagePriority Priority { get; set; } = MessagePriority.Normal;
+        /// <summary>
+        /// Set Implementation-specific message format
+        /// </summary>
+        public string Format { get; set; }
         public IEnumerable<Attachment> Attachments { get; set; }
 
         /// <summary>
@@ -45,6 +50,13 @@ namespace Ws.Core.Extensions.Message
             public string Name { get; set; }
             public byte[] Content { get; set; }
         }
+    }
+
+    public enum MessagePriority
+    {
+        Low = 0,     
+        Normal = 1,        
+        High = 2
     }
 
 }
