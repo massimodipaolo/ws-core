@@ -24,7 +24,7 @@ namespace Ws.Core.Extensions.HealthCheck
             {
                 // storage
                 if (checks.Storage != null && checks.Storage.Any())
-                    foreach (var storage in checks.Storage)
+                    foreach (var storage in checks.Storage.Where(_ => !string.IsNullOrEmpty(_.Driver)))
                         builder.AddDiskStorageHealthCheck(_ => _.AddDrive(storage.Driver, storage.MinimumFreeMb), $"storage-{storage.Name}", storage.Status);
 
                 // memory
@@ -33,22 +33,22 @@ namespace Ws.Core.Extensions.HealthCheck
 
                 //services
                 if (checks.WinService != null && checks.WinService.Any())
-                    foreach (var service in checks.WinService)
+                    foreach (var service in checks.WinService.Where(_ => !string.IsNullOrEmpty(_.ServiceName)))
                         builder.AddWindowsServiceHealthCheck(service.ServiceName, _ => _.Status == System.ServiceProcess.ServiceControllerStatus.Running, $"service-{service.Name}", service.Status);
 
                 // process
                 if (checks.Process != null && checks.Process.Any())
-                    foreach (var process in checks.Process)
+                    foreach (var process in checks.Process.Where(_ => !string.IsNullOrEmpty(_.ProcessName)))
                         builder.AddProcessHealthCheck(process.ProcessName, _ => _.Any(p => p.HasExited == false), $"process-{process.Name}", process.Status);
 
                 // tcp
                 if (checks.Tcp != null && checks.Tcp.Any())
-                    foreach (var tcp in checks.Tcp)
+                    foreach (var tcp in checks.Tcp.Where(_ => !string.IsNullOrEmpty(_.Host)))
                         builder.AddTcpHealthCheck(_ => _.AddHost(tcp.Host, tcp.Port), $"tcp-{tcp.Name}", tcp.Status);
 
                 // http
                 if (checks.Http != null && checks.Http.Any())
-                    foreach (var http in checks.Http)
+                    foreach (var http in checks.Http.Where(_ => !string.IsNullOrEmpty(_.Url)))
                         builder.AddUrlGroup(new Uri(http.Url), $"http-{http.Name}", http.Status);
             }
 
@@ -58,11 +58,11 @@ namespace Ws.Core.Extensions.HealthCheck
                 serviceCollection.AddHealthChecksUI("healthchecksdb", _ =>
                 {
                     if (_options.Ui.Endpoints != null && _options.Ui.Endpoints.Any())
-                        foreach (var endpoint in _options.Ui.Endpoints)
+                        foreach (var endpoint in _options.Ui.Endpoints.Where(_ => !string.IsNullOrEmpty(_.Uri)))
                             _.AddHealthCheckEndpoint(endpoint.Name, endpoint.Uri);
 
                     if (_options.Ui.Webhooks != null && _options.Ui.Webhooks.Any())
-                        foreach (var hook in _options.Ui.Webhooks)
+                        foreach (var hook in _options.Ui.Webhooks.Where(_ => !string.IsNullOrEmpty(_.Uri)))
                             try
                             {
                                 _.AddWebhookNotification(

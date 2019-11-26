@@ -805,7 +805,7 @@
                             "properties": {
                               "driver": {
                                 "type": "string",
-                                "description": "i.e. C:\\"
+                                "description": "i.e. C:\\, skip check if empty"
                               },
                               "minimumFreeMb": {
                                 "type": "number",
@@ -836,7 +836,7 @@
                             "properties": {
                               "processName": {
                                 "type": "string",
-                                "description": "Check if exists"
+                                "description": "Check if exists, skip check if empty"
                               }
                             }
                           }
@@ -851,7 +851,7 @@
                             "properties": {
                               "serviceName": {
                                 "type": "string",
-                                "description": "Check if running"
+                                "description": "Check if running, skip check if empty"
                               }
                             }
                           }
@@ -865,7 +865,8 @@
                             ],
                             "properties": {
                               "host": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Skip check if empty"
                               },
                               "port": {
                                 "type": "number"
@@ -883,7 +884,8 @@
                             ],
                             "properties": {
                               "url": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Skip check if empty"
                               }
                             }
                           }
@@ -925,7 +927,7 @@
                               "name": { "type": "string" },
                               "uri": {
                                 "type": "string",
-                                "description": "i.e. http://host:8001/healtz"
+                                "description": "i.e. http://host:8001/healthz, skip check if empty"
                               }
                             }
                           }
@@ -936,7 +938,10 @@
                             "type": "object",
                             "properties": {
                               "name": { "type": "string" },
-                              "uri": { "type": "string" },
+                              "uri": {
+                                "type": "string",
+                                "description": "Skip check if empty"
+                              },
                               "payload": {
                                 "type": "string",
                                 "description": "Encoded payload for failed check. Available token: [[LIVENESS]] [[FAILURE]] [[DESCRIPTIONS]]"
