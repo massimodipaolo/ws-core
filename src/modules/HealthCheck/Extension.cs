@@ -55,8 +55,8 @@ namespace Ws.Core.Extensions.HealthCheck
             //ui
             if (_options.Ui?.Enabled == true)
             {
-                serviceCollection.AddHealthChecksUI("healthchecksdb", _ =>
-                {
+                serviceCollection.AddHealthChecksUI(_options.Ui.DbPath, _ =>
+                {                    
                     if (_options.Ui.Endpoints != null && _options.Ui.Endpoints.Any())
                         foreach (var endpoint in _options.Ui.Endpoints.Where(_ => !string.IsNullOrEmpty(_.Uri)))
                             _.AddHealthCheckEndpoint(endpoint.Name, endpoint.Uri);

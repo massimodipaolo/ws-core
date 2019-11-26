@@ -180,6 +180,7 @@
           },
           "ui": {
             "enabled": true,
+            "dbPath": "Files\\healthchecksdb",
             "injectCss": "wwwroot/healthcheck-ui/style.css",
             "endpoints": [
               {
