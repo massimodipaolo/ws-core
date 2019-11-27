@@ -455,31 +455,7 @@
                 "options": {
                   "type": "object",
                   "properties": {
-                    "type": { "enum": [ "Memory", "Distributed", "Redis", "SqlServer" ] },
-                    "redisOptions": {
-                      "type": "object",
-                      "properties": {
-                        "configuration": { "type": "string" },
-                        "instanceName": {
-                          "type": "string",
-                          "default": "master"
-                        }
-                      }
-                    },
-                    "sqlOptions": {
-                      "type": "object",
-                      "properties": {
-                        "connectionString": { "type": "string" },
-                        "schemaName": {
-                          "type": "string",
-                          "default": "dbo"
-                        },
-                        "tableName": {
-                          "type": "string",
-                          "default": "Entry"
-                        }
-                      }
-                    },
+                    "type": { "enum": [ "Memory", "Distributed" ] },
                     "entryExpirationInMinutes": { "$ref": "#/definitions/entryExpirationInMinutes" }
                   }
                 }
@@ -521,6 +497,56 @@
                               }
                             }
                           }
+                        }
+                      }
+                    },
+                    "entryExpirationInMinutes": { "$ref": "#/definitions/entryExpirationInMinutes" }
+                  }
+                }
+              }
+            },
+            "Ws.Core.Extensions.Data.Cache.Redis": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "client": {
+                      "type": "object",
+                      "properties": {
+                        "configuration": { "type": "string" },
+                        "instanceName": {
+                          "type": "string",
+                          "default": "master"
+                        }
+                      }
+                    },
+                    "entryExpirationInMinutes": { "$ref": "#/definitions/entryExpirationInMinutes" }
+                  }
+                }
+              }
+            },
+            "Ws.Core.Extensions.Data.Cache.SqlServer": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "client": {
+                      "type": "object",
+                      "properties": {
+                        "connectionString": { "type": "string" },
+                        "schemaName": {
+                          "type": "string",
+                          "default": "dbo"
+                        },
+                        "tableName": {
+                          "type": "string",
+                          "default": "Entry"
                         }
                       }
                     },
@@ -765,7 +791,7 @@
               "properties": {
                 "options": {
                   "type": "object",
-                  "properties": {                    
+                  "properties": {
                     "routes": {
                       "description": "List of health check routes",
                       "type": "array",

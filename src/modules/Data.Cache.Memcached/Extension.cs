@@ -26,8 +26,8 @@ namespace Ws.Core.Extensions.Data.Cache.Memcached
                 serviceCollection.AddEnyimMemcached(_config.GetSection($"{ConfigSectionPathOptions}:Client"));
 
                 //DI
-                serviceCollection.AddSingleton(typeof(ICache), typeof(MemcachedCache));
-                serviceCollection.AddSingleton(typeof(ICache<>), typeof(MemcachedCache<>));
+                serviceCollection.TryAddSingleton(typeof(ICache), typeof(MemcachedCache));
+                serviceCollection.TryAddSingleton(typeof(ICache<>), typeof(MemcachedCache<>));
                 serviceCollection.TryAddTransient(typeof(ICacheRepository<,>), typeof(Repository.CachedRepository<,>));
             }
         }

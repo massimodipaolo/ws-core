@@ -20,11 +20,13 @@
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\modules\Api\Api.csproj" />
+    <!--ProjectReference Include="..\..\src\modules\Data.Cache.Redis\Data.Cache.Redis.csproj" /-->
+    <!--ProjectReference Include="..\..\src\modules\Data.Cache.SqlServer\Data.Cache.SqlServer.csproj" /-->
     <ProjectReference Include="..\..\src\modules\HealthCheck\HealthCheck.csproj" />
     <ProjectReference Include="..\..\src\modules\Message\Message.csproj" />
     <ProjectReference Include="..\..\src\modules\Routing\Routing.csproj" />
     <ProjectReference Include="..\..\src\core\core.csproj" />
-    <ProjectReference Include="..\..\src\modules\Api\Api.csproj" />
     <ProjectReference Include="..\..\src\modules\Data.EF.SqlServer\Data.EF.SqlServer.csproj" />
     <ProjectReference Include="..\..\src\modules\Data.FileSystem\Data.FileSystem.csproj" />
     <ProjectReference Include="..\..\src\modules\StaticFiles\StaticFiles.csproj" />

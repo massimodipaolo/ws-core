@@ -79,7 +79,7 @@
           "connections": [
             {
               "name": "default",
-              "connectionString": "Server=.,14331;Database=Ws-Core;User Id=Ws-Core-Usr;Password=5876ee62-d2a9-4e61-8c3a-88d41f4543e8;MultipleActiveResultSets=true",
+              "connectionString": "Server=.,14331;Database=Ws-Core;User Id=Ws-Core-Usr;Password=5876ee62-d2a9-4e61-8c3a-88d41f4543e8;MultipleActiveResultSets=true"
             }
           ]
         }
@@ -97,19 +97,18 @@
           }
         }
       },
+      "Ws.Core.Extensions.Data.Cache.SqlServer": {
+        "priority": 598,
+        "options": { "client": { "connectionString": "Server=.,14331;Database=Cache;User Id=cacheUser;Password=C4$hUs3r-Strong!Pa$$w0rd;MultipleActiveResultSets=true" } }
+      },
+      "Ws.Core.Extensions.Data.Cache.Redis": {
+        "priority": 599,
+        "options": { "client": {} }
+      },
       "Ws.Core.Extensions.Data.Cache": {
         "priority": 600,
         "options": {
-          "type": "Redis",
-          "redisOptions": {
-            "_configuration": "",
-            "instanceName": "master"
-          },
-          "sqlOptions": {
-            "connectionString": "",
-            "schemaName": "dbo",
-            "tableName": "Entry"
-          },
+          "type": "Distributed",
           "entryExpirationInMinutes": {
             "fast": 10,
             "medium": 60,
@@ -150,7 +149,7 @@
       },
       "Ws.Core.Extensions.HealthCheck": {
         "priority": 999,
-        "options": {                    
+        "options": {
           "checks": {
             "storage": [
               {
@@ -164,7 +163,13 @@
               "maximumAllocatedMb": 500,
               "status": "Degraded"
             },
-            "process": [{ "processName": "iisexpress", "name": "iisexpress", "status": "Degraded"}],
+            "process": [
+              {
+                "processName": "iisexpress",
+                "name": "iisexpress",
+                "status": "Degraded"
+              }
+            ],
             "tcp": [
               {
                 "host": "127.0.0.1",
@@ -176,7 +181,14 @@
                 "port": 14331,
                 "name": "mssql-01"
               }
-            ], "http": [{ "url": "https://www.google.com", "name": "outbound", "status": "Unhealthy"}]
+            ],
+            "http": [
+              {
+                "url": "https://www.google.com",
+                "name": "outbound",
+                "status": "Unhealthy"
+              }
+            ]
           },
           "ui": {
             "enabled": true,
