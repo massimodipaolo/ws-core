@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageVersion>3.0.1</PackageVersion>
-    <PackageId>Ws.Core.Extensions.Data.Cache.Memcached</PackageId>
-    <AssemblyName>Ws.Core.Extensions.Data.Cache.Memcached</AssemblyName>
-    <RootNamespace>Ws.Core.Extensions.Data.Cache.Memcached</RootNamespace>
+    <PackageVersion>3.0.0</PackageVersion>
+    <PackageId>Ws.Core.Extensions.Data.Cache.Redis</PackageId>
+    <AssemblyName>Ws.Core.Extensions.Data.Cache.Redis</AssemblyName>
+    <RootNamespace>Ws.Core.Extensions.Data.Cache.Redis</RootNamespace>
     <Authors>Massimo Di Paolo</Authors>
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
     <Description>
@@ -21,9 +21,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="EnyimMemcachedCore" Version="2.4.1" />
-  </ItemGroup>
+  
 </Project>

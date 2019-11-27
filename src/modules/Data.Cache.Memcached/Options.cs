@@ -1,9 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Redis;
-using Microsoft.Extensions.Caching.SqlServer;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Ws.Core.Extensions.Base;
+﻿using Ws.Core.Extensions.Base;
 
 namespace Ws.Core.Extensions.Data.Cache.Memcached
 {

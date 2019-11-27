@@ -7,9 +7,7 @@
 
 Options
 
-    Type: {Memory|Distributed|Redis|SqlServer} 
-    RedisOptions: Configurataion (server) and InstanceName of the Redis machine
-    SqlOptions: ConnectionString,SchemaName,TableName. If omitted a local trusted connection on Cache.dbo.Entry table is provided.
+    Type: {Memory|Distributed} 
     EntryExpirationInMinutes: override the default duration (in minutes) of the provided cache profiles. 
 
 ### Additional documentation
@@ -54,16 +52,7 @@ public class SomeEntityCacheController : EntityCachedController<SomeEntity> {
       "Ws.Core.Extensions.Data.Cache": {
         "priority": 3,
         "options": {
-          "type": "Redis",
-          "redisOptions": {
-            "configuration": "127.0.0.1:6379",
-            "instanceName": "master"
-          },
-          "sqlOptions": {
-            "connectionString": "Server=.;Database=Cache;Trusted_Connection=True;",
-            "schemaName": "dbo",
-            "tableName": "Entry"
-          },
+          "type": "Distributed",
           "entryExpirationInMinutes": {
             "fast": 10,
             "medium": 60,
@@ -72,35 +61,4 @@ public class SomeEntityCacheController : EntityCachedController<SomeEntity> {
           }
         }
       }
-```
-
-## SqlServer initialization
-
-  Use the sql-cache tool, addind SqlConfig.Tools to your project file: https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed#using-a-sql-server-distributed-cache  
-
-### T-sql script sample
-```sql
-use master
-go
-create login cacheUser with password='C4$hUs3r-Strong!Pa$$w0rd'
-go
-create database Cache
-go
-use Cache
-go
-create user cacheUser for login cacheUser
-go
-create table dbo.Entry(
-    Id nvarchar(449) primary key clustered,
-    Value varbinary(max),
-    ExpiresAtTime datetimeoffset(7),
-    SlidingExpirationInSeconds bigint,
-    AbsoluteExpiration datetimeoffset(7)
-    )
-go
-grant select on dbo.Entry to cacheUser; 
-grant insert on dbo.Entry to cacheUser; 
-grant update on dbo.Entry to cacheUser; 
-grant delete on dbo.Entry to cacheUser; 
-go
 ```
