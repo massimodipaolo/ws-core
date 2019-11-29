@@ -98,7 +98,7 @@
             "type": "string",
             "uniqueItems": true
           },
-          "description": "List of authorized hosts, i.e. http://host:8001"
+          "description": "List of authorized hosts, i.e. host:8001"
         }
       }
     },

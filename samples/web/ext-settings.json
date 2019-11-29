@@ -150,6 +150,19 @@
       "Ws.Core.Extensions.HealthCheck": {
         "priority": 999,
         "options": {
+          "routes": [
+            {
+              "path": "/healthz",
+              "contentType": "text",
+              "skipChecks": true
+            },
+            {
+              "path": "/healthz/checks",
+              "contentType": "json",
+              "skipChecks": false,
+              "authHosts": [ "localhost:32040" ]
+            }
+          ],
           "checks": {
             "storage": [
               {

@@ -1,7 +1,6 @@
 ﻿using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System;
@@ -56,7 +55,7 @@ namespace Ws.Core.Extensions.HealthCheck
             if (_options.Ui?.Enabled == true)
             {
                 serviceCollection.AddHealthChecksUI(_options.Ui.DbPath, _ =>
-                {                    
+                {
                     if (_options.Ui.Endpoints != null && _options.Ui.Endpoints.Any())
                         foreach (var endpoint in _options.Ui.Endpoints.Where(_ => !string.IsNullOrEmpty(_.Uri)))
                             _.AddHealthCheckEndpoint(endpoint.Name, endpoint.Uri);
@@ -86,32 +85,37 @@ namespace Ws.Core.Extensions.HealthCheck
 
             applicationBuilder.UseEndpoints(config =>
              {
-                 if (_options.Routes != null && _options.Routes.Any())
-                     foreach (var route in _options.Routes)
+                 if (_options.Routes == null || !_options.Routes.Any())
+                     _options.Routes = new List<Options.Route> {
+                        new Options.Route { Path = "/healthz", ContentType = Options.RouteContentType.text, SkipChecks = true },
+                        new Options.Route { Path = "/healthz/checks", ContentType = Options.RouteContentType.json, SkipChecks = false }
+                    };
+
+                 foreach (var route in _options.Routes)
+                 {
+                     var opt = new HealthCheckOptions
                      {
-                         var opt = new HealthCheckOptions
-                         {
-                             Predicate = _ => !route.SkipChecks,                             
-                             AllowCachingResponses = false,
-                             ResultStatusCodes = {
+                         Predicate = _ => !route.SkipChecks,
+                         AllowCachingResponses = false,
+                         ResultStatusCodes = {
                                 [HealthStatus.Healthy] = 200,
                                 [HealthStatus.Degraded] = 200,
                                 [HealthStatus.Unhealthy] = 503
                              }
-                         };
-                         if (route.ContentType == Options.RouteContentType.json)
-                             opt.ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse;
+                     };
+                     if (route.ContentType == Options.RouteContentType.json)
+                         opt.ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse;
 
-                         var builder = config.MapHealthChecks(route.Path, opt);
+                     var builder = config.MapHealthChecks(route.Path, opt);
 
-                         // policy
-                         if (route.AuthPolicies != null && route.AuthPolicies.Any())
-                             builder.RequireAuthorization(route.AuthPolicies.ToArray());
+                     // policy
+                     if (route.AuthPolicies != null && route.AuthPolicies.Any())
+                         builder.RequireAuthorization(route.AuthPolicies.ToArray());
 
-                         // hosts
-                         if (route.AuthHosts != null && route.AuthHosts.Any())
-                             builder.RequireHost(route.AuthHosts.ToArray());
-                     }
+                     // hosts
+                     if (route.AuthHosts != null && route.AuthHosts.Any())
+                         builder.RequireHost(route.AuthHosts.ToArray());
+                 }
 
                  //ui
                  var ui = _options.Ui;

@@ -2,7 +2,7 @@
 
   <PropertyGroup>    
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageVersion>3.0.6</PackageVersion>
+    <PackageVersion>3.0.7</PackageVersion>
     <PackageId>Ws.Core.Extensions.HealthCheck</PackageId>
     <AssemblyName>Ws.Core.Extensions.HealthCheck</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.HealthCheck</RootNamespace>

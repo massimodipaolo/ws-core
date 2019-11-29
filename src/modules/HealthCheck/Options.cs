@@ -11,11 +11,7 @@ namespace Ws.Core.Extensions.HealthCheck
     }
     public class Options: IOptions
     {
-        public IEnumerable<Route> Routes { get; set; } 
-            = new List<Route> { 
-                new Route { Path = "/healthz", ContentType = RouteContentType.text, SkipChecks = true },
-                new Route { Path = "/healthz/checks", ContentType = RouteContentType.json, SkipChecks = false }
-            };
+        public IEnumerable<Route> Routes { get; set; }             
         public CheckEntries Checks { get; set; }
         public UiOptions Ui { get; set; } = new UiOptions();
         public class Route: AuthOptions
