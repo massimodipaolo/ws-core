@@ -16,21 +16,21 @@ namespace Ws.Core.Extensions.HealthCheck
         {
             base.Execute(serviceCollection, serviceProvider);
             var builder = serviceCollection.AddHealthChecks();
-            
+
             // checks
             var checks = _options.Checks;
             if (checks != null)
             {
                 // storage
                 if (checks.Storage != null && checks.Storage.Any())
-                    foreach(var storage in checks.Storage.Where(_ => !string.IsNullOrEmpty(_.Driver)))
-                        builder.AddDiskStorageHealthCheck(_ => _.AddDrive(storage.Driver,storage.MinimumFreeMb), $"storage-{storage.Name}",storage.Status);
-                
+                    foreach (var storage in checks.Storage.Where(_ => !string.IsNullOrEmpty(_.Driver)))
+                        builder.AddDiskStorageHealthCheck(_ => _.AddDrive(storage.Driver, storage.MinimumFreeMb), $"storage-{storage.Name}", storage.Status);
+
                 // tcp
                 if (checks.Tcp != null && checks.Tcp.Any())
-                    foreach (var tcp in checks.Tcp.Where(_ => !string.IsNullOrEmpty(_.Host))) 
-                        builder.AddTcpHealthCheck(_ => _.AddHost(tcp.Host,tcp.Port),$"tcp-{tcp.Name}",tcp.Status);
-                
+                    foreach (var tcp in checks.Tcp.Where(_ => !string.IsNullOrEmpty(_.Host)))
+                        builder.AddTcpHealthCheck(_ => _.AddHost(tcp.Host, tcp.Port), $"tcp-{tcp.Name}", tcp.Status);
+
                 // http
                 if (checks.Http != null && checks.Http.Any())
                     foreach (var http in checks.Http.Where(_ => !string.IsNullOrEmpty(_.Url)))
@@ -42,24 +42,29 @@ namespace Ws.Core.Extensions.HealthCheck
         {
             base.Execute(applicationBuilder, serviceProvider);
 
-            if (_options.Routes != null && _options.Routes.Any())
-                foreach (var route in _options.Routes)
+            if (_options.Routes == null || !_options.Routes.Any())
+                _options.Routes = new List<Options.Route> {
+                        new Options.Route { Path = "/healthz", ContentType = Options.RouteContentType.text, SkipChecks = true },
+                        new Options.Route { Path = "/healthz/checks", ContentType = Options.RouteContentType.json, SkipChecks = false }
+                    };
+
+            foreach (var route in _options.Routes)
+            {
+                var opt = new HealthCheckOptions
                 {
-                    var opt = new HealthCheckOptions
-                    {
-                        Predicate = _ => !route.SkipChecks,
-                        AllowCachingResponses = false,
-                        ResultStatusCodes = {
+                    Predicate = _ => !route.SkipChecks,
+                    AllowCachingResponses = false,
+                    ResultStatusCodes = {
                                 [HealthStatus.Healthy] = 200,
                                 [HealthStatus.Degraded] = 200,
                                 [HealthStatus.Unhealthy] = 503
                              }
-                    };
-                    if (route.ContentType == Options.RouteContentType.json)
-                        opt.ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse;
+                };
+                if (route.ContentType == Options.RouteContentType.json)
+                    opt.ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse;
 
-                    applicationBuilder.UseHealthChecks(route.Path, opt);
-                }
+                applicationBuilder.UseHealthChecks(route.Path, opt);
+            }
 
 
         }

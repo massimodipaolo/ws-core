@@ -203,3 +203,4 @@ _Pvt_Extensions
 #/tests
 # Task Secret
 .env
+healthchecksdb
