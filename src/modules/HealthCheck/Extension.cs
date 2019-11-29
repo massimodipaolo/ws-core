@@ -42,13 +42,14 @@ namespace Ws.Core.Extensions.HealthCheck
         {
             base.Execute(applicationBuilder, serviceProvider);
 
-            if (_options.Routes == null || !_options.Routes.Any())
-                _options.Routes = new List<Options.Route> {
+            foreach (var route in
+            _options.Routes
+            ??
+            new List<Options.Route> {
                         new Options.Route { Path = "/healthz", ContentType = Options.RouteContentType.text, SkipChecks = true },
                         new Options.Route { Path = "/healthz/checks", ContentType = Options.RouteContentType.json, SkipChecks = false }
-                    };
-
-            foreach (var route in _options.Routes)
+               }
+            )
             {
                 var opt = new HealthCheckOptions
                 {
