@@ -40,7 +40,7 @@ namespace Ws.Core.Extensions.Data
                         if (t != null)
                         {
                             ignoreTypes.Add(t);
-                            modelBuilder.Ignore(t);                            
+                            modelBuilder.Ignore(t);
                         }
                     }
                     catch { }
@@ -60,64 +60,80 @@ namespace Ws.Core.Extensions.Data
 
             foreach (KeyValuePair<Type, int> tKey in tKeys)
             {
-                var types = Base.Util.GetAllTypesOf(tKey.Key)?.Where(t => t != null && !ignoreTypes?.Distinct().Any(i => i == t) == true);                
+                var types = Base.Util.GetAllTypesOf(tKey.Key)?.Where(t => t != null && !ignoreTypes?.Distinct().Any(i => i == t) == true);
                 foreach (Type type in types)
-                {   
-                        try
+                {
+                    try
+                    {
+                        EF.Options.MappingConfig opt = (options?.Mappings ?? new List<EF.Options.MappingConfig>())
+                        .FirstOrDefault(_ =>
+                            _.Name == type.Name
+                            && (string.IsNullOrEmpty(_.NameSpace) || _.NameSpace == type.Namespace)
+                        );
+
+                        // Map to db schema,table
+                        var entityBuilder = modelBuilder.Entity(type);
+
+                        // https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-3.0/breaking-changes#totable-on-a-derived-type-throws-an-exception
+                        // https://github.com/aspnet/EntityFrameworkCore/issues/11811
+                        if (type.BaseType == type // IEntity<T>
+                            || 
+                            type.BaseType.BaseType == typeof(object) // i.e. Entity<T>
+                            )
+                            entityBuilder.ToTable(opt?.Table ?? type.Name, opt?.Schema ?? "dbo");
+                        else
                         {
-                            EF.Options.MappingConfig opt = (options?.Mappings ?? new List<EF.Options.MappingConfig>())
-                            .FirstOrDefault(_ =>
-                                _.Name == type.Name
-                                && (string.IsNullOrEmpty(_.NameSpace) || _.NameSpace == type.Namespace)
-                            );
+                            var _base = type.BaseType;
+                        }
 
-                            // Map to db schema,table
-                            var entityBuilder = modelBuilder.Entity(type)
-                                        .ToTable(opt?.Table ?? type.Name, opt?.Schema ?? "dbo");
 
-                            // Map Id column
-                            entityBuilder.Property("Id").HasColumnName(opt?.IdColumnName ?? "Id")
-                                        .IsUnicode(false)
-                                        .HasMaxLength(tKey.Value)
-                                        //.HasColumnType(tKey.Value)
-                                        .HasDefaultValue();
+                        // Map Id column
+                        var idBuilder = entityBuilder.Property("Id").HasColumnName(opt?.IdColumnName ?? "Id")
+                                    .IsUnicode(false)
+                                    .HasMaxLength(tKey.Value)
+                                    //.HasColumnType(tKey.Value)                                    
+                                    ;
 
-                            // Map complex type (or interface) on a text column, serializing/deserializing value
-                            if (jsonConvertTypes != null && jsonConvertTypes.Any())
-                                foreach (var property in type.GetProperties()
-                                    .Where(p => jsonConvertTypes
-                                        .Any(jT => jT.IsInterface ? jT.IsAssignableFrom(p.PropertyType) : jT == p.PropertyType)
-                                        )
+                        // https://github.com/aspnet/EntityFrameworkCore/issues/16814
+                        if ((opt?.IdHasDefaultValue ?? true) == true)
+                            idBuilder.HasDefaultValue();
+
+                        // Map complex type (or interface) on a text column, serializing/deserializing value
+                        if (jsonConvertTypes != null && jsonConvertTypes.Any())
+                            foreach (var property in type.GetProperties()
+                                .Where(p => jsonConvertTypes
+                                    .Any(jT => jT.IsInterface ? jT.IsAssignableFrom(p.PropertyType) : jT == p.PropertyType)
                                     )
-                                    if (null == opt?.Properties?.FirstOrDefault(_ => _.Name == property.Name && _.JsonConvert.HasValue && _.JsonConvert.Value == false))
-                                        entityBuilder.Property(property.Name).HasJsonConversion(property.PropertyType);
+                                )
+                                if (null == opt?.Properties?.FirstOrDefault(_ => _.Name == property.Name && _.JsonConvert.HasValue && _.JsonConvert.Value == false))
+                                    entityBuilder.Property(property.Name).HasJsonConversion(property.PropertyType);
 
-                            // Property based settings
-                            if (opt?.Properties != null)
-                                foreach (var p in opt.Properties.Where(_ => !string.IsNullOrEmpty(_.Name)))
-                                {
-                                    // Ignore field
-                                    if (p.Ignore)
-                                        entityBuilder.Ignore(p.Name);
-                                    else
-                                        try
-                                        {
-                                            // Custom map
-                                            if (!string.IsNullOrEmpty(p.Column))
-                                                entityBuilder.Property(p.Name).HasColumnName(p.Column);
-                                        }
-                                        catch { }
+                        // Property based settings
+                        if (opt?.Properties != null)
+                            foreach (var p in opt.Properties.Where(_ => !string.IsNullOrEmpty(_.Name)))
+                            {
+                                // Ignore field
+                                if (p.Ignore)
+                                    entityBuilder.Ignore(p.Name);
+                                else
+                                    try
+                                    {
+                                        // Custom map
+                                        if (!string.IsNullOrEmpty(p.Column))
+                                            entityBuilder.Property(p.Name).HasColumnName(p.Column);
+                                    }
+                                    catch { }
 
-                                    // Map specific property on a text column, serializing/deserializing value
-                                    if (p.JsonConvert.HasValue && p.JsonConvert.Value == true)
-                                        entityBuilder.Property(p.Name).HasJsonConversion(type.GetProperty(p.Name).PropertyType);
-                                }
+                                // Map specific property on a text column, serializing/deserializing value
+                                if (p.JsonConvert.HasValue && p.JsonConvert.Value == true)
+                                    entityBuilder.Property(p.Name).HasJsonConversion(type.GetProperty(p.Name).PropertyType);
+                            }
 
-                        }
-                        catch (Exception ex)
-                        {
-                            throw ex;
-                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                 }
             }
         }

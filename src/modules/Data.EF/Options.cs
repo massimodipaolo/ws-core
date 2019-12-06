@@ -24,6 +24,7 @@ namespace Ws.Core.Extensions.Data.EF
             public string Table { get; set; }
             public string Schema { get; set; }
             public string IdColumnName { get; set; }
+            public bool IdHasDefaultValue { get; set; } = true;
             public IEnumerable<PropertyConfig> Properties { get; set; }
             public class PropertyConfig
             {
