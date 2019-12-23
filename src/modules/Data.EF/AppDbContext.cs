@@ -78,14 +78,9 @@ namespace Ws.Core.Extensions.Data
                         // https://github.com/aspnet/EntityFrameworkCore/issues/11811
                         if (type.BaseType == type // IEntity<T>
                             || 
-                            type.BaseType.BaseType == typeof(object) // i.e. Entity<T>
+                            type.BaseType?.BaseType == typeof(object) // i.e. Entity<T>
                             )
                             entityBuilder.ToTable(opt?.Table ?? type.Name, opt?.Schema ?? "dbo");
-                        else
-                        {
-                            var _base = type.BaseType;
-                        }
-
 
                         // Map Id column
                         var idBuilder = entityBuilder.Property("Id").HasColumnName(opt?.IdColumnName ?? "Id")
