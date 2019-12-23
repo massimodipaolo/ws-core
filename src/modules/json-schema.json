@@ -602,6 +602,10 @@
                             "description": "Map Id property to column name",
                             "default": "Id"
                           },
+                          "IdHasDefaultValue": {
+                            "type": "boolean",                            
+                            "default": true
+                          },
                           "properties": {
                             "type": "array",
                             "items": {
