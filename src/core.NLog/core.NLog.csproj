@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageVersion>0.0.1-beta</PackageVersion>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackageVersion>0.0.2-beta</PackageVersion>
     <PackageId>Ws.Core.NLog</PackageId>
     <AssemblyName>Ws.Core.NLog</AssemblyName>
     <RootNamespace>Ws.Core</RootNamespace>
