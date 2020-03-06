@@ -77,7 +77,6 @@ namespace Ws.Core.Extensions.Base
 
         //IConfigureAction
         public virtual void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider) {
-            applicationBuilder.UseRouting();
         }
 
         public class Option<T>

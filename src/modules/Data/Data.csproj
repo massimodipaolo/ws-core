@@ -2,8 +2,8 @@
 
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>  
-		<TargetFramework>netcoreapp3.0</TargetFramework>
-		<PackageVersion>3.0.0</PackageVersion> 
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<PackageVersion>3.1.0</PackageVersion> 
 		<PackageId>Ws.Core.Extensions.Data</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Data</AssemblyName>
 		<RootNamespace>Ws.Core.Extensions.Data</RootNamespace>

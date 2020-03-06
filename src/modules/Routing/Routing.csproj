@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageVersion>3.0.1</PackageVersion>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackageVersion>3.1.0</PackageVersion>
     <PackageId>Ws.Core.Extensions.Routing</PackageId>
     <AssemblyName>Ws.Core.Extensions.Routing</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Routing</RootNamespace>

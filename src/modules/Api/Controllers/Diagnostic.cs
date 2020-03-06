@@ -14,7 +14,7 @@ using Ws.Core.Extensions.Data.Cache;
 
 namespace Ws.Core.Extensions.Api.Controllers
 {
-    public class DiagnosticController<TConfig> : BaseController where TConfig: class, Ws.Core.IAppConfiguration, new()
+    public class DiagnosticController<TConfig> : BaseController where TConfig : class, Ws.Core.IAppConfiguration, new()
     {
         private ICache _cache;
         private IConfiguration _config;
@@ -50,14 +50,14 @@ namespace Ws.Core.Extensions.Api.Controllers
             {
                 info = new
                 {
-                    uptime=Startup<TConfig>._uptime,
+                    uptime = Startup<TConfig>._uptime,
                     app = AppInfo<TConfig>.App?.ServerFeatures,
                     env = new
                     {
                         machine = Environment.MachineName,
                         os = Environment.OSVersion,
                         processorCount = Environment.ProcessorCount,
-                        drivers = DriveInfo.GetDrives()?.Where(_ => _.IsReady)?.Select(_ => new { _.Name, TotalSizeGb = _.TotalSize / 1024.0 / 1024.0 / 1024.0, AvailableFreeSpaceGb =_.AvailableFreeSpace / 1024.0 / 1024.0 / 1024.0,_.VolumeLabel,_.DriveFormat, DriveType=_.DriveType.ToString()}),
+                        drivers = DriveInfo.GetDrives()?.Where(_ => _.IsReady)?.Select(_ => new { _.Name, TotalSizeGb = _.TotalSize / 1024.0 / 1024.0 / 1024.0, AvailableFreeSpaceGb = _.AvailableFreeSpace / 1024.0 / 1024.0 / 1024.0, _.VolumeLabel, _.DriveFormat, DriveType = _.DriveType.ToString() }),
                         systemDirectory = Environment.SystemDirectory,
                         user = $"{Environment.UserDomainName}\\{Environment.UserName}",
                         process = System.Diagnostics.Process.GetCurrentProcess().MainModule
@@ -70,7 +70,8 @@ namespace Ws.Core.Extensions.Api.Controllers
                 {
                     //builder = _config,
                     detail = _config.AsEnumerable()
-                        .Select(conf => new {
+                        .Select(conf => new
+                        {
                             conf.Key,
                             Value = new string[] { "connectionstring", "username", "password", "pwd", "secret", "apikey" }.Any(s => conf.Key.ToLower().Contains(s))
                                 ?
@@ -81,15 +82,11 @@ namespace Ws.Core.Extensions.Api.Controllers
                         .OrderBy(conf => conf.Key)
                         .ToDictionary(conf => conf.Key, conf => conf.Value)
                 },
-                extensions = _extConfigMonitor.CurrentValue.Assemblies
-                    .Select(_ => new { Name = _.Key, _.Value.Priority })
-                    .Union(
+                extensions =
                         ExtCore.Infrastructure.ExtensionManager.GetInstances<ExtCore.Infrastructure.Actions.IConfigureServicesAction>()
                         .Where(_ => _ is ExtCore.Infrastructure.ExtensionBase)
                         .Select(_ => new { (_ as ExtCore.Infrastructure.ExtensionBase).Name, _.Priority })
-                    ).
-                    OrderBy(_ => _.Priority),
-                //extensions = string.Join(" | ", ExtCore.Infrastructure.ExtensionManager.GetInstances<core.Extensions.Base.Extension>().OrderBy(ext => ext.Priority).Select(ext => $"{ext.Name} [{ext.Priority}]")),
+                    .OrderBy(_ => _.Priority),                
                 services = AppInfo<TConfig>.Services?.Select(_ => new { Type = _.ServiceType, _.ImplementationType, Lifetime = _.Lifetime.ToString() })
             };
             return Ok(diag);
