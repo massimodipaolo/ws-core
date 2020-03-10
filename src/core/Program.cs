@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -9,9 +10,10 @@ namespace Ws.Core
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             //BuildWebHost(args, typeof(Program).Assembly, typeof(Startup<AppConfig>)).Run();
+            await Task.CompletedTask;
         }
 
         public static IHostBuilder WebHostBuilder(string[] args, Assembly assembly, System.Type startup) =>
