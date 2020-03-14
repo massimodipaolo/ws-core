@@ -54,7 +54,7 @@ namespace Ws.Core.Shared.Serialization
         {
             if (Converters != null && Converters.Any())
                 foreach (var converter in Converters.Where(_ => _ != null))
-                {                    
+                {
                     var assembly = AppDomain.CurrentDomain.GetAssemblies().AsEnumerable().Where(_ => _.FullName?.Split(',')[0] == converter.Assembly).FirstOrDefault();
                     if (null != assembly)
                     {
@@ -63,12 +63,23 @@ namespace Ws.Core.Shared.Serialization
                             Type converterType = System.Reflection.Assembly.LoadFrom(assembly.Location).GetType(converter.Type);
                             if (typeof(Newtonsoft.Json.JsonConverter).IsAssignableFrom(converterType))
                             {
-                                var obj = (Newtonsoft.Json.JsonConverter)Activator.CreateInstance(
-                                    converterType,
-                                    new object[] {
-                                    new Microsoft.AspNetCore.Http.HttpContextAccessor()
-                                    });
-                                settings.Converters.Add(obj);
+                                Newtonsoft.Json.JsonConverter obj = null;
+                                try
+                                {
+                                    // try parms object[] parameters
+                                    obj = (Newtonsoft.Json.JsonConverter)Activator.CreateInstance(
+                                            converterType,
+                                            new object[] {
+                                                new Microsoft.AspNetCore.Http.HttpContextAccessor()
+                                            });
+                                }
+                                catch
+                                {
+                                    // Try parameterless ctor
+                                    obj = (Newtonsoft.Json.JsonConverter)Activator.CreateInstance(converterType);
+                                }
+                                if (obj != null)
+                                    settings.Converters.Add(obj);
                             }
                         }
                         catch { }

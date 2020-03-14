@@ -2,6 +2,7 @@
 using Ws.Core.Extensions.Data;
 using Ws.Core.Extensions.Data.Cache;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Ws.Core.Extensions.Api.Controllers
 {
@@ -39,6 +40,13 @@ namespace Ws.Core.Extensions.Api.Controllers
             //base.Post(entity);
         }
 
+        [Route("many")]
+        [HttpPost]
+        public virtual void PostMany([FromBody]IEnumerable<T> entities)
+        {
+            _cachedRepository.AddMany(entities);
+        }
+
         [HttpPut("{id}")]
         public virtual void Put(TKey id, [FromBody]T entity)
         {
@@ -46,11 +54,30 @@ namespace Ws.Core.Extensions.Api.Controllers
             //base.Put(id,entity);
         }
 
+        [HttpPut]
+        public virtual void PutMany([FromBody]IEnumerable<T> entities)
+        {
+            _cachedRepository.UpdateMany(entities);
+        }
+
+        [Route("merge/{operation}")]
+        [HttpPost]
+        public virtual void Merge(RepositoryMergeOperation operation,[FromBody]IEnumerable<T> entities)
+        {
+            _cachedRepository.Merge(entities,operation);
+        }
+
         [HttpDelete("{id}")]
         public virtual void Delete([FromBody]T entity)
         {
             _cachedRepository.Delete(entity);
             //base.Delete(entity);
+        }
+
+        [HttpDelete]
+        public virtual void DeleteMany([FromBody]IEnumerable<T> entities)
+        {
+            _cachedRepository.DeleteMany(entities);
         }
     }
 }

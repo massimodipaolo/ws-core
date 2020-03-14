@@ -727,7 +727,7 @@
                                 "description": "Call sp for this methods only; If empty: all methods",
                                 "default": "all",
                                 "type": "array",
-                                "items": { "enum": [ "list", "find", "add", "update", "merge", "delete" ] },
+                                "items": { "enum": [ "list", "find", "add", "addmany", "update", "updatemany", "merge", "delete", "deletemany" ] },
                                 "uniqueItems": true
                               },
                               "commandTimeOut": {
@@ -742,7 +742,7 @@
                                   "write": {
                                     "type": "number",
                                     "default": 60,
-                                    "description": "For Add,Update,Delete methods"
+                                    "description": "For Add,AddMany,Update,UpdateMany,Delete,DeleteMany methods"
                                   },
                                   "sync": {
                                     "type": "number",

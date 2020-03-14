@@ -41,9 +41,12 @@ namespace Ws.Core.Extensions.Data.EF.SqlServer
                     List,
                     Find,
                     Add,
-                    Update,                    
+                    AddMany,
+                    Update,
+                    UpdateMany,
                     Merge,
-                    Delete
+                    Delete,
+                    DeleteMany
                 }
 
                 public CommandTimeOutConfig CommandTimeOut { get; set; }

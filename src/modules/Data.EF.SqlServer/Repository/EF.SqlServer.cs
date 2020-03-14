@@ -68,28 +68,50 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         }
         public override void Add(T entity)
         {
-            if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Add) ?? false)
-                ExecuteCrudCommand(entity, "insert");
-            else
-                base.Add(entity);
+            if (entity != null)
+                if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Add) ?? false)
+                    ExecuteCrudCommand(entity, "insert");
+                else
+                    base.Add(entity);
         }
+
+        public override void AddMany(IEnumerable<T> entities)
+        {
+            if (entities != null && entities.Any())
+                if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.AddMany) ?? false)
+                    ExecuteCrudCommand(entities, "insertmany");
+                else
+                    base.AddMany(entities);
+        }
+
         public override void Update(T entity)
         {
-            if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Update) ?? false)
-                ExecuteCrudCommand(entity, "update");
-            else
-                base.Update(entity);
+            if (entity != null)
+                if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Update) ?? false)
+                    ExecuteCrudCommand(entity, "update");
+                else
+                    base.Update(entity);
+        }
+
+        public override void UpdateMany(IEnumerable<T> entities)
+        {
+            if (entities != null && entities.Any())
+                if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.UpdateMany) ?? false)
+                    ExecuteCrudCommand(entities, "updatemany");
+                else
+                    base.UpdateMany(entities);
         }
 
         public override void Merge(IEnumerable<T> entities, RepositoryMergeOperation operation = RepositoryMergeOperation.Upsert)
         {
-            if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Merge) ?? false)                            
-                ExecuteMergeCommand(entities, operation);            
-            else
-                _Merge(entities, operation);
+            if (entities != null && entities.Any())
+                if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Merge) ?? false)
+                    ExecuteMergeCommand(entities, operation);
+                else
+                    _merge(entities, operation);
         }
 
-        private void _Merge(IEnumerable<T> entities, RepositoryMergeOperation operation = RepositoryMergeOperation.Upsert)
+        private void _merge(IEnumerable<T> entities, RepositoryMergeOperation operation = RepositoryMergeOperation.Upsert)
         {
             if (entities != null)
             {
@@ -113,11 +135,22 @@ namespace Ws.Core.Extensions.Data.Repository.EF
 
         public override void Delete(T entity)
         {
-            if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Delete) ?? false)
-                ExecuteCrudCommand(entity, "delete");
-            else
-                base.Delete(entity);
+            if (entity != null)
+                if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Delete) ?? false)
+                    ExecuteCrudCommand(entity, "delete");
+                else
+                    base.Delete(entity);
         }
+
+        public override void DeleteMany(IEnumerable<T> entities)
+        {
+            if (entities != null && entities.Any())
+                if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.DeleteMany) ?? false)
+                    ExecuteCrudCommand(entities, "deletemany");
+                else
+                    base.DeleteMany(entities);
+        }
+
         #endregion
 
         #region Stored Procedure
@@ -125,10 +158,19 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         private void ExecuteCrudCommand(T entity, string action)
         {
             if (entity != null)
-            {
-                var data = Newtonsoft.Json.JsonConvert.SerializeObject(entity);
-                ExecuteCrudCommand(action, data);
-            }
+                _executeCrudCommand(entity, action);
+        }
+
+        private void ExecuteCrudCommand(IEnumerable<T> entities, string action)
+        {
+            if (entities != null && entities.Any())
+                _executeCrudCommand(entities, action);
+        }
+
+        private void _executeCrudCommand(object obj, string action)
+        {
+            var data = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+            ExecuteCrudCommand(action, data);
         }
 
         private void ExecuteMergeCommand(IEnumerable<T> entities, RepositoryMergeOperation operation)
@@ -142,7 +184,6 @@ namespace Ws.Core.Extensions.Data.Repository.EF
 
         private void ExecuteCrudCommand(string action, string data)
         {
-            var param = "@data";
             _db().SetCommandTimeout(_sp.CommandTimeOut?.Write ?? 60);
             _db().ExecuteSqlInterpolated(
                 $"exec [{_sp.Schema}].{_spPrefix}_{_sp.StoredProcedure}_{action} {data}"
@@ -151,8 +192,6 @@ namespace Ws.Core.Extensions.Data.Repository.EF
 
         private void ExecuteMergeCommand(string data, RepositoryMergeOperation operation)
         {
-            var p1 = "@data";
-            var p2 = "@operation";
             _db().SetCommandTimeout(_sp.CommandTimeOut?.Sync ?? 180);
             _db().ExecuteSqlInterpolated(
                 $"exec [{_sp.Schema}].{_spPrefix}_{_sp.StoredProcedure}_merge {data},{operation.ToString()}"
@@ -207,7 +246,7 @@ namespace Ws.Core.Extensions.Data.Repository.EF
 
         private Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade _db()
         {
-            Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade db = null;
+            Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade db;
             try
             {
                 db = _context.Database;

@@ -80,7 +80,7 @@ namespace Ws.Core.Extensions.Data
                             || 
                             type.BaseType?.BaseType == typeof(object) // i.e. Entity<T>
                             )
-                            entityBuilder.ToTable(opt?.Table ?? type.Name, opt?.Schema ?? "dbo");
+                            entityBuilder.ToTable(opt?.Table ?? type.Name, opt?.Schema ?? null);
 
                         // Map Id column
                         var idBuilder = entityBuilder.Property("Id").HasColumnName(opt?.IdColumnName ?? "Id")

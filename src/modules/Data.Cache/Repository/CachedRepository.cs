@@ -44,34 +44,77 @@ namespace Ws.Core.Extensions.Data.Repository
 
         public void Add(T entity)
         {
-            _collection.Add(entity);
-            Save();
+            if (entity != null)
+            {
+                _collection.Add(entity);
+                Save();
+            }
+        }
+
+        public void AddMany(IEnumerable<T> entities)
+        {
+            if (entities != null && entities.Any())
+            {
+                _collection.AddRange(entities);
+                Save();
+            }
         }
 
         public void Update(T entity)
         {
-            _collection = _collection.Select(_ => _.Id.Equals(entity.Id) ? entity : _).ToList();
-            Save();
+            if (entity != null)
+            {
+                var item = Find(entity.Id);
+                if (item != null)
+                    _collection[_collection.IndexOf(item)] = entity;
+                Save();
+            }
+        }
+
+        public void UpdateMany(IEnumerable<T> entities)
+        {
+            if (entities != null && entities.Any())
+            {
+                _collection
+                   .Join(entities, o => o.Id, i => i.Id, (o, i) => (o, i))
+                   .AsParallel()
+                   .ForAll(_ => _collection[_collection.IndexOf(_.o)] = _.i);
+                Save();
+            }
         }
 
         public void Merge(IEnumerable<T> entities, RepositoryMergeOperation operation = RepositoryMergeOperation.Upsert)
         {
-            switch (operation)
-            {
-                case RepositoryMergeOperation.Upsert:
-                    _collection = entities.Union(_collection, new EntityComparer<T, TKey>()).ToList();
-                    break;
-                case RepositoryMergeOperation.Sync:
-                    _collection = entities.ToList();
-                    break;
+            if (entities != null && entities.Any()) {
+                switch (operation)
+                {
+                    case RepositoryMergeOperation.Upsert:
+                        _collection = entities.Union(_collection, new EntityComparer<T, TKey>()).ToList();
+                        break;
+                    case RepositoryMergeOperation.Sync:
+                        _collection = entities.ToList();
+                        break;
+                }
+                Save();
             }
-            Save();
         }
 
         public void Delete(T entity)
         {
-            _collection.RemoveAll(_ => _.Id.Equals(entity.Id));
-            Save();
+            if (entity != null)
+            {
+                _collection.RemoveAll(_ => _.Id.Equals(entity.Id));
+                Save();
+            }
+        }
+
+        public void DeleteMany(IEnumerable<T> entities)
+        {
+            if (entities != null && entities.Any())
+            {
+                _collection.RemoveAll(_ => entities.Any(__ => __.Id.Equals(_.Id)));
+                Save();
+            }
         }
 
         private void Save()

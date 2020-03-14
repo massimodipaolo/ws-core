@@ -68,6 +68,15 @@ namespace Ws.Core.Extensions.Data.Repository
             }
         }
 
+        public virtual void AddMany(IEnumerable<T> entities)
+        {
+            if (entities != null && entities.Any())
+            {
+                _collection.AddRange(entities);
+                _context.SaveChanges();
+            }
+        }
+
         public virtual void Update(T entity)
         {
             if (entity != null)
@@ -75,6 +84,15 @@ namespace Ws.Core.Extensions.Data.Repository
                 _collection.Update(entity);
                 _context.SaveChanges();
                 //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Update);
+            }
+        }
+
+        public virtual void UpdateMany(IEnumerable<T> entities)
+        {
+            if (entities != null && entities.Any())
+            {
+                _collection.UpdateRange(entities);
+                _context.SaveChanges();
             }
         }
 
@@ -115,6 +133,15 @@ namespace Ws.Core.Extensions.Data.Repository
                 _collection.Remove(entity);
                 _context.SaveChanges();
                 //entity.OnChange(EntityChangeEventContext<TKey>.ActionTypes.Delete);
+            }
+        }
+
+        public virtual void DeleteMany(IEnumerable<T> entities)
+        {
+            if (entities != null && entities.Any())
+            {
+                _collection.RemoveRange(entities);
+                _context.SaveChanges();
             }
         }
 
