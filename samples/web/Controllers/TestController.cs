@@ -33,20 +33,6 @@ namespace web.Controllers
     public class UserController : EntityControllerWithMethods<User, Guid>
     {
         public UserController(IRepository<User, Guid> repository) : base(repository) { }
-
-        /// <summary>
-        /// Merge a list of users to the current IQueryable List
-        /// </summary>
-        /// <remarks>Merge Now!</remarks>
-        /// <param name="items"></param>
-        /// <returns><code>204</code></returns>                
-        [HttpPost]
-        [Route("merge")]
-        public IActionResult Merge([FromBody]IEnumerable<User> items)
-        {
-            _repository.Merge(items);
-            return Ok();
-        }
     }
 
     /// <summary>

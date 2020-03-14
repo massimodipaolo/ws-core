@@ -30,6 +30,10 @@
             "referenceLoopHandling": "Ignore",
             "converters": [
               {
+                "assembly": "Newtonsoft.Json",
+                "type": "Newtonsoft.Json.Converters.StringEnumConverter"
+              },
+              {
                 "assembly": "web",
                 "type": "web.Code.LocaleJsonConverter"
               }
@@ -56,6 +60,17 @@
           }
         }
       },
+      "Ws.Core.Extensions.Data.Mongo": {
+        "priority": 398,
+        "options": {
+          "connections": [
+            {
+              "connectionString": "mongodb://localhost:27017",
+              "database": "Ws-Core"
+            }
+          ]
+        }
+      },
       "Ws.Core.Extensions.Data.EF": {
         "priority": 399,
         "options": {
@@ -73,8 +88,18 @@
           ]
         }
       },
-      "Ws.Core.Extensions.Data.EF.SqlServer": {
+      "Ws.Core.Extensions.Data.EF.MySql": {
         "priority": 400,
+        "options": {
+          "connections": [
+            {
+              "connectionString": "Server=localhost;Port=33061;Database=Ws-Core;Uid=root;Pwd=WS-1234-secret;"
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Data.EF.SqlServer": {
+        "priority": 401,
         "options": {
           "connections": [
             {
@@ -97,13 +122,33 @@
           }
         }
       },
+      "Ws.Core.Extensions.Data.Cache.Memcached": {
+        "priority": 596,
+        "options": {
+          "client": {
+            "servers": [
+              {
+                "address": "localhost",
+                "port": 11211
+              }
+            ],
+            "_authentication": {
+              "type": "Enyim.Caching.Memcached.PlainTextAuthenticator",
+              "parameters": {
+                "userName": "root",
+                "password": "WS-1234-secret"
+              }
+            }
+          }
+        }
+      },
+      "Ws.Core.Extensions.Data.Cache.Redis": {
+        "priority": 597,
+        "options": { "client": { "configuration": "localhost:63791" } }
+      },
       "Ws.Core.Extensions.Data.Cache.SqlServer": {
         "priority": 598,
         "options": { "client": { "connectionString": "Server=.,14331;Database=Cache;User Id=cacheUser;Password=C4$hUs3r-Strong!Pa$$w0rd;MultipleActiveResultSets=true" } }
-      },
-      "Ws.Core.Extensions.Data.Cache.Redis": {
-        "priority": 599,
-        "options": { "client": {} }
       },
       "Ws.Core.Extensions.Data.Cache": {
         "priority": 600,
@@ -195,7 +240,7 @@
                 "name": "mssql-01"
               }
             ],
-            "http": [
+            "_http": [
               {
                 "url": "https://www.google.com",
                 "name": "outbound",

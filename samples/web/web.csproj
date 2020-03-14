@@ -21,6 +21,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\modules\Api\Api.csproj" />
+    <ProjectReference Include="..\..\src\modules\Data.Cache.Memcached\Data.Cache.Memcached.csproj" />
+    <ProjectReference Include="..\..\src\modules\Data.EF.MySql\Data.EF.MySql.csproj" />
+    <ProjectReference Include="..\..\src\modules\Data.Mongo\Data.Mongo.csproj" />
     <!--ProjectReference Include="..\..\src\modules\Data.Cache.Redis\Data.Cache.Redis.csproj" /-->
     <!--ProjectReference Include="..\..\src\modules\Data.Cache.SqlServer\Data.Cache.SqlServer.csproj" /-->
     <ProjectReference Include="..\..\src\modules\HealthCheck\HealthCheck.csproj" />
