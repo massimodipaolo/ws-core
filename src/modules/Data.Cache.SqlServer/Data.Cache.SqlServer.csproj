@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PackageVersion>3.1.0</PackageVersion>
+    <PackageVersion>3.1.1</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.Cache.SqlServer</PackageId>
     <AssemblyName>Ws.Core.Extensions.Data.Cache.SqlServer</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Data.Cache.SqlServer</RootNamespace>
@@ -21,8 +21,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="3.1.2" />
-    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="3.1.6" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>

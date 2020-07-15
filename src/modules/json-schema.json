@@ -940,11 +940,6 @@
                           "type": "boolean",
                           "default": false
                         },
-                        "dbPath": {
-                          "type": "string",
-                          "default": "healthchecksdb",
-                          "description": "Db path relative to content root, i.e. files\\db\\healthchecksdb"
-                        },
                         "route": {
                           "type": "string",
                           "default": "/healthchecks-ui"

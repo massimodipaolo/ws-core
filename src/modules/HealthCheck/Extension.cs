@@ -33,7 +33,7 @@ namespace Ws.Core.Extensions.HealthCheck
                 //services
                 if (checks.WinService != null && checks.WinService.Any())
                     foreach (var service in checks.WinService.Where(_ => !string.IsNullOrEmpty(_.ServiceName)))
-                        builder.AddWindowsServiceHealthCheck(service.ServiceName, _ => _.Status == System.ServiceProcess.ServiceControllerStatus.Running, $"service-{service.Name}", service.Status);
+                        builder.AddWindowsServiceHealthCheck(service.ServiceName, _ => _.Status == System.ServiceProcess.ServiceControllerStatus.Running, name: $"service-{service.Name}", failureStatus: service.Status);
 
                 // process
                 if (checks.Process != null && checks.Process.Any())
@@ -54,8 +54,8 @@ namespace Ws.Core.Extensions.HealthCheck
             //ui
             if (_options.Ui?.Enabled == true)
             {
-                serviceCollection.AddHealthChecksUI(_options.Ui.DbPath, _ =>
-                {
+                serviceCollection.AddHealthChecksUI(_ =>
+                {                    
                     if (_options.Ui.Endpoints != null && _options.Ui.Endpoints.Any())
                         foreach (var endpoint in _options.Ui.Endpoints.Where(_ => !string.IsNullOrEmpty(_.Uri)))
                             _.AddHealthCheckEndpoint(endpoint.Name, endpoint.Uri);
@@ -75,7 +75,8 @@ namespace Ws.Core.Extensions.HealthCheck
 
                     _.SetEvaluationTimeInSeconds(_options.Ui.EvaluationTimeinSeconds);
                     _.SetMinimumSecondsBetweenFailureNotifications(_options.Ui.MinimumSecondsBetweenFailureNotifications);
-                });
+                })
+                .AddInMemoryStorage();
             }
 
         }
