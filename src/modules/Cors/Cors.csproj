@@ -2,7 +2,7 @@
   
 	<PropertyGroup>
 		<TargetFramework>netcoreapp2.2</TargetFramework>
-		<PackageVersion>1.0.0</PackageVersion>
+		<PackageVersion>1.0.1</PackageVersion>
 		<PackageId>Ws.Core.Extensions.Cors</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Cors</AssemblyName>
 		<RootNamespace>Ws.Core.Extensions.Cors</RootNamespace>

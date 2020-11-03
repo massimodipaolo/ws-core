@@ -3,7 +3,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>  
 		<TargetFramework>netcoreapp2.2</TargetFramework>
-		<PackageVersion>1.0.0</PackageVersion> 
+		<PackageVersion>1.0.1</PackageVersion> 
 		<PackageId>Ws.Core.Extensions.Data</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Data</AssemblyName>
 		<RootNamespace>Ws.Core.Extensions.Data</RootNamespace>

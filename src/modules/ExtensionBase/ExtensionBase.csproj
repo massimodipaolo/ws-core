@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>  
 		<TargetFramework>netcoreapp2.2</TargetFramework>
-		<PackageVersion>1.0.0</PackageVersion>   
+		<PackageVersion>1.0.1</PackageVersion>   
 		<PackageId>Ws.Core.Extensions.Base</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Base</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Base</RootNamespace>

@@ -69,7 +69,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthCheck", "src\modules\
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\shared\Serialization\Serialization.projitems*{4b554c0c-b363-4c4b-80c2-7493e67f345c}*SharedItemsImports = 5
+		src\shared\Serialization\Serialization.projitems*{946ddfe8-60c9-4f1f-ae3f-66adc604e797}*SharedItemsImports = 5
+		src\shared\StaticFilesFolder\StaticFilesFolder.projitems*{a943b2ef-2fd0-416a-9c54-877ffa0c000a}*SharedItemsImports = 5
 		src\shared\Serialization\Serialization.projitems*{bebec343-27a0-432a-97a4-d0ee58174b45}*SharedItemsImports = 13
+		src\shared\StaticFilesFolder\StaticFilesFolder.projitems*{d641e4b4-aebb-4493-937b-682283515164}*SharedItemsImports = 5
 		src\shared\StaticFilesFolder\StaticFilesFolder.projitems*{f0b64cf6-d886-4a3e-b49a-db3828f8f4e5}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

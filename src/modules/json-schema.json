@@ -981,7 +981,7 @@
                         "contextData": {
                           "type": "array",
                           "items": {
-                            "enum": [ "features", "items", "session", "user", "webSockets" ]
+                            "enum": [ "cookies", "features", "headers", "items", "session", "user", "webSockets" ]
                           },
                           "description": "Pass additional context data to the prerendering entrypoint code",
                           "uniqueItems": true

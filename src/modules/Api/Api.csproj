@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>1.1.1</PackageVersion> 
+    <PackageVersion>1.1.2</PackageVersion> 
     <PackageId>Ws.Core.Extensions.Api</PackageId>
     <AssemblyName>Ws.Core.Extensions.Api</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Api</RootNamespace>     
