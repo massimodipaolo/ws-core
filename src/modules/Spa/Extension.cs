@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Ws.Core.Extensions.Base;
 
 namespace Ws.Core.Extensions.Spa
 {
@@ -25,7 +28,7 @@ namespace Ws.Core.Extensions.Spa
                     {
                         _.RootPath = _options.RootPath;
                     });
-                    if (_options.Prerendering != null)
+                    if (_options.Prerendering != null && _options.Prerendering.Enable)
                         serviceCollection.AddSpaPrerenderer();
                 }
             }
@@ -46,11 +49,11 @@ namespace Ws.Core.Extensions.Spa
                 {
                     if (_options.StaticFilesPaths != null && _options.StaticFilesPaths.Any())
                     {
-                        foreach(var opt in _options.StaticFilesPaths)
+                        foreach (var opt in _options.StaticFilesPaths)
                         {
                             if (opt != null)
                             {
-                                var staticFileOptions = opt.GetStaticFileOptions(Path.Combine(_env?.ContentRootPath ?? Directory.GetCurrentDirectory(), _options.RootPath),_env,_logger);
+                                var staticFileOptions = opt.GetStaticFileOptions(Path.Combine(_env?.ContentRootPath ?? Directory.GetCurrentDirectory(), _options.RootPath), _env, _logger);
                                 applicationBuilder.UseSpaStaticFiles(staticFileOptions);
                             }
                         }
@@ -85,8 +88,14 @@ namespace Ws.Core.Extensions.Spa
                                         {
                                             switch (p)
                                             {
+                                                case "cookies":
+                                                    data[p] = ctx.Request?.Cookies;
+                                                    break;
                                                 case "features":
                                                     data[p] = ctx.Features;
+                                                    break;
+                                                case "headers":
+                                                    data[p] = ctx.Request?.Headers;
                                                     break;
                                                 case "items":
                                                     data[p] = ctx.Items;

@@ -7,6 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ws.Core.Extensions.Base;
+using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Primitives;
 
 namespace Ws.Core.Extensions.Spa
 {
@@ -14,21 +17,35 @@ namespace Ws.Core.Extensions.Spa
     {
         private readonly RequestDelegate _next;
         private readonly ICache _cache;
+        private readonly IDiscriminator<ResponseCacheMiddleware> _discriminator;
         private readonly Options.PrerenderingOptions.CacheResponseOptions _options;
 
-        public ResponseCacheMiddleware(ICache cache, RequestDelegate next, Options.PrerenderingOptions.CacheResponseOptions options)
+        public ResponseCacheMiddleware(ICache cache, IDiscriminator<ResponseCacheMiddleware> discriminator, RequestDelegate next, Options.PrerenderingOptions.CacheResponseOptions options)
         {
             _next = next;
             _cache = cache;
+            _discriminator = discriminator;
             _options = options;
         }
 
         public async Task Invoke(HttpContext ctx)
         {
+            var _discriminator_value = _discriminator?.Value ?? ""; // init discriminator
             if (IsCachable(ctx))
             {
-                var key = $"{typeof(ResponseCacheMiddleware).Name}-{ctx.Request.Path}";
+                // copy headers
+                var headers = new List<KeyValuePair<string, StringValues>>(ctx.Response.Headers.Where(_ => _.Key != null));
+                ctx.Response.OnStarting(() =>
+                {
+                    headers.ForEach(_ =>
+                    {
+                        if (!ctx.Response.Headers.ContainsKey(_.Key))
+                            ctx.Response.Headers.Add(_.Key, _.Value);
+                    });
+                    return Task.FromResult(0);
+                });
 
+                var key = $"{typeof(ResponseCacheMiddleware).Name}-{ctx.Request.Path}-{_discriminator_value}";
                 // check cache
                 var cachedResponse = _cache.Get<string>(key);
                 if (cachedResponse != null)
@@ -53,7 +70,6 @@ namespace Ws.Core.Extensions.Spa
                         _cache.Set(key, text, CacheEntryOptions.Expiration.Never);
 
                     await ctx.Response.Body.CopyToAsync(stream);
-
                 }
             }
             else
