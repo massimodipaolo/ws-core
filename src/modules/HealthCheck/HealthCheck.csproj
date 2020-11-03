@@ -2,7 +2,7 @@
 
   <PropertyGroup>    
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageVersion>2.0.2</PackageVersion>
+    <PackageVersion>2.0.6</PackageVersion>
     <PackageId>Ws.Core.Extensions.HealthCheck</PackageId>
     <AssemblyName>Ws.Core.Extensions.HealthCheck</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.HealthCheck</RootNamespace>
