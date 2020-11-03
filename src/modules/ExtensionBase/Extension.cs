@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -73,6 +74,9 @@ namespace Ws.Core.Extensions.Base
 
         //IConfigureServicesAction
         public virtual void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider) {
+            // default generic discriminator
+            serviceCollection.TryAddSingleton(typeof(IDiscriminator), typeof(Discriminator));
+            serviceCollection.TryAddSingleton(typeof(IDiscriminator<>), typeof(Discriminator<>));
         }
 
         //IConfigureAction
