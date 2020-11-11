@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PackageVersion>3.1.1</PackageVersion>
+    <PackageVersion>3.1.2</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.Cache.Memcached</PackageId>
     <AssemblyName>Ws.Core.Extensions.Data.Cache.Memcached</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Data.Cache.Memcached</RootNamespace>
@@ -24,6 +24,6 @@
     <ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EnyimMemcachedCore" Version="2.4.3" />
+    <PackageReference Include="EnyimMemcachedCore" Version="2.4.4" />
   </ItemGroup>
 </Project>

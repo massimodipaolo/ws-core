@@ -2,7 +2,7 @@
 
   <PropertyGroup> 
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PackageVersion>3.1.0</PackageVersion>     
+    <PackageVersion>3.1.1</PackageVersion>     
     <PackageId>Ws.Core.Extensions.Message</PackageId>
     <AssemblyName>Ws.Core.Extensions.Message</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Message</RootNamespace>
@@ -20,8 +20,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="2.5.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.Network" Version="3.0.1" />
+    <PackageReference Include="MailKit" Version="2.9.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Network" Version="3.1.3" />
   </ItemGroup>
 
   <ItemGroup>

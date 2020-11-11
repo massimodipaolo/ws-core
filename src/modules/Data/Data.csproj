@@ -3,7 +3,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>  
 		<TargetFramework>netcoreapp3.1</TargetFramework>
-		<PackageVersion>3.1.0</PackageVersion> 
+		<PackageVersion>3.1.1</PackageVersion> 
 		<PackageId>Ws.Core.Extensions.Data</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Data</AssemblyName>
 		<RootNamespace>Ws.Core.Extensions.Data</RootNamespace>
@@ -19,5 +19,9 @@
     <NoWarn>1701;1702;1705;1591</NoWarn>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
+  </ItemGroup>
 
 </Project> 
