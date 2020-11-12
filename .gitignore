@@ -204,3 +204,4 @@ _Pvt_Extensions
 # Task Secret
 .env
 healthchecksdb
+/.build
