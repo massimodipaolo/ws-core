@@ -1,22 +1,23 @@
 [
   {
+    
     "Name": "Massimo & Simone - updated",
+    "Bio": [
+      {
+        "Id": "it",
+        "Text": "Massimo Ã¨ nato nel 1976"
+      },
+      {
+        "Id": "en",
+        "Text": "Massimo was born in 1976"
+      }
+    ],
     "Active": true,
-    "Id": "01c0423e-f36b-1410-8001-800000000000",
-    "Bio": 
-      [
-        {
-          "Code": "it",
-          "Text": "Massimo è nato nel 1976"
-        },
-        {
-          "Code": "en",
-          "Text": "Massimo was born in 1976"
-        }
-      ]    
+    "Id": "01c0423e-f36b-1410-8001-800000000000"
   },
   {
     "Name": "Luca",
+    "Role":  "Editor",
     "Active": true,
     "Id": "01c0423e-f36b-1410-8001-800000000001"
   },

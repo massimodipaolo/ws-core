@@ -26,7 +26,7 @@ namespace web.Extensions
         public virtual void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
             var _config = serviceProvider.GetRequiredService<IConfiguration>();
-            if (true /*_config.GetSection($"{Startup._appConfigSectionRoot}:cronJob")?.GetValue<bool>("Enabled") ?? false*/)
+            if (false /*_config.GetSection($"{Startup._appConfigSectionRoot}:cronJob")?.GetValue<bool>("Enabled") ?? false*/)
             {
                 serviceCollection.AddHangfire(x => x.UseSqlServerStorage(
                     _config[$"{Ws.Core.Extensions.Base.Configuration.SectionRoot}:assemblies:Ws.Core.Extensions.Data.EF.SqlServer:options:connections:0:connectionString"],
@@ -45,7 +45,7 @@ namespace web.Extensions
         public virtual void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
         {
             var _appConfigMonitor = applicationBuilder.ApplicationServices?.GetRequiredService<IOptions<AppConfig>>();
-            if (true /*_appConfigMonitor?.Value?.CronJob?.Enabled ?? false*/)
+            if (false /*_appConfigMonitor?.Value?.CronJob?.Enabled ?? false*/)
             { 
 
                 applicationBuilder.UseHangfireServer(new BackgroundJobServerOptions

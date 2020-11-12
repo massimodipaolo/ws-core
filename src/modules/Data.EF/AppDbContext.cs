@@ -76,11 +76,14 @@ namespace Ws.Core.Extensions.Data
 
                         // https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-3.0/breaking-changes#totable-on-a-derived-type-throws-an-exception
                         // https://github.com/aspnet/EntityFrameworkCore/issues/11811
-                        if (type.BaseType == type // IEntity<T>
+                        if (
+                            type.BaseType == typeof(object) // i.e. partial class
+                            || 
+                            type.BaseType == type // IEntity<T>
                             || 
                             type.BaseType?.BaseType == typeof(object) // i.e. Entity<T>
                             )
-                            entityBuilder.ToTable(opt?.Table ?? type.Name, opt?.Schema ?? "dbo");
+                            entityBuilder.ToTable(opt?.Table ?? type.Name, opt?.Schema ?? null);
 
                         // Map Id column
                         var idBuilder = entityBuilder.Property("Id").HasColumnName(opt?.IdColumnName ?? "Id")

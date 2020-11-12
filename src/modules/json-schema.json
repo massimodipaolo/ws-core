@@ -213,6 +213,14 @@
           "enum": [ "Local", "Utc", "Unspecified", "RoundtripKind" ],
           "default": "RoundtripKind"
         },
+        "typeNameHandling": {
+          "enum": [ "None", "Objects", "Arrays", "All", "Auto" ],
+          "default": "None"
+        },
+        "typeNameAssemblyFormatHandling": {
+          "enum": [ "Simple", "Full" ],
+          "default": "Simple"
+        },
         "converters": {
           "type": "array",
           "description": "List of assembly/JsonConvert type to apply",
@@ -225,7 +233,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "JsonConverter class full name, i.e. web.Code.LocaleJsonConverter\nNote: class needs a ctor with params object[] args"
+                "description": "JsonConverter class full name, i.e. web.Code.LocaleJsonConverter\nNote: class needs a ctor with params object[] args, parameterless ctor will also evaluate as fallback"
               }
             }
           }
@@ -603,7 +611,7 @@
                             "default": "Id"
                           },
                           "IdHasDefaultValue": {
-                            "type": "boolean",                            
+                            "type": "boolean",
                             "default": true
                           },
                           "properties": {
@@ -727,7 +735,7 @@
                                 "description": "Call sp for this methods only; If empty: all methods",
                                 "default": "all",
                                 "type": "array",
-                                "items": { "enum": [ "list", "find", "add", "update", "merge", "delete" ] },
+                                "items": { "enum": [ "list", "find", "add", "addmany", "update", "updatemany", "merge", "delete", "deletemany" ] },
                                 "uniqueItems": true
                               },
                               "commandTimeOut": {
@@ -742,7 +750,7 @@
                                   "write": {
                                     "type": "number",
                                     "default": 60,
-                                    "description": "For Add,Update,Delete methods"
+                                    "description": "For Add,AddMany,Update,UpdateMany,Delete,DeleteMany methods"
                                   },
                                   "sync": {
                                     "type": "number",
@@ -931,11 +939,6 @@
                         "enabled": {
                           "type": "boolean",
                           "default": false
-                        },
-                        "dbPath": {
-                          "type": "string",
-                          "default": "healthchecksdb",
-                          "description": "Db path relative to content root, i.e. files\\db\\healthchecksdb"
                         },
                         "route": {
                           "type": "string",
@@ -1260,7 +1263,7 @@
                         "contextData": {
                           "type": "array",
                           "items": {
-                            "enum": [ "features", "items", "session", "user", "webSockets" ]
+                            "enum": [ "cookies", "features", "headers", "items", "session", "user", "webSockets" ]
                           },
                           "description": "Pass additional context data to the prerendering entrypoint code",
                           "uniqueItems": true

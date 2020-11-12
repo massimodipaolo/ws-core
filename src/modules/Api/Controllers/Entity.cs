@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Ws.Core.Extensions.Data;
@@ -45,17 +46,42 @@ namespace Ws.Core.Extensions.Api.Controllers
             _repository.Add(entity);
         }
 
+        [Route("many")]
+        [HttpPost]
+        public virtual void PostMany([FromBody]IEnumerable<T> entities)
+        {
+            _repository.AddMany(entities);
+        }
+
         [HttpPut("{id}")]
         public virtual void Put(TKey id, [FromBody]T entity)
         {
-
             _repository.Update(entity);
+        }
+
+        [HttpPut]
+        public virtual void PutMany([FromBody]IEnumerable<T> entities)
+        {
+            _repository.UpdateMany(entities);
+        }
+
+        [Route("merge/{operation}")]
+        [HttpPost]
+        public virtual void Merge(RepositoryMergeOperation operation, [FromBody]IEnumerable<T> entities)
+        {
+            _repository.Merge(entities, operation);
         }
 
         [HttpDelete("{id}")]
         public virtual void Delete([FromBody]T entity)
         {
             _repository.Delete(entity);
+        }
+
+        [HttpDelete]
+        public virtual void DeleteMany([FromBody]IEnumerable<T> entities)
+        {
+            _repository.DeleteMany(entities);
         }
     }
 }

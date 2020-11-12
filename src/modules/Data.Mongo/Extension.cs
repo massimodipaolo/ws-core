@@ -23,37 +23,21 @@ namespace Ws.Core.Extensions.Data.Mongo
             var connections = _options?.Connections;
             if (connections != null && connections.Any())
             {
-
-                BsonClassMap.RegisterClassMap<Extensions.Data.Entity<int>>(cm =>
-               {
-                   cm.AutoMap();
-                   cm.MapIdMember(c => c.Id);
-                   cm.IdMemberMap.SetSerializer(new Int32Serializer(BsonType.Int32));
-               });
-
-                BsonClassMap.RegisterClassMap<Extensions.Data.Entity<long>>(cm =>
+                // Mappings
+                var tKeys = new KeyValuePair<Type, IBsonSerializer>[] {
+                new KeyValuePair<Type,IBsonSerializer>(typeof(Entity<int>),new Int32Serializer(BsonType.Int32)),
+                new KeyValuePair<Type,IBsonSerializer>(typeof(Entity<long>),new Int64Serializer(BsonType.Int64)),
+                new KeyValuePair<Type,IBsonSerializer>(typeof(Entity<Guid>),new GuidSerializer(BsonType.String)),
+                new KeyValuePair<Type,IBsonSerializer>(typeof(Entity<string>),new StringSerializer(BsonType.String))
+                };
+                foreach (var tKey in tKeys)
                 {
+                    var cm = new BsonClassMap(tKey.Key);
                     cm.AutoMap();
-                    cm.MapIdMember(c => c.Id);
-                    cm.IdMemberMap.SetSerializer(new Int64Serializer(BsonType.Int64));
-                });
-
-
-                BsonClassMap.RegisterClassMap<Extensions.Data.Entity<Guid>>(cm =>
-                {
-                    cm.AutoMap();
-                    cm.MapIdMember(c => c.Id);
-                    cm.IdMemberMap.SetSerializer(new GuidSerializer(BsonType.String));
-                });
-
-                BsonClassMap.RegisterClassMap<Extensions.Data.Entity<string>>(cm =>
-                {
-                    cm.AutoMap();
-                    cm.MapIdMember(c => c.Id);
-                    cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.String));
-                    //cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
-                });
-
+                    cm.MapIdMember(tKey.Key.GetMember("Id").Single());
+                    cm.IdMemberMap.SetSerializer(tKey.Value);
+                    BsonClassMap.RegisterClassMap(cm);
+                }
 
                 var hcBuilder = serviceCollection.AddHealthChecks();
                 foreach (var conn in connections)

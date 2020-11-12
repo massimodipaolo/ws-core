@@ -2,7 +2,7 @@
 
   <PropertyGroup> 
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PackageVersion>3.1.0</PackageVersion>    
+    <PackageVersion>3.1.1</PackageVersion>    
     <PackageId>Ws.Core.Extensions.StaticFiles</PackageId>
     <AssemblyName>Ws.Core.Extensions.StaticFiles</AssemblyName>       
     <RootNamespace>Ws.Core.Extensions.StaticFiles</RootNamespace>
@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="3.1.2" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="3.1.10" />
   </ItemGroup>
 
   <ItemGroup>

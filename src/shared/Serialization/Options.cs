@@ -12,6 +12,8 @@ namespace Ws.Core.Shared.Serialization
         public Newtonsoft.Json.ReferenceLoopHandling ReferenceLoopHandling { get; set; } = Newtonsoft.Json.ReferenceLoopHandling.Error;
         public Newtonsoft.Json.DateParseHandling DateParseHandling { get; set; } = Newtonsoft.Json.DateParseHandling.DateTime;
         public Newtonsoft.Json.DateTimeZoneHandling DateTimeZoneHandling { get; set; } = Newtonsoft.Json.DateTimeZoneHandling.RoundtripKind;
+        public Newtonsoft.Json.TypeNameHandling TypeNameHandling { get; set; } = Newtonsoft.Json.TypeNameHandling.None;
+        public Newtonsoft.Json.TypeNameAssemblyFormatHandling TypeNameAssemblyFormatHandling { get; set; } = Newtonsoft.Json.TypeNameAssemblyFormatHandling.Simple;
         /// <summary>
         /// List of assembly/JsonConvert type to apply
         /// </summary>
@@ -35,7 +37,9 @@ namespace Ws.Core.Shared.Serialization
                 Formatting = this.Formatting,
                 ReferenceLoopHandling = this.ReferenceLoopHandling,
                 DateParseHandling = this.DateParseHandling,
-                DateTimeZoneHandling = this.DateTimeZoneHandling
+                DateTimeZoneHandling = this.DateTimeZoneHandling,
+                TypeNameHandling = this.TypeNameHandling,
+                TypeNameAssemblyFormatHandling = this.TypeNameAssemblyFormatHandling
             };
             return settings;
         }
@@ -47,6 +51,8 @@ namespace Ws.Core.Shared.Serialization
             settings.ReferenceLoopHandling = this.ReferenceLoopHandling;
             settings.DateParseHandling = this.DateParseHandling;
             settings.DateTimeZoneHandling = this.DateTimeZoneHandling;
+            settings.TypeNameHandling = this.TypeNameHandling;
+            settings.TypeNameAssemblyFormatHandling = this.TypeNameAssemblyFormatHandling;
             AddConverters(ref settings);
         }
 
@@ -54,7 +60,7 @@ namespace Ws.Core.Shared.Serialization
         {
             if (Converters != null && Converters.Any())
                 foreach (var converter in Converters.Where(_ => _ != null))
-                {                    
+                {
                     var assembly = AppDomain.CurrentDomain.GetAssemblies().AsEnumerable().Where(_ => _.FullName?.Split(',')[0] == converter.Assembly).FirstOrDefault();
                     if (null != assembly)
                     {
@@ -63,12 +69,23 @@ namespace Ws.Core.Shared.Serialization
                             Type converterType = System.Reflection.Assembly.LoadFrom(assembly.Location).GetType(converter.Type);
                             if (typeof(Newtonsoft.Json.JsonConverter).IsAssignableFrom(converterType))
                             {
-                                var obj = (Newtonsoft.Json.JsonConverter)Activator.CreateInstance(
-                                    converterType,
-                                    new object[] {
-                                    new Microsoft.AspNetCore.Http.HttpContextAccessor()
-                                    });
-                                settings.Converters.Add(obj);
+                                Newtonsoft.Json.JsonConverter obj = null;
+                                try
+                                {
+                                    // try parms object[] parameters
+                                    obj = (Newtonsoft.Json.JsonConverter)Activator.CreateInstance(
+                                            converterType,
+                                            new object[] {
+                                                new Microsoft.AspNetCore.Http.HttpContextAccessor()
+                                            });
+                                }
+                                catch
+                                {
+                                    // Try parameterless ctor
+                                    obj = (Newtonsoft.Json.JsonConverter)Activator.CreateInstance(converterType);
+                                }
+                                if (obj != null)
+                                    settings.Converters.Add(obj);
                             }
                         }
                         catch { }

@@ -59,6 +59,9 @@ namespace Ws.Core.Extensions.Api
                 services.AddSwaggerGen(opt =>
                 {
                     opt.CustomSchemaIds(_ => _.FullName);
+                    
+                    opt.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+
                     //Xml comments
                     if (_doc.XmlComments != null && !string.IsNullOrEmpty(_doc.XmlComments.FileName))
                     {
@@ -182,4 +185,6 @@ namespace Ws.Core.Extensions.Api
             }
         }
     }
+
+    public class Documentation { }
 }

@@ -16,6 +16,16 @@ namespace web.Code
         /// <example>Websolute</example>
         public string Company { get; set; }
         public LocaleText Bio { get; set; }
+        public UserRole Role { get; set; } = UserRole.None;
         public bool Active { get; set; } = true;
+    }
+
+    public enum UserRole
+    {
+        None,
+        Member,
+        Editor,
+        Administrator,
+        Supervisor
     }
 }
