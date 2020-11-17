@@ -62,6 +62,7 @@ namespace Ws.Core.Extensions.Api.Controllers
                         user = $"{Environment.UserDomainName}\\{Environment.UserName}",
                         process = System.Diagnostics.Process.GetCurrentProcess().MainModule
                     },
+                    _ctx.HttpContext?.Request?.Headers,
                     remoteIpAddress = _ctx.HttpContext?.Connection?.RemoteIpAddress.ToString()
                 },
                 cache = _cache.Keys != null ? _cache.Keys.Count() : 0,
