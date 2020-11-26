@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup> 
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PackageVersion>3.1.4</PackageVersion>    
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <PackageVersion>5.0.0-beta</PackageVersion>
     <PackageId>Ws.Core.Extensions.Api</PackageId>
     <AssemblyName>Ws.Core.Extensions.Api</AssemblyName> 
     <RootNamespace>Ws.Core.Extensions.Api</RootNamespace>     
@@ -21,7 +21,7 @@
    
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>

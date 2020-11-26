@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PackageVersion>3.1.2</PackageVersion>
+    <TargetFramework>net5.0</TargetFramework>
+    <PackageVersion>5.0.0-beta</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.Cache.Redis</PackageId>
     <AssemblyName>Ws.Core.Extensions.Data.Cache.Redis</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Data.Cache.Redis</RootNamespace>
@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="3.1.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="5.0.0-preview1" />
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
   </ItemGroup>
 

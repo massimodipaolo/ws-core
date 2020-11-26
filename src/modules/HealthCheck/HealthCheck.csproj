@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>    
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PackageVersion>3.1.2</PackageVersion> 
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <PackageVersion>5.0.0-beta</PackageVersion>
     <PackageId>Ws.Core.Extensions.HealthCheck</PackageId>
     <AssemblyName>Ws.Core.Extensions.HealthCheck</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.HealthCheck</RootNamespace>
@@ -20,12 +20,12 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.Network" Version="3.1.3" />
-    <PackageReference Include="AspNetCore.HealthChecks.System" Version="3.1.2" />
-    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="3.1.3" />
-    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="3.1.2" />
-    <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="3.1.2" />
-    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="3.1.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.Network" Version="5.0.0-preview1" />
+    <PackageReference Include="AspNetCore.HealthChecks.System" Version="5.0.0-preview1" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="5.0.0-preview1" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="5.0.0-preview1" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="5.0.0-preview1" />
+    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="5.0.0-preview1" />
   </ItemGroup>  
 
   <ItemGroup>

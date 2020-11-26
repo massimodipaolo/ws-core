@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PackageVersion>0.0.2-alpha</PackageVersion>  
+    <TargetFramework>net5.0</TargetFramework>
+    <PackageVersion>0.0.3-alpha</PackageVersion>  
     <PackageId>Ws.Core.Extensions.Identity</PackageId>
     <AssemblyName>Ws.Core.Extensions.Identity</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Identity</RootNamespace>
@@ -20,7 +20,7 @@
   </PropertyGroup>  
 
   <ItemGroup>
-    <PackageReference Include="IdentityServer4" Version="3.1.2" />
+    <PackageReference Include="IdentityServer4" Version="4.1.1" />
   </ItemGroup>
 
   <ItemGroup>

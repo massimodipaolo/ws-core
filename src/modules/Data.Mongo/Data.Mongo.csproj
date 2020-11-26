@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
-		<PackageVersion>3.1.2</PackageVersion>
-		<PackageId>Ws.Core.Extensions.Data.Mongo</PackageId>
+    <TargetFramework>net5.0</TargetFramework>
+    <PackageVersion>5.0.0-beta</PackageVersion>
+    <PackageId>Ws.Core.Extensions.Data.Mongo</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Data.Mongo</AssemblyName>
 		<RootNamespace>Ws.Core.Extensions.Data.Mongo</RootNamespace>
     <Authors>Massimo Di Paolo</Authors>
@@ -20,7 +20,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-		<PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="3.1.3" />
+		<PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="5.0.0-preview1" />
 		<PackageReference Include="MongoDB.Driver" Version="2.11.4" />
 	</ItemGroup>
 	<ItemGroup>

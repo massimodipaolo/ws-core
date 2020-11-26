@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup> 
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PackageVersion>3.1.1</PackageVersion> 
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <PackageVersion>5.0.0-alpha</PackageVersion>
     <PackageId>Ws.Core.Extensions.Spa</PackageId>
     <AssemblyName>Ws.Core.Extensions.Spa</AssemblyName> 
     <RootNamespace>Ws.Core.Extensions.Spa</RootNamespace>
