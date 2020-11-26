@@ -14,13 +14,12 @@ namespace Ws.Core.Extensions.Message
 {
     public class EmailMessage : IMessage
     {
-        private ILogger<IMessage> _logger { get; set; }
-        private IMessageConfiguration _config { get; set; }
-        private string[] _trustServerCerticate = new string[] { };
+        private ILogger<IMessage> logger { get; set; }
+        private IMessageConfiguration config { get; set; }
         public EmailMessage(ILogger<IMessage> logger, IMessageConfiguration config)
         {
-            _logger = logger;
-            _config = config;
+            this.logger = logger;
+            this.config = config;
         }
         
         /*
@@ -33,7 +32,7 @@ namespace Ws.Core.Extensions.Message
         public async Task SendAsync(Message message)
         {
 
-            var sender = _config.Senders.FirstOrDefault();
+            var sender = config.Senders.FirstOrDefault();
             if (sender != null && !string.IsNullOrEmpty(sender.Address))
             {
                 var mime = new MimeMessage();
@@ -67,8 +66,10 @@ namespace Ws.Core.Extensions.Message
                 var attachments = message.Attachments?.Where(_ => _.Content.Length > 0);
                 if (attachments != null && attachments.Any())
                 {
-                    var multipart = new Multipart("mixed");
-                    multipart.Add(body);
+                    var multipart = new Multipart("mixed")
+                    {
+                        body
+                    };
 
                     foreach (var attachment in attachments)
                     {
@@ -86,80 +87,76 @@ namespace Ws.Core.Extensions.Message
                 else
                     mime.Body = body;
 
-                using (var client = new MailKit.Net.Smtp.SmtpClient())
+                using var client = new MailKit.Net.Smtp.SmtpClient();
+                try
                 {
-                    try
-                    {
-                        if (sender.SkipCertificateValidation)
-                            client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    if (sender.SkipCertificateValidation)
+                        client.ServerCertificateValidationCallback = (s, c, h, e) => true;
 
-                        await client.ConnectAsync(sender.Address, sender.Port == 0 ? 25 : sender.Port, sender.EnableSsl ? MailKit.Security.SecureSocketOptions.Auto : MailKit.Security.SecureSocketOptions.None);
+                    await client.ConnectAsync(sender.Address, sender.Port == 0 ? 25 : sender.Port, sender.EnableSsl ? MailKit.Security.SecureSocketOptions.Auto : MailKit.Security.SecureSocketOptions.None);
 
-                        client.AuthenticationMechanisms.Remove("XOAUTH2");
-                        if (!string.IsNullOrEmpty(sender.UserName) && !string.IsNullOrEmpty(sender.Password))
-                            await client.AuthenticateAsync(sender.UserName, sender.Password).ConfigureAwait(false);
+                    client.AuthenticationMechanisms.Remove("XOAUTH2");
+                    if (!string.IsNullOrEmpty(sender.UserName) && !string.IsNullOrEmpty(sender.Password))
+                        await client.AuthenticateAsync(sender.UserName, sender.Password).ConfigureAwait(false);
 
-                        await client.SendAsync(mime).ConfigureAwait(false);
-                    }
-                    catch (Exception ex) when (ex is MailKit.Security.SslHandshakeException || ex is System.Net.Sockets.SocketException || ex is MailKit.ProtocolException)
-                    {
-                        _logger.LogError(ex, "Smtp connection error");
-                    }
-                    catch (Exception ex) when (ex is MailKit.Security.AuthenticationException || ex is MailKit.Security.SaslException)
-                    {
-                        _logger.LogError(ex, "Smtp authentication error");
-                    }                    
-                    catch (Exception ex)
-                    {
-                        _logger.LogWarning(ex, "Send email error");
-                    }
-                    finally
-                    {
-                        await client.DisconnectAsync(true).ConfigureAwait(false);
-                    }
+                    await client.SendAsync(mime).ConfigureAwait(false);
+                }
+                catch (Exception ex) when (ex is MailKit.Security.SslHandshakeException || ex is System.Net.Sockets.SocketException || ex is MailKit.ProtocolException)
+                {
+                    logger.LogError(ex, "Smtp connection error");
+                }
+                catch (Exception ex) when (ex is MailKit.Security.AuthenticationException || ex is MailKit.Security.SaslException)
+                {
+                    logger.LogError(ex, "Smtp authentication error");
+                }
+                catch (Exception ex)
+                {
+                    logger.LogWarning(ex, "Send email error");
+                }
+                finally
+                {
+                    await client.DisconnectAsync(true).ConfigureAwait(false);
                 }
             }
         }
 
         public async Task<IEnumerable<Message>> ReceiveAsync()
         {
-            var receiver = _config.Receivers.FirstOrDefault();
+            var receiver = config.Receivers.FirstOrDefault();
             if (receiver != null && !string.IsNullOrEmpty(receiver.Address))
             {
-                using (var client = new MailKit.Net.Pop3.Pop3Client())
+                using var client = new MailKit.Net.Pop3.Pop3Client();
+                await client.ConnectAsync(receiver.Address, receiver.Port == 0 ? 110 : receiver.Port).ConfigureAwait(false);
+                client.AuthenticationMechanisms.Remove("XOAUTH2");
+                if (!string.IsNullOrEmpty(receiver.UserName) && !string.IsNullOrEmpty(receiver.Password))
+                    await client.AuthenticateAsync(receiver.UserName, receiver.Password).ConfigureAwait(false);
+                List<Message> emails = new List<Message>();
+                for (int i = 0; i < client.Count && i < 10; i++)
                 {
-                    await client.ConnectAsync(receiver.Address, receiver.Port == 0 ? 110 : receiver.Port).ConfigureAwait(false);
-                    client.AuthenticationMechanisms.Remove("XOAUTH2");
-                    if (!string.IsNullOrEmpty(receiver.UserName) && !string.IsNullOrEmpty(receiver.Password))
-                        await client.AuthenticateAsync(receiver.UserName, receiver.Password).ConfigureAwait(false);
-                    List<Message> emails = new List<Message>();
-                    for (int i = 0; i < client.Count && i < 10; i++)
+                    var mime = await client.GetMessageAsync(i).ConfigureAwait(false);
+                    var message = new Message
                     {
-                        var mime = await client.GetMessageAsync(i).ConfigureAwait(false);
-                        var message = new Message
-                        {
-                            Subject = mime.Subject,
-                            Content = !string.IsNullOrEmpty(mime.HtmlBody) ? mime.HtmlBody : mime.TextBody
-                        };
-                        var _from = (MailboxAddress)mime.From.FirstOrDefault();
-                        message.Sender = new Message.Actor { Name = _from.Name, Address = _from.Address };
-                        message.Recipients = new List<Message.Actor>();
-                        ((List<Message.Actor>)message.Recipients).AddRange(
-                            mime.To.Select(_ => (MailboxAddress)_).Select(_ => new Message.Actor { Name = _.Name, Address = _.Address, Type = Message.ActorType.Primary })
-                            .Union(mime.Cc.Select(_ => (MailboxAddress)_).Select(_ => new Message.Actor { Name = _.Name, Address = _.Address, Type = Message.ActorType.Subscriber }))
-                            .Union(mime.Bcc.Select(_ => (MailboxAddress)_).Select(_ => new Message.Actor { Name = _.Name, Address = _.Address, Type = Message.ActorType.Logging }))
-                        );
-                        emails.Add(message);
-                    }
-                    return emails;
+                        Subject = mime.Subject,
+                        Content = !string.IsNullOrEmpty(mime.HtmlBody) ? mime.HtmlBody : mime.TextBody
+                    };
+                    var _from = (MailboxAddress)mime.From.FirstOrDefault();
+                    message.Sender = new Message.Actor { Name = _from.Name, Address = _from.Address };
+                    message.Recipients = new List<Message.Actor>();
+                    ((List<Message.Actor>)message.Recipients).AddRange(
+                        mime.To.Select(_ => (MailboxAddress)_).Select(_ => new Message.Actor { Name = _.Name, Address = _.Address, Type = Message.ActorType.Primary })
+                        .Union(mime.Cc.Select(_ => (MailboxAddress)_).Select(_ => new Message.Actor { Name = _.Name, Address = _.Address, Type = Message.ActorType.Subscriber }))
+                        .Union(mime.Bcc.Select(_ => (MailboxAddress)_).Select(_ => new Message.Actor { Name = _.Name, Address = _.Address, Type = Message.ActorType.Logging }))
+                    );
+                    emails.Add(message);
                 }
+                return emails;
             }
             return null;
         }
 
         public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
         {
-            var smtp = _config.Senders?.FirstOrDefault();
+            var smtp = config.Senders?.FirstOrDefault();
             if (smtp != null)
             {
                 var options = new HealthChecks.Network.SmtpHealthCheckOptions()

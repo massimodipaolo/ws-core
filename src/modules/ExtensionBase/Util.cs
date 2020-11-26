@@ -29,7 +29,7 @@ namespace Ws.Core.Extensions.Base
                         }
                         catch
                         {
-                            return new Type[] { };
+                            return Array.Empty<Type>();
                         }
                     })?.ToList();
             }

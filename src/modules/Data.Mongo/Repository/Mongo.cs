@@ -10,8 +10,8 @@ namespace Ws.Core.Extensions.Data.Repository
 {
     public class Mongo<T, TKey> : IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
-        private Mongo.Options _config;
-        IMongoCollection<T> _collection;
+        private readonly Mongo.Options _config;
+        private readonly IMongoCollection<T> _collection;
 
         private IMongoCollection<T> getCollectionByConnection(string name)
         {

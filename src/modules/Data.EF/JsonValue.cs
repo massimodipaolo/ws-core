@@ -13,7 +13,7 @@ namespace Ws.Core.Extensions.Data.EF
 
     public static class ValueConversionExtensions
     {
-        private static JsonSerializerSettings _jsonSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+        private static readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
         public static PropertyBuilder HasJsonConversion(this PropertyBuilder propertyBuilder, Type type)
         {

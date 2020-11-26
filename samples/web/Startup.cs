@@ -14,10 +14,8 @@ namespace web
 {
     public class Startup : Ws.Core.Startup<AppConfig>
     {
-        public static string _appConfigSectionRoot;
         public Startup(IWebHostEnvironment hostingEnvironment, IConfiguration configuration) : base(hostingEnvironment, configuration)
         {
-            _appConfigSectionRoot = appConfigSectionRoot;
         }
 
         public override void ConfigureServices(IServiceCollection services)
@@ -38,7 +36,7 @@ namespace web
                 );
             */
 
-            Ws.Core.AppInfo<AppConfig>.Set(env: _env, config: _config, services: services);
+            Ws.Core.AppInfo<AppConfig>.Set(env: env, config: config, services: services);
         }
 
         public override void Configure(IApplicationBuilder app, IOptionsMonitor<AppConfig> appConfigMonitor, IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor, IHostApplicationLifetime applicationLifetime, ILogger<Ws.Core.Program> logger)

@@ -16,18 +16,14 @@ namespace Ws.Core.Extensions.Api.Controllers
 {
     public class DiagnosticController<TConfig> : BaseController where TConfig : class, Ws.Core.IAppConfiguration, new()
     {
-        private ICache _cache;
-        private IConfiguration _config;
-        private IWebHostEnvironment _env;
-        private IOptionsMonitor<TConfig> _appConfigMonitor;
-        private IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> _extConfigMonitor;
-        private IHostApplicationLifetime _applicationLifetime;
+        private readonly ICache _cache;
+        private readonly IConfiguration _config;
+        private readonly IWebHostEnvironment _env;
+        private readonly IHostApplicationLifetime _applicationLifetime;
         public DiagnosticController(
             ICache cache,
             IConfiguration config,
             IWebHostEnvironment env,
-            IOptionsMonitor<TConfig> appConfigMonitor,
-            IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor,
             IHostApplicationLifetime applicationLifetime,
             IHttpContextAccessor ctx
             ) : base(ctx)
@@ -35,8 +31,6 @@ namespace Ws.Core.Extensions.Api.Controllers
             _cache = cache;
             _config = config;
             _env = env;
-            _appConfigMonitor = appConfigMonitor;
-            _extConfigMonitor = extConfigMonitor;
             _applicationLifetime = applicationLifetime;
         }
 
@@ -50,7 +44,7 @@ namespace Ws.Core.Extensions.Api.Controllers
             {
                 info = new
                 {
-                    uptime = Startup<TConfig>._uptime,
+                    Startup<TConfig>.Uptime,
                     app = AppInfo<TConfig>.App?.ServerFeatures,
                     env = new
                     {
@@ -100,7 +94,7 @@ namespace Ws.Core.Extensions.Api.Controllers
         public virtual async Task<IActionResult> Stop()
         {
             await System.Threading.Tasks.Task.Run(() => _applicationLifetime.StopApplication());
-            return Ok(new { uptime = Startup<TConfig>._uptime, status = "Stopping" });
+            return Ok(new { Startup<TConfig>.Uptime, status = "Stopping" });
         }
 
     }

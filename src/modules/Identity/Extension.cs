@@ -9,7 +9,7 @@ namespace Ws.Core.Extensions.Identity
 {
     public class Extension: Base.Extension
     {
-        private Options _options => GetOptions<Options>();
+        private Options options => GetOptions<Options>();
 
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
@@ -30,36 +30,36 @@ namespace Ws.Core.Extensions.Identity
                 opt.Events.RaiseErrorEvents = true;
                 opt.Events.RaiseInformationEvents = true;                
             });
-            if (_options.InMemory != null && _options.InMemory.Enable)
+            if (options.InMemory != null && options.InMemory.Enable)
             {
-                if (_options.InMemory.IdentityResources != null)
+                if (options.InMemory.IdentityResources != null)
                     builder
-                        .AddInMemoryIdentityResources(_options.InMemory.IdentityResources);
+                        .AddInMemoryIdentityResources(options.InMemory.IdentityResources);
 
-                if (_options.InMemory.ApiResources != null)
+                if (options.InMemory.ApiResources != null)
                     builder
-                        .AddInMemoryApiResources(_options.InMemory.ApiResources);
+                        .AddInMemoryApiResources(options.InMemory.ApiResources);
 
-                if (_options.InMemory.Clients != null)
+                if (options.InMemory.Clients != null)
                     builder                        
-                        .AddInMemoryClients(_options.InMemory.Clients);                    
+                        .AddInMemoryClients(options.InMemory.Clients);                    
 
-                if (_options.InMemory.PersistedGrants)
+                if (options.InMemory.PersistedGrants)
                     builder.AddInMemoryPersistedGrants();
 
-                if (_options.InMemory.Caching)
+                if (options.InMemory.Caching)
                     builder.AddInMemoryCaching();
             }
 
-            if (_options.DeveloperSigningCredential)
+            if (options.DeveloperSigningCredential)
                 builder.AddDeveloperSigningCredential();
 
-            if (_options.JwtBearerClientAuthentication)
+            if (options.JwtBearerClientAuthentication)
                 builder
                     .AddJwtBearerClientAuthentication();                    
 
-            if (_options.TestUsers != null && _options.TestUsers.Any())
-                builder.AddTestUsers(_options.TestUsers.ToList());            
+            if (options.TestUsers != null && options.TestUsers.Any())
+                builder.AddTestUsers(options.TestUsers.ToList());            
         }
 
         public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)

@@ -11,14 +11,14 @@ namespace Ws.Core.Extensions.HealthCheck
 {
     public class Extension : Base.Extension
     {
-        private Options _options => GetOptions<Options>() ?? new Options();
+        private Options options => GetOptions<Options>() ?? new Options();
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
             base.Execute(serviceCollection, serviceProvider);
             var builder = serviceCollection.AddHealthChecks();
 
             // checks
-            var checks = _options.Checks;
+            var checks = options.Checks;
             if (checks != null)
             {
                 // storage
@@ -30,10 +30,12 @@ namespace Ws.Core.Extensions.HealthCheck
                 if (checks.Memory != null)
                     builder.AddProcessAllocatedMemoryHealthCheck(checks.Memory.MaximumAllocatedMb, $"memory-allocated", checks.Memory.Status);
 
-                //services
-                if (checks.WinService != null && checks.WinService.Any())
+                // win services
+#pragma warning disable CA1416
+                if (checks.WinService != null && checks.WinService.Any() && OperatingSystem.IsWindows())
                     foreach (var service in checks.WinService.Where(_ => !string.IsNullOrEmpty(_.ServiceName)))
                         builder.AddWindowsServiceHealthCheck(service.ServiceName, _ => _.Status == System.ServiceProcess.ServiceControllerStatus.Running, name: $"service-{service.Name}", failureStatus: service.Status);
+#pragma warning restore CA1416
 
                 // process
                 if (checks.Process != null && checks.Process.Any())
@@ -52,16 +54,16 @@ namespace Ws.Core.Extensions.HealthCheck
             }
 
             //ui
-            if (_options.Ui?.Enabled == true)
+            if (options.Ui?.Enabled == true)
             {
                 serviceCollection.AddHealthChecksUI(_ =>
                 {                    
-                    if (_options.Ui.Endpoints != null && _options.Ui.Endpoints.Any())
-                        foreach (var endpoint in _options.Ui.Endpoints.Where(_ => !string.IsNullOrEmpty(_.Uri)))
+                    if (options.Ui.Endpoints != null && options.Ui.Endpoints.Any())
+                        foreach (var endpoint in options.Ui.Endpoints.Where(_ => !string.IsNullOrEmpty(_.Uri)))
                             _.AddHealthCheckEndpoint(endpoint.Name, endpoint.Uri);
 
-                    if (_options.Ui.Webhooks != null && _options.Ui.Webhooks.Any())
-                        foreach (var hook in _options.Ui.Webhooks.Where(_ => !string.IsNullOrEmpty(_.Uri)))
+                    if (options.Ui.Webhooks != null && options.Ui.Webhooks.Any())
+                        foreach (var hook in options.Ui.Webhooks.Where(_ => !string.IsNullOrEmpty(_.Uri)))
                             try
                             {
                                 _.AddWebhookNotification(
@@ -73,8 +75,8 @@ namespace Ws.Core.Extensions.HealthCheck
                             }
                             catch { }
 
-                    _.SetEvaluationTimeInSeconds(_options.Ui.EvaluationTimeinSeconds);
-                    _.SetMinimumSecondsBetweenFailureNotifications(_options.Ui.MinimumSecondsBetweenFailureNotifications);
+                    _.SetEvaluationTimeInSeconds(options.Ui.EvaluationTimeinSeconds);
+                    _.SetMinimumSecondsBetweenFailureNotifications(options.Ui.MinimumSecondsBetweenFailureNotifications);
                 })
                 .AddInMemoryStorage();
             }
@@ -87,7 +89,7 @@ namespace Ws.Core.Extensions.HealthCheck
             applicationBuilder.UseEndpoints(config =>
              {
                  foreach (var route in 
-                 _options.Routes
+                 options.Routes
                  ??
                  new List<Options.Route> {
                         new Options.Route { Path = "/healthz", ContentType = Options.RouteContentType.text, SkipChecks = true },
@@ -120,29 +122,29 @@ namespace Ws.Core.Extensions.HealthCheck
                  }
 
                  //ui
-                 var ui = _options.Ui;
+                 var ui = options.Ui;
                  if (ui != null && ui.Enabled)
                  {
                      var ui_builder = config.MapHealthChecksUI(_ =>
                      {
-                         _.UIPath = _options.Ui.Route;
-                         _.ApiPath = _options.Ui.RouteApi;
-                         _.WebhookPath = _options.Ui.RouteWebhook;
-                         if (!string.IsNullOrEmpty(_options.Ui.InjectCss))
+                         _.UIPath = options.Ui.Route;
+                         _.ApiPath = options.Ui.RouteApi;
+                         _.WebhookPath = options.Ui.RouteWebhook;
+                         if (!string.IsNullOrEmpty(options.Ui.InjectCss))
                              try
                              {
-                                 _.AddCustomStylesheet(_options.Ui.InjectCss);
+                                 _.AddCustomStylesheet(options.Ui.InjectCss);
                              }
                              catch { }
                      });
 
                      // policy
-                     if (_options.Ui.AuthPolicies != null && _options.Ui.AuthPolicies.Any())
-                         ui_builder.RequireAuthorization(_options.Ui.AuthPolicies.ToArray());
+                     if (options.Ui.AuthPolicies != null && options.Ui.AuthPolicies.Any())
+                         ui_builder.RequireAuthorization(options.Ui.AuthPolicies.ToArray());
 
                      // hosts
-                     if (_options.Ui.AuthHosts != null && _options.Ui.AuthHosts.Any())
-                         ui_builder.RequireHost(_options.Ui.AuthHosts.ToArray());
+                     if (options.Ui.AuthHosts != null && options.Ui.AuthHosts.Any())
+                         ui_builder.RequireHost(options.Ui.AuthHosts.ToArray());
                  }
 
              });

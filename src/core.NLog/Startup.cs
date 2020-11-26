@@ -19,7 +19,7 @@ namespace Ws.Core.NLog
             // logger config                
             var logDb = (NLOG.Targets.DatabaseTarget)NLOG.LogManager.Configuration.FindTargetByName("db");
             if (logDb != null && logDb.ConnectionString.ToString() == "''")
-                logDb.ConnectionString = _config[$"{Core.Extensions.Base.Configuration.SectionRoot}:assemblies:Ws.Core.Extensions.Data.EF.SqlServer:options:connections:0:connectionString"];
+                logDb.ConnectionString = config[$"{Core.Extensions.Base.Configuration.SectionRoot}:assemblies:Ws.Core.Extensions.Data.EF.SqlServer:options:connections:0:connectionString"];
             
             /*
             var logMail = (NLOG.Targets.MailTarget)NLOG.LogManager.Configuration.FindTargetByName("mail");

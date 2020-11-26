@@ -15,7 +15,7 @@ namespace Ws.Core.NLog
         private static string _NLogConfigFile { get; set; } = _defaultNLogConfigFile;        
         public static void Main(string[] args) 
         {
-            var loggerFactory = new NLOG.LogFactory();
+            NLOG.LogFactory loggerFactory;
             if (_NLogConfiguration != null)
                 loggerFactory = NLOG.Web.NLogBuilder.ConfigureNLog(_NLogConfiguration);
             else                

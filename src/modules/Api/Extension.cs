@@ -104,7 +104,7 @@ namespace Ws.Core.Extensions.Api
                                     {
                                         Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
                                     },
-                                    new string[] { }
+                                    Array.Empty<string>()
                                 }
                             });
                         }
@@ -127,7 +127,7 @@ namespace Ws.Core.Extensions.Api
                                     {
                                         Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = cookieName }
                                     },
-                                    new string[] { }
+                                    Array.Empty<string>()
                                 }
                             });
                             }

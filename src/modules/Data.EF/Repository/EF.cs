@@ -10,7 +10,7 @@ namespace Ws.Core.Extensions.Data.Repository
 {
     public class EF<T, TKey> : IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
-        private static Extensions.Data.EF.Options.IncludeNavigationPropertiesConfig _includeOptions { get; set; } = new Extensions.Data.EF.Extension()._options?.IncludeNavigationProperties ?? new Extensions.Data.EF.Options.IncludeNavigationPropertiesConfig();
+        private static Extensions.Data.EF.Options.IncludeNavigationPropertiesConfig _includeOptions { get; set; } = new Extensions.Data.EF.Extension().Options?.IncludeNavigationProperties ?? new Extensions.Data.EF.Options.IncludeNavigationPropertiesConfig();
         protected readonly AppDbContext _context;
         protected DbSet<T> _collection;
 

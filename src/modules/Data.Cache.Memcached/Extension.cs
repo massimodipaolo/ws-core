@@ -7,13 +7,13 @@ namespace Ws.Core.Extensions.Data.Cache.Memcached
 {
     public class Extension : Base.Extension
     {
-        private Options _options => GetOptions<Options>();
+        private Options options => GetOptions<Options>();
 
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
             base.Execute(serviceCollection, serviceProvider);
 
-            if (_options.Client != null)
+            if (options.Client != null)
             {
                 // default entry expiration
                 if (Options.EntryExpirationInMinutes == null)
@@ -23,7 +23,7 @@ namespace Ws.Core.Extensions.Data.Cache.Memcached
                 //CacheEntryOptions.Expiration.Set();
 
                 // service                
-                serviceCollection.AddEnyimMemcached(_config.GetSection($"{ConfigSectionPathOptions}:Client"));
+                serviceCollection.AddEnyimMemcached(config.GetSection($"{ConfigSectionPathOptions}:Client"));
 
                 //DI
                 serviceCollection.TryAddSingleton(typeof(ICache), typeof(MemcachedCache));
@@ -34,7 +34,7 @@ namespace Ws.Core.Extensions.Data.Cache.Memcached
 
         public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
         {
-            if (_options.Client != null)
+            if (options.Client != null)
                 applicationBuilder.UseEnyimMemcached();
         }
     }

@@ -5,7 +5,19 @@ param(
 )
 
 # Read .env file
-Set-PsEnv
+function prompt {
+    Set-PsEnv
+}
+
+function Nuget-Parse-Package($file) {
+    [hashtable]$package = @{}
+    $dots = $file.Split(".")
+    $package.assembly = $dots[0..($dots.Length-5)] -join '.'
+    $package.version = $dots[-4..-2] -join '.'
+    return $package;
+}
+
+prompt
 
 # Boostrap posh-build
 $build_dir = Join-Path $path ".build"
@@ -44,22 +56,44 @@ target deploy {
   $packages | ForEach-Object { Write-Host $_.Name }
 
   # Ensure we haven't run this by accident.
-  $result = New-Prompt "Upload Packages" "Do you want to publish the NuGet packages?" @(
+  $push = New-Prompt "Upload Packages" "Do you want to publish the NuGet packages?" @(
     @("&N", "Does not upload the packages."),
     @("&Y", "Uploads the packages.")
   )
 
   # Cancelled
-  if ($result -eq 0) {
+  if ($push -eq 0) {
     "Upload aborted"
   }
   # upload
-  elseif ($result -eq 1) {
+  elseif ($push -eq 1) {
+
+      # Fix prev pre-release pkgs.
+      $override = New-Prompt "Override Packages" "Do you want to delete the NuGet packages, if exists?" @(
+        @("&N", "Does not override the packages, if exists."),
+        @("&Y", "Override the packages, always.")
+      )
+
     $packages | ForEach-Object {
-      $package = $_.FullName
-      Write-Host "Uploading $package"
+      $path = $_.FullName  
+      $file = $_.Name
       try { 
-        Invoke-Dotnet nuget push $package --api-key $Env:NUGET_API_KEY --source $Env:NUGET_SOURCE --skip-duplicate
+        $pkg = Nuget-Parse-Package($file)
+        Write-Host "Check exists " $pkg.assembly $pkg.version
+        $exists = nuget search $pkg.assembly -Source $Env:NUGET_API -Verbosity quiet -PreRelease -Take 1
+        $version = $exists.Split($pkg.assembly + " | ")[3..3]
+        Write-Host "Found version " $version
+        if ($version -eq $pkg.version) {
+            if ($override -eq 1) {
+                Write-Host "Delete " $pkg.assembly
+                Invoke-Dotnet nuget delete $pkg.assembly $pkg.version --api-key $Env:NUGET_API_KEY --source $Env:NUGET_SOURCE
+            } else {
+                Write-Host "Skip " $pkg.assembly
+                return
+            }
+        } 
+        Write-Host "Uploading " $pkg.assembly
+        Invoke-Dotnet nuget push $path --api-key $Env:NUGET_API_KEY --source $Env:NUGET_SOURCE
       }
       catch {
         Write-Host "An error occurred:"

@@ -17,7 +17,7 @@ namespace Ws.Core.Shared.Serialization
         /// <summary>
         /// List of assembly/JsonConvert type to apply
         /// </summary>
-        public JsonConverterDiscover[] Converters { get; set; } = new JsonConverterDiscover[] { };
+        public JsonConverterDiscover[] Converters { get; set; } = Array.Empty<JsonConverterDiscover>();
 
         public class JsonConverterDiscover
         {

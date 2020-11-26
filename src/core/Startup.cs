@@ -17,32 +17,32 @@ namespace Ws.Core
 {
     public class Startup<TOptions> where TOptions : class, IAppConfiguration
     {
-        protected IWebHostEnvironment _env { get; set; }
-        protected IConfiguration _config;
-        private IServiceCollection _services;
-        public static DateTime _uptime = DateTime.Now;
+        protected IWebHostEnvironment env { get; set; }
+        protected IConfiguration config;
+        private IServiceCollection services;
+        public static readonly DateTime Uptime = DateTime.Now;
         private string _extLastConfigAssembliesSerialized { get; set; }
-        protected string appConfigSectionRoot { get; set; } = "appConfig";
+        protected string AppConfigSectionRoot { get; set; } = "appConfig";
 
         public Startup(IWebHostEnvironment hostingEnvironment, IConfiguration configuration)
         {
-            _env = hostingEnvironment;
-            _config = configuration;
+            env = hostingEnvironment;
+            config = configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public virtual void ConfigureServices(IServiceCollection services)
         {
-            _services = services;
+            this.services = services;
 
-            _services.AddOptions();
+            this.services.AddOptions();
 
-            _services.AddSingleton<IConfiguration>(_config);
+            this.services.AddSingleton(config);
 
-            _services.Configure<Core.Extensions.Base.Configuration>(_config.GetSection(Core.Extensions.Base.Configuration.SectionRoot));
+            this.services.Configure<Configuration>(config.GetSection(Core.Extensions.Base.Configuration.SectionRoot));
 
-            _services.Configure<TOptions>(_config.GetSection(appConfigSectionRoot));
+            this.services.Configure<TOptions>(config.GetSection(AppConfigSectionRoot));
 
             /*
             var _razorConfig = _config.GetSection(appConfigSectionRoot).Get<TOptions>()?.ToExpando()?.FirstOrDefault(_ => _.Key == "RazorEngine").Value as AppConfig.RazorEngineOptions ?? new AppConfig.RazorEngineOptions();
@@ -67,9 +67,9 @@ namespace Ws.Core
             });
             */
 
-            Extensions.Base.Extension.Init(_services, _services.BuildServiceProvider());
+            Extensions.Base.Extension.Init(this.services, this.services.BuildServiceProvider());
 
-            _services.AddExtCore(_config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"] != null ? $"{_env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{_config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"]}" : null);
+            this.services.AddExtCore(config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"] != null ? $"{env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"]}" : null);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,14 +77,14 @@ namespace Ws.Core
         {
 
             //Error handling
-            if (_env.IsDevelopment() || _env.EnvironmentName == "Local" || (appConfigMonitor.CurrentValue?.DeveloperExceptionPage ?? false))
+            if (env.IsDevelopment() || env.EnvironmentName == "Local" || (appConfigMonitor.CurrentValue?.DeveloperExceptionPage ?? false))
             {
                 app.UseDeveloperExceptionPage();
             }
 
             app.UseExtCore();
 
-            Func<IDictionary<string, Extensions.Base.Configuration.Assembly>, string> _extSerialize = list => list == null ? null : string.Join(" | ", list?.Where(ext => ext.Value.Priority > 0)?.OrderBy(ext => ext.Value.Priority)?.Select(_ => _.Key));
+            static string _extSerialize(IDictionary<string, Configuration.Assembly> list) => list == null ? null : string.Join(" | ", list?.Where(ext => ext.Value.Priority > 0)?.OrderBy(ext => ext.Value.Priority)?.Select(_ => _.Key));
 
             _extLastConfigAssembliesSerialized = _extSerialize(extConfigMonitor.CurrentValue.Assemblies);
 

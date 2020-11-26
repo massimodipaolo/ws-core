@@ -12,7 +12,7 @@ namespace Ws.Core.Extensions.Data.Mongo
 {
     public class Extension : Base.Extension
     {
-        private Options _options => GetOptions<Options>();
+        private Options options => GetOptions<Options>();
 
         //private static T BsonClassMap<core.Extensions.Data.Entity<T>> map => default(T);
 
@@ -20,7 +20,7 @@ namespace Ws.Core.Extensions.Data.Mongo
         {
             base.Execute(serviceCollection, serviceProvider);
 
-            var connections = _options?.Connections;
+            var connections = options?.Connections;
             if (connections != null && connections.Any())
             {
                 // Mappings

@@ -11,7 +11,7 @@ namespace Ws.Core.Extensions.Data.Cache.Memcached
     public class MemcachedCache : ICache
     {
         protected readonly IMemcachedClient _client;
-        private static string _keyCollection = "___all_keys";
+        private const string _keyCollection = "___all_keys";
         public MemcachedCache() { }
         public MemcachedCache(IMemcachedClient client)
         {

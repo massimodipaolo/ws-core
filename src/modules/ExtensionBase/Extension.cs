@@ -14,23 +14,23 @@ namespace Ws.Core.Extensions.Base
 {
     public class Extension : ExtCore.Infrastructure.ExtensionBase, IConfigureAction, IConfigureServicesAction
     {
-        private static IServiceProvider _serviceProvider;
-        private static IServiceCollection _serviceCollection;
-        protected IConfiguration _config => _serviceProvider?.GetService<IConfiguration>();
-        protected IWebHostEnvironment _env => _serviceProvider?.GetService<IWebHostEnvironment>();
-        protected ILogger _logger => _serviceProvider?.GetService<ILoggerFactory>()?.CreateLogger("Extension.Logger");
+        private static IServiceProvider serviceProvider;
+        private static IServiceCollection serviceCollection;
+        protected static IConfiguration config => serviceProvider?.GetService<IConfiguration>();
+        protected static IWebHostEnvironment env => serviceProvider?.GetService<IWebHostEnvironment>();
+        protected static ILogger logger => serviceProvider?.GetService<ILoggerFactory>()?.CreateLogger("Extension.Logger");
 
         public static void Init(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
-            if (null == _serviceCollection)            
-                _serviceCollection = serviceCollection;   
-            if (null == _serviceProvider)            
-                _serviceProvider = serviceProvider;
+            if (null == Extension.serviceCollection)
+                Extension.serviceCollection = serviceCollection;   
+            if (null == Extension.serviceProvider)
+                Extension.serviceProvider = serviceProvider;
         }
 
         protected string AssemblyName => GetType().GetTypeInfo().Assembly.GetName().Name;
 
-        protected IEnumerable<Configuration.Assembly> Extensions => _config.GetSection($"{Configuration.SectionRoot}:Assemblies")?
+        protected static IEnumerable<Configuration.Assembly> Extensions => config.GetSection($"{Configuration.SectionRoot}:Assemblies")?
                                            .Get<IDictionary<string, Extensions.Base.Configuration.Assembly>>()?
                                            .OrderBy(_ => _.Value.Priority)?
                                            .Select(_ => new Configuration.Assembly() { Name = _.Key, Priority = _.Value.Priority });
@@ -43,26 +43,26 @@ namespace Ws.Core.Extensions.Base
         {
             var obj = new T();
             if (Assembly != null)
-                obj = _config?.GetSection(ConfigSectionPathOptions).Get<T>();            
+                obj = config?.GetSection(ConfigSectionPathOptions).Get<T>();            
 
-            if (Extension.Option<T>.value == null)
-                Extension.Option<T>.value = obj;
+            if (Extension.Option<T>.Value == null)
+                Extension.Option<T>.Value = obj;
 
             return obj;
         }
 
         public virtual T ReloadOptions<T>() where T : class, new() 
-        {            
-            Func<object, string> serialize = t => Newtonsoft.Json.JsonConvert.SerializeObject(t);
+        {
+            static string serialize(object t) => Newtonsoft.Json.JsonConvert.SerializeObject(t);
             var _current = GetOptions<T>();
-            if (serialize(Option<T>.value ?? new T()) == serialize(_current ?? new T())) {
-                _logger.LogInformation($"{Name}: No changes, skip {DateTime.Now}");
+            if (serialize(Option<T>.Value ?? new T()) == serialize(_current ?? new T())) {
+                logger.LogInformation($"{Name}: No changes, skip {DateTime.Now}");
                 return null;   
             }
             else
             {                
-                Option<T>.value = _current;
-                _logger.LogInformation($"{Name}: Options reloaded {DateTime.Now}");
+                Option<T>.Value = _current;
+                logger.LogInformation($"{Name}: Options reloaded {DateTime.Now}");
                 return _current;
             }
         }
@@ -85,7 +85,7 @@ namespace Ws.Core.Extensions.Base
 
         public class Option<T>
         {
-            public static T value { get; set; }
+            public static T Value { get; set; }
         }
         
     }

@@ -8,8 +8,8 @@ namespace Ws.Core.Extensions.Data.Cache
 {
     public class Extension : Base.Extension
     {
-        private Options _options => GetOptions<Options>();
-        private Options.Types _type => _options?.Type ?? Options.Types.Memory;
+        private Options options => GetOptions<Options>();
+        private Options.Types _type => options?.Type ?? Options.Types.Memory;
 
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
@@ -27,8 +27,8 @@ namespace Ws.Core.Extensions.Data.Cache
                         .AddDistributedMemoryCache();
 
             // cache client
-            Type implementation = null;
-            Type genericsImplementation = null;
+            Type implementation;
+            Type genericsImplementation;
 
             // service
             switch (_type)

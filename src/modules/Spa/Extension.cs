@@ -13,8 +13,7 @@ namespace Ws.Core.Extensions.Spa
 {
     public class Extension : Base.Extension
     {
-        private Options _options => GetOptions<Options>();
-
+        private Options options => GetOptions<Options>();
 
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
@@ -22,19 +21,19 @@ namespace Ws.Core.Extensions.Spa
 
             try
             {
-                if (_options != null)
+                if (options != null)
                 {
                     serviceCollection.AddSpaStaticFiles(_ =>
                     {
-                        _.RootPath = _options.RootPath;
+                        _.RootPath = options.RootPath;
                     });
-                    if (_options.Prerendering != null && _options.Prerendering.Enable)
+                    if (options.Prerendering != null && options.Prerendering.Enable)
                         serviceCollection.AddSpaPrerenderer();
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message} /n {ex.Source} /n {ex.StackTrace} /n {ex.InnerException}");
+                logger.LogError($"{ex.Message} /n {ex.Source} /n {ex.StackTrace} /n {ex.InnerException}");
             }
 
         }
@@ -45,15 +44,15 @@ namespace Ws.Core.Extensions.Spa
 
             try
             {
-                if (_options != null)
+                if (options != null)
                 {
-                    if (_options.StaticFilesPaths != null && _options.StaticFilesPaths.Any())
+                    if (options.StaticFilesPaths != null && options.StaticFilesPaths.Any())
                     {
-                        foreach (var opt in _options.StaticFilesPaths)
+                        foreach (var opt in options.StaticFilesPaths)
                         {
                             if (opt != null)
                             {
-                                var staticFileOptions = opt.GetStaticFileOptions(Path.Combine(_env?.ContentRootPath ?? Directory.GetCurrentDirectory(), _options.RootPath), _env, _logger);
+                                var staticFileOptions = opt.GetStaticFileOptions(Path.Combine(env?.ContentRootPath ?? Directory.GetCurrentDirectory(), options.RootPath), logger);
                                 applicationBuilder.UseSpaStaticFiles(staticFileOptions);
                             }
                         }
@@ -61,30 +60,30 @@ namespace Ws.Core.Extensions.Spa
                     else
                         applicationBuilder.UseSpaStaticFiles();
 
-                    if (_options.Prerendering != null && _options.Prerendering.Enable && _options.Prerendering.CacheResponse != null && _options.Prerendering.CacheResponse.Enable)
+                    if (options.Prerendering != null && options.Prerendering.Enable && options.Prerendering.CacheResponse != null && options.Prerendering.CacheResponse.Enable)
                     {
-                        applicationBuilder.UseMiddleware<ResponseCacheMiddleware>(_options.Prerendering.CacheResponse);
+                        applicationBuilder.UseMiddleware<ResponseCacheMiddleware>(options.Prerendering.CacheResponse);
                     };
 
                     applicationBuilder.UseSpa(_ =>
                     {
-                        _.Options.DefaultPage = _options.DefaultPage;
-                        _.Options.SourcePath = _options.SourcePath;
-                        _.Options.StartupTimeout = TimeSpan.FromSeconds(_options.StartupTimeoutInSeconds);
+                        _.Options.DefaultPage = options.DefaultPage;
+                        _.Options.SourcePath = options.SourcePath;
+                        _.Options.StartupTimeout = TimeSpan.FromSeconds(options.StartupTimeoutInSeconds);
 
-                        if (_options.Prerendering != null && _options.Prerendering.Enable)
+                        if (options.Prerendering != null && options.Prerendering.Enable)
                         {
                             _.UseSpaPrerendering(conf =>
                             {
-                                if (!string.IsNullOrEmpty(_options.Prerendering.BootModuleBuilderScript))
-                                    conf.BootModuleBuilder = new AngularCliBuilder(npmScript: _options.Prerendering.BootModuleBuilderScript);
-                                conf.BootModulePath = _options.Prerendering.BootModulePath;
-                                conf.ExcludeUrls = _options.Prerendering.ExcludeUrls;
-                                if (_options.Prerendering.ContextData != null && _options.Prerendering.ContextData.Any())
+                                if (!string.IsNullOrEmpty(options.Prerendering.BootModuleBuilderScript))
+                                    conf.BootModuleBuilder = new AngularCliBuilder(npmScript: options.Prerendering.BootModuleBuilderScript);
+                                conf.BootModulePath = options.Prerendering.BootModulePath;
+                                conf.ExcludeUrls = options.Prerendering.ExcludeUrls;
+                                if (options.Prerendering.ContextData != null && options.Prerendering.ContextData.Any())
                                 {
                                     conf.SupplyData = (ctx, data) =>
                                     {
-                                        foreach (var p in _options.Prerendering.ContextData)
+                                        foreach (var p in options.Prerendering.ContextData)
                                         {
                                             switch (p)
                                             {
@@ -116,17 +115,17 @@ namespace Ws.Core.Extensions.Spa
                             });
                         }
 
-                        if (!string.IsNullOrEmpty(_options.SpaDevelopmentServer))
-                            _.UseProxyToSpaDevelopmentServer(new Uri(_options.SpaDevelopmentServer));
-                        else if (!string.IsNullOrEmpty(_options.CliServerScript))
-                            _.UseAngularCliServer(npmScript: _options.CliServerScript);
+                        if (!string.IsNullOrEmpty(options.SpaDevelopmentServer))
+                            _.UseProxyToSpaDevelopmentServer(new Uri(options.SpaDevelopmentServer));
+                        else if (!string.IsNullOrEmpty(options.CliServerScript))
+                            _.UseAngularCliServer(npmScript: options.CliServerScript);
 
                     });
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message} /n {ex.Source} /n {ex.StackTrace} /n {ex.InnerException}");
+                logger.LogError($"{ex.Message} /n {ex.Source} /n {ex.StackTrace} /n {ex.InnerException}");
             }
         }
     }

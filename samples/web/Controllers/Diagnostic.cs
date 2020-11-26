@@ -21,16 +21,12 @@ namespace web.Controllers
             ICache cache,
             IConfiguration config,
             IWebHostEnvironment env,
-            IOptionsMonitor<AppConfig> appConfigMonitor,
-            IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor,
             IHostApplicationLifetime applicationLifetime,
             IHttpContextAccessor ctx) :
             base(
                 cache,
                 config,
                 env,
-                appConfigMonitor,
-                extConfigMonitor,
                 applicationLifetime,
                 ctx)
         { }

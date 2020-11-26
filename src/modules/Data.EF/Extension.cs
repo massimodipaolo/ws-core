@@ -6,6 +6,6 @@ namespace Ws.Core.Extensions.Data.EF
 {
     class Extension: Base.Extension
     {
-        public Options _options => GetOptions<Options>();
+        public Options Options => GetOptions<Options>();
     }
 }

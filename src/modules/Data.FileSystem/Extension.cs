@@ -7,7 +7,7 @@ namespace Ws.Core.Extensions.Data.FileSystem
 {
     public class Extension : Base.Extension
     {
-        internal Options _options => GetOptions<Options>();
+        internal Options Options => GetOptions<Options>();
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
             base.Execute(serviceCollection, serviceProvider);

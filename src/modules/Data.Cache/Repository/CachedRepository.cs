@@ -7,34 +7,33 @@ namespace Ws.Core.Extensions.Data.Repository
 {
     public class CachedRepository<T, TKey> : ICacheRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
-        internal static ICache _cache { get; set; }
-        private string _collectionKey => CachedRepository<T, TKey>.Key;
-        private List<T> _collection;
-
+        internal static ICache Cache { get; private set; }
+        private static string collectionKey => CachedRepository<T,TKey>.Key;
+        private List<T> collection;
 
         public CachedRepository() { }
 
         public CachedRepository(ICache cache, IRepository<T, TKey> repository)
         {
-            if (_cache == null)
-                _cache = cache;
+            if (CachedRepository<T, TKey>.Cache == null)
+                CachedRepository<T, TKey>.Cache = cache;
 
-            _collection = _cache.Get<List<T>>(_collectionKey);
-            if (_collection == null)
+            collection = CachedRepository<T, TKey>.Cache.Get<List<T>>(collectionKey);
+            if (collection == null)
             {
-                _collection = repository.List.ToList();
+                collection = repository.List.ToList();
                 Save();
             }
         }
 
-        public static string Key => $"cache:repository:{typeof(T).ToString()}";
+        public static string Key => $"cache:repository:{typeof(T)}";
         public static string EntityKey(TKey Id) => $"{Key}:{Id}";
 
-        IQueryable<T> IRepository<T, TKey>.List => _collection.AsQueryable();
+        IQueryable<T> IRepository<T, TKey>.List => collection.AsQueryable();
 
         public T Find(TKey Id)
         {
-            return _collection.FirstOrDefault(_ => _.Id.Equals(Id));
+            return collection.FirstOrDefault(_ => _.Id.Equals(Id));
         }
 
         public IQueryable<T> Query(FormattableString command)
@@ -46,7 +45,7 @@ namespace Ws.Core.Extensions.Data.Repository
         {
             if (entity != null)
             {
-                _collection.Add(entity);
+                collection.Add(entity);
                 Save();
             }
         }
@@ -55,7 +54,7 @@ namespace Ws.Core.Extensions.Data.Repository
         {
             if (entities != null && entities.Any())
             {
-                _collection.AddRange(entities);
+                collection.AddRange(entities);
                 Save();
             }
         }
@@ -66,7 +65,7 @@ namespace Ws.Core.Extensions.Data.Repository
             {
                 var item = Find(entity.Id);
                 if (item != null)
-                    _collection[_collection.IndexOf(item)] = entity;
+                    collection[collection.IndexOf(item)] = entity;
                 Save();
             }
         }
@@ -75,10 +74,10 @@ namespace Ws.Core.Extensions.Data.Repository
         {
             if (entities != null && entities.Any())
             {
-                _collection
+                collection
                    .Join(entities, o => o.Id, i => i.Id, (o, i) => (o, i))
                    .AsParallel()
-                   .ForAll(_ => _collection[_collection.IndexOf(_.o)] = _.i);
+                   .ForAll(_ => collection[collection.IndexOf(_.o)] = _.i);
                 Save();
             }
         }
@@ -89,10 +88,10 @@ namespace Ws.Core.Extensions.Data.Repository
                 switch (operation)
                 {
                     case RepositoryMergeOperation.Upsert:
-                        _collection = entities.Union(_collection, new EntityComparer<T, TKey>()).ToList();
+                        collection = entities.Union(collection, new EntityComparer<T, TKey>()).ToList();
                         break;
                     case RepositoryMergeOperation.Sync:
-                        _collection = entities.ToList();
+                        collection = entities.ToList();
                         break;
                 }
                 Save();
@@ -103,7 +102,7 @@ namespace Ws.Core.Extensions.Data.Repository
         {
             if (entity != null)
             {
-                _collection.RemoveAll(_ => _.Id.Equals(entity.Id));
+                collection.RemoveAll(_ => _.Id.Equals(entity.Id));
                 Save();
             }
         }
@@ -112,14 +111,14 @@ namespace Ws.Core.Extensions.Data.Repository
         {
             if (entities != null && entities.Any())
             {
-                _collection.RemoveAll(_ => entities.Any(__ => __.Id.Equals(_.Id)));
+                collection.RemoveAll(_ => entities.Any(__ => __.Id.Equals(_.Id)));
                 Save();
             }
         }
 
         private void Save()
         {
-            _cache.Set(_collectionKey, _collection);
+            Cache.Set(collectionKey, collection);
         }
     }
 
@@ -132,7 +131,7 @@ namespace Ws.Core.Extensions.Data.Repository
 
             var entity = (T)ctx.Entity;
 
-            ICache _cache = CachedRepository<T, TKey>._cache;
+            ICache _cache = CachedRepository<T, TKey>.Cache;
 
             // sync entity
             string _key = CachedRepository<T, TKey>.EntityKey(entity.Id);
@@ -148,30 +147,7 @@ namespace Ws.Core.Extensions.Data.Repository
             }
 
             // sync entity collection
-            CachedRepository<T, TKey>._cache.Clear();
+            CachedRepository<T, TKey>.Cache.Clear();
         }
     }
-
-    public class EntityChangeHandler<TKey> : IEntityChangeEvent<TKey> where TKey : IEquatable<TKey>
-    {
-        public int Priority => 0;
-
-        public void HandleEvent(EntityChangeEventContext ctx)
-        {
-            var entity = (IEntity<TKey>)ctx.Entity;
-            TKey id = entity.Id;
-        }
-
-    }
-    public class EntityChangeHandler : IEntityChangeEvent
-    {
-        public int Priority => 0;
-
-        public void HandleEvent(EntityChangeEventContext ctx)
-        {
-            var entity = ctx.Entity;
-        }
-    }
-
-
 }

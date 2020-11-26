@@ -8,7 +8,7 @@ namespace Ws.Core.Extensions.Data.Cache.SqlServer
 {
     public class Extension : Base.Extension
     {
-        private Options _options => GetOptions<Options>();
+        private Options options => GetOptions<Options>();
 
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
@@ -18,9 +18,9 @@ namespace Ws.Core.Extensions.Data.Cache.SqlServer
             if (Options.EntryExpirationInMinutes == null)
                 Options.EntryExpirationInMinutes = new Cache.Options.Duration();
 
-            var connectionString = _options.Client?.ConnectionString ?? "Server=.;Database=Cache;Trusted_Connection=True;";
-            var schema = _options.Client?.SchemaName ?? "dbo";
-            var table = _options.Client?.TableName ?? "Entry";
+            var connectionString = options.Client?.ConnectionString ?? "Server=.;Database=Cache;Trusted_Connection=True;";
+            var schema = options.Client?.SchemaName ?? "dbo";
+            var table = options.Client?.TableName ?? "Entry";
 
             serviceCollection
                 .AddHealthChecks()

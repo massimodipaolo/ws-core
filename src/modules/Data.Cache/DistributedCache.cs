@@ -13,7 +13,7 @@ namespace Ws.Core.Extensions.Data.Cache
     public class DistributedCache : ICache
     {
         protected readonly IDistributedCache _client;
-        private static string _keyCollection = "___all_keys";
+        private const string _keyCollection = "___all_keys";
 
         public DistributedCache() { }
 
@@ -35,7 +35,7 @@ namespace Ws.Core.Extensions.Data.Cache
                     return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(result));
                 }
             } catch { }
-            return default(T);
+            return default;
         }
 
         public void Set(string key, object value)

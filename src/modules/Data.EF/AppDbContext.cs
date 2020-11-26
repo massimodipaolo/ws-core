@@ -21,7 +21,7 @@ namespace Ws.Core.Extensions.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            EF.Options options = new EF.Extension()._options;
+            EF.Options options = new EF.Extension().Options;
 
             // Ignore common unsupported array of primitive types
             modelBuilder
@@ -128,9 +128,9 @@ namespace Ws.Core.Extensions.Data
                             }
 
                     }
-                    catch (Exception ex)
+                    catch
                     {
-                        throw ex;
+                        throw;
                     }
                 }
             }

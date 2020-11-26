@@ -7,12 +7,12 @@ namespace Ws.Core.Extensions.Message
 {
     public class Extension: Base.Extension
     {
-        private Options _options => GetOptions<Options>();
+        private Options options => GetOptions<Options>();
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
             base.Execute(serviceCollection, serviceProvider);
             serviceCollection.AddHealthChecks().AddCheck<EmailMessage>("message-email");
-            serviceCollection.AddSingleton<IMessageConfiguration>(_options);
+            serviceCollection.AddSingleton<IMessageConfiguration>(options);
             serviceCollection.AddTransient<IMessage, EmailMessage>();
         }        
     }

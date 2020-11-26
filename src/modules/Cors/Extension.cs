@@ -8,18 +8,18 @@ namespace Ws.Core.Extensions.Cors
 {
     public class Extension : Base.Extension
     {
-        private Options _options => GetOptions<Options>();
-        private IEnumerable<Options.PolicyOption> _namedPolicies => _options?.Policies?.Where(_ => !string.IsNullOrEmpty(_.Name));
+        private Options options => GetOptions<Options>();
+        private IEnumerable<Options.PolicyOption> namedPolicies => options?.Policies?.Where(_ => !string.IsNullOrEmpty(_.Name));
 
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
             base.Execute(serviceCollection, serviceProvider);
 
-            if (_namedPolicies != null && _namedPolicies.Any())  
+            if (namedPolicies != null && namedPolicies.Any())  
             {
                 serviceCollection.AddCors(opt =>
                 {
-                    foreach (var p in _namedPolicies)
+                    foreach (var p in namedPolicies)
                     {
                         opt.AddPolicy(p.Name, _ =>
                         {
@@ -51,8 +51,8 @@ namespace Ws.Core.Extensions.Cors
         {
             base.Execute(applicationBuilder, serviceProvider);
 
-            if (_namedPolicies != null && _namedPolicies.Any())
-                foreach (var p in _namedPolicies)
+            if (namedPolicies != null && namedPolicies.Any())
+                foreach (var p in namedPolicies)
                     applicationBuilder.UseCors(p.Name);
             else
                 applicationBuilder.UseCors(_ => _

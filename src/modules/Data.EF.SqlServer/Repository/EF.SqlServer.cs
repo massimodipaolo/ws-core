@@ -13,22 +13,22 @@ namespace Ws.Core.Extensions.Data.Repository.EF
 {
     public class SqlServer<T, TKey> : EF<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
-        private static Data.EF.SqlServer.Options _options { get; set; } = new Data.EF.SqlServer.Extension()._options ?? new Data.EF.SqlServer.Options();
-        private static IEnumerable<Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig> _spMappings { get; set; }
-        private Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig _sp { get; set; }
-        private IServiceProvider _provider { get; set; }
-        private const string _spPrefix = "entity";
+        private static Data.EF.SqlServer.Options options { get; set; } = new Data.EF.SqlServer.Extension().Options ?? new Data.EF.SqlServer.Options();
+        private static IEnumerable<Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig> spMappings { get; set; }
+        private Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig sp { get; set; }
+        private IServiceProvider provider { get; set; }
+        private const string spPrefix = "entity";
         public SqlServer(AppDbContext context, IServiceProvider provider) : base(context)
         {
-            if (_spMappings == null)
+            if (spMappings == null)
             {
-                var _spConfig = (_options?.StoredProcedure ?? new Data.EF.SqlServer.Options.StoredProcedureConfig());
-                _spMappings = _spConfig
+                var _spConfig = (options?.StoredProcedure ?? new Data.EF.SqlServer.Options.StoredProcedureConfig());
+                spMappings = _spConfig
                             .Mappings?
                             .Select(_ =>
                             {
-                                _.Schema = _.Schema ?? _spConfig.Schema;
-                                _.StoredProcedure = _.StoredProcedure ?? _.Name;
+                                _.Schema ??= _spConfig.Schema;
+                                _.StoredProcedure ??= _.Name;
                                 return _;
                             })
                             ??
@@ -36,30 +36,30 @@ namespace Ws.Core.Extensions.Data.Repository.EF
                             ;
             }
 
-            _sp = _spMappings
+            sp = spMappings
             .Where(_ =>
                     _.Name == typeof(T).Name
                     && (string.IsNullOrEmpty(_.NameSpace) || _.NameSpace == typeof(T).Namespace)
                 )?
                 .FirstOrDefault();
 
-            _provider = provider;
+            this.provider = provider;
         }
 
         #region Override repo
-        public override IQueryable<T> List => _sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.List) ?? false ? _List : base.List;
-        private IQueryable<T> _List
+        public override IQueryable<T> List => sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.List) ?? false ? list : base.List;
+        private IQueryable<T> list
         {
             get
             {
-                var json = ExecuteScalar(default(TKey)).Result;
+                var json = ExecuteScalar(default).Result;
                 if (string.IsNullOrEmpty(json)) return null;
 
                 return Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<T>>(json).AsQueryable();
             }
         }
-        public override T Find(TKey Id) => _sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Find) ?? false ? _Find(Id) : base.Find(Id);
-        private T _Find(TKey Id)
+        public override T Find(TKey Id) => sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Find) ?? false ? find(Id) : base.Find(Id);
+        private T find(TKey Id)
         {
             var json = ExecuteScalar(Id).Result;
             if (string.IsNullOrEmpty(json)) return null;
@@ -69,7 +69,7 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         public override void Add(T entity)
         {
             if (entity != null)
-                if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Add) ?? false)
+                if (sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Add) ?? false)
                     ExecuteCrudCommand(entity, "insert");
                 else
                     base.Add(entity);
@@ -78,7 +78,7 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         public override void AddMany(IEnumerable<T> entities)
         {
             if (entities != null && entities.Any())
-                if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.AddMany) ?? false)
+                if (sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.AddMany) ?? false)
                     ExecuteCrudCommand(entities, "insertmany");
                 else
                     base.AddMany(entities);
@@ -87,7 +87,7 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         public override void Update(T entity)
         {
             if (entity != null)
-                if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Update) ?? false)
+                if (sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Update) ?? false)
                     ExecuteCrudCommand(entity, "update");
                 else
                     base.Update(entity);
@@ -96,7 +96,7 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         public override void UpdateMany(IEnumerable<T> entities)
         {
             if (entities != null && entities.Any())
-                if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.UpdateMany) ?? false)
+                if (sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.UpdateMany) ?? false)
                     ExecuteCrudCommand(entities, "updatemany");
                 else
                     base.UpdateMany(entities);
@@ -105,30 +105,28 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         public override void Merge(IEnumerable<T> entities, RepositoryMergeOperation operation = RepositoryMergeOperation.Upsert)
         {
             if (entities != null && entities.Any())
-                if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Merge) ?? false)
+                if (sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Merge) ?? false)
                     ExecuteMergeCommand(entities, operation);
                 else
-                    _merge(entities, operation);
+                    merge(entities, operation);
         }
 
-        private void _merge(IEnumerable<T> entities, RepositoryMergeOperation operation = RepositoryMergeOperation.Upsert)
+        private void merge(IEnumerable<T> entities, RepositoryMergeOperation operation = RepositoryMergeOperation.Upsert)
         {
             if (entities != null)
             {
                 {
-                    using (var transaction = _context.Database.BeginTransaction())
+                    using var transaction = _context.Database.BeginTransaction();
+                    switch (operation)
                     {
-                        switch (operation)
-                        {
-                            case RepositoryMergeOperation.Upsert:
-                                _context.BulkInsertOrUpdate<T>(entities.ToList(), _options.Merge);
-                                break;
-                            case RepositoryMergeOperation.Sync:
-                                _context.BulkInsertOrUpdateOrDelete<T>(entities.ToList(), _options.Merge);
-                                break;
-                        }
-                        transaction.Commit();
+                        case RepositoryMergeOperation.Upsert:
+                            _context.BulkInsertOrUpdate<T>(entities.ToList(), options.Merge);
+                            break;
+                        case RepositoryMergeOperation.Sync:
+                            _context.BulkInsertOrUpdateOrDelete<T>(entities.ToList(), options.Merge);
+                            break;
                     }
+                    transaction.Commit();
                 }
             }
         }
@@ -136,7 +134,7 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         public override void Delete(T entity)
         {
             if (entity != null)
-                if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Delete) ?? false)
+                if (sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Delete) ?? false)
                     ExecuteCrudCommand(entity, "delete");
                 else
                     base.Delete(entity);
@@ -145,7 +143,7 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         public override void DeleteMany(IEnumerable<T> entities)
         {
             if (entities != null && entities.Any())
-                if (_sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.DeleteMany) ?? false)
+                if (sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.DeleteMany) ?? false)
                     ExecuteCrudCommand(entities, "deletemany");
                 else
                     base.DeleteMany(entities);
@@ -158,16 +156,16 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         private void ExecuteCrudCommand(T entity, string action)
         {
             if (entity != null)
-                _executeCrudCommand(entity, action);
+                executeCrudCommand(entity, action);
         }
 
         private void ExecuteCrudCommand(IEnumerable<T> entities, string action)
         {
             if (entities != null && entities.Any())
-                _executeCrudCommand(entities, action);
+                executeCrudCommand(entities, action);
         }
 
-        private void _executeCrudCommand(object obj, string action)
+        private void executeCrudCommand(object obj, string action)
         {
             var data = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
             ExecuteCrudCommand(action, data);
@@ -184,17 +182,17 @@ namespace Ws.Core.Extensions.Data.Repository.EF
 
         private void ExecuteCrudCommand(string action, string data)
         {
-            _db().SetCommandTimeout(_sp.CommandTimeOut?.Write ?? 60);
-            _db().ExecuteSqlInterpolated(
-                $"exec [{_sp.Schema}].{_spPrefix}_{_sp.StoredProcedure}_{action} {data}"
+            db().SetCommandTimeout(sp.CommandTimeOut?.Write ?? 60);
+            db().ExecuteSqlInterpolated(
+                $"exec [{sp.Schema}].{spPrefix}_{sp.StoredProcedure}_{action} {data}"
                 );
         }
 
         private void ExecuteMergeCommand(string data, RepositoryMergeOperation operation)
         {
-            _db().SetCommandTimeout(_sp.CommandTimeOut?.Sync ?? 180);
-            _db().ExecuteSqlInterpolated(
-                $"exec [{_sp.Schema}].{_spPrefix}_{_sp.StoredProcedure}_merge {data},{operation.ToString()}"
+            db().SetCommandTimeout(sp.CommandTimeOut?.Sync ?? 180);
+            db().ExecuteSqlInterpolated(
+                $"exec [{sp.Schema}].{spPrefix}_{sp.StoredProcedure}_merge {data},{operation}"
                 );
         }
 
@@ -203,14 +201,14 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         {
             var result = new System.Text.StringBuilder();
 
-            var cmd = _db().GetDbConnection().CreateCommand();
-            cmd.CommandText = $"[{_sp.Schema}].{_spPrefix}_{_sp.StoredProcedure}_select";
+            var cmd = db().GetDbConnection().CreateCommand();
+            cmd.CommandText = $"[{sp.Schema}].{spPrefix}_{sp.StoredProcedure}_select";
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.CommandTimeout = _sp.CommandTimeOut?.Read ?? 120;
+            cmd.CommandTimeout = sp.CommandTimeOut?.Read ?? 120;
 
             var param = cmd.CreateParameter();
             param.ParameterName = "@id";
-            if (Id != null && !Id.Equals(default(TKey)))
+            if (Id != null && !Id.Equals(default))
                 param.Value = Id;
             else
                 param.Value = DBNull.Value;
@@ -227,13 +225,13 @@ namespace Ws.Core.Extensions.Data.Repository.EF
 
                 try
                 {
-                    using (var reader = await cmd.ExecuteReaderAsync(System.Data.CommandBehavior.Default).ConfigureAwait(false))
-                        while (await reader.ReadAsync().ConfigureAwait(false))
-                            result.Append(reader.GetString(0));
+                    using var reader = await cmd.ExecuteReaderAsync(System.Data.CommandBehavior.Default).ConfigureAwait(false);
+                    while (await reader.ReadAsync().ConfigureAwait(false))
+                        result.Append(reader.GetString(0));
                 }
-                catch (Exception e)
+                catch
                 {
-                    throw (e);
+                    throw;
                 }
                 finally
                 {
@@ -244,18 +242,18 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         }
 
 
-        private Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade _db()
+        private Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade db()
         {
-            Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade db;
+            Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade df;
             try
             {
-                db = _context.Database;
+                df = _context.Database;
             }
             catch  // context disposed
             {
-                db = _provider.GetService<AppDbContext>()?.Database;
+                df = provider.GetService<AppDbContext>()?.Database;
             }
-            return db;
+            return df;
         }
 
         #endregion

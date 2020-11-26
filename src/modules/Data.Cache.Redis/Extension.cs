@@ -8,7 +8,7 @@ namespace Ws.Core.Extensions.Data.Cache.Redis
 {
     public class Extension : Base.Extension
     {
-        private Options _options => GetOptions<Options>();
+        private Options options => GetOptions<Options>();
 
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
@@ -18,7 +18,7 @@ namespace Ws.Core.Extensions.Data.Cache.Redis
             if (Options.EntryExpirationInMinutes == null)
                 Options.EntryExpirationInMinutes = new Cache.Options.Duration();
 
-            var host = _options?.Client?.Configuration ?? "localhost:6379";
+            var host = options?.Client?.Configuration ?? "localhost:6379";
             serviceCollection
                 .AddHealthChecks()
                 .AddRedis(host, name:"cache-redis", failureStatus: Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded);
@@ -27,7 +27,7 @@ namespace Ws.Core.Extensions.Data.Cache.Redis
                 //.AddMemoryCache()
                 //.AddDistributedMemoryCache()
                 .AddDistributedRedisCache(_ =>
-                { _.Configuration = host; _.InstanceName = _options?.Client?.InstanceName ?? "master"; }
+                { _.Configuration = host; _.InstanceName = options?.Client?.InstanceName ?? "master"; }
                 );
 
             //DI

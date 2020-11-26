@@ -38,7 +38,7 @@ namespace Ws.Core.Extensions.StaticFiles
                     if (opt != null)
                     {
                         //StaticFileOptions
-                        var staticFileOptions = opt.GetStaticFileOptions(_env?.ContentRootPath ?? Directory.GetCurrentDirectory(),_env,_logger);
+                        var staticFileOptions = opt.GetStaticFileOptions(env?.ContentRootPath ?? Directory.GetCurrentDirectory(),logger);
 
                         //DirectoryBrowser
                         DirectoryBrowserOptions directoryBrowserOptions = null;
