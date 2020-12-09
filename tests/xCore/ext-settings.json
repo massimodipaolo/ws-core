@@ -1,0 +1,65 @@
+﻿{
+  "$schema": "../../src/modules/json-schema.json#",
+  "__$schema": "https://raw.githubusercontent.com/massimodipaolo/app-core/master/src/modules/json-schema.json",
+  "extConfig": {
+    "folder": "Extensions",
+    "enableShutDownOnChange": false,
+    "assemblies": {
+      "__Ws.Core.Extensions.StaticFiles": {
+        "priority": 100,
+        "options": {
+          "paths": [
+            {
+              "headers": {
+                "Cache-Control": "public,max-age=43200"
+              }
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Routing": { "priority": 150 },
+      "__Ws.Core.Extensions.Cors": {
+        "priority": 200
+      },
+      "Ws.Core.Extensions.Api": {
+        "priority": 300,
+        "options": {
+          "serialization": {
+            "nullValueHandling": "Ignore",
+            "formatting": "None",
+            "referenceLoopHandling": "Ignore",
+            "__converters": [
+              {
+                "assembly": "Newtonsoft.Json",
+                "type": "Newtonsoft.Json.Converters.StringEnumConverter"
+              },
+              {
+                "assembly": "web",
+                "type": "web.Code.LocaleJsonConverter"
+              }
+            ]
+          },
+          "documentation": {
+            "routePrefix": "swagger",
+            "endpoints": [
+              {
+                "id": "public",
+                "title": "public api",
+                "version": "v1"
+              },
+              {
+                "id": "admin",
+                "title": "admin api",
+                "version": "v1"
+              }
+            ],
+            "xmlComments": {
+              "fileName": "xCore.xml",
+              "includeControllerComments": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

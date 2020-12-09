@@ -200,8 +200,10 @@ _Pvt_Extensions
 # Sample: specific repository
 #/samples
 /samples/**/Extensions/
-#/tests
+# Test
+/tests/**/*.xml
+/tests/**/Files/*.*
 # Task Secret
 .env
-healthchecksdb
+# Pack
 /.build

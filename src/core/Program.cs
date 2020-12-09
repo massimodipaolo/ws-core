@@ -24,7 +24,7 @@ namespace Ws.Core
                         //_.UseKestrel((ctx, opt) => { opt.AddServerHeader = false; });
                         //_.UseIIS();
                         _.UseContentRoot(Directory.GetCurrentDirectory());
-                        _.UseStartup(startup);
+                        _.UseStartup(startup);                        
                     })
                     .ConfigureLogging((ctx, logging) =>
                     {

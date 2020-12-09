@@ -36,7 +36,7 @@ namespace Ws.Core.Extensions.Base
                                            .Select(_ => new Configuration.Assembly() { Name = _.Key, Priority = _.Value.Priority });
                                            //.Select((e,i) => new Configuration.Assembly() {Name = e.Key,Priority=i});
 
-        protected Configuration.Assembly Assembly => Extensions?.Where(_ => _.Name == AssemblyName).FirstOrDefault();
+        protected Configuration.Assembly Assembly => Extensions?.FirstOrDefault(_ => _.Name == AssemblyName);
 
         protected string ConfigSectionPathOptions => $"{Configuration.SectionRoot}:Assemblies:{AssemblyName}:Options";
         protected T GetOptions<T>() where T : class, new()

@@ -75,6 +75,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Cache.Redis", "src\mod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Cache.SqlServer", "src\modules\Data.Cache.SqlServer\Data.Cache.SqlServer.csproj", "{BBD5C4EE-1AED-46B4-B7F4-565815E45F99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xCore", "tests\xCore\xCore.csproj", "{4421CA82-A6CA-4EAE-9553-00FC6FB4755C}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\shared\Serialization\Serialization.projitems*{4b554c0c-b363-4c4b-80c2-7493e67f345c}*SharedItemsImports = 5
@@ -177,6 +179,10 @@ Global
 		{BBD5C4EE-1AED-46B4-B7F4-565815E45F99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBD5C4EE-1AED-46B4-B7F4-565815E45F99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBD5C4EE-1AED-46B4-B7F4-565815E45F99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4421CA82-A6CA-4EAE-9553-00FC6FB4755C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4421CA82-A6CA-4EAE-9553-00FC6FB4755C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4421CA82-A6CA-4EAE-9553-00FC6FB4755C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4421CA82-A6CA-4EAE-9553-00FC6FB4755C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -208,6 +214,7 @@ Global
 		{6E8BDB3E-135D-45E7-AC19-B5D1031714BD} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
 		{F7C7BF78-BC7B-409B-A1F2-D83D0562D360} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
 		{BBD5C4EE-1AED-46B4-B7F4-565815E45F99} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
+		{4421CA82-A6CA-4EAE-9553-00FC6FB4755C} = {1786CCFD-1BA5-455A-BB4C-94976B9F363B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1713483-7DCD-42EB-A437-F0BBBAC5F4EF}
