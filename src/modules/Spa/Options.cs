@@ -31,6 +31,10 @@ namespace Ws.Core.Extensions.Spa
             {
                 public bool Enable { get; set; } = true;
                 /// <summary>
+                /// Add Link header with resources to preload
+                /// </summary>
+                public EarlyHintsOptions AddEarlyHints { get; set; }
+                /// <summary>
                 /// Don't cache parameterized path
                 /// <see cref="T:core.Extensions.Spa.Options.PrerenderingOptions.CacheResponseOptions"/> skip query
                 /// string path.
@@ -53,7 +57,16 @@ namespace Ws.Core.Extensions.Spa
                 /// </summary>
                 /// <value>The include paths.</value>
                 public string[] IncludePaths { get; set; }
+
+                public class EarlyHintsOptions
+                {
+                    public bool Enable { get; set; } = false;
+                    public string[] Types { get; set; }
+                    public int MaxItemsPerType { get; set; } = 10;
+                    public bool AllowServerPush { get; set; } = true;
+                }
             }
+
         }
 
     }
