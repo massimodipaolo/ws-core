@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Ws.Core.Extensions.Base;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Primitives;
+using AngleSharp;
 
 namespace Ws.Core.Extensions.Spa
 {
@@ -47,11 +48,15 @@ namespace Ws.Core.Extensions.Spa
 
                 var key = $"{typeof(ResponseCacheMiddleware).Name}-{ctx.Request.Path}-{_discriminator_value}";
                 // check cache
-                var cachedResponse = _cache.Get<string>(key);
+                var cachedResponse = _cache.Get<Obj>(key);
                 if (cachedResponse != null)
                 {
+                    // preload hints
+                    if (cachedResponse.EarlyHints != null)
+                        ctx.Response.Headers.Append("Link", cachedResponse.EarlyHints);
+
                     ctx.Response.Headers.Add("Content-Type", "text/html");
-                    await ctx.Response.WriteAsync(cachedResponse);
+                    await ctx.Response.WriteAsync(cachedResponse.Html);
                 }
                 else
                 {
@@ -67,7 +72,7 @@ namespace Ws.Core.Extensions.Spa
 
                     // set cache
                     if (ctx.Response.StatusCode == 200)
-                        _cache.Set(key, text, CacheEntryOptions.Expiration.Never);
+                        _cache.Set(key, new Obj() { Html = text, EarlyHints = await PreloadHints(text) }, CacheEntryOptions.Expiration.Never);
 
                     await ctx.Response.Body.CopyToAsync(stream);
                 }
@@ -92,6 +97,44 @@ namespace Ws.Core.Extensions.Spa
                 (
                     _options.IncludePaths != null && _options.IncludePaths.Any(_ => rq.Path.StartsWithSegments(_)) // always include these prefixes
                 );
+        }
+
+        private async Task<string> PreloadHints(string html)
+        {
+            if (_options.AddEarlyHints?.Enable == true)
+            {
+                var config = AngleSharp.Configuration.Default;
+                var context = AngleSharp.BrowsingContext.New(config);
+                var document = await context.OpenAsync(req => req.Content(html));
+                string baseh = document.GetElementsByTagName("base").FirstOrDefault()?.GetAttribute("href") ?? "";
+                string _base(string path)
+                => new[] { "http://", "https://" }.Any(schema => path.StartsWith(schema, StringComparison.OrdinalIgnoreCase)) ? "" : baseh;
+                string _directive(string path, string type)
+                => $"<{_base(path)}{path}>; rel=preload; as={type};{(!_options.AddEarlyHints.AllowServerPush ? "nopush;" : "")}";
+
+                // resources
+                var preload = new List<string>();
+                var items = _options.AddEarlyHints.MaxItemsPerType;
+                foreach (var type in _options.AddEarlyHints.Types)
+                {
+                    var hints = type switch
+                    {
+                        "style" => document.QuerySelectorAll("link")?.Where(_ => _.GetAttribute("rel") == "stylesheet")?.Take(items)?.Select(_ => _directive(_.GetAttribute("href"), type)),
+                        "script" => document.Scripts?.Where(_ => _.Type == "text/javascript")?.Take(items)?.Select(_ => _directive(_.Source, type)),
+                        "image" => document.Images?.Take(items)?.Select(_ => _directive(_.Source, type)),
+                        _ => null
+                    };
+                    if (hints != null)
+                        preload.AddRange(hints);
+                }
+                return string.Join(",", preload);
+            }
+            return null;
+        }
+        public class Obj
+        {
+            public string Html { get; set; }
+            public string EarlyHints { get; set; }
         }
     }
 }

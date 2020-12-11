@@ -1234,6 +1234,33 @@
                               "description": "If true, cache only extensionless path",
                               "default": true
                             },
+                            "addEarlyHints": {
+                              "type": "object",
+                              "description": "Browsers that support preload will initiate earlier fetch of page resources: https://www.w3.org/TR/preload",
+                              "properties": {
+                                "enable": {
+                                  "type": "boolean",
+                                  "default": false
+                                },
+                                "types": {
+                                  "type": "array",
+                                  "items": {
+                                    "enum": [ "script", "style", "image" ]
+                                  },
+                                  "description": "https://www.w3.org/TR/preload/#as-attribute",
+                                  "uniqueItems": true
+                                },
+                                "maxItemsPerType": {
+                                  "type": "integer",
+                                  "default": 10
+                                },
+                                "allowServerPush": {
+                                  "type": "boolean",
+                                  "description": "https://www.w3.org/TR/preload/#server-push-http-2",
+                                  "default": true
+                                }
+                              }
+                            },
                             "excludePaths": {
                               "type": "array",
                               "items": { "type": "string" },
