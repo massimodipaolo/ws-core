@@ -52,8 +52,7 @@ namespace Ws.Core.Extensions.Spa
                 if (cachedResponse != null)
                 {
                     // preload hints
-                    if (cachedResponse.EarlyHints != null)
-                        ctx.Response.Headers.Append("Link", cachedResponse.EarlyHints);
+                    AddEarlyHints(ctx, cachedResponse.EarlyHints);
 
                     ctx.Response.Headers.Add("Content-Type", "text/html");
                     await ctx.Response.WriteAsync(cachedResponse.Html);
@@ -70,9 +69,14 @@ namespace Ws.Core.Extensions.Spa
                     string text = await new StreamReader(ctx.Response.Body).ReadToEndAsync();
                     ctx.Response.Body.Seek(0, SeekOrigin.Begin);
 
-                    // set cache
+                    // set cache / headers
                     if (ctx.Response.StatusCode == 200)
-                        _cache.Set(key, new Obj() { Html = text, EarlyHints = await PreloadHints(text) }, CacheEntryOptions.Expiration.Never);
+                    {
+                        var hints = await PreloadHints(text);
+                        AddEarlyHints(ctx, hints);
+
+                        _cache.Set(key, new Obj() { Html = text, EarlyHints = hints }, CacheEntryOptions.Expiration.Never);
+                    }
 
                     await ctx.Response.Body.CopyToAsync(stream);
                 }
@@ -119,9 +123,9 @@ namespace Ws.Core.Extensions.Spa
                 {
                     var hints = type switch
                     {
-                        "style" => document.QuerySelectorAll("link")?.Where(_ => _.GetAttribute("rel") == "stylesheet")?.Take(items)?.Select(_ => _directive(_.GetAttribute("href"), type)),
+                        "style" => document.GetElementsByTagName("link")?.Where(_ => _.GetAttribute("rel") == "stylesheet")?.Take(items)?.Select(_ => _directive(_.GetAttribute("href"), type)),
                         "script" => document.Scripts?.Where(_ => _.Type == "text/javascript")?.Take(items)?.Select(_ => _directive(_.Source, type)),
-                        "image" => document.Images?.Take(items)?.Select(_ => _directive(_.Source, type)),
+                        "image" => document.GetElementsByTagName("img")?.Take(items)?.Select(_ => _directive(_.GetAttribute("src"), type)),
                         _ => null
                     };
                     if (hints != null)
@@ -130,6 +134,12 @@ namespace Ws.Core.Extensions.Spa
                 return string.Join(",", preload);
             }
             return null;
+        }
+
+        private void AddEarlyHints(HttpContext ctx,string hints)
+        {
+            if (!string.IsNullOrEmpty(hints))
+                ctx.Response.Headers.Append("Link", hints);
         }
         public class Obj
         {
