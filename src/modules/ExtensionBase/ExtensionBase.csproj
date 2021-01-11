@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk"> 
 	<PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.0-beta</PackageVersion>
+    <PackageVersion>5.0.0</PackageVersion>
     <PackageId>Ws.Core.Extensions.Base</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Base</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Base</RootNamespace>
@@ -26,9 +26,9 @@
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
-		<PackageReference Include="ExtCore.Infrastructure" Version="6.0.0-beta1" />
+		<PackageReference Include="ExtCore.Infrastructure" Version="6.0.0" />
     <!--<ProjectReference Include="..\..\..\..\..\GitHub\ExtCore\src\ExtCore.Infrastructure\ExtCore.Infrastructure.csproj" />-->
-    <PackageReference Include="ExtCore.Events" Version="6.0.0-beta1" />
+    <PackageReference Include="ExtCore.Events" Version="6.0.0" />
     <!--<ProjectReference Include="..\..\..\..\..\GitHub\ExtCore\src\ExtCore.Events\ExtCore.Events.csproj" />-->
 	</ItemGroup>
  

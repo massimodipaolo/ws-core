@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.0-beta</PackageVersion>
+    <PackageVersion>5.0.0</PackageVersion>
     <PackageId>Ws.Core.Extensions.Routing</PackageId>
     <AssemblyName>Ws.Core.Extensions.Routing</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Routing</RootNamespace>

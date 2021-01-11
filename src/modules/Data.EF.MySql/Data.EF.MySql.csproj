@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.0-beta</PackageVersion>
+    <PackageVersion>5.0.0-beta2</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.EF.MySql</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Data.EF.MySql</AssemblyName>
 		<RootNamespace>Ws.Core.Extensions.Data.EF.MySql</RootNamespace>
@@ -23,7 +23,7 @@
 		<ProjectReference Include="..\Data.EF\Data.EF.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="AspNetCore.HealthChecks.MySql" Version="5.0.0-preview1" />
+	  <PackageReference Include="AspNetCore.HealthChecks.MySql" Version="5.0.1" />
 	  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2" />
 	</ItemGroup>
 </Project>

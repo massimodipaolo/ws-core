@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.0-beta</PackageVersion>
+    <PackageVersion>5.0.0</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.Mongo</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Data.Mongo</AssemblyName>
 		<RootNamespace>Ws.Core.Extensions.Data.Mongo</RootNamespace>
@@ -20,8 +20,8 @@
   </PropertyGroup>
   
   <ItemGroup>
-		<PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="5.0.0-preview1" />
-		<PackageReference Include="MongoDB.Driver" Version="2.11.4" />
+		<PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="5.0.1" />
+		<PackageReference Include="MongoDB.Driver" Version="2.11.5" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Data\Data.csproj" />

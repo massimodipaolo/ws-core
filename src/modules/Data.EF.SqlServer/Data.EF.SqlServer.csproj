@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.0-beta</PackageVersion>
+    <PackageVersion>5.0.0</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.EF.SqlServer</PackageId>
     <AssemblyName>Ws.Core.Extensions.Data.EF.SqlServer</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Data.EF.SqlServer</RootNamespace>
@@ -20,9 +20,9 @@
   </PropertyGroup>  
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="5.0.0-preview1" />
-    <PackageReference Include="EFCore.BulkExtensions" Version="3.2.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="5.0.1" />
+    <PackageReference Include="EFCore.BulkExtensions" Version="3.2.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>

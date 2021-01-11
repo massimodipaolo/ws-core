@@ -2,7 +2,7 @@
   
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.0-beta</PackageVersion>
+    <PackageVersion>5.0.0</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.Cache</PackageId>
     <AssemblyName>Ws.Core.Extensions.Data.Cache</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Data.Cache</RootNamespace>

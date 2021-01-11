@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.0-beta</PackageVersion>
+    <PackageVersion>5.0.0</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.Cache.Memcached</PackageId>
     <AssemblyName>Ws.Core.Extensions.Data.Cache.Memcached</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Data.Cache.Memcached</RootNamespace>
@@ -11,7 +11,7 @@
     <Description>
     </Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.netcore 3</PackageReleaseNotes>
+    <PackageReleaseNotes>.netcore 5</PackageReleaseNotes>
     <PackageTags></PackageTags>
   </PropertyGroup>
 
@@ -24,6 +24,6 @@
     <ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EnyimMemcachedCore" Version="2.4.5" />
+    <PackageReference Include="EnyimMemcachedCore" Version="2.5.2" />
   </ItemGroup>
 </Project>

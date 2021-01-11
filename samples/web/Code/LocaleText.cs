@@ -15,7 +15,7 @@ namespace web.Code
 
     public class LocaleText : HashSet<LocaleTextItem>, IJsonConvertible
     {
-        private static LocaleTextItem[] _init => new LocaleTextItem[] { };
+        private static LocaleTextItem[] _init => Array.Empty<LocaleTextItem>();
         private LocaleTextItem[] _items = _init;
         private static string[] _cultures { get; set; }
         static LocaleText()
@@ -38,7 +38,7 @@ namespace web.Code
                 else
                 {
                     if (_cultures.Contains(item.Id))
-                        _items.Append(item);
+                        _items = _items.Append(item).ToArray();
                 }
         }
 
@@ -139,8 +139,10 @@ namespace web.Code
         {
             if (reader.Value != null)
             {
-                var locale = new LocaleText();
-                locale.Add(new LocaleTextItem() { Id = _locale, Text = reader.Value.ToString() });
+                var locale = new LocaleText
+                {
+                    new LocaleTextItem() { Id = _locale, Text = reader.Value.ToString() }
+                };
                 return locale.ToArray();
                 //return new List<LocaleText>() { new LocaleText() { Code = _language, Text = reader.Value.ToString() } };
             }
