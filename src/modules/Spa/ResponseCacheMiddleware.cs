@@ -136,7 +136,7 @@ namespace Ws.Core.Extensions.Spa
             return null;
         }
 
-        private void AddEarlyHints(HttpContext ctx,string hints)
+        private static void AddEarlyHints(HttpContext ctx,string hints)
         {
             if (!string.IsNullOrEmpty(hints))
                 ctx.Response.Headers.Append("Link", hints);

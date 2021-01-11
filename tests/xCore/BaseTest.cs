@@ -30,9 +30,9 @@ namespace xCore.Extensions
     public static partial class Extend
     {
         const int _separatorSize = 50;
-        static Func<char,string> _line = (separator) => $"{Environment.NewLine}{new string(separator, _separatorSize)}{Environment.NewLine}";
-        static Func<string> newLine = () => _line('-');
-        static Func<string> endLine = () => _line('#');
+        static readonly Func<char,string> _line = (separator) => $"{Environment.NewLine}{new string(separator, _separatorSize)}{Environment.NewLine}";
+        static readonly Func<string> newLine = () => _line('-');
+        static readonly Func<string> endLine = () => _line('#');
 
         public static void Write(this ITestOutputHelper output, params string[] args)
         {

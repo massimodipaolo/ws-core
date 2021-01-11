@@ -119,13 +119,13 @@ namespace web.Code
     public class LocaleJsonConverter : JsonConverter
     {
         private static IHttpContextAccessor _context;
-        private string _locale => _context?.HttpContext?.Request?.Query["locale"];
+        private static string _locale => _context?.HttpContext?.Request?.Query["locale"];
         public LocaleJsonConverter(params object[] args)
         {
             _context = GetFromArgs<IHttpContextAccessor>(args);
         }
 
-        private T GetFromArgs<T>(object[] args)
+        private static T GetFromArgs<T>(object[] args)
         {
             return (T)args.AsEnumerable().FirstOrDefault(_ => typeof(T).IsAssignableFrom(_.GetType()));
         }
