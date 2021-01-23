@@ -166,6 +166,7 @@ namespace Ws.Core.Extensions.Api
                 applicationBuilder.UseSwaggerUI(opt =>
                 {
                     opt.RoutePrefix = _doc.RoutePrefix;
+                    opt.EnableDeepLinking();
                     opt.DisplayRequestDuration();
                     if (_doc.Ui != null)
                     {
