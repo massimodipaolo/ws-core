@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.0</PackageVersion>
+    <PackageVersion>5.0.1</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.FileSystem</PackageId>
     <AssemblyName>Ws.Core.Extensions.Data.FileSystem</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Data.FileSystem</RootNamespace>
@@ -20,7 +20,7 @@
   </PropertyGroup>   
   
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>

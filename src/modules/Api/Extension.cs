@@ -59,7 +59,7 @@ namespace Ws.Core.Extensions.Api
                 services.AddSwaggerGen(opt =>
                 {
                     opt.CustomSchemaIds(_ => _.FullName);
-                    
+
                     opt.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 
                     //Xml comments

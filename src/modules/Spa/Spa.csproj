@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.0-alpha3</PackageVersion>
+    <PackageVersion>5.0.0-alpha4</PackageVersion>
     <PackageId>Ws.Core.Extensions.Spa</PackageId>
     <AssemblyName>Ws.Core.Extensions.Spa</AssemblyName> 
     <RootNamespace>Ws.Core.Extensions.Spa</RootNamespace>
@@ -20,8 +20,8 @@
   </PropertyGroup>  
 
   <ItemGroup>
-    <PackageReference Include="AngleSharp" Version="0.14.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.10" />
+    <PackageReference Include="AngleSharp" Version="0.15.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.15" />
   </ItemGroup>  
 
   <ItemGroup>    

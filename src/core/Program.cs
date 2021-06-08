@@ -19,12 +19,18 @@ namespace Ws.Core
         public static IHostBuilder WebHostBuilder(string[] args, Assembly assembly, System.Type startup) =>
         new HostBuilder()
         //Host.CreateDefaultBuilder(args)
+                    .ConfigureHostConfiguration(_ =>
+                    {
+                        _
+                        .AddEnvironmentVariables()
+                        .AddCommandLine(args); //i.e. --Environment=Local
+                    })
                     .ConfigureWebHostDefaults(_ =>
                     {
                         //_.UseKestrel((ctx, opt) => { opt.AddServerHeader = false; });
                         //_.UseIIS();
                         _.UseContentRoot(Directory.GetCurrentDirectory());
-                        _.UseStartup(startup);                        
+                        _.UseStartup(startup);
                     })
                     .ConfigureLogging((ctx, logging) =>
                     {

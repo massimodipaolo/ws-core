@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>0.0.4-beta2</PackageVersion>
+    <PackageVersion>0.0.4-beta3</PackageVersion>
     <PackageId>Ws.Core.NLog</PackageId>
     <AssemblyName>Ws.Core.NLog</AssemblyName>
     <RootNamespace>Ws.Core</RootNamespace>
@@ -22,8 +22,8 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="NLog.Config" Version="4.7.6" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.10.0" />
+    <PackageReference Include="NLog.Config" Version="4.7.10" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.12.0" />
   </ItemGroup>
   
   <ItemGroup>

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.0</PackageVersion>
+    <PackageVersion>5.0.1</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.Cache.Redis</PackageId>
     <AssemblyName>Ws.Core.Extensions.Data.Cache.Redis</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Data.Cache.Redis</RootNamespace>
@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="5.0.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="5.0.2" />
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
   </ItemGroup>
 

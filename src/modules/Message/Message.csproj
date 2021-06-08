@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.0</PackageVersion>
+    <PackageVersion>5.0.1</PackageVersion>
     <PackageId>Ws.Core.Extensions.Message</PackageId>
     <AssemblyName>Ws.Core.Extensions.Message</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Message</RootNamespace>
@@ -20,8 +20,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="2.10.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.Network" Version="5.0.1" />
+    <PackageReference Include="MailKit" Version="2.12.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Network" Version="5.0.4" />
   </ItemGroup>
 
   <ItemGroup>

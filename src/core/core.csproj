@@ -2,7 +2,7 @@
   
     <PropertyGroup>    
     <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.0</PackageVersion>  
+    <PackageVersion>5.0.1</PackageVersion>  
     <PackageId>Ws.Core</PackageId>    
     <AssemblyName>Ws.Core</AssemblyName>
     <RootNamespace>Ws.Core</RootNamespace>
