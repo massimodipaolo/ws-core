@@ -4,7 +4,7 @@ param(
   [string[]]$targets = 'default'
 )
 
-# Read .env file
+# Read .env file: Install-Module -Name Set-PsEnv
 function prompt {
     Set-PsEnv
 }
@@ -80,20 +80,20 @@ target deploy {
       try { 
         $pkg = Nuget-Parse-Package($file)
         Write-Host "Check exists " $pkg.assembly $pkg.version
-        $exists = nuget search $pkg.assembly -Source $Env:NUGET_API -Verbosity quiet -PreRelease -Take 1
+        $exists = nuget search $pkg.assembly -Source $Env:NUGET_SOURCE -Verbosity quiet -PreRelease -Take 1
         $version = $exists.Split($pkg.assembly + " | ")[3..3]
         Write-Host "Found version " $version
         if ($version -eq $pkg.version) {
             if ($override -eq 1) {
                 Write-Host "Delete " $pkg.assembly
-                Invoke-Dotnet nuget delete $pkg.assembly $pkg.version --api-key $Env:NUGET_API_KEY --source $Env:NUGET_SOURCE
+                Invoke-Dotnet nuget delete $pkg.assembly $pkg.version --api-key $Env:NUGET_API_KEY --source $Env:NUGET_API
             } else {
                 Write-Host "Skip " $pkg.assembly
                 return
             }
         } 
         Write-Host "Uploading " $pkg.assembly
-        Invoke-Dotnet nuget push $path --api-key $Env:NUGET_API_KEY --source $Env:NUGET_SOURCE
+        Invoke-Dotnet nuget push $path --api-key $Env:NUGET_API_KEY --source $Env:NUGET_API
       }
       catch {
         Write-Host "An error occurred:"

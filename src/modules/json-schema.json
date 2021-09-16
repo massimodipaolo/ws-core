@@ -693,7 +693,42 @@
                           "type": "array",
                           "items": { "type": "string" },
                           "uniqueItems": true,
-                          "default": "[Id]"
+                          "description": "Used for specifying custom properties, by which we want update to be done. If Identity column exisit and is not added in UpdateByProp it will be excluded automatically"
+                        },
+                        "propertiesToExcludeOnUpdate": {
+                          "type": "array",
+                          "items": { "type": "string" },
+                          "uniqueItems": true,
+                          "description": "Selected properties are excluded from being updated, can differ from PropertiesToExclude that can be used for Insert config only"
+                        },
+                        "PropertiesToExcludeOnCompare": {
+                          "type": "array",
+                          "items": { "type": "string" },
+                          "uniqueItems": true,
+                          "description": "By adding a column name to this list, will allow it to be inserted and updated but will not update the row if any of the others columns in that row did not change. For example, if importing data and want to keep an internal UpdateDate, add that column"
+                        },
+                        "PropertiesToExclude": {
+                          "type": "array",
+                          "items": { "type": "string" },
+                          "uniqueItems": true,
+                          "description": "When doing Insert/Update properties to affect can be explicitly selected by adding their names into PropertiesToInclude. If need to change more then half columns then PropertiesToExclude can be used. Setting both Lists are not allowed."
+                        },
+                        "PropertiesToIncludeOnUpdate": {
+                          "type": "array",
+                          "items": { "type": "string" },
+                          "uniqueItems": true
+                        },
+                        "PropertiesToIncludeOnCompare": {
+                          "type": "array",
+                          "items": { "type": "string" },
+                          "uniqueItems": true,
+                          "description": "By adding a column name to this list, will allow it to be inserted and updated but will not update the row if any of the these columns in that row did not change. For example, if importing data and want to keep an internal UpdateDate, add all columns except that one, or use PropertiesToExcludeOnCompare"
+                        },
+                        "PropertiesToInclude": {
+                          "type": "array",
+                          "items": { "type": "string" },
+                          "uniqueItems": true,
+                          "description": "When doing Insert/Update one or more properties can be exclude by adding their names into PropertiesToExclude. If need to change less then half column then PropertiesToInclude can be used. Setting both Lists are not allowed."
                         },
                         "bulkCopyTimeout": {
                           "type": "number",
