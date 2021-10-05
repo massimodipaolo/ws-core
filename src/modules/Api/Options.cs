@@ -1,5 +1,6 @@
 ﻿using Ws.Core.Extensions.Base;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace Ws.Core.Extensions.Api
 {
@@ -14,12 +15,10 @@ namespace Ws.Core.Extensions.Api
             public CookieOptions Cookie { get; set; }
             public int IdleTimeoutInMinutes { get; set; } = 20;
 
-            public class CookieOptions
+            public class CookieOptions: CookieBuilder
             {
-                public string Name { get; set; } = ".api.Session";
-                public string Path { get; set; }
-                public string Domain { get; set; }
-                public bool HttpOnly { get; set; } = true;
+                public override string Name { get; set; } = ".api.Session";
+                public override bool HttpOnly { get; set; } = true;
             }
         }
 

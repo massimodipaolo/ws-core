@@ -317,6 +317,28 @@
                               "type": "boolean",
                               "description": "Indicates whether a cookie is accessible by client-side script.",
                               "default": true
+                            },
+                            "isEssential": {
+                              "type": "boolean",
+                              "description": "Indicates if this cookie is essential for the application to function correctly. If true then consent policy checks may be bypassed.",
+                              "default": false
+                            },
+                            "sameSiteMode": {
+                              "enum": [ "Unspecified", "None", "Lax", "Strict" ],
+                              "description": "Used to set the SameSite field on response cookies to indicate if those cookies,should be included by the client on future \"same-site\" or \"cross-site\" requests",
+                              "default": "Unspecified"
+                            },
+                            "cookieSecurePolicy": {
+                              "enum": [ "SameAsRequest", "Always", "None" ],
+                              "description": "The policy that will be used to determine Microsoft.AspNetCore.Http.CookieOptions.Secure"
+                            },
+                            "expiration": {
+                              "type": "number",
+                              "description": "Timestamp for lifespan of a cookie."
+                            },
+                            "maxAge": {
+                              "type": "number",
+                              "description": "Timestamp for the max-age for the cookie."
                             }
                           }
                         }

@@ -25,12 +25,7 @@ namespace Ws.Core.Extensions.Api
                     var _cookie = _session.Cookie;
                     if (_cookie != null)
                     {
-                        opt.Cookie.Name = _cookie.Name;
-                        if (!string.IsNullOrEmpty(_cookie.Path))
-                            opt.Cookie.Path = _cookie.Path;
-                        if (!string.IsNullOrEmpty(_cookie.Domain))
-                            opt.Cookie.Domain = _cookie.Domain;
-                        opt.Cookie.HttpOnly = _cookie.HttpOnly;
+                        opt.Cookie = _cookie;
                     }
                     opt.IdleTimeout = TimeSpan.FromMinutes(_session.IdleTimeoutInMinutes);
                 });
