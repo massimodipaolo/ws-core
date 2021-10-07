@@ -323,12 +323,12 @@
                               "description": "Indicates if this cookie is essential for the application to function correctly. If true then consent policy checks may be bypassed.",
                               "default": false
                             },
-                            "sameSiteMode": {
+                            "sameSite": {
                               "enum": [ "Unspecified", "None", "Lax", "Strict" ],
                               "description": "Used to set the SameSite field on response cookies to indicate if those cookies,should be included by the client on future \"same-site\" or \"cross-site\" requests",
                               "default": "Unspecified"
                             },
-                            "cookieSecurePolicy": {
+                            "securePolicy": {
                               "enum": [ "SameAsRequest", "Always", "None" ],
                               "description": "The policy that will be used to determine Microsoft.AspNetCore.Http.CookieOptions.Secure"
                             },
