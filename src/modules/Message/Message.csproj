@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.1</PackageVersion>
+    <PackageVersion>5.0.2</PackageVersion>
     <PackageId>Ws.Core.Extensions.Message</PackageId>
     <AssemblyName>Ws.Core.Extensions.Message</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Message</RootNamespace>

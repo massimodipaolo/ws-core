@@ -125,6 +125,20 @@ namespace Ws.Core.Extensions.Data
                                 // Map specific property on a text column, serializing/deserializing value
                                 if (p.JsonConvert.HasValue && p.JsonConvert.Value == true)
                                     entityBuilder.Property(p.Name).HasJsonConversion(type.GetProperty(p.Name).PropertyType);
+
+                                if (!string.IsNullOrEmpty(p.HasConversion))
+                                {
+                                    var _type = p.HasConversion.ToLower();
+                                    if (_type == "json")
+                                        entityBuilder.Property(p.Name).HasJsonConversion(type.GetProperty(p.Name).PropertyType);
+                                    else
+                                    {
+                                        Type clrType = EF.Options.MappingConfig.PropertyConfig.ColumnClrTypeConversions.FirstOrDefault(_ => _.Name.ToLower() == _type);
+                                        if (clrType != null)
+                                            entityBuilder.Property(p.Name).HasConversion(clrType);
+                                    }
+                                }
+                                    
                             }
 
                     }

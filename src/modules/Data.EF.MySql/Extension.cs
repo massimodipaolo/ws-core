@@ -25,7 +25,7 @@ namespace Ws.Core.Extensions.Data.EF.MySql
                 */
                 var hcBuilder = serviceCollection.AddHealthChecks();
                 foreach (var conn in connections)
-                    hcBuilder.AddMySql(conn.ConnectionString, name: $"mysql-{conn.Name}");
+                    hcBuilder.AddMySql(conn.ConnectionString, name: $"mysql-{conn.Name}", tags: new[] { "db", "sql", "mysql" });
 
                 var _defaultConn = connections.FirstOrDefault().ConnectionString;
                 serviceCollection.AddDbContext<AppDbContext>(_ => _.UseMySql(_defaultConn,ServerVersion.AutoDetect(_defaultConn)),options.ServiceLifetime);

@@ -36,7 +36,7 @@ namespace Ws.Core.Extensions.Data.Repository
         }
 
 
-        IQueryable<T> IRepository<T, TKey>.List => _collection.AsQueryable();
+        IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
 
         public T Find(TKey Id)
         {

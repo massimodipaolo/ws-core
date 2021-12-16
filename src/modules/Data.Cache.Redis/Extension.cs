@@ -21,7 +21,7 @@ namespace Ws.Core.Extensions.Data.Cache.Redis
             var host = options?.Client?.Configuration ?? "localhost:6379";
             serviceCollection
                 .AddHealthChecks()
-                .AddRedis(host, name:"cache-redis", failureStatus: Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded);
+                .AddRedis(host, name:"cache-redis", failureStatus: Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded, tags: new[] { "cache", "redis" });
 
             serviceCollection
                 //.AddMemoryCache()

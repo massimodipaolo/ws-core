@@ -22,6 +22,8 @@ namespace web
         {
             services.AddResponseCompression(_ => _.EnableForHttps = true);
 
+            services.AddTransient<Ws.Core.Extensions.HealthCheck.Checks.AppLog.IAppLogService, Code.HealthCheckAppLogService>();
+
             base.ConfigureServices(services);
 
             services.AddTransient(typeof(Ws.Core.Extensions.Data.AppDbContext), typeof(Code.AppDbContextExt));

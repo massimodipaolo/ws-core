@@ -21,7 +21,7 @@ namespace Ws.Core.Extensions.Message
             this.logger = logger;
             this.config = config;
         }
-        
+
         /*
         public class EmailMessageModel
         {
@@ -29,9 +29,8 @@ namespace Ws.Core.Extensions.Message
         }
         */
 
-        public async Task SendAsync(Message message)
+        public async Task SendAsync(Message message, bool throwException = false)
         {
-
             var sender = config.Senders.FirstOrDefault();
             if (sender != null && !string.IsNullOrEmpty(sender.Address))
             {
@@ -104,14 +103,17 @@ namespace Ws.Core.Extensions.Message
                 catch (Exception ex) when (ex is MailKit.Security.SslHandshakeException || ex is System.Net.Sockets.SocketException || ex is MailKit.ProtocolException)
                 {
                     logger.LogError(ex, "Smtp connection error");
+                    if (throwException) throw;
                 }
                 catch (Exception ex) when (ex is MailKit.Security.AuthenticationException || ex is MailKit.Security.SaslException)
                 {
                     logger.LogError(ex, "Smtp authentication error");
+                    if (throwException) throw;
                 }
                 catch (Exception ex)
                 {
                     logger.LogWarning(ex, "Send email error");
+                    if (throwException) throw;
                 }
                 finally
                 {
@@ -130,7 +132,7 @@ namespace Ws.Core.Extensions.Message
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
                 if (!string.IsNullOrEmpty(receiver.UserName) && !string.IsNullOrEmpty(receiver.Password))
                     await client.AuthenticateAsync(receiver.UserName, receiver.Password).ConfigureAwait(false);
-                List<Message> emails = new List<Message>();
+                List<Message> emails = new ();
                 for (int i = 0; i < client.Count && i < 10; i++)
                 {
                     var mime = await client.GetMessageAsync(i).ConfigureAwait(false);
@@ -159,6 +161,7 @@ namespace Ws.Core.Extensions.Message
             var smtp = config.Senders?.FirstOrDefault();
             if (smtp != null)
             {
+                if (smtp.Port == 0) smtp.Port = 25;
                 var options = new HealthChecks.Network.SmtpHealthCheckOptions()
                 {
                     Host = smtp.Address,
@@ -172,8 +175,14 @@ namespace Ws.Core.Extensions.Message
                 };
                 if (!string.IsNullOrEmpty(smtp.UserName))
                     options.LoginWith(smtp.UserName, smtp.Password);
-
-                return await new HealthChecks.Network.SmtpHealthCheck(options).CheckHealthAsync(context, cancellationToken);
+                
+                var result = await new HealthChecks.Network.SmtpHealthCheck(options).CheckHealthAsync(context, cancellationToken);
+                Dictionary<string, object> data = new()
+                {
+                    { nameof(smtp.Address), smtp.Address },
+                    { nameof(smtp.Port), smtp.Port }
+                };
+                return new HealthCheckResult(result.Status,result.Description,result.Exception,data);
             };
             return await Task.FromResult(HealthCheckResult.Healthy());
         }      

@@ -41,7 +41,7 @@ namespace Ws.Core.Extensions.Data.Mongo
 
                 var hcBuilder = serviceCollection.AddHealthChecks();
                 foreach (var conn in connections)
-                    hcBuilder.AddMongoDb(conn.ConnectionString, name: $"mongodb-{conn.Name}");
+                    hcBuilder.AddMongoDb(conn.ConnectionString, name: $"mongodb-{conn.Name}", tags: new[] { "db", "mongodb" });
 
                 serviceCollection.Configure<Options>(_ =>
                 {

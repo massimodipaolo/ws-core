@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.0</PackageVersion>
+    <PackageVersion>5.0.1</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.EF.MySql</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Data.EF.MySql</AssemblyName>
 		<RootNamespace>Ws.Core.Extensions.Data.EF.MySql</RootNamespace>

@@ -4,32 +4,6 @@
   "extConfig": {    
     "enableShutDownOnChange": false,
     "assemblies": {
-      "Ws.Core.Extensions.HealthCheck": {
-        "options": {                    
-          "checks": {
-            "tcp": [
-              {
-                "host": "127.0.0.1",
-                "port": 1025,
-                "name": "mailcatcher"
-              },
-              {
-                "host": "",
-                "port": 14331,
-                "name": "mssql-01"
-              }
-            ]
-          },
-          "ui": {                        
-            "webhooks": [
-              {
-                "name": "web",
-                "uri": ""                
-              }
-            ]
-          }
-        }
-      }
     }
   }
 }

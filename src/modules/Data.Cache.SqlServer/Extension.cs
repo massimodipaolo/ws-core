@@ -28,7 +28,8 @@ namespace Ws.Core.Extensions.Data.Cache.SqlServer
                     connectionString,
                     healthQuery: $"select top 1 Id from [{schema}].[{table}] with(nolock)",
                     name: "cache-sqlserver",
-                    failureStatus: Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded
+                    failureStatus: Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded,
+                    tags: new[] { "cache", "db", "sql", "sqlserver" }
                     );
 
             serviceCollection

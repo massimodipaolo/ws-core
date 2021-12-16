@@ -32,6 +32,21 @@ namespace Ws.Core.Extensions.Data.EF
                 public string Column { get; set; }
                 public bool Ignore { get; set; } = false;
                 public bool? JsonConvert { get; set; }
+                public string HasConversion { get; set; }
+                
+                public static readonly Type[] ColumnClrTypeConversions =
+                {
+                    typeof(string),
+                    typeof(int),
+                    typeof(long),
+                    typeof(bool),
+                    typeof(char),
+                    typeof(DateTime),
+                    typeof(DateTimeOffset),
+                    typeof(TimeSpan),
+                    typeof(Guid),
+                    typeof(byte[])
+              };
             }
         }
         public class IncludeNavigationPropertiesConfig {

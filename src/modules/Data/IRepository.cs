@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Ws.Core.Extensions.Data
 {
-    public interface IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
+    public interface IRepository<T> where T : class
     {
         IQueryable<T> List { get; }
-        T Find(TKey Id);
         IQueryable<T> Query(FormattableString command);
         void Add(T entity);
         void AddMany(IEnumerable<T> entities);
@@ -17,6 +16,10 @@ namespace Ws.Core.Extensions.Data
         void Merge(IEnumerable<T> entities, RepositoryMergeOperation operation = RepositoryMergeOperation.Upsert);
         void Delete(T entity);
         void DeleteMany(IEnumerable<T> entities);
+    }
+    public interface IRepository<T, TKey> : IRepository<T> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
+    {
+        T Find(TKey Id);
     }
 
     [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]

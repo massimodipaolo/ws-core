@@ -153,6 +153,7 @@ namespace web.Controllers
                     Content = payload.Text,
                     Arguments = payload.IsFailure ? new { Importance = "High" } : null,
                     Sender = new Ws.Core.Extensions.Message.Message.Actor() { Address = "no-reply@web.local" },
+                    Format = "text",
                     Recipients = new Ws.Core.Extensions.Message.Message.Actor[]
     {
                     new Ws.Core.Extensions.Message.Message.Actor() {

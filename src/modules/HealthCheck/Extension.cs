@@ -1,4 +1,5 @@
 ﻿using HealthChecks.UI.Client;
+using HealthChecks.UI.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,40 +25,44 @@ namespace Ws.Core.Extensions.HealthCheck
                 // storage
                 if (checks.Storage != null && checks.Storage.Any())
                     foreach (var storage in checks.Storage.Where(_ => !string.IsNullOrEmpty(_.Driver)))
-                        builder.AddDiskStorageHealthCheck(_ => _.AddDrive(storage.Driver, storage.MinimumFreeMb), $"storage-{storage.Name}", storage.Status);
+                        builder.AddDiskStorageHealthCheck(_ => _.AddDrive(storage.Driver, storage.MinimumFreeMb), $"storage-{storage.Name}", storage.Status, storage.Tags);
 
                 // memory
                 if (checks.Memory != null)
-                    builder.AddProcessAllocatedMemoryHealthCheck(checks.Memory.MaximumAllocatedMb, $"memory-allocated", checks.Memory.Status);
+                    builder.AddProcessAllocatedMemoryHealthCheck(checks.Memory.MaximumAllocatedMb, $"memory-allocated", checks.Memory.Status, checks.Memory.Tags);
 
                 // win services
 #pragma warning disable CA1416
                 if (checks.WinService != null && checks.WinService.Any() && OperatingSystem.IsWindows())
                     foreach (var service in checks.WinService.Where(_ => !string.IsNullOrEmpty(_.ServiceName)))
-                        builder.AddWindowsServiceHealthCheck(service.ServiceName, _ => _.Status == System.ServiceProcess.ServiceControllerStatus.Running, name: $"service-{service.Name}", failureStatus: service.Status);
+                        builder.AddWindowsServiceHealthCheck(service.ServiceName, _ => _.Status == System.ServiceProcess.ServiceControllerStatus.Running, name: $"service-{service.Name}", failureStatus: service.Status, tags: service.Tags);
 #pragma warning restore CA1416
 
                 // process
                 if (checks.Process != null && checks.Process.Any())
                     foreach (var process in checks.Process.Where(_ => !string.IsNullOrEmpty(_.ProcessName)))
-                        builder.AddProcessHealthCheck(process.ProcessName, _ => _.Any(p => p.HasExited == false), $"process-{process.Name}", process.Status);
+                        builder.AddProcessHealthCheck(process.ProcessName, _ => _.Any(p => p.HasExited == false), $"process-{process.Name}", process.Status, process.Tags);
 
                 // tcp
                 if (checks.Tcp != null && checks.Tcp.Any())
                     foreach (var tcp in checks.Tcp.Where(_ => !string.IsNullOrEmpty(_.Host)))
-                        builder.AddTcpHealthCheck(_ => _.AddHost(tcp.Host, tcp.Port), $"tcp-{tcp.Name}", tcp.Status);
+                        builder.AddTcpHealthCheck(_ => _.AddHost(tcp.Host, tcp.Port), $"tcp-{tcp.Name}", tcp.Status, tcp.Tags);
 
                 // http
                 if (checks.Http != null && checks.Http.Any())
                     foreach (var http in checks.Http.Where(_ => !string.IsNullOrEmpty(_.Url)))
-                        builder.AddUrlGroup(new Uri(http.Url), $"http-{http.Name}", http.Status);
+                        builder.AddUrlGroup(new Uri(http.Url), $"http-{http.Name}", http.Status, http.Tags);
+
+                // app log
+                if (checks.AppLog != null)
+                    builder.AddAppLog(checks.AppLog, tags: checks.AppLog.Tags);
             }
 
             //ui
             if (options.Ui?.Enabled == true)
             {
                 serviceCollection.AddHealthChecksUI(_ =>
-                {                    
+                {        
                     if (options.Ui.Endpoints != null && options.Ui.Endpoints.Any())
                         foreach (var endpoint in options.Ui.Endpoints.Where(_ => !string.IsNullOrEmpty(_.Uri)))
                             _.AddHealthCheckEndpoint(endpoint.Name, endpoint.Uri);
@@ -70,7 +75,20 @@ namespace Ws.Core.Extensions.HealthCheck
                                     hook.Name,
                                     hook.Uri,
                                     hook.Payload,
-                                    hook.RestorePayload
+                                    hook.RestorePayload,
+                                    //shouldNotifyFunc: report => DateTime.UtcNow.Hour >= 8 && DateTime.UtcNow.Hour <= 23,
+                                    customMessageFunc: (report) =>
+                                    {
+                                        var failing = report.Entries.Where(e => e.Value.Status == UIHealthStatus.Unhealthy);
+                                        return $"{failing.Count()} healthchecks are failing: {string.Join("/",failing.Select(_ => _.Key))} {Environment.NewLine + "--------------" + Environment.NewLine}";
+                                    },
+                                    customDescriptionFunc: report =>
+                                    {
+                                        var failing = report.Entries.Where(e => e.Value.Status == UIHealthStatus.Unhealthy);
+                                        return @$"{string.Join(Environment.NewLine + "--------------" + Environment.NewLine, 
+                                            failing.Select(f => $"{f.Key}: {f.Value.Description} {Environment.NewLine} " +
+                                            $"{Newtonsoft.Json.JsonConvert.SerializeObject(f.Value.Data, Newtonsoft.Json.Formatting.Indented)}"))}";
+                                    }
                                     );
                             }
                             catch { }

@@ -9,7 +9,7 @@ namespace Ws.Core.Extensions.HealthCheck
         public IEnumerable<string> AuthPolicies { get; set; }
         public IEnumerable<string> AuthHosts { get; set; }
     }
-    public class Options: IOptions
+    public partial class Options: IOptions
     {
         public IEnumerable<Route> Routes { get; set; }             
         public CheckEntries Checks { get; set; }
@@ -28,7 +28,7 @@ namespace Ws.Core.Extensions.HealthCheck
             json,
             text
         }
-        public class CheckEntries
+        public partial class CheckEntries
         {
             public IEnumerable<StorageCheck> Storage { get; set; }
             public MemoryCheck Memory { get; set; }
@@ -58,6 +58,7 @@ namespace Ws.Core.Extensions.HealthCheck
         {
             public string Name { get; set; } = Guid.NewGuid().ToString().Substring(0, 8);
             public Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus Status { get; set; } = Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Unhealthy;
+            public string[] Tags { get; set; }
         }
 
         public class HttpCheck : HealthResult

@@ -25,6 +25,7 @@ namespace xCore
             base.ConfigureServices(services);
 
             Ws.Core.AppInfo<Ws.Core.AppConfig>.Set(env: env, config: config, services: services);
+
         }
 
         public override void Configure(IApplicationBuilder app, IOptionsMonitor<Ws.Core.AppConfig> appConfigMonitor, IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor, IHostApplicationLifetime applicationLifetime, ILogger<Ws.Core.Program> logger)

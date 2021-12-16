@@ -9,7 +9,7 @@ namespace Ws.Core.Extensions.Message
 {
     public interface IMessage: IHealthCheck
     {
-        Task SendAsync(Message message);
+        Task SendAsync(Message message, bool throwException = false);
         Task<IEnumerable<Message>> ReceiveAsync();
     }
     public class Message

@@ -27,7 +27,7 @@ namespace Ws.Core.Extensions.Data.EF.SqlServer
                 */
                 var hcBuilder = serviceCollection.AddHealthChecks();
                 foreach (var conn in connections)
-                    hcBuilder.AddSqlServer(conn.ConnectionString, name: $"sqlserver-{conn.Name}");
+                    hcBuilder.AddSqlServer(conn.ConnectionString, name: $"sqlserver-{conn.Name}", tags: new[] { "db", "sql", "sqlserver" });
 
                 serviceCollection.AddDbContext<AppDbContext>(_ => _.UseSqlServer(connections.FirstOrDefault().ConnectionString),Options.ServiceLifetime);                
                 serviceCollection.PostConfigure<AppDbContext>(_ => _.Database.EnsureCreated());

@@ -11,7 +11,7 @@ namespace Ws.Core.Extensions.Message
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
             base.Execute(serviceCollection, serviceProvider);
-            serviceCollection.AddHealthChecks().AddCheck<EmailMessage>("message-email");
+            serviceCollection.AddHealthChecks().AddCheck<EmailMessage>("message-email", tags: new[] {"message", "smtp", "email" });
             serviceCollection.AddSingleton<IMessageConfiguration>(options);
             serviceCollection.AddTransient<IMessage, EmailMessage>();
         }        

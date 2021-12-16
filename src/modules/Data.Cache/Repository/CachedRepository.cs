@@ -29,7 +29,7 @@ namespace Ws.Core.Extensions.Data.Repository
         public static string Key => $"cache:repository:{typeof(T)}";
         public static string EntityKey(TKey Id) => $"{Key}:{Id}";
 
-        IQueryable<T> IRepository<T, TKey>.List => collection.AsQueryable();
+        IQueryable<T> IRepository<T>.List => collection.AsQueryable();
 
         public T Find(TKey Id)
         {

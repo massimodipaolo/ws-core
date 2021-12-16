@@ -7,7 +7,7 @@ namespace Ws.Core.Extensions.Data.Repository
 {
     public class InMemory<T, TKey> : IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
-        private static List<T> _collection = new List<T>();
+        private static List<T> _collection = new ();
 
         public InMemory() { }
 
@@ -16,7 +16,7 @@ namespace Ws.Core.Extensions.Data.Repository
             _collection = data;
         }
 
-        IQueryable<T> IRepository<T, TKey>.List => _collection.AsQueryable();
+        IQueryable<T> IRepository<T>.List => _collection.AsQueryable();
 
         public T Find(TKey Id)
         {

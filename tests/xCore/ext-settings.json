@@ -59,6 +59,209 @@
             }
           }
         }
+      },
+      "Ws.Core.Extensions.Data.EF": {
+        "priority": 400,
+        "options": {
+          "mappings": [
+            {
+              "name": "Log",
+              "properties": [
+                {
+                  "name": "Level",
+                  "hasConversion": "string"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Data.EF.SqlServer": {
+        "priority": 401,
+        "options": {
+          "connections": [
+            {
+              "name": "default",
+              "connectionString": "Server=.,14331;Database=app-core;User Id=app-core-usr;Password=5876ee62-d2a9-4e61-8c3a-88d41f4543e8;MultipleActiveResultSets=true"
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Message": {
+        "priority": 600,
+        "options": {
+          "senders": [
+            {
+              "address": "127.0.0.1",
+              "port": 1025
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.HealthCheck": {
+        "priority": 999,
+        "options": {
+          "routes": [
+            {
+              "path": "/healthz",
+              "contentType": "text",
+              "skipChecks": true
+            },
+            {
+              "path": "/healthz/checks",
+              "contentType": "json",
+              "skipChecks": false,
+              "_authHosts": [ "localhost:32040" ]
+            }
+          ],
+          "checks": {
+            "storage": [
+              {
+                "driver": "C:\\",
+                "minimumFreeMb": 2048,
+                "status": "Degraded",
+                "name": "diskC",
+                "tags": [ "infrastructure", "on-premises" ]
+              }
+            ],
+            "memory": {
+              "maximumAllocatedMb": 500,
+              "status": "Degraded",
+              "tags": [ "infrastructure", "on-premises" ]
+            },
+            "process": [
+              {
+                "processName": "devenv",
+                "name": "devenv",
+                "status": "Degraded",
+                "tags": [ "infrastructure", "on-premises" ]
+              }
+            ],
+            "tcp": [
+              {
+                "host": "127.0.0.1",
+                "port": 1025,
+                "name": "mailcatcher",
+                "tags": [ "infrastructure", "local", "smtp" ]
+              },
+              {
+                "host": "127.0.0.1",
+                "port": 14331,
+                "name": "mssql-01",
+                "tags": [ "infrastructure", "local", "db" ]
+              }
+            ],
+            "http": [
+              {
+                "url": "https://www.google.com",
+                "name": "outbound",
+                "status": "Unhealthy",
+                "tags": [ "network", "firewall" ]
+              }
+            ],
+            "appLog": {
+              "_appLogService": "xCore.HealthCheckAppLogService, xCore",
+              "takeLastLog": {
+                "criteria": "top",
+                "value": 1000
+              },
+              "_logIgnoreRoles": [
+                {
+                  "level": "Warn",
+                  "_selectors": [
+                    { "_logger": { "list": [ "PUCBM.Hub.Controllers.PrenotingController" ] } },
+                    {
+                      "_logger": {
+                        "list": [ "Eurospin", "PUCBM" ],
+                        "role": "startWith"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "level": "Error",
+                  "selectors": [
+                    {
+                      "logger": {
+                        "list": [ "Aves.Booking.RatePlan", "Eurospin.Server.Extensions.ImageSharpExtension", "SixLabors.ImageSharp.Web.Middleware.ImageSharpMidd" ],
+                        "role": "equalTo"
+                      }
+                    },
+                    {
+                      "logger": {
+                        "list": [ "NodeServices" ],
+                        "role": "contains"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "healthStatusCheckers": [
+                {
+                  "level": "Warn",
+                  "minCounters": [
+                    {
+                      "minEntry": 1000,
+                      "healthStatus": "Degraded"
+                    },
+                    {
+                      "minEntry": 10000,
+                      "healthStatus": "Unhealthy"
+                    }
+                  ]
+                },
+                {
+                  "level": "Error",
+                  "minCounters": [
+                    {
+                      "minEntry": 100,
+                      "healthStatus": "Degraded"
+                    },
+                    {
+                      "minEntry": 1000,
+                      "healthStatus": "Unhealthy"
+                    }
+                  ]
+                },
+                {
+                  "level": "Fatal",
+                  "minCounters": [
+                    {
+                      "minEntry": 10,
+                      "healthStatus": "Unhealthy"
+                    }
+                  ]
+                }
+              ],
+              "logMessageAggregate": {
+                "truncateLengthAt": 255,
+                "maxLevenshteinDistanceFactor": 90
+              },
+              "tags": [ "app" ]
+            }
+          },
+          "ui": {
+            "enabled": true,
+            "_dbPath": "Files\\healthchecksdb",
+            "_injectCss": "wwwroot/healthcheck-ui/style.css",
+            "endpoints": [
+              {
+                "uri": "/healthz/checks",
+                "name": "web-app"
+              }
+            ],
+            "webhooks": [
+              {
+                "name": "web",
+                "uri": "/hook",
+                "payload": "{\"title\": \"The HealthCheck '[[LIVENESS]]' is failing\",\"text\": \"Error message: [[FAILURE]]\r\n[[DESCRIPTIONS]]\",\"isFailure\": true}",
+                "restorePayload": "{\"title\": \"The HealthCheck '[[LIVENESS]]' is recovered\",\"text\": \"All is up and running\"}"
+              }
+            ],
+            "evaluationTimeInSeconds": 60,
+            "minimumSecondsBetweenFailureNotifications": 300
+          }
+        }
       }
     }
   }

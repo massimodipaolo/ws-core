@@ -10,7 +10,9 @@ namespace Ws.Core.Extensions.Data
         public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
             base.Execute(serviceCollection, serviceProvider);
-            serviceCollection.AddTransient(typeof(IRepository<,>), typeof(Repository.InMemory<,>));            
+            serviceCollection
+                .AddTransient(typeof(IRepository<>), typeof(Repository.InMemory<,>))
+                .AddTransient(typeof(IRepository<,>), typeof(Repository.InMemory<,>));            
         }
     }
 }

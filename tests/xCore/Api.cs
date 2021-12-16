@@ -1,9 +1,17 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Ws.Core;
+using Ws.Core.Extensions.Data.Cache;
 using xCore.Extensions;
 using Xunit;
 using Xunit.Abstractions;
@@ -16,22 +24,8 @@ namespace xCore
 
         [Theory]
         [InlineData("/swagger")]
-        public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
-        {
-            // Arrange
-            var client = _factory.CreateClient();
-
-            // Act
-            var response = await client.GetAsync(url);
-            _output.Write(url, response.StatusCode.ToString(), await response.Content.ReadAsStringAsync());
-
-            // Assert
-            response.EnsureSuccessStatusCode(); // Status Code 200-299
-            Assert.Equal(
-                "text/html; charset=utf-8",
-                response.Content.Headers.ContentType.ToString()
-                );
-        }
+        [InlineData("/swagger/public/swagger.json")]
+        public async Task Get_Endpoints(string url) => await Get_EndpointsReturnSuccess(url);        
 
         /*
         [Fact]
