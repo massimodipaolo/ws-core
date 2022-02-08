@@ -10,27 +10,36 @@ namespace Ws.Core.Extensions.Data.Repository
     public class FileSystem<T, TKey> : IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         private List<T> _collection = new List<T>();
-        private static Data.FileSystem.Options _options { get; set; } = new Data.FileSystem.Extension().Options ?? new Data.FileSystem.Options();        
+        private static Data.FileSystem.Options _options { get; set; } = new Data.FileSystem.Extension().Options ?? new Data.FileSystem.Options();
         private string _path { get; set; }
 
         public FileSystem(IWebHostEnvironment env, ILoggerFactory logger)
-        {            
-            _path = System.IO.Path.Combine(env.ContentRootPath, _options.Folder, $"{typeof(T).Name}.json");
-
-            using var stream = File.Open(_path, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite);
-            using var reader = new StreamReader(stream);
-            var readed = reader.ReadToEnd();
-            if (!string.IsNullOrEmpty(readed))
-                _collection = Newtonsoft.Json.JsonConvert.DeserializeObject<List<T>>(readed);
-            else
-                logger.CreateLogger("Data.Repository.Logger").LogWarning($"Path {_path} not found");
+        {
+            Type type = typeof(T);
+            var names = new string[] { type.FullName, type.Name };
+            foreach (string name in names)
+            {
+                var _search = System.IO.Path.Combine(env.ContentRootPath, _options.Folder, $"{name}.json");
+                if (File.Exists(_search))
+                {
+                    _path = _search;
+                    using var stream = File.Open(_path, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite);
+                    using var reader = new StreamReader(stream);
+                    var readed = reader.ReadToEnd();
+                    if (!string.IsNullOrEmpty(readed))
+                        _collection = Newtonsoft.Json.JsonConvert.DeserializeObject<List<T>>(readed);
+                    break;
+                }
+            }
+            if (_path == null)
+                logger.CreateLogger("Data.Repository.Logger").LogWarning($"File {string.Join(",",names)} not found in {System.IO.Path.Combine(env.ContentRootPath, _options.Folder)}");
         }
 
 
         IQueryable<T> IRepository<T, TKey>.List => _collection.AsQueryable();
 
         public T Find(TKey Id)
-        { 
+        {
             return _collection.FirstOrDefault<T>(_ => _.Id.Equals(Id));
         }
 
