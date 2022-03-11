@@ -44,4 +44,13 @@ namespace Ws.Core.Extensions.Data
 
     }
 
+    /*
+    #region "Entity scalar-value model helper"
+    public class EntityOfInt : Ws.Core.Extensions.Data.Entity<int> { }
+    public class EntityOfLong : Ws.Core.Extensions.Data.Entity<long> { }
+    public class EntityOfString : Ws.Core.Extensions.Data.Entity<string> { }
+    public class EntityOfGuid : Ws.Core.Extensions.Data.Entity<Guid> { }
+    #endregion
+    */
+
 }

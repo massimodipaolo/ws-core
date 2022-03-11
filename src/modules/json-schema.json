@@ -727,6 +727,16 @@
                 }
               }
             },
+            "Ws.Core.Extensions.Data.EF.SQLite": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "$ref": "#/definitions/dbConnection"
+                }
+              }
+            },
             "Ws.Core.Extensions.Data.EF.SqlServer": {
               "allOf": [
                 { "$ref": "#/definitions/assembly" }

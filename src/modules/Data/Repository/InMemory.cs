@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Ws.Core.Extensions.Data.Repository
 {
-    public class InMemory<T, TKey> : IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
+    public class InMemory<T, TKey> : BaseRepository, IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         private static List<T> _collection = new ();
 

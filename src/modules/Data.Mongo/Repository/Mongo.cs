@@ -8,7 +8,7 @@ using Ws.Core.Extensions.Data.Mongo;
 
 namespace Ws.Core.Extensions.Data.Repository
 {
-    public class Mongo<T, TKey> : IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
+    public class Mongo<T, TKey> : BaseRepository, IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         private readonly Mongo.Options _config;
         private readonly IMongoCollection<T> _collection;

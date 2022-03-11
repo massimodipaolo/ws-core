@@ -1,4 +1,7 @@
 ﻿{
   "$schema": "https://xunit.net/schema/current/xunit.runner.schema.json",
-  "shadowCopy": false
+  "shadowCopy": false,
+  "parallelizeTestCollections": true,
+  "diagnosticMessages": true,
+  "longRunningTestSeconds": 30
 }

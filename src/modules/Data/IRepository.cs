@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Ws.Core.Extensions.Data
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository
+    {
+        System.Threading.Tasks.Task Seed();
+    }
+    public interface IRepository<T> : IRepository where T : class
     {
         IQueryable<T> List { get; }
         IQueryable<T> Query(FormattableString command);
@@ -27,5 +32,10 @@ namespace Ws.Core.Extensions.Data
     {
         Upsert,
         Sync
+    }
+
+    public class BaseRepository : IRepository
+    {
+        public virtual Task Seed() => throw new NotImplementedException();
     }
 }

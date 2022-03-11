@@ -12,22 +12,24 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ws.Core.Extensions.Data;
 
 namespace xCore
 {
     /// <summary>
     /// Program acts as IClassFixture
     /// </summary>
-    public class Program : WebApplicationFactory<Startup>
+    public class Program<TStartup> : WebApplicationFactory<Startup> where TStartup : class
     {
         protected override IHostBuilder CreateHostBuilder()
         => Ws.Core.Program
-        .WebHostBuilder(Array.Empty<string>(), typeof(Program).Assembly, typeof(Startup));
+        .WebHostBuilder(Array.Empty<string>(), typeof(Program<Startup>).Assembly, typeof(Startup));
 
         protected override void ConfigureWebHost(Microsoft.AspNetCore.Hosting.IWebHostBuilder builder)
-        {
-            // Set the content root path, relative to solution path
-            builder.UseSolutionRelativeContentRoot("tests/xCore");
+        {            
+            builder
+                .UseSolutionRelativeContentRoot("tests/xCore") // Set the content root path, relative to solution path
+                ;
             base.ConfigureWebHost(builder);
         }
     }

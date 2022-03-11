@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ws.Core.Extensions.Message;
+using xCore.Extensions;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -12,12 +10,12 @@ namespace xCore
     public class Message: BaseTest
     {
         private IMessage _service { get; set; }
-        public Message(Program factory, ITestOutputHelper output) : base(factory, output) { 
+        public Message(Program<Startup> factory, ITestOutputHelper output) : base(factory, output) { 
             _service = (IMessage)factory.Services.GetService(typeof(IMessage));
         }
 
         [Theory]
-        [InlineData("massimo.dipaolo@gmail.com", "massimo.dipaolo@gmail.com")]
+        [InlineData("massimodipaolo@users.noreply.github.com", "massimodipaolo@users.noreply.github.com")]
         public async Task Send_Message(string sender, string recipient) {
             // Arrange
             Exception _ex = null;
@@ -29,7 +27,7 @@ namespace xCore
                     new() { Address = recipient, Name = recipient, Type = Ws.Core.Extensions.Message.Message.ActorType.Primary }
                 },
                 Subject = $"Subject {sender.Split('@')[1]} {DateTime.UtcNow.ToShortTimeString()}",
-                Content = "Content"
+                Content = "Message content"
             };
 
             // Act
@@ -39,7 +37,7 @@ namespace xCore
             } catch(Exception ex)
             {
                 _ex = ex;
-                _output.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(_ex));
+                _output.Write(_service.GetType().ToString(), Newtonsoft.Json.JsonConvert.SerializeObject(_ex));
             }
 
             // Assert

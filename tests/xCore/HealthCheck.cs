@@ -16,7 +16,7 @@ namespace xCore
 {
     public class HealthCheck : BaseTest
     {
-        public HealthCheck(Program factory, ITestOutputHelper output) : base(factory, output) { }
+        public HealthCheck(Program<Startup> factory, ITestOutputHelper output) : base(factory, output) { }
 
         [Theory]
         [InlineData("/healthz")]
@@ -25,6 +25,10 @@ namespace xCore
         [InlineData("/healthchecks-ui")]
         [InlineData("/healthchecks-webhooks")]
         public async Task Get_Endpoints(string url) => await Get_EndpointsReturnSuccess(url);
+
+        [Theory]
+        [InlineData(typeof(Ws.Core.Extensions.HealthCheck.Checks.AppLog.IAppLogService), typeof(xCore.HealthCheckAppLogService))]
+        public void AppLog_AutoDiscover(Type Tinterface, Type ExpectedTimplementation) => base.Check_ServiceImplementation(Tinterface, ExpectedTimplementation);
     }
 
     public class HealthCheckAppLogService : IAppLogService

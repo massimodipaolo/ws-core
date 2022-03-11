@@ -23,7 +23,6 @@ namespace Ws.Core.Extensions.Data.EF.SqlServer
                 {
                     _.Connections = connections;
                 });
-
                 */
                 var hcBuilder = serviceCollection.AddHealthChecks();
                 foreach (var conn in connections)

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Ws.Core.Extensions.Data.Repository
 {
-    public class FileSystem<T, TKey> : IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
+    public class FileSystem<T, TKey> : BaseRepository, IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         private List<T> _collection = new List<T>();
         private static Data.FileSystem.Options _options { get; set; } = new Data.FileSystem.Extension().Options ?? new Data.FileSystem.Options();

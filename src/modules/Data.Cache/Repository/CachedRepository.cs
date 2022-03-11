@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Ws.Core.Extensions.Data.Repository
 {
-    public class CachedRepository<T, TKey> : ICacheRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
+    public class CachedRepository<T, TKey> : BaseRepository, ICacheRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         internal static ICache Cache { get; private set; }
         private static string collectionKey => CachedRepository<T,TKey>.Key;

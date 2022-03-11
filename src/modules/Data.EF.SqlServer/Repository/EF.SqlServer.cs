@@ -16,9 +16,8 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         private static Data.EF.SqlServer.Options options { get; set; } = new Data.EF.SqlServer.Extension().Options ?? new Data.EF.SqlServer.Options();
         private static IEnumerable<Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig> spMappings { get; set; }
         private Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig sp { get; set; }
-        private IServiceProvider provider { get; set; }
         private const string spPrefix = "entity";
-        public SqlServer(AppDbContext context, IServiceProvider provider) : base(context)
+        public SqlServer(AppDbContext context, IServiceProvider provider) : base(context, provider)
         {
             if (spMappings == null)
             {
@@ -42,11 +41,10 @@ namespace Ws.Core.Extensions.Data.Repository.EF
                     && (string.IsNullOrEmpty(_.NameSpace) || _.NameSpace == typeof(T).Namespace)
                 )?
                 .FirstOrDefault();
-
-            this.provider = provider;
         }
 
         #region Override repo
+        //public override string Info => _context.Set<EntityOfString>().FromSqlInterpolated($"select @@version Id").AsEnumerable().FirstOrDefault().Id;
         public override IQueryable<T> List => sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.List) ?? false ? list : base.List;
         private IQueryable<T> list
         {
@@ -196,7 +194,6 @@ namespace Ws.Core.Extensions.Data.Repository.EF
                 );
         }
 
-
         private async Task<string> ExecuteScalar(TKey Id)
         {
             var result = new System.Text.StringBuilder();
@@ -239,21 +236,6 @@ namespace Ws.Core.Extensions.Data.Repository.EF
                 }
             }
             return result.ToString();
-        }
-
-
-        private Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade db()
-        {
-            Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade df;
-            try
-            {
-                df = _context.Database;
-            }
-            catch  // context disposed
-            {
-                df = provider.GetService<AppDbContext>()?.Database;
-            }
-            return df;
         }
 
         #endregion

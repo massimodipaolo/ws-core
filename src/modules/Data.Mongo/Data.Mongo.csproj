@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.2</PackageVersion>
+    <PackageVersion>5.0.3</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.Mongo</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Data.Mongo</AssemblyName>
 		<RootNamespace>Ws.Core.Extensions.Data.Mongo</RootNamespace>

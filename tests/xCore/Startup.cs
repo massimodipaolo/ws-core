@@ -2,13 +2,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Collections.Generic;
-using System;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;
-using Ws.Core.Extensions.Base;
 
 namespace xCore
 {
@@ -20,9 +16,7 @@ namespace xCore
 
         public override void ConfigureServices(IServiceCollection services)
         {
-            //services.AddResponseCompression(_ => _.EnableForHttps = true);
-
-            base.ConfigureServices(services);
+            base.ConfigureServices(services);       
 
             Ws.Core.AppInfo<Ws.Core.AppConfig>.Set(env: env, config: config, services: services);
 
@@ -31,8 +25,6 @@ namespace xCore
         public override void Configure(IApplicationBuilder app, IOptionsMonitor<Ws.Core.AppConfig> appConfigMonitor, IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor, IHostApplicationLifetime applicationLifetime, ILogger<Ws.Core.Program> logger)
         {
             logger.LogInformation("Start");
-
-            //app.UseResponseCompression();
 
             Ws.Core.AppInfo<Ws.Core.AppConfig>.Set(app: app, appConfigMonitor: appConfigMonitor, extConfigMonitor: extConfigMonitor, loggerFactory: app.ApplicationServices?.GetRequiredService<ILoggerFactory>(), applicationLifetime: applicationLifetime);
 

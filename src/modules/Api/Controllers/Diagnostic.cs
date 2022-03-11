@@ -57,14 +57,14 @@ namespace Ws.Core.Extensions.Api.Controllers
                         process = System.Diagnostics.Process.GetCurrentProcess().MainModule
                     },
                     _ctx.HttpContext?.Request?.Headers,
-                    remoteIpAddress = _ctx.HttpContext?.Connection?.RemoteIpAddress.ToString()
+                    remoteIpAddress = _ctx.HttpContext?.Connection?.RemoteIpAddress?.ToString()
                 },
                 cache = _cache.Keys != null ? _cache.Keys.Count() : 0,
                 environment = new { _env.ApplicationName, _env.EnvironmentName, _env.ContentRootPath, _env.WebRootPath },
                 config = new
                 {
                     //builder = _config,
-                    detail = _config.AsEnumerable()
+                    detail = _config?.AsEnumerable()
                         .Select(conf => new
                         {
                             conf.Key,

@@ -5,19 +5,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Ws.Core.Extensions.Data.Repository
 {
-    public class EF<T, TKey> : IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
+    public class EF<T, TKey> : BaseRepository, IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         private static Extensions.Data.EF.Options.IncludeNavigationPropertiesConfig _includeOptions { get; set; } = new Extensions.Data.EF.Extension().Options?.IncludeNavigationProperties ?? new Extensions.Data.EF.Options.IncludeNavigationPropertiesConfig();
         protected readonly AppDbContext _context;
         protected DbSet<T> _collection;
-
-        public EF(AppDbContext context)
+        protected IServiceProvider _provider { get; set; }
+        public EF(AppDbContext context, IServiceProvider provider)
         {
             _context = context;
             _collection = _context.Set<T>();
+            _provider = provider;
         }
 
         private IQueryable<T> _list => _collection.AsNoTracking().AsQueryable();
@@ -145,6 +147,21 @@ namespace Ws.Core.Extensions.Data.Repository
             }
         }
 
+        protected Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade db()
+        {
+            Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade df;
+            try
+            {
+                df = _context.Database;
+            }
+            catch  // context disposed
+            {
+                df = _provider.GetService<AppDbContext>()?.Database;
+            }
+            return df;
+        }
+
     }
+
 }
 

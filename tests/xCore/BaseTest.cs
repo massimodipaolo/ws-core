@@ -10,15 +10,16 @@ using Microsoft.Extensions.Logging;
 using System;
 using xCore.Extensions;
 using System.Text.Json;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace xCore
 
 {
-    public class BaseTest : IClassFixture<Program>
+    public class BaseTest : IClassFixture<Program<Startup>>
     {
-        protected readonly Program _factory;
+        protected readonly Program<Startup> _factory;
         protected readonly ITestOutputHelper _output;
-        public BaseTest(Program factory, ITestOutputHelper output)
+        public BaseTest(Program<Startup> factory, ITestOutputHelper output)
         {
             _factory = factory;
             _output = output;
@@ -46,6 +47,18 @@ namespace xCore
             // Assert
             response.EnsureSuccessStatusCode(); // Status Code 200-299
         }
+
+        public void Check_ServiceImplementation(Type Tinterface, Type ExpectedTimplementation)
+        {
+            // Arrange
+            var _service = _factory.Services?.GetService(Tinterface);
+
+            // Act
+            _output.Write($"Interface: {Tinterface}\n Expected: {ExpectedTimplementation}\n Implementation: {_service}");
+
+            // Assert
+            Assert.True(_service?.GetType() == ExpectedTimplementation);
+        }
     }
 }
 
@@ -54,7 +67,7 @@ namespace xCore.Extensions
     public static partial class Extend
     {
         const int _separatorSize = 50;
-        static readonly Func<char,string> _line = (separator) => $"{Environment.NewLine}{new string(separator, _separatorSize)}{Environment.NewLine}";
+        static readonly Func<char, string> _line = (separator) => $"{Environment.NewLine}{new string(separator, _separatorSize)}{Environment.NewLine}";
         static readonly Func<string> newLine = () => _line('-');
         static readonly Func<string> endLine = () => _line('#');
 
@@ -62,8 +75,8 @@ namespace xCore.Extensions
         {
             output.WriteLine($"" +
                 $"{Environment.StackTrace.Split("\r\n")[2]}" +
-                newLine() + 
-                string.Join(newLine(),args) +
+                newLine() +
+                string.Join(newLine(), args) +
                 $"{endLine()}"
                 );
         }

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+	  <PackageVersion>5.0.1</PackageVersion>
+	  <PackageId>Ws.Core.Extensions.Data.EF.SQLite</PackageId>
+	  <AssemblyName>Ws.Core.Extensions.Data.EF.SQLite</AssemblyName>
+	  <RootNamespace>Ws.Core.Extensions.Data.EF.SQLite</RootNamespace>
+	  <Authors>Massimo Di Paolo</Authors>
+	  <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>	  
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<NoWarn>1701;1702;1705;1591</NoWarn>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.Sqlite" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Data.EF\Data.EF.csproj" />
+  </ItemGroup>
+
+</Project>
