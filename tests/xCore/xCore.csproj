@@ -39,5 +39,9 @@
     <ProjectReference Include="..\..\src\modules\Message\Message.csproj" />
     <ProjectReference Include="..\..\src\modules\Routing\Routing.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
 	
 </Project>

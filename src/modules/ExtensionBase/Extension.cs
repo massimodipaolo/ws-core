@@ -14,18 +14,18 @@ namespace Ws.Core.Extensions.Base
 {
     public class Extension : ExtCore.Infrastructure.ExtensionBase, IConfigureAction, IConfigureServicesAction
     {
-        private static IServiceProvider serviceProvider;
-        private static IServiceCollection serviceCollection;
-        protected static IConfiguration config => serviceProvider?.GetService<IConfiguration>();
-        protected static IWebHostEnvironment env => serviceProvider?.GetService<IWebHostEnvironment>();
-        protected static ILogger logger => serviceProvider?.GetService<ILoggerFactory>()?.CreateLogger("Extension.Logger");
+        private static IServiceProvider _serviceProvider;
+        private static IServiceCollection _serviceCollection;
+        protected static IConfiguration config => _serviceProvider?.GetService<IConfiguration>();
+        protected static IWebHostEnvironment env => _serviceProvider?.GetService<IWebHostEnvironment>();
+        protected static ILogger logger => _serviceProvider?.GetService<ILoggerFactory>()?.CreateLogger("Extension.Logger");
 
         public static void Init(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
         {
-            if (null == Extension.serviceCollection)
-                Extension.serviceCollection = serviceCollection;   
-            if (null == Extension.serviceProvider)
-                Extension.serviceProvider = serviceProvider;
+            if (null == Extension._serviceCollection)
+                Extension._serviceCollection = serviceCollection;
+            if (null == Extension._serviceProvider)
+                Extension._serviceProvider = serviceProvider;
         }
 
         protected string AssemblyName => GetType().GetTypeInfo().Assembly.GetName().Name;
@@ -34,7 +34,7 @@ namespace Ws.Core.Extensions.Base
                                            .Get<IDictionary<string, Extensions.Base.Configuration.Assembly>>()?
                                            .OrderBy(_ => _.Value.Priority)?
                                            .Select(_ => new Configuration.Assembly() { Name = _.Key, Priority = _.Value.Priority });
-                                           //.Select((e,i) => new Configuration.Assembly() {Name = e.Key,Priority=i});
+        //.Select((e,i) => new Configuration.Assembly() {Name = e.Key,Priority=i});
 
         protected Configuration.Assembly Assembly => Extensions?.FirstOrDefault(_ => _.Name == AssemblyName);
 
@@ -43,7 +43,7 @@ namespace Ws.Core.Extensions.Base
         {
             var obj = new T();
             if (Assembly != null)
-                obj = config?.GetSection(ConfigSectionPathOptions).Get<T>();            
+                obj = config?.GetSection(ConfigSectionPathOptions).Get<T>();
 
             if (Extension.Option<T>.Value == null)
                 Extension.Option<T>.Value = obj;
@@ -51,16 +51,17 @@ namespace Ws.Core.Extensions.Base
             return obj;
         }
 
-        public virtual T ReloadOptions<T>() where T : class, new() 
+        public virtual T ReloadOptions<T>() where T : class, new()
         {
             static string serialize(object t) => Newtonsoft.Json.JsonConvert.SerializeObject(t);
             var _current = GetOptions<T>();
-            if (serialize(Option<T>.Value ?? new T()) == serialize(_current ?? new T())) {
+            if (serialize(Option<T>.Value ?? new T()) == serialize(_current ?? new T()))
+            {
                 logger.LogInformation($"{Name}: No changes, skip {DateTime.Now}");
-                return null;   
+                return null;
             }
             else
-            {                
+            {
                 Option<T>.Value = _current;
                 logger.LogInformation($"{Name}: Options reloaded {DateTime.Now}");
                 return _current;
@@ -73,20 +74,22 @@ namespace Ws.Core.Extensions.Base
         public virtual int Priority => Assembly?.Priority ?? 0; // (Assembly?.Priority + 1) * 100 ?? 0;
 
         //IConfigureServicesAction
-        public virtual void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider) {
+        public virtual void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
+        {
             // default generic discriminator
             serviceCollection.TryAddSingleton(typeof(IDiscriminator), typeof(Discriminator));
             serviceCollection.TryAddSingleton(typeof(IDiscriminator<>), typeof(Discriminator<>));
         }
 
         //IConfigureAction
-        public virtual void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider) {
+        public virtual void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
+        {
         }
 
         public class Option<T>
         {
             public static T Value { get; set; }
         }
-        
+
     }
 }

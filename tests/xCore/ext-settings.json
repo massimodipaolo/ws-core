@@ -285,6 +285,37 @@
           }
         }
       }
-    }
+    },
+    "injectors": [
+      {
+        "priority": 101,
+        "services": [
+          {
+            "serviceType": "Ws.Core.Extensions.Message.IMessage",
+            "implementationType": "xCore.InjectorServiceMessage",
+            "lifeTime": "Transient",
+            "overrideIfAlreadyRegistered": false
+          }
+        ],
+        "middlewares": [
+          {
+            "type": "xCore.Middlewares.RequestCulture"
+          }
+        ]
+      },
+      {
+        "priority": 301,
+        "name": "branch-write-text",
+        "middlewares": [
+          {
+            "type": "xCore.Middlewares.WriteText",
+            "map": {
+              "pathMatch": "/branch",
+              "preserveMatchedPathSegment": true
+            }
+          }
+        ]
+      }
+    ]
   }
 }

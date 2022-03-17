@@ -79,6 +79,7 @@ namespace Ws.Core.Extensions.Api.Controllers
                 },
                 extensions =
                         ExtCore.Infrastructure.ExtensionManager.GetInstances<ExtCore.Infrastructure.Actions.IConfigureServicesAction>()
+                        .UnionInjector()
                         .Where(_ => _ is ExtCore.Infrastructure.ExtensionBase)
                         .Select(_ => new { (_ as ExtCore.Infrastructure.ExtensionBase).Name, _.Priority })
                     .OrderBy(_ => _.Priority),                

@@ -25,7 +25,7 @@ namespace xCore
         [Theory]
         [InlineData("/swagger")]
         [InlineData("/swagger/public/swagger.json")]
-        [InlineData("/api/diagnostic")]
+        [InlineData("/api/diagnostic?culture=en-US")]
         public async Task Get_Endpoints(string url) => await Get_EndpointsReturnSuccess(url);        
     }
 }

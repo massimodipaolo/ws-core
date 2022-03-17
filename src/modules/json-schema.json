@@ -1519,6 +1519,71 @@
             ],
             "$ref": "#/definitions/assembly"
           }
+        },
+        "injectors": {
+          "description": "Inject one or more  ExtCore.Infrastructure.ExtensionBase.\r\nSet the appropriate priority on each extensions.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [ "priority" ],
+            "properties": {
+              "priority": { "type": "number" },
+              "name": { "type": "string" },
+              "services": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "serviceType": {
+                      "type": "string",
+                      "description": "Fully qualified name of the type, including its namespace but not its assembly"
+                    },
+                    "implementationType": {
+                      "type": "string",
+                      "description": "Fully qualified name of the type, including its namespace but not its assembly"
+                    },
+                    "lifeTime": {
+                      "enum": [ "Singleton", "Scoped", "Transient" ],
+                      "description": "Singleton: a single instance of the service will be created;\r\nScoped: a new instance of the service for each scope (re-used per server request);\r\nTransient: a new instance of the service every time it is requested",
+                      "default": "Transient"
+                    },
+                    "overrideIfAlreadyRegistered": {
+                      "type": "boolean",
+                      "description": "If false, add the specified descriptor to the collection if the service type hasn't already registered",
+                      "default": true
+                    }
+                  }
+                }
+              },
+              "middlewares": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "description": "Fully qualified name of Middleware delegate class, including its namespace but not its assembly\r\nhttps://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/write?view=aspnetcore-6.0"
+                    },
+                    "map": {
+                      "type": "object",
+                      "description": "Branches the request pipeline based on matches of the given request path",
+                      "properties": {
+                        "pathMatch": {
+                          "type": "string",
+                          "description": "The request path to match (starts with)"
+                        },
+                        "preserveMatchedPathSegment": {
+                          "type": "boolean",
+                          "description": "If false, matched path would be removed from Request.Path and added to Request.PathBase",
+                          "default": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
