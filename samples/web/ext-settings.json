@@ -1,6 +1,6 @@
 ﻿{
   "$schema": "../../src/modules/json-schema.json#",
-  "__$schema": "https://raw.githubusercontent.com/massimodipaolo/app-core/master/src/modules/json-schema.json",
+  "__$schema": "https://raw.githubusercontent.com/massimodipaolo/ws-core/master/src/modules/json-schema.json",
   "extConfig": {
     "folder": "Extensions",
     "enableShutDownOnChange": false,
@@ -102,7 +102,7 @@
         "options": {
           "connections": [
             {
-              "connectionString": "Server=localhost;Port=33061;Database=Ws-Core;Uid=root;Pwd=WS-1234-secret;"
+              "connectionString": "Server=localhost;Port=33061;Database=ws-core;Uid=root;Pwd=WS-1234-secret;"
             }
           ]
         }
@@ -113,7 +113,7 @@
           "connections": [
             {
               "name": "default",
-              "connectionString": "Server=.,14331;Database=app-core;User Id=app-core-usr;Password=5876ee62-d2a9-4e61-8c3a-88d41f4543e8;MultipleActiveResultSets=true"
+              "connectionString": "Server=.,14331;Database=ws-core;User Id=ws-core-usr;Password=5876ee62-d2a9-4e61-8c3a-88d41f4543e8;MultipleActiveResultSets=true"
             }
           ]
         }

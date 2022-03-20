@@ -26,7 +26,7 @@ if (! (Test-Path (Join-Path $build_dir "posh-build.ps1"))) { Write-Host "Install
 
 # Set these variables as desired
 $packages_dir = Join-Path $build_dir "packages"
-$solution_file = Join-Path $path "app.sln";
+$solution_file = Join-Path $path "ws-core.sln";
 
 target default -depends compile, test, deploy
 

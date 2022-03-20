@@ -1,6 +1,6 @@
 ﻿{
   "$schema": "http://json-schema.org/draft-04/schema",
-  "title": "JSON Schema for app-core base configuration",
+  "title": "JSON Schema for ws-core base configuration",
   "type": "object",
   "required": [ "appConfig" ],
   "properties": {

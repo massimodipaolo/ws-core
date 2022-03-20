@@ -1,6 +1,6 @@
 ﻿{
   "$schema": "../../src/modules/json-schema.json#",
-  "__$schema": "https://raw.githubusercontent.com/massimodipaolo/app-core/master/src/modules/json-schema.json",
+  "__$schema": "https://raw.githubusercontent.com/massimodipaolo/ws-core/master/src/modules/json-schema.json",
   "extConfig": {    
     "enableShutDownOnChange": false,
     "assemblies": {
