@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.3</PackageVersion>
+    <TargetFramework>net6.0</TargetFramework>
+    <PackageVersion>6.0.0</PackageVersion>
     <PackageId>Ws.Core.Extensions.Data.FileSystem</PackageId>
     <AssemblyName>Ws.Core.Extensions.Data.FileSystem</AssemblyName>
     <RootNamespace>Ws.Core.Extensions.Data.FileSystem</RootNamespace>

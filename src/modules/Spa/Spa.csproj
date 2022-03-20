@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.0-alpha5</PackageVersion>
+    <TargetFramework>net6.0</TargetFramework>
+    <PackageVersion>6.0.0-alpha</PackageVersion>
     <PackageId>Ws.Core.Extensions.Spa</PackageId>
     <AssemblyName>Ws.Core.Extensions.Spa</AssemblyName> 
     <RootNamespace>Ws.Core.Extensions.Spa</RootNamespace>

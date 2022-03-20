@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-	  <PackageVersion>5.0.1</PackageVersion>
+    <TargetFramework>net6.0</TargetFramework>
+	  <PackageVersion>6.0.0</PackageVersion>
 	  <PackageId>Ws.Core.Extensions.Data.EF.SQLite</PackageId>
 	  <AssemblyName>Ws.Core.Extensions.Data.EF.SQLite</AssemblyName>
 	  <RootNamespace>Ws.Core.Extensions.Data.EF.SQLite</RootNamespace>
@@ -16,8 +16,8 @@
 	</PropertyGroup>
 	
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.Sqlite" Version="5.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.15" />
+    <PackageReference Include="AspNetCore.HealthChecks.Sqlite" Version="6.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.3" />
   </ItemGroup>
 
   <ItemGroup>
