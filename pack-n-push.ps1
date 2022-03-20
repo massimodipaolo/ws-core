@@ -37,11 +37,11 @@ target compile {
 target test {
   # Set the path to the projects you want to test.
   $test_projects = @(
-    "$path\src\tests\Tests.csproj"
+    "$path\tests\xCore\xCore.csproj"
   )
 
   # This runs "dotnet test". Change to Invoke-Xunit to invoke "dotnet xunit"
-  #Invoke-Tests $test_projects -c $configuration --no-build
+  Invoke-Tests $test_projects -c $configuration --no-build
 }
 
 target deploy {
