@@ -35,19 +35,27 @@ target compile {
 }
 
 target test {
-  # Set the path to the projects you want to test.
-  $test_projects = @(
-    "$path\tests\xCore\xCore.csproj"
+  $test = New-Prompt "Test Packages" "Do you want to invoke project tests?" @(
+    @("&N", "No, skip and upload the packages."),
+    @("&Y", "Yes.")
   )
 
-  # This runs "dotnet test". Change to Invoke-Xunit to invoke "dotnet xunit"
-  Invoke-Tests $test_projects -c $configuration --no-build
+  if ($test -eq 1) {
+      # Set the path to the projects you want to test.
+      $test_projects = @(
+        "$path\tests\xCore\xCore.csproj"
+        #,""
+      )
+
+      # This runs "dotnet test". Change to Invoke-Xunit to invoke "dotnet xunit"
+      Invoke-Tests $test_projects -c $configuration --no-build
+  }
 }
 
 target deploy {
   # Run dotnet pack to generate the nuget packages
   Remove-Item $packages_dir -Force -Recurse 2> $null
-  Invoke-Dotnet pack $solution_file -c $configuration /p:PackageOutputPath=$packages_dir
+  Invoke-Dotnet pack $solution_file -c $configuration /p:PackageOutputPath=$packages_dir /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg
 
   # Find all the packages and display them for confirmation
   $packages = dir $packages_dir -Filter "*.nupkg"
@@ -76,6 +84,7 @@ target deploy {
 
     $packages | ForEach-Object {
       $path = $_.FullName  
+      $path_symbol = $path -replace ".nupkg", ".snupkg"
       $file = $_.Name
       try { 
         $pkg = Nuget-Parse-Package($file)
@@ -86,14 +95,15 @@ target deploy {
         if ($version -eq $pkg.version) {
             if ($override -eq 1) {
                 Write-Host "Delete " $pkg.assembly
-                Invoke-Dotnet nuget delete $pkg.assembly $pkg.version --api-key $Env:NUGET_API_KEY --source $Env:NUGET_API
+                Invoke-Dotnet nuget delete $pkg.assembly $pkg.version --api-key $Env:NUGET_API_KEY --source $Env:NUGET_API --non-interactive
+                Write-Host "Uploading " $pkg.assembly
+                Invoke-Dotnet nuget push $path --api-key $Env:NUGET_API_KEY --source $Env:NUGET_API
+                Invoke-Dotnet nuget push $path_symbol --api-key $Env:NUGET_API_KEY --source $Env:NUGET_API
             } else {
-                Write-Host "Skip " $pkg.assembly
+                Write-Host "Skip " $pkg.assembly                
                 return
             }
         } 
-        Write-Host "Uploading " $pkg.assembly
-        Invoke-Dotnet nuget push $path --api-key $Env:NUGET_API_KEY --source $Env:NUGET_API
       }
       catch {
         Write-Host "An error occurred:"
