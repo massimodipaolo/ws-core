@@ -26,7 +26,7 @@ namespace Ws.Core
         public static IOptionsMonitor<TConfig> AppConfigMonitor { get; private set; } 
         public static IOptions<TConfig> AppConfig { get; private set; }
         public static IOptionsMonitor<Core.Extensions.Base.Configuration> ExtConfigMonitor { get; private set; }
-        public static IHostApplicationLifetime ApplicationLifetime { get; private set; }
+        public static IHostApplicationLifetime Lifetime { get; private set; }
         public static IHttpContextAccessor HttpContextAccessor => ServiceProvider.GetService<IHttpContextAccessor>();
         public static void Set(
             IWebHostEnvironment env = null,
@@ -36,7 +36,7 @@ namespace Ws.Core
             IServiceCollection services = null,
             IOptionsMonitor<TConfig> appConfigMonitor = null,
             IOptionsMonitor<Core.Extensions.Base.Configuration> extConfigMonitor = null,
-            IHostApplicationLifetime applicationLifetime = null
+            IHostApplicationLifetime lifetime = null
             )
         {
             if (env != null) Env = env;
@@ -55,7 +55,7 @@ namespace Ws.Core
                 AppConfig = ServiceProvider?.GetService<IOptions<TConfig>>();
             }
             if (extConfigMonitor != null) ExtConfigMonitor = extConfigMonitor;
-            if (applicationLifetime != null) ApplicationLifetime = applicationLifetime;
+            if (lifetime != null) Lifetime = lifetime;
         }
     }
 }

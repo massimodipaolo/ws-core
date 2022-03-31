@@ -1,32 +1,23 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
-using Ws.Core.Extensions.Message;
-using xCore.Extensions;
+﻿using xCore.Extensions;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace xCore
 {
-    public class Injector: BaseTest
+    public class Injector : BaseTest
     {
-        public Injector(Program<Startup> factory, ITestOutputHelper output) : base(factory, output)
+        public Injector(Program factory, ITestOutputHelper output) : base(factory, output)
         {
         }
 
         [Theory]
-        [InlineData("/?culture=fr-FR","fr-FR")]
+        [InlineData("/?culture=fr-FR", "fr-FR")]
         [InlineData("/api/diagnostic?culture=en-US", "en-US")]
         public async Task Get_HeaderCurrentCulture(string url, string expectedCulture)
         {
             // Arrange
-            var client = _factory.CreateClient();
+            var factory = GetFactory(WebApplicationFactoryType.Local);
+            var client = factory.CreateClient();
             // Act
             var response = await client.GetAsync(url);
 

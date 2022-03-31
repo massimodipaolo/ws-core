@@ -1,34 +1,36 @@
 using Microsoft.AspNetCore.Mvc.Testing;
-using Ws.Core;
-using System.Threading.Tasks;
+using System.Text.Json;
+using xCore.Extensions;
 using Xunit;
 using Xunit.Abstractions;
-using System.Reflection;
-using Microsoft.Extensions.Configuration;
-using System.Linq;
-using Microsoft.Extensions.Logging;
-using System;
-using xCore.Extensions;
-using System.Text.Json;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace xCore
-
 {
-    public class BaseTest : IClassFixture<Program<Startup>>
+    public class BaseTest : IClassFixture<Program>
     {
-        protected readonly Program<Startup> _factory;
+        protected Program _factory;
         protected readonly ITestOutputHelper _output;
-        public BaseTest(Program<Startup> factory, ITestOutputHelper output)
+        public BaseTest(Program factory, ITestOutputHelper output)
         {
             _factory = factory;
             _output = output;
         }
-
-        public async Task Get_EndpointsReturnSuccess(string url)
+        protected WebApplicationFactory<Program> GetFactory(WebApplicationFactoryType factoryType)
+        => factoryType switch
+            {
+                WebApplicationFactoryType.Development => _factory,
+                WebApplicationFactoryType.Local => new LocalApplicationFactory(),
+                WebApplicationFactoryType.Mock => new MockApplicationFactory(),
+                _ => _factory
+            };
+        
+        public async Task Get_EndpointsReturnSuccess(string url, WebApplicationFactoryType factoryType = WebApplicationFactoryType.Development)
         {
+
             // Arrange
-            var client = _factory.CreateClient();
+            var factory = GetFactory(factoryType);         
+            HttpClient client = factory.CreateClient();
+
             // Act
             var response = await client.GetAsync(url);
 
@@ -48,10 +50,16 @@ namespace xCore
             response.EnsureSuccessStatusCode(); // Status Code 200-299
         }
 
-        public void Check_ServiceImplementation(Type Tinterface, Type ExpectedTimplementation)
+
+        public void Check_ServiceImplementation(Type Tinterface, Type ExpectedTimplementation, WebApplicationFactoryType factoryType = WebApplicationFactoryType.Development)
         {
             // Arrange
-            var _service = _factory.Services?.GetService(Tinterface);
+            var factory = GetFactory(factoryType);
+            object? _service;
+            using (var scope = factory.Services.CreateScope())
+            {
+                _service = scope?.ServiceProvider?.GetService(Tinterface);
+            }
 
             // Act
             _output.Write($"Interface: {Tinterface}\n Expected: {ExpectedTimplementation}\n Implementation: {_service}");

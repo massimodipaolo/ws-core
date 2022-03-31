@@ -1,11 +1,5 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ws.Core.Extensions.HealthCheck.Checks.AppLog;
 
 namespace Ws.Core.Extensions.HealthCheck.Checks.AppLog
 {

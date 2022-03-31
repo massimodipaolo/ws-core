@@ -73,26 +73,26 @@ namespace Ws.Core.Extensions.StaticFiles
             }
         }
 
-        public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
+        public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
         {
-            base.Execute(serviceCollection, serviceProvider);
+            base.Execute(builder, serviceProvider);
             if (Settings.Any(_ => _.DirectoryBrowserOptions != null))
-                serviceCollection.AddDirectoryBrowser();
+                builder.Services.AddDirectoryBrowser();
         }
 
-        public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
+        public override void Execute(WebApplication app)
         {
-            base.Execute(applicationBuilder, serviceProvider);
+            base.Execute(app);
 
             foreach (var setting in Settings)
             {
                 if (setting.DefaultFilesOptions != null)
-                    applicationBuilder.UseDefaultFiles(setting.DefaultFilesOptions);
+                    app.UseDefaultFiles(setting.DefaultFilesOptions);
 
                 if (setting.DirectoryBrowserOptions != null)
-                    applicationBuilder.UseDirectoryBrowser(setting.DirectoryBrowserOptions);
+                    app.UseDirectoryBrowser(setting.DirectoryBrowserOptions);
 
-                applicationBuilder.UseStaticFiles(setting.StaticFileOptions);
+                app.UseStaticFiles(setting.StaticFileOptions);
             }
         }
     }

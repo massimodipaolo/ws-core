@@ -1,65 +1,62 @@
-﻿using System.IO;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.IO;
+using System.Reflection;
 
 namespace Ws.Core
 {
-    public class Program
+    public partial class Program
     {
-        public static async Task Main(string[] args)
+        public static WebApplicationBuilder CreateBuilder(string[] args)
         {
-            //BuildWebHost(args, typeof(Program).Assembly, typeof(Startup<AppConfig>)).Run();
-            await Task.CompletedTask;
+            var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+            {
+                //ApplicationName = typeof(Program).Assembly.FullName,
+                ContentRootPath = default,
+                WebRootPath = "wwwroot",
+                Args = args
+            });
+            builder.Host
+                .ConfigureHostConfiguration(_ =>
+                {
+                    _
+                    .AddJsonFile("host-settings.json", optional: true)
+                    .AddEnvironmentVariables()
+                    .AddCommandLine(args); //i.e. --Environment=Local
+                })
+                /*
+                //  System.NotSupportedException : ConfigureWebHost() is not supported by WebApplicationBuilder.Host. Use the WebApplication returned by WebApplicationBuilder.Build() instead.
+                .ConfigureWebHost(_ =>
+                {
+                    _.UseContentRoot(Directory.GetCurrentDirectory());
+                })         
+                */
+                .ConfigureLogging((ctx, logging) =>
+                {
+                    logging.ClearProviders();
+                    logging.AddConfiguration(ctx.Configuration.GetSection("Logging"));
+                    if (ctx.HostingEnvironment.EnvironmentName == Environments.Development || ctx.HostingEnvironment.EnvironmentName == "Local")
+                    {
+                        logging.AddDebug();
+                    }
+                })
+                .ConfigureAppConfiguration((ctx, config) =>
+                {
+                    var _env = ctx.HostingEnvironment;
+                    config
+                        .SetBasePath(_env.ContentRootPath)
+                        .AddJsonFile("app-settings.json", optional: true, reloadOnChange: true)
+                        .AddJsonFile($"app-settings.{_env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                        .AddJsonFile("ext-settings.json", optional: true, reloadOnChange: true) //IOptionsSnapshot to live reload              
+                        .AddJsonFile($"ext-settings.{_env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                        .AddUserSecrets(Assembly.GetEntryAssembly(), optional: true) //override any config files    
+                        .AddEnvironmentVariables() //override any user secrets
+                        .AddCommandLine(args); //override any environment variables     
+                });
+            return builder;
         }
-
-        public static IHostBuilder WebHostBuilder(string[] args, Assembly assembly, System.Type startup) =>
-        new HostBuilder()
-        //Host.CreateDefaultBuilder(args)
-                    .ConfigureHostConfiguration(_ =>
-                    {
-                        _
-                        .AddEnvironmentVariables()
-                        .AddCommandLine(args); //i.e. --Environment=Local
-                    })
-                    .ConfigureWebHostDefaults(_ =>
-                    {
-                        //_.UseKestrel((ctx, opt) => { opt.AddServerHeader = false; });
-                        //_.UseIIS();
-                        _.UseContentRoot(Directory.GetCurrentDirectory());
-                        _.UseStartup(startup);
-                    })
-                    .ConfigureLogging((ctx, logging) =>
-                    {
-                        logging.ClearProviders();
-                        logging.AddConfiguration(ctx.Configuration.GetSection("Logging"));
-                        if (ctx.HostingEnvironment.EnvironmentName == "Development" || ctx.HostingEnvironment.EnvironmentName == "Local")
-                        {
-                            logging.AddDebug();
-                        }
-                    })
-        .ConfigureAppConfiguration((ctx, config) =>
-        {
-            var _env = ctx.HostingEnvironment;
-            config
-            .SetBasePath(_env.ContentRootPath)
-            .AddJsonFile("app-settings.json", optional: true, reloadOnChange: true)
-            .AddJsonFile($"app-settings.{_env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-            .AddJsonFile("ext-settings.json", optional: true, reloadOnChange: true) //IOptionsSnapshot to live reload              
-            .AddJsonFile($"ext-settings.{_env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-            .AddUserSecrets(assembly, optional: true) //override any config files    
-            .AddEnvironmentVariables() //override any user secrets
-            .AddCommandLine(args); //override any environment variables     
-        })
-           ;
-
-        public static IHost BuildWebHost(string[] args, Assembly assembly, System.Type startup) =>
-            WebHostBuilder(args, assembly, startup)
-            .Build();
-
-
     }
 }

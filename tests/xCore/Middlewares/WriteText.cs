@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading.Tasks;
-
-namespace xCore.Middlewares
+﻿namespace xCore.Middlewares
 {
     public class WriteText
     {

@@ -9,9 +9,9 @@ namespace Ws.Core.Extensions.Data.Cache.Memcached
     {
         private Options options => GetOptions<Options>();
 
-        public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
+        public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
         {
-            base.Execute(serviceCollection, serviceProvider);
+            base.Execute(builder, serviceProvider);
 
             if (options.Client != null)
             {
@@ -23,19 +23,19 @@ namespace Ws.Core.Extensions.Data.Cache.Memcached
                 //CacheEntryOptions.Expiration.Set();
 
                 // service                
-                serviceCollection.AddEnyimMemcached(config.GetSection($"{ConfigSectionPathOptions}:Client"));
+                builder.Services.AddEnyimMemcached(config.GetSection($"{ConfigSectionPathOptions}:Client"));
 
                 //DI
-                serviceCollection.TryAddSingleton(typeof(ICache), typeof(MemcachedCache));
-                serviceCollection.TryAddSingleton(typeof(ICache<>), typeof(MemcachedCache<>));
-                serviceCollection.TryAddTransient(typeof(ICacheRepository<,>), typeof(Repository.CachedRepository<,>));
+                builder.Services.TryAddSingleton(typeof(ICache), typeof(MemcachedCache));
+                builder.Services.TryAddSingleton(typeof(ICache<>), typeof(MemcachedCache<>));
+                builder.Services.TryAddTransient(typeof(ICacheRepository<,>), typeof(Repository.CachedRepository<,>));
             }
         }
 
-        public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
+        public override void Execute(WebApplication app)
         {
             if (options.Client != null)
-                applicationBuilder.UseEnyimMemcached();
+                app.UseEnyimMemcached();
         }
     }
 }

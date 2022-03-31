@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace Ws.Core.Extensions.Base
 {
-    public class Extension : ExtCore.Infrastructure.ExtensionBase, IConfigureAction, IConfigureServicesAction
+    public class Extension : ExtCore.Infrastructure.ExtensionBase, ExtCore.Infrastructure.Actions.IConfigureBuilder, ExtCore.Infrastructure.Actions.IConfigureApp
     {
         private static IServiceProvider _serviceProvider;
         private static IServiceCollection _serviceCollection;
@@ -70,20 +70,21 @@ namespace Ws.Core.Extensions.Base
 
         public override string Name => AssemblyName;
 
-        //IConfigureAction | IConfigureServicesAction
+        //IConfigureAction 
         public virtual int Priority => Assembly?.Priority ?? 0; // (Assembly?.Priority + 1) * 100 ?? 0;
 
-        //IConfigureServicesAction
-        public virtual void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
+        //IConfigureBuilder
+        public virtual void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
         {
             // default generic discriminator
-            serviceCollection.TryAddSingleton(typeof(IDiscriminator), typeof(Discriminator));
-            serviceCollection.TryAddSingleton(typeof(IDiscriminator<>), typeof(Discriminator<>));
+            builder.Services.TryAddSingleton(typeof(IDiscriminator), typeof(Discriminator));
+            builder.Services.TryAddSingleton(typeof(IDiscriminator<>), typeof(Discriminator<>));
         }
 
-        //IConfigureAction
-        public virtual void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
+        //IConfigureApp
+        public virtual void Execute(WebApplication app)
         {
+            //IServiceProvider serviceProvider = app.Services;
         }
 
         public class Option<T>

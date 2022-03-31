@@ -5,11 +5,13 @@
     "folder": "Extensions",
     "enableShutDownOnChange": false,
     "assemblies": {
-      "__Ws.Core.Extensions.StaticFiles": {
+      "Ws.Core.Extensions.ImageProcessor": { "priority": 90 },
+      "Ws.Core.Extensions.StaticFiles": {
         "priority": 100,
         "options": {
           "paths": [
             {
+              "enableDirectoryBrowser": true,
               "headers": {
                 "Cache-Control": "public,max-age=43200"
               }
@@ -17,7 +19,6 @@
           ]
         }
       },
-      "Ws.Core.Extensions.Routing": { "priority": 150 },
       "__Ws.Core.Extensions.Cors": {
         "priority": 200
       },
@@ -104,7 +105,7 @@
           "connections": [
             {
               "name": "default",
-              "connectionString": "Data Source=..\\..\\..\\data\\ws-core.db"
+              "connectionString": "Data Source=./data/ws-core.db"
             }
           ]
         }
@@ -181,7 +182,7 @@
                 "tags": [ "network", "firewall" ]
               }
             ],
-            "appLog": {
+            "_appLog": {
               "_appLogService": "xCore.HealthCheckAppLogService, xCore",
               "takeLastLog": {
                 "criteria": "top",
@@ -275,8 +276,8 @@
             "webhooks": [
               {
                 "name": "web",
-                "uri": "/hook",
-                "payload": "{\"title\": \"The HealthCheck '[[LIVENESS]]' is failing\",\"text\": \"Error message: [[FAILURE]]\r\n[[DESCRIPTIONS]]\",\"isFailure\": true}",
+                "uri": "/hook/healthz",
+                "payload": "{\"title\": \"The HealthCheck '[[LIVENESS]]' is failing\",\"text\": \"Error message: [[FAILURE]]\\r\\n[[DESCRIPTIONS]]\",\"isFailure\": true}",
                 "restorePayload": "{\"title\": \"The HealthCheck '[[LIVENESS]]' is recovered\",\"text\": \"All is up and running\"}"
               }
             ],
@@ -286,36 +287,6 @@
         }
       }
     },
-    "injectors": [
-      {
-        "priority": 101,
-        "services": [
-          {
-            "serviceType": "Ws.Core.Extensions.Message.IMessage",
-            "implementationType": "xCore.InjectorServiceMessage",
-            "lifeTime": "Transient",
-            "overrideIfAlreadyRegistered": false
-          }
-        ],
-        "middlewares": [
-          {
-            "type": "xCore.Middlewares.RequestCulture"
-          }
-        ]
-      },
-      {
-        "priority": 301,
-        "name": "branch-write-text",
-        "middlewares": [
-          {
-            "type": "xCore.Middlewares.WriteText",
-            "map": {
-              "pathMatch": "/branch",
-              "preserveMatchedPathSegment": true
-            }
-          }
-        ]
-      }
-    ]
+    "injectors": []
   }
 }

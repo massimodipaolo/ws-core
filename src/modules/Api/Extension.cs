@@ -11,16 +11,16 @@ namespace Ws.Core.Extensions.Api
     public class Extension : Base.Extension
     {
         private Options _options => GetOptions<Options>();
-        public override void Execute(IServiceCollection services, IServiceProvider serviceProvider)
+        public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
         {            
-            base.Execute(services, serviceProvider);
+            base.Execute(builder, serviceProvider);
 
-            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             var _session = _options.Session;
             if (_session != null)
             {
-                services.AddSession(opt =>
+                builder.Services.AddSession(opt =>
                 {
                     var _cookie = _session.Cookie;
                     if (_cookie != null)
@@ -31,8 +31,8 @@ namespace Ws.Core.Extensions.Api
                 });
             }
 
-            services
-                .AddControllers()
+            builder.Services
+                .AddControllers()                
                 .AddNewtonsoftJson(opt =>
                 {
                     var _setting = opt.SerializerSettings;
@@ -51,7 +51,9 @@ namespace Ws.Core.Extensions.Api
             var _doc = _options.Documentation;
             if (_doc != null)
             {
-                services.AddSwaggerGen(opt =>
+                builder.Services
+                    .AddEndpointsApiExplorer()
+                    .AddSwaggerGen(opt =>
                 {
                     opt.CustomSchemaIds(_ => _.FullName);
 
@@ -134,22 +136,20 @@ namespace Ws.Core.Extensions.Api
             }
         }
 
-        public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
+        public override void Execute(WebApplication app)
         {            
-            base.Execute(applicationBuilder, serviceProvider);
+            base.Execute(app);
+
+            app.MapControllers();
 
             if (_options.Session != null)
-                applicationBuilder.UseSession();
-
-            applicationBuilder.UseEndpoints(endpoints =>
-            {                
-                endpoints.MapDefaultControllerRoute();
-            });
-
+                app.UseSession();           
+            
             var _doc = _options.Documentation;
+
             if (_doc != null)
             {
-                applicationBuilder.UseSwagger(opt =>
+                app.UseSwagger(opt =>
                 {
                     opt.RouteTemplate = _doc.RoutePrefix + "/{documentName}/swagger.json";
                     /*opt.PreSerializeFilters.Add((doc, rq) =>
@@ -158,7 +158,7 @@ namespace Ws.Core.Extensions.Api
                     });*/
                 });                
 
-                applicationBuilder.UseSwaggerUI(opt =>
+                app.UseSwaggerUI(opt =>
                 {
                     opt.RoutePrefix = _doc.RoutePrefix;
                     opt.EnableDeepLinking();

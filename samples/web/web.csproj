@@ -4,7 +4,7 @@
     <RootNamespace>web</RootNamespace>
   </PropertyGroup>
   <PropertyGroup>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
     <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
   </PropertyGroup>
@@ -13,6 +13,11 @@
     <Content Remove="wwwroot\folder\**" />
     <EmbeddedResource Remove="wwwroot\folder\**" />
     <None Remove="wwwroot\folder\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="AppConfig.cs" />
+    <Compile Remove="Code\Language.cs" />
+    <Compile Remove="Code\LocaleText.cs" />
   </ItemGroup>  
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.Hangfire" Version="6.0.2" />
@@ -21,25 +26,19 @@
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\modules\Api\Api.csproj" />
-    <ProjectReference Include="..\..\src\modules\Data.Cache.Memcached\Data.Cache.Memcached.csproj" />
-    <ProjectReference Include="..\..\src\modules\Data.EF.MySql\Data.EF.MySql.csproj" />
-    <ProjectReference Include="..\..\src\modules\Data.Mongo\Data.Mongo.csproj" />
-    <!--ProjectReference Include="..\..\src\modules\Data.Cache.Redis\Data.Cache.Redis.csproj" /-->
-    <!--ProjectReference Include="..\..\src\modules\Data.Cache.SqlServer\Data.Cache.SqlServer.csproj" /-->
-    <ProjectReference Include="..\..\src\modules\HealthCheck\HealthCheck.csproj" />
-    <ProjectReference Include="..\..\src\modules\Message\Message.csproj" />
-    <ProjectReference Include="..\..\src\modules\Routing\Routing.csproj" />
-    <ProjectReference Include="..\..\src\core\core.csproj" />
-    <ProjectReference Include="..\..\src\modules\Data.EF.SqlServer\Data.EF.SqlServer.csproj" />
-    <ProjectReference Include="..\..\src\modules\Data.FileSystem\Data.FileSystem.csproj" />
-    <ProjectReference Include="..\..\src\modules\StaticFiles\StaticFiles.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Update="Files\**\*.*" CopyToPublishDirectory="Never" />
     <Content Update="NLog.config">
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Code\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Files\Entity\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\core\core.csproj" />
+    <ProjectReference Include="..\..\src\modules\Api\Api.csproj" />
   </ItemGroup>
 </Project>

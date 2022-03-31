@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<PackageVersion>6.0.0</PackageVersion>
+		<PackageId>Ws.Core.Extensions.ImageProcessor</PackageId>
+		<AssemblyName>Ws.Core.Extensions.ImageProcessor</AssemblyName>
+		<RootNamespace>Ws.Core.Extensions.ImageProcessor</RootNamespace>
+		<Authors>Massimo Di Paolo</Authors>
+		<Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
+		<Description>Image web processor middleware</Description>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageReleaseNotes>Image processor extensions using SixLabors.ImageSharp.Web</PackageReleaseNotes>
+		<PackageTags>image processor</PackageTags>
+	</PropertyGroup>
+
+	<ItemGroup>
+    <PackageReference Include="SixLabors.ImageSharp.Web" Version="1.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
+  </ItemGroup>
+
+</Project>

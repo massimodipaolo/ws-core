@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using Ws.Core.Extensions.Data.Cache;
 
 namespace xCore.Controllers
 {
+
+    [ApiController]
     [ApiExplorerSettings(GroupName = "admin")]
     [Route("api/[controller]")]
     //[Authorize(Policy = nameof(UserRole.Admin))]

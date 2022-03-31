@@ -1,32 +1,32 @@
-﻿using ExtCore.Infrastructure;
+﻿using ExtCore.Application;
+using ExtCore.Infrastructure;
 using ExtCore.Infrastructure.Actions;
-using ExtCore.WebApplication;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ws.Core.Extensions
 {
     public static class ServiceCollection
     {
-        public static void AddExtCoreWithInjectors(this IServiceCollection services, string extensionsPath, bool includingSubpaths = false)
+        public static void AddExtCore(this WebApplicationBuilder builder, string extensionsPath = null, bool includingSubpaths = false)
         {
-            DiscoverAssemblies(new DefaultAssemblyProvider(services.BuildServiceProvider()), extensionsPath, includingSubpaths);
-            IServiceProvider serviceProvider = services.BuildServiceProvider();
-            ILogger logger = serviceProvider.GetService<ILoggerFactory>()!.CreateLogger("ExtCore.WebApplication");
+            // init
+            IServiceProvider serviceProvider = builder.Services.BuildServiceProvider();
+            DiscoverAssemblies(new DefaultAssemblyProvider(serviceProvider), extensionsPath, includingSubpaths);
+            ILogger logger = serviceProvider.GetService<ILoggerFactory>()!.CreateLogger($"{nameof(ExtCore)}.{nameof(ExtCore.Application)}");
 
-            foreach (IConfigureServicesAction item in from a in ExtensionManager.GetInstances<IConfigureServicesAction>()
+            foreach (IConfigureBuilder item in from a in ExtensionManager.GetInstances<IConfigureBuilder>()
                                                       .UnionInjector()
                                                       orderby a.Priority
                                                       select a)
             {
-                logger.LogInformation("Executing ConfigureServices action '{0}'", item.GetType().FullName);
-                item.Execute(services, serviceProvider);
-                serviceProvider = services.BuildServiceProvider();
+                logger.LogInformation($"Executing ConfigureServices action '{item.GetType().FullName}'");
+                item.Execute(builder, serviceProvider);
+                // new container
+                serviceProvider = builder.Services.BuildServiceProvider();
             }
         }
 

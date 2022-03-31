@@ -1,7 +1,9 @@
 ﻿{
   "$schema": "https://xunit.net/schema/current/xunit.runner.schema.json",
-  "shadowCopy": false,
+  "_docs": "https://xunit.net/docs/configuration-files",
+  "shadowCopy": true,
   "parallelizeTestCollections": true,
   "diagnosticMessages": true,
+  "preEnumerateTheories": false, //true > group all theories in one test
   "longRunningTestSeconds": 30
 }

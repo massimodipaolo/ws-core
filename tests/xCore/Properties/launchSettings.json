@@ -17,6 +17,16 @@
         "ASPNETCORE_URLS": "https://localhost:60935;http://localhost:60936"
       },
       "distributionName": ""
+    },
+    "WSL.local": {
+      "commandName": "WSL2",
+      "launchBrowser": true,
+      "launchUrl": "https://localhost:60935",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Local",
+        "ASPNETCORE_URLS": "https://localhost:60935;http://localhost:60936"
+      },
+      "distributionName": ""
     }
   }
 }

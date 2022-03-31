@@ -13,16 +13,23 @@ namespace Ws.Core.Extensions
 {
     public static class ApplicationBuilder
     {
-        public static void UseExtCoreWithInjectors(this IApplicationBuilder applicationBuilder)
+        /// <summary>
+        /// Executes the Configure actions from all the extensions. It must be called inside the Program file
+        /// after the AddExtCore extension.
+        /// </summary>
+        /// <param name="app">
+        /// The Microsoft.AspNetCore.Builder.WebApplication passed to the Configure method of the web application's Startup class.
+        /// </param>        
+        public static void UseExtCore(this WebApplication app)
         {
-            ILogger logger = applicationBuilder.ApplicationServices.GetService<ILoggerFactory>()!.CreateLogger("ExtCore.WebApplication");
-            foreach (IConfigureAction item in from a in ExtensionManager.GetInstances<IConfigureAction>()
+            ILogger logger = app.Services.GetService<ILoggerFactory>()!.CreateLogger($"{nameof(ExtCore)}.{nameof(ExtCore.Application)}");
+            foreach (IConfigureApp item in from a in ExtensionManager.GetInstances<IConfigureApp>()
                                               .UnionInjector()
                                               orderby a.Priority
                                               select a)
             {
-                logger.LogInformation("Executing Configure action '{0}'", item.GetType().FullName);
-                item.Execute(applicationBuilder, applicationBuilder.ApplicationServices);
+                logger.LogInformation($"Executing Configure action '{item.GetType().FullName}'");
+                item.Execute(app);
             }
         }
     }

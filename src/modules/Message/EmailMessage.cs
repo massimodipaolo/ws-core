@@ -31,7 +31,7 @@ namespace Ws.Core.Extensions.Message
 
         public async Task SendAsync(Message message, bool throwException = false)
         {
-            var sender = config.Senders.FirstOrDefault();
+            var sender = config.Senders?.FirstOrDefault();
             if (sender != null && !string.IsNullOrEmpty(sender.Address))
             {
                 var mime = new MimeMessage();
@@ -124,7 +124,7 @@ namespace Ws.Core.Extensions.Message
 
         public async Task<IEnumerable<Message>> ReceiveAsync()
         {
-            var receiver = config.Receivers.FirstOrDefault();
+            var receiver = config.Receivers?.FirstOrDefault();
             if (receiver != null && !string.IsNullOrEmpty(receiver.Address))
             {
                 using var client = new MailKit.Net.Pop3.Pop3Client();

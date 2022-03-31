@@ -15,20 +15,20 @@ namespace Ws.Core.Extensions.Spa
     {
         private Options options => GetOptions<Options>();
 
-        public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
+        public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
         {
-            base.Execute(serviceCollection, serviceProvider);
+            base.Execute(builder, serviceProvider);
 
             try
             {
                 if (options != null)
                 {
-                    serviceCollection.AddSpaStaticFiles(_ =>
+                    builder.Services.AddSpaStaticFiles(_ =>
                     {
                         _.RootPath = options.RootPath;
                     });
                     if (options.Prerendering != null && options.Prerendering.Enable)
-                        serviceCollection.AddSpaPrerenderer();
+                        builder.Services.AddSpaPrerenderer();
                 }
             }
             catch (Exception ex)
@@ -38,9 +38,9 @@ namespace Ws.Core.Extensions.Spa
 
         }
 
-        public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
+        public override void Execute(WebApplication app)
         {
-            base.Execute(applicationBuilder, serviceProvider);
+            base.Execute(app);
 
             try
             {
@@ -53,19 +53,19 @@ namespace Ws.Core.Extensions.Spa
                             if (opt != null)
                             {
                                 var staticFileOptions = opt.GetStaticFileOptions(Path.Combine(env?.ContentRootPath ?? Directory.GetCurrentDirectory(), options.RootPath), logger);
-                                applicationBuilder.UseSpaStaticFiles(staticFileOptions);
+                                app.UseSpaStaticFiles(staticFileOptions);
                             }
                         }
                     }
                     else
-                        applicationBuilder.UseSpaStaticFiles();
+                        app.UseSpaStaticFiles();
 
                     if (options.Prerendering != null && options.Prerendering.Enable && options.Prerendering.CacheResponse != null && options.Prerendering.CacheResponse.Enable)
                     {
-                        applicationBuilder.UseMiddleware<ResponseCacheMiddleware>(options.Prerendering.CacheResponse);
+                        app.UseMiddleware<ResponseCacheMiddleware>(options.Prerendering.CacheResponse);
                     };
 
-                    applicationBuilder.UseSpa(_ =>
+                    app.UseSpa(_ =>
                     {
                         _.Options.DefaultPage = options.DefaultPage;
                         _.Options.SourcePath = options.SourcePath;

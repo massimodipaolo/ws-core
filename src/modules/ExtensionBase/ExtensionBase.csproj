@@ -8,7 +8,7 @@
     <RootNamespace>Ws.Core.Extensions.Base</RootNamespace>
     <Authors>Massimo Di Paolo</Authors>
     <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
-		<Description>Base extension module, derived from ExtCore by Dmitry Sikorsky</Description>
+		<Description>Base extension module, forked from ExtCore by Dmitry Sikorsky</Description>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>Health check</PackageReleaseNotes>		
 		<PackageTags>extension base</PackageTags>		
@@ -26,10 +26,11 @@
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
-		<PackageReference Include="ExtCore.Infrastructure" Version="7.0.0" />
-    <!--<ProjectReference Include="..\..\..\..\..\GitHub\ExtCore\src\ExtCore.Infrastructure\ExtCore.Infrastructure.csproj" />-->
-    <PackageReference Include="ExtCore.Events" Version="7.0.0" />
-    <!--<ProjectReference Include="..\..\..\..\..\GitHub\ExtCore\src\ExtCore.Events\ExtCore.Events.csproj" />-->
 	</ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\extCore\Events\ExtCore.Events.csproj" />
+    <ProjectReference Include="..\..\extCore\Infrastructure\ExtCore.Infrastructure.csproj" />
+  </ItemGroup>
  
 </Project>

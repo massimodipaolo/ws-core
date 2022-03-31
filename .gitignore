@@ -202,9 +202,12 @@ _Pvt_Extensions
 /samples/**/Extensions/
 # Test
 /tests/**/*.xml
+/tests/**/wwwroot
+/tests/**/Extensions/**
 /tests/**/Files/*.*
 # Task Secret
 .env
 # Pack
 /.build
 *.db
+
