@@ -1,0 +1,234 @@
+﻿{
+  "$schema": "../../src/modules/json-schema.json#",
+  "__$schema": "https://raw.githubusercontent.com/massimodipaolo/ws-core/master/src/modules/json-schema.json",
+  "extConfig": {
+    "folder": "Extensions",
+    "enableShutDownOnChange": false,
+    "assemblies": {
+      "__Ws.Core.Extensions.StaticFiles": {
+        "priority": 100,
+        "options": {
+          "paths": [
+            {
+              "headers": {
+                "Cache-Control": "public,max-age=43200"
+              }
+            }
+          ]
+        }
+      },
+      "__Ws.Core.Extensions.Cors": {
+        "priority": 200
+      },
+      "Ws.Core.Extensions.Api": {
+        "priority": 300,
+        "options": {
+          "serialization": {
+            "nullValueHandling": "Ignore",
+            "formatting": "None",
+            "referenceLoopHandling": "Ignore",
+            "__converters": [
+              {
+                "assembly": "Newtonsoft.Json",
+                "type": "Newtonsoft.Json.Converters.StringEnumConverter"
+              },
+              {
+                "assembly": "web",
+                "type": "web.Code.LocaleJsonConverter"
+              }
+            ]
+          },
+          "documentation": {
+            "routePrefix": "swagger",
+            "endpoints": [
+              {
+                "id": "public",
+                "title": "public api",
+                "version": "v1"
+              },
+              {
+                "id": "admin",
+                "title": "admin api",
+                "version": "v1"
+              }
+            ],
+            "xmlComments": {
+              "fileName": "xCore.xml",
+              "includeControllerComments": true
+            }
+          }
+        }
+      },
+      "Ws.Core.Extensions.Data.EF": {
+        "priority": 400,
+        "options": {
+          "mappings": [
+            {
+              "name": "Log",
+              "properties": [
+                {
+                  "name": "Level",
+                  "hasConversion": "string"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Data.EF.MySql": {
+        "priority": 401,
+        "options": {
+          "connections": [
+            {
+              "name": "default",
+              "connectionString": "Server=localhost;Port=33061;Database=ws-core;Uid=root;Pwd=WS-1234-secret;"
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Data.EF.SqlServer": {
+        "priority": 402,
+        "options": {
+          "connections": [
+            {
+              "name": "default",
+              "connectionString": "Server=.,14331;Database=ws-core;User Id=ws-core-usr;Password=3/4yQKrIeDZf+OAH3480Vn3OAuQTtKcNcDKzLuEP8UM=;MultipleActiveResultSets=true"
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Data.EF.SQLite": {
+        "priority": 403,
+        "options": {
+          "connections": [
+            {
+              "name": "default",
+              "connectionString": "Data Source=..\\..\\..\\data\\ws-core.db"
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Message": {
+        "priority": 600,
+        "options": {
+          "senders": [
+            {
+              "address": "127.0.0.1",
+              "port": 1025
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.HealthCheck": {
+        "priority": 999,
+        "options": {
+          "routes": [
+            {
+              "path": "/healthz",
+              "contentType": "text",
+              "skipChecks": true
+            },
+            {
+              "path": "/healthz/checks",
+              "contentType": "json",
+              "skipChecks": false,
+              "_authHosts": [ "localhost:32040" ]
+            }
+          ],
+          "checks": {
+            "storage": [],
+            "process": [],
+            "tcp": [],
+            "http": [],
+            "appLog": {
+              "_appLogService": "xCore.HealthCheckAppLogService, xCore",
+              "takeLastLog": {
+                "criteria": "top",
+                "value": 1000
+              },
+              "_logIgnoreRoles": [
+                {
+                  "level": "Warn",
+                  "_selectors": [
+                    { "_logger": { "list": [ "PUCBM.Hub.Controllers.PrenotingController" ] } },
+                    {
+                      "_logger": {
+                        "list": [ "Eurospin", "PUCBM" ],
+                        "role": "startWith"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "level": "Error",
+                  "selectors": [
+                    {
+                      "logger": {
+                        "list": [ "Aves.Booking.RatePlan", "Eurospin.Server.Extensions.ImageSharpExtension", "SixLabors.ImageSharp.Web.Middleware.ImageSharpMidd" ],
+                        "role": "equalTo"
+                      }
+                    },
+                    {
+                      "logger": {
+                        "list": [ "NodeServices" ],
+                        "role": "contains"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "healthStatusCheckers": [
+                {
+                  "level": "Warn",
+                  "minCounters": [
+                    {
+                      "minEntry": 1000,
+                      "healthStatus": "Degraded"
+                    },
+                    {
+                      "minEntry": 10000,
+                      "healthStatus": "Unhealthy"
+                    }
+                  ]
+                },
+                {
+                  "level": "Error",
+                  "minCounters": [
+                    {
+                      "minEntry": 100,
+                      "healthStatus": "Degraded"
+                    },
+                    {
+                      "minEntry": 1000,
+                      "healthStatus": "Unhealthy"
+                    }
+                  ]
+                },
+                {
+                  "level": "Fatal",
+                  "minCounters": [
+                    {
+                      "minEntry": 10,
+                      "healthStatus": "Unhealthy"
+                    }
+                  ]
+                }
+              ],
+              "logMessageAggregate": {
+                "truncateLengthAt": 255,
+                "maxLevenshteinDistanceFactor": 90
+              },
+              "tags": [ "app" ]
+            }
+          },
+          "ui": {
+            "enabled": false,
+            "endpoints": [],
+            "webhooks": []
+          }
+        }
+      }
+    },
+    "injectors": []
+  }
+}

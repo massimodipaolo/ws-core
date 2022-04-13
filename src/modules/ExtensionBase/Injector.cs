@@ -21,7 +21,7 @@ namespace Ws.Core.Extensions.Base
                 if (string.IsNullOrEmpty(obj.Name))
                     obj.Name = $"{nameof(Injector)}-{idx}";
                 return obj;
-            });
+            }) ?? Array.Empty<Configuration.Injector>();
 
         private Configuration.Injector _getOptions()
         => _getConfigInjectors()?.Where(_ => _.Name == this.Name).FirstOrDefault();
@@ -53,7 +53,7 @@ namespace Ws.Core.Extensions.Base
         static Type _getType(string s) => !string.IsNullOrEmpty(s) ? (Type.GetType(s, throwOnError: false) ?? Ws.Core.Extensions.Base.Util.GetType(s)) : null;
         public override string Name => _options?.Name;
         public override int Priority => _options?.Priority ?? 0;
-        public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
+        public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider)
         {
             if (_options?.Services != null)
                 foreach (var service in _options.Services)
@@ -64,13 +64,13 @@ namespace Ws.Core.Extensions.Base
                     {
                         var descriptor = new ServiceDescriptor(serviceType, implementationType, service.Lifetime);
                         if (service.OverrideIfAlreadyRegistered)
-                            serviceCollection.Add(descriptor);
+                            builder.Services.Add(descriptor);
                         else
-                            serviceCollection.TryAdd(descriptor);
+                            builder.Services.TryAdd(descriptor);
                     }
                 }
         }
-        public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
+        public override void Execute(WebApplication app)
         {
             // https://docs.microsoft.com/it-it/aspnet/core/fundamentals/middleware/?view=aspnetcore-6.0
             // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/write?view=aspnetcore-6.0
@@ -81,9 +81,9 @@ namespace Ws.Core.Extensions.Base
                     if (type != null)
                     {
                         if (middleware.Map != null && !string.IsNullOrEmpty(middleware.Map.PathMatch))
-                            applicationBuilder.Map(middleware.Map.PathMatch, middleware.Map.PreserveMatchedPathSegment, _ => _.UseMiddleware(type));
+                            app.Map(middleware.Map.PathMatch, middleware.Map.PreserveMatchedPathSegment, _ => _.UseMiddleware(type));
                         else
-                            applicationBuilder.UseMiddleware(type);
+                            app.UseMiddleware(type);
                     }
                 }
         }

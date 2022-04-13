@@ -1,47 +1,62 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>xCore</RootNamespace>
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<RootNamespace>xCore</RootNamespace>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <UserSecretsId>5157c7a3-7464-47a3-86e8-4ecac9f3b402</UserSecretsId>
-  </PropertyGroup>
+	<PropertyGroup>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<UserSecretsId>5157c7a3-7464-47a3-86e8-4ecac9f3b402</UserSecretsId>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1591;1701;1702</NoWarn>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<NoWarn>1591;1701;1702</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.15" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-    <PackageReference Include="Moq" Version="4.17.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.utility" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
-    <PackageReference Include="coverlet.collector" Version="3.1.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="wwwroot\**\" />
+		<Folder Remove="wwwroot\media\**;wwwroot\is-cache\**" />
+		<Folder Remove="Extensions\**\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\core\core.csproj" />
-    <ProjectReference Include="..\..\src\modules\Api\Api.csproj" />
-    <ProjectReference Include="..\..\src\modules\Data.EF.MySql\Data.EF.MySql.csproj" />
-    <ProjectReference Include="..\..\src\modules\Data.EF.SQLite\Data.EF.SQLite.csproj" />
-    <ProjectReference Include="..\..\src\modules\Data.EF.SqlServer\Data.EF.SqlServer.csproj" />
-    <ProjectReference Include="..\..\src\modules\HealthCheck\HealthCheck.csproj" />
-    <ProjectReference Include="..\..\src\modules\Message\Message.csproj" />
-    <ProjectReference Include="..\..\src\modules\Routing\Routing.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="data\ws-core.db">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-	
+	<ItemGroup>
+		<PackageReference Include="AspNetCore.HealthChecks.Hangfire" Version="6.0.2" />
+		<PackageReference Include="Carter" Version="6.0.0" />
+		<PackageReference Include="Hangfire.Core" Version="1.7.28" />
+		<PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />		
+		<PackageReference Include="Hangfire.InMemory" Version="0.3.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.3" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+		<PackageReference Include="Moq" Version="4.17.2" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="xunit" Version="2.4.1" />
+		<PackageReference Include="xunit.runner.utility" Version="2.4.1" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
+		<PackageReference Include="coverlet.collector" Version="3.1.2">			
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\core\core.csproj" />
+		<ProjectReference Include="..\..\src\modules\Api\Api.csproj" />
+		<ProjectReference Include="..\..\src\modules\Data.EF.MySql\Data.EF.MySql.csproj" />
+		<ProjectReference Include="..\..\src\modules\Data.EF.SQLite\Data.EF.SQLite.csproj" />
+		<ProjectReference Include="..\..\src\modules\Data.EF.SqlServer\Data.EF.SqlServer.csproj" />
+		<ProjectReference Include="..\..\src\modules\Data\Data.csproj" />
+		<ProjectReference Include="..\..\src\modules\HealthCheck\HealthCheck.csproj" />
+		<ProjectReference Include="..\..\src\modules\Message\Message.csproj" />
+		<ProjectReference Include="..\..\src\modules\StaticFiles\StaticFiles.csproj" />
+	</ItemGroup>
+
 </Project>

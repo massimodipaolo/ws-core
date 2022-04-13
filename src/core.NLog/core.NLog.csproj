@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>0.0.4-beta4</PackageVersion>
+    <TargetFramework>net6.0</TargetFramework>
+    <PackageVersion>0.0.6-beta5</PackageVersion>
     <PackageId>Ws.Core.NLog</PackageId>
     <AssemblyName>Ws.Core.NLog</AssemblyName>
     <RootNamespace>Ws.Core</RootNamespace>

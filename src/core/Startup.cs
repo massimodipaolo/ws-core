@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Ws.Core.Extensions.Base;
 using ExtCore.Infrastructure;
-using ExtCore.WebApplication.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,7 +22,7 @@ namespace Ws.Core
         private IServiceCollection services;
         public static readonly DateTime Uptime = DateTime.Now;
         private string _extLastConfigAssembliesSerialized { get; set; }
-        protected string AppConfigSectionRoot { get; set; } = "appConfig";
+        protected string AppConfigSectionRoot { get; set; } = nameof(AppConfig);
 
         public Startup(IWebHostEnvironment hostingEnvironment, IConfiguration configuration)
         {
@@ -33,9 +32,9 @@ namespace Ws.Core
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public virtual void ConfigureServices(IServiceCollection services)
+        public virtual void ConfigureServices(WebApplicationBuilder builder)
         {
-            this.services = services;
+            this.services = builder.Services;
 
             this.services.AddOptions();
 
@@ -47,11 +46,11 @@ namespace Ws.Core
 
             Extensions.Base.Extension.Init(this.services, this.services.BuildServiceProvider());
 
-            this.services.AddExtCoreWithInjectors(config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"] != null ? $"{env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"]}" : null);
+            builder.AddExtCore(config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"] != null ? $"{env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"]}" : null, includingSubpaths: true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public virtual void Configure(IApplicationBuilder app, IOptionsMonitor<TOptions> appConfigMonitor, IOptionsMonitor<Extensions.Base.Configuration> extConfigMonitor, IHostApplicationLifetime applicationLifetime, ILogger<Ws.Core.Program> logger)
+        public virtual void Configure(WebApplication app, IOptionsMonitor<TOptions> appConfigMonitor, IOptionsMonitor<Extensions.Base.Configuration> extConfigMonitor, IHostApplicationLifetime lifetime, ILogger<Ws.Core.Program> logger)
         {
 
             //Error handling
@@ -60,7 +59,7 @@ namespace Ws.Core
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseExtCoreWithInjectors();
+            app.UseExtCore();
 
             static string _extSerialize(IDictionary<string, Configuration.Assembly> list) => list == null ? null : string.Join(" | ", list?.Where(ext => ext.Value.Priority > 0)?.OrderBy(ext => ext.Value.Priority)?.Select(_ => _.Key));
 
@@ -79,12 +78,12 @@ namespace Ws.Core
 
                 if (!isUpdatable && extConfig.EnableShutDownOnChange)
                 {
-                    applicationLifetime.StopApplication();
+                    lifetime.StopApplication();
                 }
                 else
                     ExtCore.Events.Event<Extensions.Base.IConfigurationChangeEvent, Extensions.Base.ConfigurationChangeContext>
                     .Broadcast(new Extensions.Base.ConfigurationChangeContext()
-                    { App = app, Lifetime = applicationLifetime, Configuration = extConfig }
+                    { App = app, Lifetime = lifetime, Configuration = extConfig }
                     );
             });
 

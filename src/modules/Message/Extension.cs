@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,12 @@ namespace Ws.Core.Extensions.Message
     public class Extension: Base.Extension
     {
         private Options options => GetOptions<Options>();
-        public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
+        public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
         {
-            base.Execute(serviceCollection, serviceProvider);
-            serviceCollection.AddHealthChecks().AddCheck<EmailMessage>("message-email", tags: new[] {"message", "smtp", "email" });
-            serviceCollection.AddSingleton<IMessageConfiguration>(options);
-            serviceCollection.AddTransient<IMessage, EmailMessage>();
+            base.Execute(builder, serviceProvider);
+            builder.Services.AddHealthChecks().AddCheck<EmailMessage>("message-email", tags: new[] {"message", "smtp", "email" });
+            builder.Services.AddSingleton<IMessageConfiguration>(options);
+            builder.Services.AddTransient<IMessage, EmailMessage>();
         }        
     }
 }

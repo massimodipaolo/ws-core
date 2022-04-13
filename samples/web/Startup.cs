@@ -1,32 +1,28 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Collections.Generic;
-using System;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;
-using Ws.Core.Extensions.Base;
 
 namespace web
 {
-    public class Startup : Ws.Core.Startup<AppConfig>
+    public class Startup: Ws.Core.Startup<Ws.Core.AppConfig>
     {
-        public Startup(IWebHostEnvironment hostingEnvironment, IConfiguration configuration) : base(hostingEnvironment, configuration)
+        public Startup(WebApplicationBuilder builder): base(builder.Environment, (IConfiguration)builder.Services.BuildServiceProvider().GetRequiredService<IConfiguration>()) 
+        { }
+
+        public void Add(WebApplicationBuilder builder) => ConfigureServices(builder);
+
+        public override void ConfigureServices(WebApplicationBuilder builder)
         {
-        }
+            //builder.Services.AddResponseCompression(_ => _.EnableForHttps = true);
+            //builder.Services.AddControllers();
+            //builder.Services.AddTransient<Ws.Core.Extensions.HealthCheck.Checks.AppLog.IAppLogService, Code.HealthCheckAppLogService>();
 
-        public override void ConfigureServices(IServiceCollection services)
-        {
-            services.AddResponseCompression(_ => _.EnableForHttps = true);
+            base.ConfigureServices(builder);
 
-            services.AddTransient<Ws.Core.Extensions.HealthCheck.Checks.AppLog.IAppLogService, Code.HealthCheckAppLogService>();
-
-            base.ConfigureServices(services);
-
-            services.AddTransient(typeof(Ws.Core.Extensions.Data.AppDbContext), typeof(Code.AppDbContextExt));
+            //builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.AppDbContext), typeof(Code.AppDbContextExt));
 
             /* override repository */
             // Cms            
@@ -38,20 +34,37 @@ namespace web
                 );
             */
 
-            Ws.Core.AppInfo<AppConfig>.Set(env: env, config: config, services: services);
+            Ws.Core.AppInfo<Ws.Core.AppConfig>.Set(env: env, config: config, services: builder.Services);
         }
 
-        public override void Configure(IApplicationBuilder app, IOptionsMonitor<AppConfig> appConfigMonitor, IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor, IHostApplicationLifetime applicationLifetime, ILogger<Ws.Core.Program> logger)
+        public void Use(WebApplication app)
+        {
+            var services = app.Services;
+            Configure(
+                app,
+                services.GetRequiredService<IOptionsMonitor<Ws.Core.AppConfig>>(),
+                services.GetRequiredService<IOptionsMonitor<Ws.Core.Extensions.Base.Configuration>>(),
+                app.Lifetime,
+                services.GetRequiredService<ILogger<Ws.Core.Program>>()
+                );
+        }
+        public override void Configure(
+            WebApplication app, 
+            IOptionsMonitor<Ws.Core.AppConfig> appConfigMonitor, 
+            IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor, 
+            IHostApplicationLifetime applicationLifetime, 
+            ILogger<Ws.Core.Program> logger
+            )
         {
             logger.LogInformation("Start");
 
-            app.UseResponseCompression();
+            //app.UseResponseCompression();
 
-            Ws.Core.AppInfo<AppConfig>.Set(app: app, appConfigMonitor: appConfigMonitor, extConfigMonitor: extConfigMonitor, loggerFactory: app.ApplicationServices?.GetRequiredService<ILoggerFactory>(), applicationLifetime: applicationLifetime);
+            Ws.Core.AppInfo<Ws.Core.AppConfig>.Set(app: app, appConfigMonitor: appConfigMonitor, extConfigMonitor: extConfigMonitor, loggerFactory: app.Services?.GetRequiredService<ILoggerFactory>(), lifetime: applicationLifetime);
 
             base.Configure(app, appConfigMonitor, extConfigMonitor, applicationLifetime, logger);
 
-            //await Code.AppInfo.Init();
+            app.MapGet("/ping", () => "pong");
 
             //shutdown
             applicationLifetime.ApplicationStopping.Register(() =>

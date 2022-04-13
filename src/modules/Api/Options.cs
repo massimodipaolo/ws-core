@@ -41,7 +41,7 @@ namespace Ws.Core.Extensions.Api
                 public string Version { get; set; }
             }
             public class XmlCommentsOptions {
-                public string FileName { get; set; }
+                public string FileName { get; set; } = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
                 public bool IncludeControllerComments { get; set; } = false;
             }
             public class SecurityDefinitionsOptions

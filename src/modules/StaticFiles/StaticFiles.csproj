@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup> 
-    <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.1</PackageVersion>   
+    <TargetFramework>net6.0</TargetFramework>
+    <PackageVersion>6.0.0</PackageVersion>   
     <PackageId>Ws.Core.Extensions.StaticFiles</PackageId>
     <AssemblyName>Ws.Core.Extensions.StaticFiles</AssemblyName>       
     <RootNamespace>Ws.Core.Extensions.StaticFiles</RootNamespace>
@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>

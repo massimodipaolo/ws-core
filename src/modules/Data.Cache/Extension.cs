@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.Builder;
 
 namespace Ws.Core.Extensions.Data.Cache
 {
@@ -11,9 +12,9 @@ namespace Ws.Core.Extensions.Data.Cache
         private Options options => GetOptions<Options>();
         private Options.Types _type => options?.Type ?? Options.Types.Memory;
 
-        public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
+        public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
         {
-            base.Execute(serviceCollection, serviceProvider);
+            base.Execute(builder, serviceProvider);
 
             // default entry expiration
             if (Options.EntryExpirationInMinutes == null)
@@ -22,7 +23,7 @@ namespace Ws.Core.Extensions.Data.Cache
             // init/override default cache profile
             //CacheEntryOptions.Expiration.Set();
 
-            serviceCollection
+            builder.Services
                         .AddMemoryCache()
                         .AddDistributedMemoryCache();
 
@@ -56,9 +57,9 @@ namespace Ws.Core.Extensions.Data.Cache
             }
 
             //DI
-            serviceCollection.TryAddSingleton(typeof(ICache), implementation);
-            serviceCollection.TryAddSingleton(typeof(ICache<>), genericsImplementation);
-            serviceCollection.TryAddTransient(typeof(ICacheRepository<,>), typeof(Repository.CachedRepository<,>));
+            builder.Services.TryAddSingleton(typeof(ICache), implementation);
+            builder.Services.TryAddSingleton(typeof(ICache<>), genericsImplementation);
+            builder.Services.TryAddTransient(typeof(ICacheRepository<,>), typeof(Repository.CachedRepository<,>));
             /*
             serviceCollection.TryAddTransient(typeof(IEntityChangeEvent<,>), typeof(Repository.EntityChangeHandler<,>));
             serviceCollection.TryAddTransient(typeof(IEntityChangeEvent<>), typeof(Repository.EntityChangeHandler<>));

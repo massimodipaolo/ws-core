@@ -11,13 +11,13 @@ namespace Ws.Core.Extensions.Cors
         private Options options => GetOptions<Options>();
         private IEnumerable<Options.PolicyOption> namedPolicies => options?.Policies?.Where(_ => !string.IsNullOrEmpty(_.Name));
 
-        public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
+        public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
         {
-            base.Execute(serviceCollection, serviceProvider);
+            base.Execute(builder, serviceProvider);
 
             if (namedPolicies != null && namedPolicies.Any())  
             {
-                serviceCollection.AddCors(opt =>
+                builder.Services.AddCors(opt =>
                 {
                     foreach (var p in namedPolicies)
                     {
@@ -43,19 +43,19 @@ namespace Ws.Core.Extensions.Cors
                 });
             }
             else
-                serviceCollection.AddCors();
+                builder.Services.AddCors();
 
         }
 
-        public override void Execute(IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
+        public override void Execute(WebApplication app)
         {
-            base.Execute(applicationBuilder, serviceProvider);
+            base.Execute(app);
 
             if (namedPolicies != null && namedPolicies.Any())
                 foreach (var p in namedPolicies)
-                    applicationBuilder.UseCors(p.Name);
+                    app.UseCors(p.Name);
             else
-                applicationBuilder.UseCors(_ => _
+                app.UseCors(_ => _
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader()                

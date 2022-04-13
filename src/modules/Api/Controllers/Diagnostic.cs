@@ -78,12 +78,15 @@ namespace Ws.Core.Extensions.Api.Controllers
                         .ToDictionary(conf => conf.Key, conf => conf.Value)
                 },
                 extensions =
-                        ExtCore.Infrastructure.ExtensionManager.GetInstances<ExtCore.Infrastructure.Actions.IConfigureServicesAction>()
+                        ExtCore.Infrastructure.ExtensionManager.GetInstances<ExtCore.Infrastructure.Actions.IConfigureBuilder>()
                         .UnionInjector()
                         .Where(_ => _ is ExtCore.Infrastructure.ExtensionBase)
                         .Select(_ => new { (_ as ExtCore.Infrastructure.ExtensionBase).Name, _.Priority })
                     .OrderBy(_ => _.Priority),                
-                services = AppInfo<TConfig>.Services?.Select(_ => new { Type = _.ServiceType, _.ImplementationType, Lifetime = _.Lifetime.ToString() })
+                services = AppInfo<TConfig>.Services?.Select(_ => new { 
+                    Type = _.ServiceType, 
+                    _.ImplementationType, 
+                    Lifetime = _.Lifetime.ToString() })
             };
             return Ok(diag);
         }

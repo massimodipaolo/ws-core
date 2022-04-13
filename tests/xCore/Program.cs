@@ -1,36 +1,55 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ws.Core.Extensions.Data;
+
+var builder = Ws.Core.Program.CreateBuilder(xCore.Program.ParseArgs(args));
+var startup = new xCore.Startup(builder);
+startup.Add(builder);
+var app = builder.Build();
+xCore.Program.ConfigureServer(app);
+startup.Use(app);
+app.Run();
 
 namespace xCore
 {
-    /// <summary>
-    /// Program acts as IClassFixture
-    /// </summary>
-    public class Program<TStartup> : WebApplicationFactory<Startup> where TStartup : class
+    public partial class Program: WebApplicationFactory<Program>
     {
-        protected override IHostBuilder CreateHostBuilder()
-        => Ws.Core.Program
-        .WebHostBuilder(Array.Empty<string>(), typeof(Program<Startup>).Assembly, typeof(Startup));
+        /// <summary>
+        /// env variable                cli arg
+        /// ------------------------------------------------------------------
+        /// ASPNETCORE_ENVIRONMENT      --environment=Development
+        /// ASPNETCORE_CONTENTROOT      --contentRoot=C:\Projects\ws-core\xCore
+        /// ASPNETCORE_APPLICATIONNAME  --applicationName=xCore
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        internal static string[] ParseArgs(string[] args)
+        {
+            // content root path
+            var _path = "--contentRoot=";
+            for (var i = 0; i < args.Length; i++)
+                if (args[i].StartsWith(_path))
+                    args[i] = $"{_path}{Path.GetFullPath(Directory.GetCurrentDirectory())}";
+            return args;
+        }
 
-        protected override void ConfigureWebHost(Microsoft.AspNetCore.Hosting.IWebHostBuilder builder)
-        {            
-            builder
-                .UseSolutionRelativeContentRoot("tests/xCore") // Set the content root path, relative to solution path
-                ;
-            base.ConfigureWebHost(builder);
+        /// <summary>
+        /// Configure TestServer Services / Features
+        /// </summary>
+        /// <param name="app"></param>
+        internal static void ConfigureServer(WebApplication app)
+        {
+            // IServerAddressesFeature
+            // https://github.com/dotnet/aspnetcore/issues/5931#issuecomment-416307525
+            // https://github.com/aspnet/Hosting/blob/3e0b689ac2ea72a8dee81f8ae3a349610ac1fb0c/test/Microsoft.AspNetCore.TestHost.Tests/TestServerTests.cs#L175-L176
+            var server = app.Services.GetRequiredService<IServer>();
+            if (server.Features.Get<IServerAddressesFeature>() == null)
+            {
+                var addressFeature = new ServerAddressesFeature();
+                addressFeature.Addresses.Add("http://localhost:60936");
+                addressFeature.Addresses.Add("https://localhost:60935");
+                server.Features.Set<IServerAddressesFeature>(addressFeature);
+            }
         }
     }
 }

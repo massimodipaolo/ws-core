@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
     <PropertyGroup>    
-    <TargetFramework>net5.0</TargetFramework>
-    <PackageVersion>5.0.2</PackageVersion>  
+    <TargetFramework>net6.0</TargetFramework>
+    <PackageVersion>6.0.0</PackageVersion>  
     <PackageId>Ws.Core</PackageId>    
     <AssemblyName>Ws.Core</AssemblyName>
     <RootNamespace>Ws.Core</RootNamespace>
@@ -25,14 +25,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
-    <!--PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.0.0" /-->    
-    <PackageReference Include="ExtCore.WebApplication" Version="6.0.0" />
-    <!--<ProjectReference Include="..\..\..\..\GitHub\ExtCore\src\ExtCore.WebApplication\ExtCore.WebApplication.csproj" />-->
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
+	  <!--PackageReference Include="ExtCore.WebApplication" Version="7.0.0" /-->
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot/**/*.*" Pack="false" />
@@ -43,6 +41,7 @@
     </Folder>
   </ItemGroup>
   <ItemGroup>    
+    <ProjectReference Include="..\extCore\WebApplication\ExtCore.Application.csproj" />    
     <ProjectReference Include="..\modules\ExtensionBase\ExtensionBase.csproj" />
   </ItemGroup>   
 </Project> 

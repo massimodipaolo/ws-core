@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Ws.Core.Extensions.HealthCheck.Checks.AppLog;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -47,18 +46,23 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 if (type != null)
                     builder.Services.AddTransient(typeof(IAppLogService), type);
+
+                var appLogService = builder.Services.BuildServiceProvider().GetService<IAppLogService>();
+                if (appLogService == null) return builder;
+
+                return builder.Add(new HealthCheckRegistration(
+                   name ?? NAME,
+                   sp => new Ws.Core.Extensions.HealthCheck.Checks.AppLog.HealthCheck(appLogOptions, appLogService),
+                   failureStatus,
+                   tags,
+                   timeout));
             }
-            catch {}
+            catch(Exception ex) {
+                var logger = builder.Services.BuildServiceProvider().GetService<ILoggerFactory>();
+                logger?.CreateLogger<HealthCheckRegistration>()?.LogError(ex, $"Error adding {nameof(AppLogHealthCheckBuilderExtensions)} health check");
+            }
 
-            var appLogService = builder.Services.BuildServiceProvider().GetService<IAppLogService>();
-            if (appLogService == null) return builder;
-
-            return builder.Add(new HealthCheckRegistration(
-               name ?? NAME,
-               sp => new Ws.Core.Extensions.HealthCheck.Checks.AppLog.HealthCheck(appLogOptions, appLogService),
-               failureStatus,
-               tags,
-               timeout));
+            return builder;
         }
     }
 }

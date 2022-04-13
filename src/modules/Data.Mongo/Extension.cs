@@ -7,6 +7,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson;
 using Microsoft.Extensions.DependencyModel;
+using Microsoft.AspNetCore.Builder;
 
 namespace Ws.Core.Extensions.Data.Mongo
 {
@@ -16,9 +17,9 @@ namespace Ws.Core.Extensions.Data.Mongo
 
         //private static T BsonClassMap<core.Extensions.Data.Entity<T>> map => default(T);
 
-        public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
+        public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
         {
-            base.Execute(serviceCollection, serviceProvider);
+            base.Execute(builder, serviceProvider);
 
             var connections = options?.Connections;
             if (connections != null && connections.Any())
@@ -39,16 +40,16 @@ namespace Ws.Core.Extensions.Data.Mongo
                     BsonClassMap.RegisterClassMap(cm);
                 }
 
-                var hcBuilder = serviceCollection.AddHealthChecks();
+                var hcBuilder = builder.Services.AddHealthChecks();
                 foreach (var conn in connections)
                     hcBuilder.AddMongoDb(conn.ConnectionString, name: $"mongodb-{conn.Name}", tags: new[] { "db", "mongodb" });
 
-                serviceCollection.Configure<Options>(_ =>
+                builder.Services.Configure<Options>(_ =>
                 {
                     _.Connections = connections;
                 });
 
-                serviceCollection.TryAddTransient(typeof(IRepository<,>), typeof(Repository.Mongo<,>));
+                builder.Services.TryAddTransient(typeof(IRepository<,>), typeof(Repository.Mongo<,>));
             }
         }
     }

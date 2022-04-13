@@ -11,9 +11,9 @@ namespace Ws.Core.Extensions.Data.EF.SqlServer
     {
         public Options Options => GetOptions<Options>();
         
-        public override void Execute(IServiceCollection serviceCollection, IServiceProvider serviceProvider)
+        public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
         {
-            base.Execute(serviceCollection, serviceProvider);
+            base.Execute(builder, serviceProvider);
 
             var connections = Options?.Connections;
             if (connections != null && connections.Any())
@@ -24,13 +24,15 @@ namespace Ws.Core.Extensions.Data.EF.SqlServer
                     _.Connections = connections;
                 });
                 */
-                var hcBuilder = serviceCollection.AddHealthChecks();
+                var hcBuilder = builder.Services.AddHealthChecks();
                 foreach (var conn in connections)
                     hcBuilder.AddSqlServer(conn.ConnectionString, name: $"sqlserver-{conn.Name}", tags: new[] { "db", "sql", "sqlserver" });
 
-                serviceCollection.AddDbContext<AppDbContext>(_ => _.UseSqlServer(connections.FirstOrDefault().ConnectionString),Options.ServiceLifetime);                
-                serviceCollection.PostConfigure<AppDbContext>(_ => _.Database.EnsureCreated());
-                serviceCollection.TryAddTransient(typeof(IRepository<,>), typeof(Repository.EF.SqlServer<,>));
+                builder.Services.AddDbContext<AppDbContext>(_ => _.UseSqlServer(connections.FirstOrDefault().ConnectionString),Options.ServiceLifetime);
+#warning TODO use new execution strategy options
+                //builder.Services.AddSqlServer<AppDbContext>(connections.FirstOrDefault().ConnectionString, _ => { _.EnableRetryOnFailure(); /**/ });
+                builder.Services.PostConfigure<AppDbContext>(_ => _.Database.EnsureCreated());
+                builder.Services.TryAddTransient(typeof(IRepository<,>), typeof(Repository.EF.SqlServer<,>));
             }
         }
     }
