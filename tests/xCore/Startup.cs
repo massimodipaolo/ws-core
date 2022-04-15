@@ -14,6 +14,14 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
         base.ConfigureServices(builder);
         Ws.Core.AppInfo<Ws.Core.AppConfig>.Set(env: env, config: config, services: builder.Services);
 
+        /*
+        builder.Services
+            .Decorate<Ws.Core.Extensions.Message.IMessage, xCore.Decorators.IMessageLogger>()
+            .Decorate<Ws.Core.Extensions.Message.IMessage, xCore.Decorators.IMessageCopy>()
+            .Decorate<Ws.Core.Extensions.Message.IMessage, xCore.Decorators.IMessageSignature>()
+            ; 
+        */
+
         builder.Services.AddCarter();
     }
 
@@ -24,6 +32,24 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
         app.MapGet("/api/log", (Ws.Core.Extensions.Data.IRepository<Log, int> repo) => repo.List.FirstOrDefault());
         app.MapGet("/api/log/{id}", (int id, Ws.Core.Extensions.Data.IRepository<Log, int> repo) => repo.Find(id));
 
+        app.MapGet("/message/send", async (Ws.Core.Extensions.Message.IMessage svc) => {
+            var email = "massimodipaolo@users.noreply.github.com";
+            var content = $"{typeof(Ws.Core.Extensions.Message.IMessage)} => {svc.GetType().FullName}";
+            var message = new Ws.Core.Extensions.Message.Message()
+            {
+                Sender = new Ws.Core.Extensions.Message.Message.Actor() { Address = email, Name = email },
+                Recipients = new Ws.Core.Extensions.Message.Message.Actor[]
+                {
+                    new() { Address = email, Name = email, Type = Ws.Core.Extensions.Message.Message.ActorType.Primary }
+                },
+                Subject = $"Decorators demo",
+                Content = content,
+                Format = "html"
+            };
+            await svc.SendAsync(message, throwException: true);
+            return content;
+        });
+        
         Configure(
             app,
             services.GetRequiredService<IOptionsMonitor<Ws.Core.AppConfig>>(),

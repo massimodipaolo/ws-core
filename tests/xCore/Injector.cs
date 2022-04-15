@@ -44,6 +44,11 @@ namespace xCore
             // Assert
             Assert.Equal(content, expectedContent);
         }
+
+        [Theory]
+        [InlineData(typeof(Ws.Core.Extensions.Message.IMessage), typeof(xCore.Decorators.IMessageSignature), WebApplicationFactoryType.Development)]             
+        public void Check_DecoratorChainTypeByEnvironment(Type Tinterface, Type ExpectedTimplementation, WebApplicationFactoryType factoryType)
+            => base.Check_ServiceImplementation(Tinterface, ExpectedTimplementation, factoryType);
     }
 
 }

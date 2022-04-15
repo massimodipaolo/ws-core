@@ -98,7 +98,7 @@ namespace Ws.Core.Extensions.Message
                     if (!string.IsNullOrEmpty(sender.UserName) && !string.IsNullOrEmpty(sender.Password))
                         await client.AuthenticateAsync(sender.UserName, sender.Password).ConfigureAwait(false);
 
-                    await client.SendAsync(mime).ConfigureAwait(false);
+                    var response = await client.SendAsync(mime).ConfigureAwait(false);
                 }
                 catch (Exception ex) when (ex is MailKit.Security.SslHandshakeException || ex is System.Net.Sockets.SocketException || ex is MailKit.ProtocolException)
                 {

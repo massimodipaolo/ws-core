@@ -2,7 +2,7 @@
 using Xunit.Abstractions;
 using System.Text.Json;
 using xCore.Extensions;
-using xCore.Modules;
+using xCore.Endpoints;
 
 namespace xCore
 {
@@ -21,7 +21,7 @@ namespace xCore
             HttpClient client = factory.CreateClient();
 
             // Act
-            var items = await client.GetFromJsonAsync<List<xCore.Modules.Todo>>("/api/todo");
+            var items = await client.GetFromJsonAsync<List<xCore.Endpoints.Todo>>("/api/todo");
 
             _output.Write(JsonSerializer.Serialize(items, new JsonSerializerOptions { WriteIndented = true }));
 

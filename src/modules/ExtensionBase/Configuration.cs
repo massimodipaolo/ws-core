@@ -29,11 +29,16 @@ namespace Ws.Core.Extensions.Base
         {
             public Injector(): base() {}
             public ServiceOption[] Services { get; set; }
+            public DecoratorOption[] Decorators { get; set; }
             public MiddlewareOption[] Middlewares { get; set; }
-            public class ServiceOption
+
+            public class DecoratorOption
             {
                 public string ServiceType { get; set; }
                 public string ImplementationType { get; set; }
+            }
+            public class ServiceOption: DecoratorOption
+            {
                 public ServiceLifetime Lifetime { get; set; } = ServiceLifetime.Transient;
                 public bool OverrideIfAlreadyRegistered { get; set; } = true;
             }

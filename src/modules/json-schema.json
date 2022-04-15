@@ -1555,6 +1555,22 @@
                   }
                 }
               },
+              "decorators": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "serviceType": {
+                      "type": "string",
+                      "description": "Fully qualified name of the type to decorate, including its namespace but not its assembly"
+                    },
+                    "implementationType": {
+                      "type": "string",
+                      "description": "Fully qualified name of the decorator type, including its namespace but not its assembly"
+                    }
+                  }
+                }
+              },
               "middlewares": {
                 "type": "array",
                 "items": {

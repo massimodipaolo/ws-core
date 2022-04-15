@@ -19,10 +19,10 @@ namespace Ws.Core.Extensions
 
         private static IEnumerable<T> _unionInject<T>(IEnumerable<T> list) where T : class, IConfigureAction
         {
-            Type injectorType = typeof(Ws.Core.Extensions.Base.Injector);
+            Type injectorType = typeof(Ws.Core.Extensions.Injector);
             list = list.Where(_ => _.GetType() != injectorType);
 
-            IEnumerable<Ws.Core.Extensions.Base.Injector> injectors = Ws.Core.Extensions.Base.Injector.List();
+            IEnumerable<Ws.Core.Extensions.Injector> injectors = Ws.Core.Extensions.Injector.List();
             if (injectors != null && injectors.Any())
                 list = list
                 .Union((IEnumerable<T>)injectors)

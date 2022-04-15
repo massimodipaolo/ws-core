@@ -5,8 +5,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ws.Core.Extensions.Base;
 
-namespace Ws.Core.Extensions.Base
+namespace Ws.Core.Extensions
 {
     public class Injector : Base.Extension
     {
@@ -17,7 +18,8 @@ namespace Ws.Core.Extensions.Base
         private static IEnumerable<Configuration.Injector> _getConfigInjectors()
         => config?.GetSection(_configSectionPathInjectors)?
             .Get<IEnumerable<Configuration.Injector>>()?
-            .Select((obj, idx) => {
+            .Select((obj, idx) =>
+            {
                 if (string.IsNullOrEmpty(obj.Name))
                     obj.Name = $"{nameof(Injector)}-{idx}";
                 return obj;
@@ -26,7 +28,7 @@ namespace Ws.Core.Extensions.Base
         private Configuration.Injector _getOptions()
         => _getConfigInjectors()?.Where(_ => _.Name == this.Name).FirstOrDefault();
 
-        public static IEnumerable<Ws.Core.Extensions.Base.Injector> List()
+        public static IEnumerable<Ws.Core.Extensions.Injector> List()
         {
             if (_list == null)
                 using (_mutexList.Lock())
@@ -35,7 +37,7 @@ namespace Ws.Core.Extensions.Base
                         _list = new List<Injector>();
                         foreach (var config in _getConfigInjectors())
                         {
-                            Ws.Core.Extensions.Base.Injector item = (Injector)Activator.CreateInstance(typeof(Ws.Core.Extensions.Base.Injector), config);
+                            Ws.Core.Extensions.Injector item = (Injector)Activator.CreateInstance(typeof(Ws.Core.Extensions.Injector), config);
                             ((List<Injector>)_list).Add(item);
                         }
                     }
@@ -55,6 +57,7 @@ namespace Ws.Core.Extensions.Base
         public override int Priority => _options?.Priority ?? 0;
         public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider)
         {
+            // add services
             if (_options?.Services != null)
                 foreach (var service in _options.Services)
                 {
@@ -68,6 +71,16 @@ namespace Ws.Core.Extensions.Base
                         else
                             builder.Services.TryAdd(descriptor);
                     }
+                }
+
+            // add decorators
+            if (_options?.Decorators != null)
+                foreach (var decorator in _options.Decorators)
+                {
+                    Type serviceType = _getType(decorator.ServiceType);
+                    Type implementationType = _getType(decorator.ImplementationType);
+                    if (serviceType != null && implementationType != null && serviceType.IsAssignableFrom(implementationType))
+                        builder.Services.TryDecorate(serviceType, implementationType);
                 }
         }
         public override void Execute(WebApplication app)
