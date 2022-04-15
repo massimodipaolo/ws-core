@@ -33,6 +33,24 @@
             }
           }
         ]
+      },
+      {
+        "priority": 601,
+        "name": "IMessage-on-stereoids",
+        "decorators": [
+          {
+            "serviceType": "Ws.Core.Extensions.Message.IMessage",
+            "implementationType": "xCore.Decorators.IMessageLogger"
+          },
+          {
+            "serviceType": "Ws.Core.Extensions.Message.IMessage",
+            "implementationType": "xCore.Decorators.IMessageCopy"
+          },
+          {
+            "serviceType": "Ws.Core.Extensions.Message.IMessage",
+            "implementationType": "xCore.Decorators.IMessageSignature"
+          }
+        ]
       }
     ]
   }

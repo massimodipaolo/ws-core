@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Ws.Core.Extensions.Data;
@@ -13,10 +14,20 @@ interface IWebApplicationFactoryEnvironment
 public class LocalApplicationFactory : WebApplicationFactory<Program>, IWebApplicationFactoryEnvironment
 {
     public string Environment => "Local";
+    protected override TestServer CreateServer(IWebHostBuilder builder) {
+        builder.UseEnvironment(Environment);
+        return base.CreateServer(builder);
+    }
     protected override IHost CreateHost(IHostBuilder builder)
     {
-        builder.UseEnvironment(Environment);
+        builder.UseEnvironment(Environment);        
         return base.CreateHost(builder);
+    }
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.UseEnvironment(Environment);
+        builder.UseConfiguration(new ConfigurationBuilder().AddJsonFile($"ext-settings.{Environment}.json").Build());
+        base.ConfigureWebHost(builder);
     }
 }
 public class MockApplicationFactory : WebApplicationFactory<Program>, IWebApplicationFactoryEnvironment

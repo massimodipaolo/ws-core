@@ -1,4 +1,5 @@
-﻿using Ws.Core.Extensions.Message;
+﻿using Carter;
+using Ws.Core.Extensions.Message;
 using xCore.Extensions;
 using Xunit;
 using Xunit.Abstractions;
@@ -27,7 +28,8 @@ namespace xCore
                     new() { Address = recipient, Name = recipient, Type = Ws.Core.Extensions.Message.Message.ActorType.Primary }
                 },
                 Subject = $"Subject {sender.Split('@')[1]} {DateTime.UtcNow.ToShortTimeString()}",
-                Content = "Message content"
+                Content = "Message content",
+                Format = "html"
             };
 
             // Act
@@ -44,6 +46,5 @@ namespace xCore
             // Assert
             Assert.Equal("", _ex?.Message ?? "");
         }
-
     }
 }

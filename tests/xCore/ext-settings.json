@@ -5,7 +5,7 @@
     "folder": "Extensions",
     "enableShutDownOnChange": false,
     "assemblies": {
-      "Ws.Core.Extensions.ImageProcessor": { "priority": 90 },
+      "Ws.Core.Extensions.ImageProcessor": { "priority": 90},
       "Ws.Core.Extensions.StaticFiles": {
         "priority": 100,
         "options": {

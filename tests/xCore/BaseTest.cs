@@ -58,7 +58,7 @@ namespace xCore
             object? _service;
             using (var scope = factory.Services.CreateScope())
             {
-                _service = scope?.ServiceProvider?.GetService(Tinterface);
+                _service = scope?.ServiceProvider?.GetService(Tinterface);                
             }
 
             // Act

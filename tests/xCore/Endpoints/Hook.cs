@@ -1,6 +1,6 @@
 ﻿using Carter;
 
-namespace xCore.Modules;
+namespace xCore.Endpoints;
 public class Hook : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
