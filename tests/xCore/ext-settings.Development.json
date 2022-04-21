@@ -35,6 +35,17 @@
         ]
       },
       {
+        "priority": 410,
+        "services": [
+          {
+            "serviceType": "Ws.Core.Extensions.Data.IRepository`2[[xCore.Log, xCore],[System.Int32]], Ws.Core.Extensions.Data",
+            "implementationType": "Ws.Core.Extensions.Data.Repository.InMemory`2[[xCore.Log, xCore],[System.Int32]], Ws.Core.Extensions.Data",
+            "lifeTime": "Transient",
+            "overrideIfAlreadyRegistered": true
+          }
+        ]
+      },
+      {
         "priority": 601,
         "name": "IMessage-on-stereoids",
         "decorators": [

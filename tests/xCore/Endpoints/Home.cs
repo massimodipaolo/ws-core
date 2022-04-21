@@ -30,6 +30,7 @@ public class Home : ICarterModule
           <li class=""list-group-item""><samp>/branch</samp> Injector middleware <a href=""/branch?text=Welcome to branch middleware"" target=""_blank""> => </a></li>
           <li class=""list-group-item""><samp>/message/send</samp> Injector decorators <a href=""/message/send"" target=""_blank""> => </a></li>
           <li class=""list-group-item""><samp>/swagger</samp> Api discover <a href=""/swagger"" target=""_blank""> => </a></li>
+          <li class=""list-group-item""><samp>/profiler</samp> Mini profiler <a href=""/mini-profiler-resources/results-index"" target=""_blank""> => </a> | <a href=""/mini-profiler-resources/results-list"" target=""_blank""> List </a> | <a href=""/mini-profiler-resources/results"" target=""_blank""> Last </a></li>
         </ul>
         </div>
     </body>
@@ -48,8 +49,7 @@ class HtmlResult : IResult
     public async Task ExecuteAsync(HttpContext ctx)
     {
         ctx.Response.ContentType = $"{System.Net.Mime.MediaTypeNames.Text.Html};charset=utf-8;";
-        ctx.Response.ContentLength = System.Text.Encoding.UTF8.GetByteCount(_htmlContent);
-        
+        ctx.Response.ContentLength = System.Text.Encoding.UTF8.GetByteCount(_htmlContent);        
         await ctx.Response.WriteAsync(_htmlContent);
     }
 }
@@ -57,7 +57,5 @@ class HtmlResult : IResult
 static class ResultExtensions
 {
     public static IResult Html(this IResultExtensions extensions, string html)
-    {
-        return new HtmlResult(html);
-    }
+    => new HtmlResult(html);
 }

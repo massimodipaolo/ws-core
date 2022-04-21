@@ -182,7 +182,7 @@
                 "tags": [ "network", "firewall" ]
               }
             ],
-            "_appLog": {
+            "appLog": {
               "_appLogService": "xCore.HealthCheckAppLogService, xCore",
               "takeLastLog": {
                 "criteria": "top",
@@ -286,6 +286,7 @@
           }
         }
       }
+      , "Ws.Core.Extensions.Diagnostic": {"priority": 999, "options": {}}
     },
     "injectors": []
   }

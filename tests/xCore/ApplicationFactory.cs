@@ -47,7 +47,7 @@ public class MockApplicationFactory : WebApplicationFactory<Program>, IWebApplic
             // db repo
             _
                 //.AddTransient(typeof(Ws.Core.Extensions.Data.Repository.InMemory<,>), typeof(Ws.Core.Extensions.Data.Repository.InMemory<,>))
-                .AddTransient(typeof(IRepository<,>), typeof(Ws.Core.Extensions.Data.Repository.InMemory<,>))
+                .AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<,>), typeof(Ws.Core.Extensions.Data.Repository.InMemory<,>))
                 //.AddTransient(typeof(Ws.Core.Extensions.HealthCheck.Checks.AppLog.IAppLogService), typeof(xCore.HealthCheckAppLogService<Ws.Core.Extensions.Data.Repository.InMemory<Log,int>>))
                 ;
         });        

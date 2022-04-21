@@ -220,3 +220,16 @@ dotnet_naming_style.camel_case.capitalization = camel_case
 
 # MVC1004: Rename model bound parameter: AD0001 C# Analyzer threw an exception of type 'System.NullReferenceException' with message 'Object reference not set to an instance of an object.'.
 dotnet_diagnostic.MVC1004.severity = none
+csharp_style_namespace_declarations = block_scoped:silent
+[*.{cs,vb}]
+dotnet_style_operator_placement_when_wrapping = beginning_of_line
+tab_width = 4
+indent_size = 4
+end_of_line = crlf
+dotnet_style_coalesce_expression = true:suggestion
+dotnet_style_null_propagation = true:suggestion
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggestion
+dotnet_style_prefer_auto_properties = true:silent
+dotnet_style_object_initializer = true:suggestion
+dotnet_style_collection_initializer = true:suggestion
+dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
