@@ -35,6 +35,18 @@
         ]
       },
       {
+        "priority": 405,
+        "name": "data-repository-override",
+        "services": [
+          {
+            "serviceType": "Ws.Core.Extensions.Data.IRepository`2[[xCore.Log, xCore],[System.Int32]], Ws.Core.Extensions.Data",
+            "implementationType": "Ws.Core.Extensions.Data.Repository.EF.SQLite`2[[xCore.Log, xCore],[System.Int32]], Ws.Core.Extensions.Data.EF.SQLite",
+            "lifeTime": "Transient",
+            "overrideIfAlreadyRegistered": true
+          }
+        ]
+      },
+      {
         "priority": 601,
         "name": "IMessage-on-stereoids",
         "decorators": [

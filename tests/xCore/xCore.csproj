@@ -54,6 +54,7 @@
 		<ProjectReference Include="..\..\src\modules\Data.EF.MySql\Data.EF.MySql.csproj" />
 		<ProjectReference Include="..\..\src\modules\Data.EF.SQLite\Data.EF.SQLite.csproj" />
 		<ProjectReference Include="..\..\src\modules\Data.EF.SqlServer\Data.EF.SqlServer.csproj" />
+		<ProjectReference Include="..\..\src\modules\Data.FileSystem\Data.FileSystem.csproj" />
 		<ProjectReference Include="..\..\src\modules\Data\Data.csproj" />
 		<ProjectReference Include="..\..\src\modules\HealthCheck\HealthCheck.csproj" />
 		<ProjectReference Include="..\..\src\modules\Message\Message.csproj" />

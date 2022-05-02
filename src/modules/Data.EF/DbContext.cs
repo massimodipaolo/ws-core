@@ -7,16 +7,12 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Ws.Core.Extensions.Data.EF;
 
-namespace Ws.Core.Extensions.Data
+namespace Ws.Core.Extensions.Data.EF
 {
-    public class AppDbContext : DbContext
+    public class DbContext : Microsoft.EntityFrameworkCore.DbContext 
     {
-        static AppDbContext()
-        {
-
-        }
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-
+        static DbContext() { }
+        public DbContext(DbContextOptions options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -78,9 +74,9 @@ namespace Ws.Core.Extensions.Data
                         // https://github.com/aspnet/EntityFrameworkCore/issues/11811
                         if (
                             type.BaseType == typeof(object) // i.e. partial class
-                            || 
+                            ||
                             type.BaseType == type // IEntity<T>
-                            || 
+                            ||
                             type.BaseType?.BaseType == typeof(object) // i.e. Entity<T>
                             )
                             entityBuilder.ToTable(opt?.Table ?? type.Name, opt?.Schema ?? null);
@@ -138,7 +134,7 @@ namespace Ws.Core.Extensions.Data
                                             entityBuilder.Property(p.Name).HasConversion(clrType);
                                     }
                                 }
-                                    
+
                             }
 
                     }
@@ -150,4 +146,10 @@ namespace Ws.Core.Extensions.Data
             }
         }
     }
+    
+    public class DbContext<TContext> : EF.DbContext where TContext : EF.DbContext
+    {
+        public DbContext(DbContextOptions<TContext> options) : base(options) { }
+    }
+    
 }

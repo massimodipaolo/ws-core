@@ -9,13 +9,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Ws.Core.Extensions.Data.Repository
 {
-    public class EF<T, TKey> : BaseRepository, IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
+    public class EF<TContext,T, TKey> : BaseRepository, IRepository<T, TKey> where TContext: Extensions.Data.EF.DbContext where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         private static Extensions.Data.EF.Options.IncludeNavigationPropertiesConfig _includeOptions { get; set; } = new Extensions.Data.EF.Extension().Options?.IncludeNavigationProperties ?? new Extensions.Data.EF.Options.IncludeNavigationPropertiesConfig();
-        protected readonly AppDbContext _context;
+        protected readonly TContext _context;
         protected DbSet<T> _collection;
         protected IServiceProvider _provider { get; set; }
-        public EF(AppDbContext context, IServiceProvider provider)
+        public EF(TContext context, IServiceProvider provider)
         {
             _context = context;
             _collection = _context.Set<T>();
@@ -156,7 +156,7 @@ namespace Ws.Core.Extensions.Data.Repository
             }
             catch  // context disposed
             {
-                df = _provider.GetService<AppDbContext>()?.Database;
+                df = _provider.GetService<TContext>()?.Database;
             }
             return df;
         }

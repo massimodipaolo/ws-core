@@ -26,11 +26,11 @@ namespace Ws.Core.Extensions.Data.EF.MySql
                 */
                 var hcBuilder = builder.Services.AddHealthChecks();
                 foreach (var conn in connections)
+                {
                     hcBuilder.AddMySql(conn.ConnectionString, name: $"mysql-{conn.Name}", tags: new[] { "db", "sql", "mysql" });
-
-                var _defaultConn = connections.FirstOrDefault().ConnectionString;
-                builder.Services.AddDbContext<AppDbContext>(_ => _.UseMySql(_defaultConn,ServerVersion.AutoDetect(_defaultConn)),options.ServiceLifetime);
-                builder.Services.PostConfigure<AppDbContext>(_ => _.Database.EnsureCreated());
+                    builder.Services.AddDbContext<MySql.DbContext>(_ => _.UseMySql(conn.ConnectionString, ServerVersion.AutoDetect(conn.ConnectionString)), options.ServiceLifetime);
+                }
+                builder.Services.PostConfigure<MySql.DbContext>(_ => _.Database.EnsureCreated());
                 builder.Services.TryAddTransient(typeof(IRepository<,>), typeof(Repository.EF.MySql<,>));
             }
         }

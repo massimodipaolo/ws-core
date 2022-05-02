@@ -23,7 +23,7 @@ public class Home : ICarterModule
         <ul class=""list-group list-group-flush"">
           <li class=""list-group-item""><samp>/ping</samp> Route on Startup <a href=""/ping"" target=""_blank""> => </a></li>
           <li class=""list-group-item""><samp>/api/diagnostic</samp> Legacy controller <a href=""/api/diagnostic"" target=""_blank""> => </a></li>
-          <li class=""list-group-item""><samp>/api/todo</samp> Api module <a href=""/api/todo"" target=""_blank""> => </a></li>
+          <li class=""list-group-item""><samp>/api/{nameof(xCore.Endpoints.Agenda).ToLower()}</samp> Api module <a href=""/api/{nameof(xCore.Endpoints.Agenda)}"" target=""_blank""> => </a></li>
           <li class=""list-group-item""><samp>/healthchecks-ui</samp> NuGet extension <a href=""/healthchecks-ui"" target=""_blank""> => </a> | <a href=""/healthz/checks"" target=""_blank""> Checks </a></li>
           <li class=""list-group-item""><samp>/hangfire</samp> App extension <a href=""/hangfire"" target=""_blank""> => </a></li>
           <li class=""list-group-item""><samp>/image.processor.demo</samp> Dll extension <a href=""/media/index.html"" target=""_blank""> => </a></li>

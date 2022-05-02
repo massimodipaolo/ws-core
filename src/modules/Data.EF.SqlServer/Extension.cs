@@ -26,12 +26,13 @@ namespace Ws.Core.Extensions.Data.EF.SqlServer
                 */
                 var hcBuilder = builder.Services.AddHealthChecks();
                 foreach (var conn in connections)
+                {
                     hcBuilder.AddSqlServer(conn.ConnectionString, name: $"sqlserver-{conn.Name}", tags: new[] { "db", "sql", "sqlserver" });
-
-                builder.Services.AddDbContext<AppDbContext>(_ => _.UseSqlServer(connections.FirstOrDefault().ConnectionString),Options.ServiceLifetime);
 #warning TODO use new execution strategy options
-                //builder.Services.AddSqlServer<AppDbContext>(connections.FirstOrDefault().ConnectionString, _ => { _.EnableRetryOnFailure(); /**/ });
-                builder.Services.PostConfigure<AppDbContext>(_ => _.Database.EnsureCreated());
+                    //builder.Services.AddSqlServer<SqlServer.DbContext>(conn.ConnectionString, _ => { _.EnableRetryOnFailure(); /**/ });
+                    builder.Services.AddDbContext<SqlServer.DbContext>(_ => _.UseSqlServer(conn.ConnectionString), Options.ServiceLifetime);
+                }
+                builder.Services.PostConfigure<SqlServer.DbContext>(_ => _.Database.EnsureCreated());
                 builder.Services.TryAddTransient(typeof(IRepository<,>), typeof(Repository.EF.SqlServer<,>));
             }
         }

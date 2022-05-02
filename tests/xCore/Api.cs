@@ -14,14 +14,15 @@ namespace xCore
         [InlineData("/ping?culture=it-IT")]
         [InlineData("/api/log")]
         [InlineData("/api/log/100")]
-        [InlineData("/api/todo")]
+        [InlineData($"/api/{nameof(xCore.Endpoints.Agenda)}")]
         public async Task Get_MockEndpoints(string url) => await Get_EndpointsReturnSuccess(url, WebApplicationFactoryType.Mock);
 
         [Theory]
         [InlineData("/")]
         [InlineData("/api/log")]
         [InlineData("/api/log/100")]
-        [InlineData("/api/todo")]
+        [InlineData($"/api/{nameof(xCore.Endpoints.Agenda)}")]
+        [InlineData($"/api/app/{nameof(xCore.Models.User)}")]
         public async Task Get_DevelopmentEndpoints(string url) => await Get_EndpointsReturnSuccess(url, WebApplicationFactoryType.Development);
 
     }

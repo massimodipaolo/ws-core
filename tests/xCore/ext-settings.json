@@ -5,7 +5,7 @@
     "folder": "Extensions",
     "enableShutDownOnChange": false,
     "assemblies": {
-      "Ws.Core.Extensions.ImageProcessor": { "priority": 90},
+      "Ws.Core.Extensions.ImageProcessor": { "priority": 90 },
       "Ws.Core.Extensions.StaticFiles": {
         "priority": 100,
         "options": {
@@ -64,6 +64,25 @@
       "Ws.Core.Extensions.Data.EF": {
         "priority": 400,
         "options": {
+          "jsonConvert": [ "xCore.Models.IAppJsonSerializable, xCore" ],
+          "includeNavigationProperties": {
+            "list": {
+              "enabled": false,
+              "except": [ "xCore.Models.Store.Product" ]
+            },
+            "find": {
+              "enabled": true,
+              "explicit": [
+                {
+                  "entity": "xCore.Models.User",
+                  "paths": [
+                    [ "Posts", "Comments" ],
+                    [ "Albums", "Photos" ]
+                  ]
+                }
+              ]
+            }
+          },
           "mappings": [
             {
               "name": "Log",
@@ -73,12 +92,42 @@
                   "hasConversion": "string"
                 }
               ]
+            },
+            {
+              "namespace": "xCore.Models.Store",
+              "name": "Brand",
+              "schema": "production"
+            },
+            {
+              "namespace": "xCore.Models.Store",
+              "name": "Category",
+              "schema": "production"
+            },
+            {
+              "namespace": "xCore.Models.Store",
+              "name": "Product",
+              "schema": "production"
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Data.EF.SqlServer": {
+        "priority": 410,
+        "options": {
+          "connections": [
+            {
+              "name": "store",
+              "connectionString": "Server=.,14331;Database=ws-core-store;User Id=ws-core-usr;Password=3/4yQKrIeDZf+OAH3480Vn3OAuQTtKcNcDKzLuEP8UM=;MultipleActiveResultSets=true"
+            },
+            {
+              "name": "app",
+              "connectionString": "Server=.,14332;Database=ws-core;User Id=ws-core-usr;Password=a2b352dd-2cfe-434d-9f3a-34d04639a5e6;MultipleActiveResultSets=true"
             }
           ]
         }
       },
       "Ws.Core.Extensions.Data.EF.MySql": {
-        "priority": 401,
+        "priority": 420,
         "options": {
           "connections": [
             {
@@ -88,19 +137,8 @@
           ]
         }
       },
-      "Ws.Core.Extensions.Data.EF.SqlServer": {
-        "priority": 402,
-        "options": {
-          "connections": [
-            {
-              "name": "default",
-              "connectionString": "Server=.,14331;Database=ws-core;User Id=ws-core-usr;Password=3/4yQKrIeDZf+OAH3480Vn3OAuQTtKcNcDKzLuEP8UM=;MultipleActiveResultSets=true"
-            }
-          ]
-        }
-      },
       "Ws.Core.Extensions.Data.EF.SQLite": {
-        "priority": 403,
+        "priority": 430,
         "options": {
           "connections": [
             {
@@ -109,6 +147,10 @@
             }
           ]
         }
+      },
+      "Ws.Core.Extensions.Data.FileSystem": {
+        "priority": 440,
+        "options": { "folder": "./data" }
       },
       "Ws.Core.Extensions.Message": {
         "priority": 600,

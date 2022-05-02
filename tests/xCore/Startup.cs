@@ -11,7 +11,7 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
 
     public override void ConfigureServices(WebApplicationBuilder builder)
     {
-        base.ConfigureServices(builder);
+        base.ConfigureServices(builder);        
         Ws.Core.AppInfo<Ws.Core.AppConfig>.Set(env: env, config: config, services: builder.Services);
 
         /*
@@ -20,6 +20,15 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
             .Decorate<Ws.Core.Extensions.Message.IMessage, xCore.Decorators.IMessageCopy>()
             .Decorate<Ws.Core.Extensions.Message.IMessage, xCore.Decorators.IMessageSignature>()
             ; 
+        */
+        // override repo
+        builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Endpoints.Agenda, string>), typeof(Ws.Core.Extensions.Data.Repository.EF.MySql<Endpoints.Agenda, string>));
+        /*
+        builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.User,int>), typeof(Ws.Core.Extensions.Data.Repository.FileSystem<Models.User,int>));
+        builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.Album,int>), typeof(Ws.Core.Extensions.Data.Repository.EF.SqlServer<Models.Album,int>));
+        builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.Photo,int>), typeof(Ws.Core.Extensions.Data.Repository.EF.SqlServer<Models.Photo,int>));
+        builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.Post,int>), typeof(Ws.Core.Extensions.Data.Repository.EF.SqlServer<Models.Post,int>));
+        builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.Comment,int>), typeof(Ws.Core.Extensions.Data.Repository.EF.SqlServer<Models.Comment,int>));
         */
 
         builder.Services.AddCarter();
