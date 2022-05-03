@@ -21,6 +21,10 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
             .Decorate<Ws.Core.Extensions.Message.IMessage, xCore.Decorators.IMessageSignature>()
             ; 
         */
+
+        // override dbContext
+        //builder.Services.AddTransient<Ws.Core.Extensions.Data.EF.SQLite.DbContext, xCore.AppEmbeddedDbContextExt>();
+
         // override repo
         builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Endpoints.Agenda, string>), typeof(Ws.Core.Extensions.Data.Repository.EF.MySql<Endpoints.Agenda, string>));
         /*
@@ -77,13 +81,13 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
 
         base.Configure(app, appConfigMonitor, extConfigMonitor, lifetime, logger);
         
-        app.MapGet("/ping", () => @"
-██████╗░░█████╗░███╗░░██╗░██████╗░
-██╔══██╗██╔══██╗████╗░██║██╔════╝░
-██████╔╝██║░░██║██╔██╗██║██║░░██╗░
-██╔═══╝░██║░░██║██║╚████║██║░░╚██╗
-██║░░░░░╚█████╔╝██║░╚███║╚██████╔╝
-╚═╝░░░░░░╚════╝░╚═╝░░╚══╝░╚═════╝░");
+        app.MapGet("/foo", () => @"
+██████╗  █████╗ ██████╗ 
+██╔══██╗██╔══██╗██╔══██╗
+██████╔╝███████║██████╔╝
+██╔══██╗██╔══██║██╔══██╗
+██████╔╝██║  ██║██║  ██║
+╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝");
 
         //shutdown
         lifetime.ApplicationStopping.Register(() =>

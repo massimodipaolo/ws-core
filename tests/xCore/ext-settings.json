@@ -117,7 +117,8 @@
           "connections": [
             {
               "name": "store",
-              "connectionString": "Server=.,14331;Database=ws-core-store;User Id=ws-core-usr;Password=3/4yQKrIeDZf+OAH3480Vn3OAuQTtKcNcDKzLuEP8UM=;MultipleActiveResultSets=true"
+              "connectionString": "Server=.,14331;Database=ws-core-store;User Id=ws-core-usr;Password=3/4yQKrIeDZf+OAH3480Vn3OAuQTtKcNcDKzLuEP8UM=;MultipleActiveResultSets=true",
+              "serviceResolver": { "include": { "namespace": [ "xCore.Models.Store" ] } }
             },
             {
               "name": "app",

@@ -16,6 +16,7 @@
       "properties": {
         "connections": {
           "type": "array",
+          "maxItems": 2,
           "items": {
             "type": "object",
             "required": [ "connectionString" ],
@@ -25,7 +26,22 @@
                 "default": "default"
               },
               "connectionString": { "type": "string" },
-              "database": { "type": "string" }
+              "database": { "type": "string" },
+              "serviceResolver": {
+                "type": "object",
+                "properties": {
+                  "include": {
+                    "allOf": [
+                      { "$ref": "#/definitions/typeResolverSelector" }
+                    ]
+                  },
+                  "exclude": {
+                    "allOf": [
+                      { "$ref": "#/definitions/typeResolverSelector" }
+                    ]
+                  }
+                }
+              }
             }
           }
         },
@@ -265,6 +281,29 @@
                 "description": "JsonConverter class full name, i.e. web.Code.LocaleJsonConverter\nNote: class needs a ctor with params object[] args, parameterless ctor will also evaluate as fallback"
               }
             }
+          }
+        }
+      }
+    },
+    "typeResolverSelector": {
+      "type": "object",
+      "properties": {
+        "assembly": {
+          "items": {
+            "type": "string",
+            "uniqueItems": true
+          }
+        },
+        "namespace": {
+          "items": {
+            "type": "string",
+            "uniqueItems": true
+          }
+        },
+        "fullname": {
+          "items": {
+            "type": "string",
+            "uniqueItems": true
           }
         }
       }

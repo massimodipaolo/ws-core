@@ -22,7 +22,9 @@ namespace xCore
         [InlineData("/api/log")]
         [InlineData("/api/log/100")]
         [InlineData($"/api/{nameof(xCore.Endpoints.Agenda)}")]
-        [InlineData($"/api/app/{nameof(xCore.Models.User)}")]
+        [InlineData($"/api/app/{nameof(xCore.Models.User)}/1")]
+        [InlineData($"/api/app/{nameof(xCore.Models.Todo)}/1")]
+        [InlineData($"/api/store/{nameof(xCore.Models.Store.Product)}/1")]
         public async Task Get_DevelopmentEndpoints(string url) => await Get_EndpointsReturnSuccess(url, WebApplicationFactoryType.Development);
 
     }

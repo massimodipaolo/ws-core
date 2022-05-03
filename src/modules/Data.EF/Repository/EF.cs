@@ -9,12 +9,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Ws.Core.Extensions.Data.Repository
 {
-    public class EF<TContext,T, TKey> : BaseRepository, IRepository<T, TKey> where TContext: Extensions.Data.EF.DbContext where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
+    public class EF<TContext,T, TKey> : BaseRepository, IRepository<T, TKey> 
+        where TContext: Extensions.Data.EF.DbContext 
+        where T : class, IEntity<TKey> 
+        where TKey : IEquatable<TKey>
     {
         private static Extensions.Data.EF.Options.IncludeNavigationPropertiesConfig _includeOptions { get; set; } = new Extensions.Data.EF.Extension().Options?.IncludeNavigationProperties ?? new Extensions.Data.EF.Options.IncludeNavigationPropertiesConfig();
         protected readonly TContext _context;
         protected DbSet<T> _collection;
         protected IServiceProvider _provider { get; set; }
+
+        public EF(Func<Type, TContext> funcContext, IServiceProvider provider):this(funcContext(typeof(T)),provider) { }
         public EF(TContext context, IServiceProvider provider)
         {
             _context = context;
@@ -34,7 +39,7 @@ namespace Ws.Core.Extensions.Data.Repository
                 foreach (var paths in customRule.Paths.Where(_ => _.Any()))
                     query = query.Include(string.Join('.', paths));
             }
-            // load main navigation propertire
+            // load main navigation properties
             else if ((op?.Enabled ?? false) ^ (op?.Except ?? new List<string>()).Contains(typeof(T).FullName))
             {
                 foreach (var property in _context.Model.FindEntityType(typeof(T)).GetNavigations())

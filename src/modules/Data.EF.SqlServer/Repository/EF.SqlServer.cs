@@ -11,13 +11,23 @@ using Ws.Core.Extensions.Data.EF.SqlServer.Extensions;
 
 namespace Ws.Core.Extensions.Data.Repository.EF
 {
-    public class SqlServer<T, TKey> : EF<Ws.Core.Extensions.Data.EF.SqlServer.DbContext, T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
+    public class SqlServer<T, TKey> : EF<Ws.Core.Extensions.Data.EF.DbContext, T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
     {
         private static Data.EF.SqlServer.Options options { get; set; } = new Data.EF.SqlServer.Extension().Options ?? new Data.EF.SqlServer.Options();
         private static IEnumerable<Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig> spMappings { get; set; }
         private Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig sp { get; set; }
         private const string spPrefix = "entity";
+
         public SqlServer(Ws.Core.Extensions.Data.EF.SqlServer.DbContext context, IServiceProvider provider) : base(context, provider)
+        {
+            Init();
+        }
+        public SqlServer(Ws.Core.Extensions.Data.EF.SqlServer.DbContextFunctionWrapper funcWrapper, IServiceProvider provider)
+        : base(funcWrapper.Func(typeof(T)), provider) { 
+            Init(); 
+        }
+
+        private void Init()
         {
             if (spMappings == null)
             {

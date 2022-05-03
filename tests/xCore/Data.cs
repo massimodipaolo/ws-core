@@ -3,6 +3,17 @@ using Xunit.Abstractions;
 
 namespace xCore;
 
+public class AppEmbeddedDbContextExt : Ws.Core.Extensions.Data.EF.SQLite.DbContext
+{
+    public AppEmbeddedDbContextExt(Microsoft.EntityFrameworkCore.DbContextOptions<Ws.Core.Extensions.Data.EF.SQLite.DbContext> options) : base(options) { }
+
+    protected override void OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        //modelBuilder.Ignore<xCore.Log>();
+    }
+}
+
 public class Data : BaseTest
 {
     public Data(Program factory, ITestOutputHelper output) : base(factory, output) {}

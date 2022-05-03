@@ -21,7 +21,7 @@ public class Home : ICarterModule
         <h1>©𝘄𝘀 + extCore + injectors + api = 🆆🆂-🅲🅾🆁🅴</h1>
         <hr>
         <ul class=""list-group list-group-flush"">
-          <li class=""list-group-item""><samp>/ping</samp> Route on Startup <a href=""/ping"" target=""_blank""> => </a></li>
+          <li class=""list-group-item""><samp>/foo</samp> Route on Startup <a href=""/foo"" target=""_blank""> => </a></li>
           <li class=""list-group-item""><samp>/api/diagnostic</samp> Legacy controller <a href=""/api/diagnostic"" target=""_blank""> => </a></li>
           <li class=""list-group-item""><samp>/api/{nameof(xCore.Endpoints.Agenda).ToLower()}</samp> Api module <a href=""/api/{nameof(xCore.Endpoints.Agenda)}"" target=""_blank""> => </a></li>
           <li class=""list-group-item""><samp>/healthchecks-ui</samp> NuGet extension <a href=""/healthchecks-ui"" target=""_blank""> => </a> | <a href=""/healthz/checks"" target=""_blank""> Checks </a></li>
