@@ -12,11 +12,7 @@ using Ws.Core.Extensions.Data.EF;
 
 namespace Ws.Core.Extensions.Data.EF
 {
-    public interface IDbContextFunctionWrapper
-    {
-        Func<Type, EF.DbContext> Func { get; }
-    }
-    public class DbContext : Microsoft.EntityFrameworkCore.DbContext 
+    public class DbContext : Microsoft.EntityFrameworkCore.DbContext
     {
         static DbContext() { }
         public DbContext(DbContextOptions options) : base(options) { }
@@ -153,86 +149,10 @@ namespace Ws.Core.Extensions.Data.EF
             }
         }
     }
-    
+
     public class DbContext<TContext> : EF.DbContext where TContext : EF.DbContext
     {
         public DbContext(DbContextOptions<TContext> options) : base(options) { }
-    }
-
-    public class DbContextSelector
-    {
-        public class Item
-        {
-            public Data.DbConnection.ServiceResolverCriteria ServiceResolver;
-            public IEnumerable<Type> Entities;
-            public Func<IServiceProvider, EF.DbContext> DbContext;
-            public Item(DbConnection.ServiceResolverCriteria serviceResolver, Func<IServiceProvider, EF.DbContext> dbContext)
-            {
-                ServiceResolver = serviceResolver;
-                DbContext = dbContext;
-            }
-        }
-
-        public static Hashtable Collection(
-            WebApplicationBuilder builder,
-            HashSet<DbContextSelector.Item> serviceSelectorTable
-            )
-        {
-            // repository resolver
-            var provider = builder.Services.BuildServiceProvider().CreateScope()?.ServiceProvider;
-            var entities = Ws.Core.Extensions.Base.Util.GetAllTypesOf(typeof(IEntity));
-
-            // normalize resolver rules
-            var serviceResolver = serviceSelectorTable.Select(_ => _.ServiceResolver);
-            var serviceResolverWithAssemblyInclude = serviceResolver?.Where(_ => _.Include?.Assembly?.Any() == true);
-            serviceResolver
-                .Except(serviceResolverWithAssemblyInclude).AsParallel()
-                .ForAll(_ => _.Exclude.Assembly = _.Exclude.Assembly.Concat(serviceResolverWithAssemblyInclude.SelectMany(_ => _.Include.Assembly).Distinct()).Distinct().ToArray());
-            var serviceResolverWithNamespaceInclude = serviceResolver?.Where(_ => _.Include?.Namespace?.Any() == true);
-            serviceResolver
-                .Except(serviceResolverWithNamespaceInclude).AsParallel()
-                .ForAll(_ => _.Exclude.Namespace = _.Exclude.Namespace.Concat(serviceResolverWithNamespaceInclude.SelectMany(_ => _.Include.Namespace).Distinct()).Distinct().ToArray());
-            var serviceResolverWithFullNameInclude = serviceResolver?.Where(_ => _.Include?.FullName?.Any() == true);
-            serviceResolver
-                .Except(serviceResolverWithFullNameInclude).AsParallel()
-                .ForAll(_ => _.Exclude.FullName = _.Exclude.FullName.Concat(serviceResolverWithFullNameInclude.SelectMany(_ => _.Include.FullName).Distinct()).Distinct().ToArray());
-
-            foreach (var row in serviceSelectorTable)
-            {
-                var resolver = row.ServiceResolver;
-                row.Entities = entities.Where(_ =>
-                (
-                (resolver.Include.Assembly.Any() == false || resolver.Include.Assembly?.Any(__ => __ == _.Assembly?.FullName) == true)
-                &&
-                (resolver.Include.Namespace.Any() == false || resolver.Include.Namespace?.Any(__ => __ == _.Namespace) == true)
-                &&
-                (resolver.Include.FullName.Any() == false || resolver.Include.FullName?.Any(__ => __ == _.FullName) == true)
-                )
-                &&
-                !(
-                resolver.Exclude.Assembly.Any(__ => __ == _.Assembly?.FullName) == true
-                ||
-                resolver.Exclude.Namespace.Any(__ => __ == _.Namespace) == true
-                ||
-                resolver.Exclude.FullName.Any(__ => __ == _.FullName) == true
-                )
-                );
-            }
-
-            Hashtable serviceSelectorHashtable = new();
-            foreach (var entity in entities)
-                try
-                {
-                    serviceSelectorHashtable.Add(entity.FullName, serviceSelectorTable.FirstOrDefault(_ => _.Entities.Contains(entity))?.DbContext(provider));
-                } catch (Exception ex)
-                {
-                    var _ex = ex;
-                }
-
-
-            return serviceSelectorHashtable;
-        }
-
     }
 
 }

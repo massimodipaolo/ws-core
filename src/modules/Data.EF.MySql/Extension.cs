@@ -22,72 +22,29 @@ namespace Ws.Core.Extensions.Data.EF.MySql
                 var hcBuilder = builder.Services.AddHealthChecks();
 
                 ServiceLifetime lifetime = ServiceLifetime.Scoped;
-                HashSet<Ws.Core.Extensions.Data.EF.DbContextSelector.Item> serviceSelectorTable = new();
+                HashSet<Data.DbConnectionSelector> connectionSelectorTable = new();
                 var _index = 0;
-                foreach (var conn in connections.Take(8))
+                foreach (var conn in connections)
                 {
                     hcBuilder.AddMySql(conn.ConnectionString, name: $"mysql-{conn.Name}", tags: new[] { "db", "sql", "mysql" });
 
                     Action<DbContextOptionsBuilder> options = _ =>
                     {
                         _.UseMySql(conn.ConnectionString, ServerVersion.AutoDetect(conn.ConnectionString),
-                            __ => {
-                                __.EnableRetryOnFailure();
-                                #warning TODO use new execution strategy options
-                            }
+                            __ => {__.EnableRetryOnFailure();}
                         );
                     };
-                    switch (_index++)
-                    {
-                        case 0:
-                            if (connections.Count() == 1)
-                                builder.Services.AddDbContext<DbContext>(options, lifetime);
-                            else
-                            {
-                                builder.Services.AddDbContext<DbContext0>(options, lifetime);
-                                serviceSelectorTable.Add(new(conn.ServiceResolver, p => new DbContext0(p.GetService<DbContextOptions<DbContext0>>())));
-                            }
-                            break;
-                        case 1:
-                            builder.Services.AddDbContext<DbContext1>(options, lifetime);
-                            serviceSelectorTable.Add(new(conn.ServiceResolver, p => new DbContext1(p.GetService<DbContextOptions<DbContext1>>())));
-                            break;
-                        case 2:
-                            builder.Services.AddDbContext<DbContext2>(options, lifetime);
-                            serviceSelectorTable.Add(new(conn.ServiceResolver, p => new DbContext2(p.GetService<DbContextOptions<DbContext2>>())));
-                            break;
-                        case 3:
-                            builder.Services.AddDbContext<DbContext3>(options, lifetime);
-                            serviceSelectorTable.Add(new(conn.ServiceResolver, p => new DbContext3(p.GetService<DbContextOptions<DbContext3>>())));
-                            break;
-                        case 4:
-                            builder.Services.AddDbContext<DbContext4>(options, lifetime);
-                            serviceSelectorTable.Add(new(conn.ServiceResolver, p => new DbContext4(p.GetService<DbContextOptions<DbContext4>>())));
-                            break;
-                        case 5:
-                            builder.Services.AddDbContext<DbContext5>(options, lifetime);
-                            serviceSelectorTable.Add(new(conn.ServiceResolver, p => new DbContext5(p.GetService<DbContextOptions<DbContext5>>())));
-                            break;
-                        case 6:
-                            builder.Services.AddDbContext<DbContext6>(options, lifetime);
-                            serviceSelectorTable.Add(new(conn.ServiceResolver, p => new DbContext6(p.GetService<DbContextOptions<DbContext6>>())));
-                            break;
-                        case 7:
-                            builder.Services.AddDbContext<DbContext7>(options, lifetime);
-                            serviceSelectorTable.Add(new(conn.ServiceResolver, p => new DbContext7(p.GetService<DbContextOptions<DbContext7>>())));
-                            break;
-                        case 8:
-                            builder.Services.AddDbContext<DbContext8>(options, lifetime);
-                            serviceSelectorTable.Add(new(conn.ServiceResolver, p => new DbContext8(p.GetService<DbContextOptions<DbContext8>>())));
-                            break;
-                    }
+                    if (_index++ == 0)
+                        builder.Services.AddDbContext<DbContext>(options, lifetime);
+
+                    connectionSelectorTable.Add(new(conn));
                 }
 
                 if (_index > 1)
                 {
-                    var dbContextCollection = EF.DbContextSelector.Collection(builder, serviceSelectorTable);
-                    var funcWrapper = new DbContextFunctionWrapper() { Func = type => (EF.DbContext)dbContextCollection[type.FullName] };
-                    builder.Services.AddSingleton(typeof(DbContextFunctionWrapper), funcWrapper);
+                    var dbContextCollection = Data.DbConnectionSelector.Collection(builder, connectionSelectorTable);
+                    var funcWrapper = new DbConnectionFunctionWrapper() { Func = type => (Data.DbConnection)dbContextCollection[type.FullName] };
+                    builder.Services.AddSingleton(typeof(DbConnectionFunctionWrapper), funcWrapper);
                 }
 
                 builder.Services.TryAddTransient(typeof(IRepository<,>), typeof(Repository.EF.MySql<,>));

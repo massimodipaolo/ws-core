@@ -19,7 +19,13 @@ namespace Ws.Core.Extensions.Data.Repository
         protected DbSet<T> _collection;
         protected IServiceProvider _provider { get; set; }
 
-        public EF(Func<Type, TContext> funcContext, IServiceProvider provider):this(funcContext(typeof(T)),provider) { }
+        //public EF(Func<Type, TContext> funcContext, IServiceProvider provider):this(funcContext(typeof(T)),provider) { }
+
+        public EF(TContext context, Data.DbConnection dbConnection, IServiceProvider provider)
+            : this(context, provider) {
+            _context.Database.GetDbConnection().ConnectionString = dbConnection.ConnectionString;
+        }
+
         public EF(TContext context, IServiceProvider provider)
         {
             _context = context;

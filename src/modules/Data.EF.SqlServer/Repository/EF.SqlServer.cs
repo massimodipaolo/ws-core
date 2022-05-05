@@ -22,8 +22,9 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         {
             Init();
         }
-        public SqlServer(Ws.Core.Extensions.Data.EF.SqlServer.DbContextFunctionWrapper funcWrapper, IServiceProvider provider)
-        : base(funcWrapper.Func(typeof(T)), provider) { 
+
+        public SqlServer(Ws.Core.Extensions.Data.EF.SqlServer.DbContext context, Ws.Core.Extensions.Data.EF.SqlServer.DbConnectionFunctionWrapper funcWrapper, IServiceProvider provider)
+        : base(context, funcWrapper.Func(typeof(T)), provider) { 
             Init(); 
         }
 

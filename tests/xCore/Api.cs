@@ -11,7 +11,7 @@ namespace xCore
         [InlineData("/swagger")]
         [InlineData("/swagger/public/swagger.json")]
         [InlineData("/api/diagnostic?culture=en-US")]
-        [InlineData("/ping?culture=it-IT")]
+        [InlineData("/foo?culture=it-IT")]
         [InlineData("/api/log")]
         [InlineData("/api/log/100")]
         [InlineData($"/api/{nameof(xCore.Endpoints.Agenda)}")]
