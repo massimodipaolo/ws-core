@@ -57,7 +57,7 @@ namespace Ws.Core.Extensions.Data.EF
                 /// <summary>
                 /// Include the main navigation properties
                 /// </summary>
-                public bool Enabled { get; set; }
+                public bool Enable { get; set; }
                 /// <summary>
                 /// List of typeof(T).FullName to exclude from then Enabled directive
                 /// </summary>

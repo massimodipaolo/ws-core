@@ -74,10 +74,11 @@
               "enabled": true,
               "explicit": [
                 {
-                  "entity": "xCore.Models.User",
+                  "entity": "_xCore.Models.User",
                   "paths": [
                     [ "Posts", "Comments" ],
-                    [ "Albums", "Photos" ]
+                    [ "Albums", "Photos" ],
+                    [ "Todos" ]
                   ]
                 }
               ]
@@ -107,6 +108,35 @@
               "namespace": "xCore.Models.Store",
               "name": "Product",
               "schema": "production"
+            },
+            {
+              "namespace": "xCore.Models.Cms",
+              "name": "Admin_User",
+              "table": "Admin_Users"
+            },
+            {
+              "namespace": "xCore.Models.Cms",
+              "name": "Admin_Role",
+              "table": "Admin_Roles"
+            },
+            {
+              "namespace": "xCore.Models.Cms",
+              "name": "Admin_Users_Roles_Links",
+              "properties": [
+                {
+                  "name": "Admin_UserId",
+                  "column": "User_Id"
+                },
+                {
+                  "name": "Admin_RoleId",
+                  "column": "Role_Id"
+                }
+              ]
+            },
+            {
+              "namespace": "xCore.Models.Cms",
+              "name": "Admin_Permission",
+              "table": "Admin_Permissions"
             }
           ]
         }
@@ -118,7 +148,9 @@
             {
               "name": "store",
               "connectionString": "Server=.,14331;Database=ws-core-store;User Id=ws-core-usr;Password=3/4yQKrIeDZf+OAH3480Vn3OAuQTtKcNcDKzLuEP8UM=;MultipleActiveResultSets=true",
-              "serviceResolver": { "include": { "namespace": [ "xCore.Models.Store" ] } }
+              "serviceResolver": {
+                "include": { "namespace": [ "xCore.Models.Store" ] }
+              }
             },
             {
               "name": "app",
@@ -145,6 +177,11 @@
             {
               "name": "default",
               "connectionString": "Data Source=./data/ws-core.db"
+            },
+            {
+              "name": "cms",
+              "connectionString": "Data Source=./data/strapi-quickstart.db",
+              "serviceResolver": { "include": { "namespace": [ "xCore.Models.Cms" ] } }
             }
           ]
         }
@@ -327,6 +364,13 @@
             "evaluationTimeInSeconds": 60,
             "minimumSecondsBetweenFailureNotifications": 300
           }
+        }
+      },
+      "Ws.Core.Extensions.Diagnostic": {
+        "priority": 999,
+        "options": {
+          "httpLogging": { "enable": false },
+          "profiler": { "enable": true }
         }
       }
     },

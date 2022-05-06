@@ -1,4 +1,5 @@
 ﻿using Carter;
+using System.Linq;
 using Ws.Core.Extensions.Data;
 using xCore.Models;
 
@@ -10,7 +11,32 @@ public class App : CrudOp, ICarterModule
     {
         var _prefix = "/api/app";
         app.MapGet($"{_prefix}/{nameof(User)}", GetAll<User,int>).WithTags(nameof(App));
-        app.MapGet($"{_prefix}/{nameof(User)}/{{id}}", GetById<User,int>).WithTags(nameof(App));
+        app.MapGet($"{_prefix}/{nameof(User)}/{{id}}", GetById<User, int>).WithTags(nameof(App));
+        app.MapGet($"{_prefix}/{nameof(User)}/ext/{{id}}",
+            (int id, IRepository<User, int> _repo, IRepository<Comment, int> _repoComment, IRepository<Photo, int> _repoPhoto) =>
+            {
+                if (_repo.Find(id) is User item)
+                {
+                    item.Posts = item.Posts.Join(_repoComment.List.Where(_ => item.Posts.Select(__ => __.Id).Contains(_.PostId)), p => p.Id, c => c.PostId, (p, c) => (p, c))
+                    .GroupBy(_ => _.p.Id)
+                    .Select(_ => {
+                        var post = _.Select(g => g.p).First(); var comments = _.Select(g => g.c);
+                        return new Post() { Id = post.Id, Title = post.Title, Body = post.Body, Comments = comments.ToList() };
+                    })
+                    .ToList();
+                    item.Albums = item.Albums.Join(_repoPhoto.List.Where(_ => item.Albums.Select(__ => __.Id).Contains(_.AlbumId)), a => a.Id, p => p.AlbumId, (a, p) => (a, p))
+                    .GroupBy(_ => _.a.Id)
+                    .Select(_ => {
+                        var album = _.Select(g => g.a).First(); var photos = _.Select(g => g.p);
+                        return new Album() { Id = album.Id, Title = album.Title, Photos = photos.ToList() };
+                    })
+                    .ToList();
+                    return Results.Ok(item);
+                }
+                else
+                    return Results.NotFound();
+            })
+            .WithTags(nameof(App));
         app.MapPost($"{_prefix}/{nameof(User)}", Create<User,int>).WithTags(nameof(App));
         app.MapPut($"{_prefix}/{nameof(User)}/{{id}}", Update<User,int>).WithTags(nameof(App));
         app.MapDelete($"{_prefix}/{nameof(User)}/{{id}}", Delete<User,int>).WithTags(nameof(App));

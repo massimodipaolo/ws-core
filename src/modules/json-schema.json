@@ -54,7 +54,7 @@
     "efIncludeNavigationPropertiesOperation": {
       "type": "object",
       "properties": {
-        "enabled": {
+        "enable": {
           "type": "boolean",
           "default": false,
           "description": "Include main navigation propeties"
@@ -186,7 +186,7 @@
     "identityResource": {
       "type": "object",
       "properties": {
-        "enabled": {
+        "enable": {
           "type": "boolean",
           "default": true
         },
@@ -936,6 +936,38 @@
                 }
               }
             },
+            "Ws.Core.Extensions.Diagnostic": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "httpLogging": {
+                      "type": "object",
+                      "properties": {
+                        "enable": { "type": "boolean" },
+                        "config": {
+                          "type": "object",
+                          "properties": {}
+                        }
+                      }
+                    },
+                    "profiler": {
+                      "type": "object",
+                      "properties": {
+                        "enable": { "type": "boolean" },
+                        "config": {
+                          "type": "object",
+                          "properties": {}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "Ws.Core.Extensions.HealthCheck": {
               "allOf": [
                 { "$ref": "#/definitions/assembly" }
@@ -1158,7 +1190,7 @@
                         { "$ref": "#/definitions/endpointAuth" }
                       ],
                       "properties": {
-                        "enabled": {
+                        "enable": {
                           "type": "boolean",
                           "default": false
                         },
@@ -1283,7 +1315,7 @@
                           "items": {
                             "type": "object",
                             "properties": {
-                              "enabled": {
+                              "enable": {
                                 "type": "boolean",
                                 "default": true
                               },
@@ -1386,7 +1418,6 @@
                 }
               }
             },
-            "Ws.Core.Extensions.Routing": { "$ref": "#/definitions/assembly" },
             "Ws.Core.Extensions.Spa": {
               "allOf": [
                 { "$ref": "#/definitions/assembly" }

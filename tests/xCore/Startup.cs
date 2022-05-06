@@ -21,6 +21,7 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
             .Decorate<Ws.Core.Extensions.Message.IMessage, xCore.Decorators.IMessageSignature>()
             ; 
         */
+        //builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Log,int>), typeof(Ws.Core.Extensions.Data.Repository.InMemory<Log, int>));
 
         // override dbContext
         //builder.Services.AddTransient<Ws.Core.Extensions.Data.EF.SQLite.DbContext, xCore.AppEmbeddedDbContextExt>();
@@ -55,7 +56,7 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
                 {
                     new() { Address = email, Name = email, Type = Ws.Core.Extensions.Message.Message.ActorType.Primary }
                 },
-                Subject = $"Decorators demo",
+                Subject = $"Decorators 🎍 demo 👹",
                 Content = content,
                 Format = "html"
             };

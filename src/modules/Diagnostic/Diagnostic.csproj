@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<PackageVersion>6.0.0</PackageVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PackageId>Ws.Core.Extensions.Diagnostic</PackageId>
+		<AssemblyName>Ws.Core.Extensions.Diagnostic</AssemblyName>
+		<RootNamespace>Ws.Core.Extensions.Diagnostic</RootNamespace>
+		<Authors>Massimo Di Paolo</Authors>
+		<Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
+		<Description></Description>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageReleaseNotes>Mini-profiler; HttpLogging</PackageReleaseNotes>
+		<PackageTags></PackageTags>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<NoWarn>1701;1702;1705;1591</NoWarn>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
+		<PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.22" />
+		<PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.2.22" />
+	</ItemGroup>
+
+</Project>

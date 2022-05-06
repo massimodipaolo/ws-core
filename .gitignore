@@ -203,7 +203,7 @@ _Pvt_Extensions
 # Test
 /tests/**/*.xml
 /tests/**/wwwroot
-/tests/**/Extensions/**
+/tests/**/Extensions/**/
 /tests/**/Files/*.*
 # Task Secret
 .env

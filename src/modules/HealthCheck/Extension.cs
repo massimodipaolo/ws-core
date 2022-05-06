@@ -59,7 +59,7 @@ namespace Ws.Core.Extensions.HealthCheck
             }
 
             //ui
-            if (options.Ui?.Enabled == true)
+            if (options.Ui?.Enable == true)
             {
                 builder.Services.AddHealthChecksUI(_ =>
                 {
@@ -137,7 +137,7 @@ namespace Ws.Core.Extensions.HealthCheck
 
             //ui
             var ui = options.Ui;
-            if (ui != null && ui.Enabled)
+            if (ui != null && ui.Enable)
             {
                 var ui_builder = app.MapHealthChecksUI(_ =>
                 {

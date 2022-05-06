@@ -79,7 +79,7 @@ namespace Ws.Core.Extensions.HealthCheck
         /// </summary>
         public class UiOptions: AuthOptions
         {
-            public bool Enabled { get; set; } = false;
+            public bool Enable { get; set; } = false;
             public string Route { get; set; } = "/healthchecks-ui";
             public string RouteApi { get; set; } = "/healthchecks-api";
             public string RouteWebhook { get; set; } = "/healthchecks-webhooks";

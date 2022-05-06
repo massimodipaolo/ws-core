@@ -23,11 +23,11 @@ namespace Ws.Core.Extensions.HealthCheck.Checks.AppLog
         {
             // Take last logs
             var _logs = _service.List;
-            IQueryable<ILog> items = _options.TakeLastLog.Criteria switch
+            IQueryable<ILog> items = (_options.TakeLastLog.Criteria switch
             {
                 TakeLastLogCriteria.Criterias.Top => _logs.OrderByDescending(_ => _.CreatedAt).Take((int)_options.TakeLastLog.Value),
                 _ => _logs.Where(_ => _.CreatedAt > DateTime.UtcNow.AddHours(-_options.TakeLastLog.Value)),
-            };
+            }).ToList().AsQueryable();
 
             // MessageAggregate Options
             int messageAggregateTruncateLengthAt = _options.LogMessageAggregate.TruncateLengthAt;

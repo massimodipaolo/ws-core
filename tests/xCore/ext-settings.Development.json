@@ -43,6 +43,24 @@
             "implementationType": "Ws.Core.Extensions.Data.Repository.EF.SQLite`2[[xCore.Log, xCore],[System.Int32]], Ws.Core.Extensions.Data.EF.SQLite",
             "lifeTime": "Transient",
             "overrideIfAlreadyRegistered": true
+          },
+          {
+            "serviceType": "Ws.Core.Extensions.Data.IRepository`2[[xCore.Models.Cms.Admin_User, xCore],[System.Int32]], Ws.Core.Extensions.Data",
+            "implementationType": "Ws.Core.Extensions.Data.Repository.EF.SQLite`2[[xCore.Models.Cms.Admin_User, xCore],[System.Int32]], Ws.Core.Extensions.Data.EF.SQLite",
+            "lifeTime": "Transient",
+            "overrideIfAlreadyRegistered": true
+          },
+          {
+            "serviceType": "Ws.Core.Extensions.Data.IRepository`2[[xCore.Models.Cms.Admin_Role, xCore],[System.Int32]], Ws.Core.Extensions.Data",
+            "implementationType": "Ws.Core.Extensions.Data.Repository.EF.SQLite`2[[xCore.Models.Cms.Admin_Role, xCore],[System.Int32]], Ws.Core.Extensions.Data.EF.SQLite",
+            "lifeTime": "Transient",
+            "overrideIfAlreadyRegistered": true
+          },
+          {
+            "serviceType": "Ws.Core.Extensions.Data.IRepository`2[[xCore.Models.Cms.Admin_Permission, xCore],[System.Int32]], Ws.Core.Extensions.Data",
+            "implementationType": "Ws.Core.Extensions.Data.Repository.EF.SQLite`2[[xCore.Models.Cms.Admin_Permission, xCore],[System.Int32]], Ws.Core.Extensions.Data.EF.SQLite",
+            "lifeTime": "Transient",
+            "overrideIfAlreadyRegistered": true
           }
         ]
       },

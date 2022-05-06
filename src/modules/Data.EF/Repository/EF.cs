@@ -46,7 +46,7 @@ namespace Ws.Core.Extensions.Data.Repository
                     query = query.Include(string.Join('.', paths));
             }
             // load main navigation properties
-            else if ((op?.Enabled ?? false) ^ (op?.Except ?? new List<string>()).Contains(typeof(T).FullName))
+            else if ((op?.Enable ?? false) ^ (op?.Except ?? new List<string>()).Contains(typeof(T).FullName))
             {
                 foreach (var property in _context.Model.FindEntityType(typeof(T)).GetNavigations())
                     query = query.Include(property.Name);
