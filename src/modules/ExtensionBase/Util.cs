@@ -10,10 +10,27 @@ namespace Ws.Core.Extensions.Base
 {
     public class Util
     {
+        private static IEnumerable<Assembly> _allAssemblies { get; set; }
+        private static readonly Locker _mutexAssemblies = new();
         private static IEnumerable<Type> _allTypes { get; set; }
         private static readonly Locker _mutexTypes = new();
         public Util()
         {
+        }
+
+        public static IEnumerable<Assembly> GetAllAssemblies()
+        {
+            if (_allAssemblies == null)
+                using (_mutexAssemblies.Lock())
+                    if (_allAssemblies == null)
+                    {
+                            var platform = Environment.OSVersion.Platform.ToString();
+                            var runtimeAssemblyNames = DependencyContext.Default.GetRuntimeAssemblyNames(platform);
+                            _allAssemblies = runtimeAssemblyNames
+                            .Select(Assembly.Load)
+                            .ToList();                       
+                    }
+            return _allAssemblies;
         }
 
         private static IEnumerable<Type> GetAllTypes()
@@ -22,11 +39,7 @@ namespace Ws.Core.Extensions.Base
                 using (_mutexTypes.Lock())
                     if (_allTypes == null)
                     {
-                        var platform = Environment.OSVersion.Platform.ToString();
-                        var runtimeAssemblyNames = DependencyContext.Default.GetRuntimeAssemblyNames(platform);
-
-                        _allTypes = runtimeAssemblyNames
-                            .Select(Assembly.Load)
+                        _allTypes = GetAllAssemblies()
                             .SelectMany(a =>
                             {
                                 try

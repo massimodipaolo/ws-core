@@ -34,17 +34,19 @@ namespace Ws.Core
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public virtual void ConfigureServices(WebApplicationBuilder builder)
         {
-            this.services = builder.Services;
+            services = builder.Services;
 
-            this.services.AddOptions();
+            services.AddOptions();
 
-            this.services.AddSingleton(config);
+            services.AddSingleton(config);
 
-            this.services.Configure<Configuration>(config.GetSection(Core.Extensions.Base.Configuration.SectionRoot));
+            services.Configure<Configuration>(config.GetSection(Core.Extensions.Base.Configuration.SectionRoot));
 
-            this.services.Configure<TOptions>(config.GetSection(AppConfigSectionRoot));
+            services.Configure<TOptions>(config.GetSection(AppConfigSectionRoot));
 
-            Extensions.Base.Extension.Init(this.services, this.services.BuildServiceProvider());
+            services.AddSingleton<IAppConfiguration, TOptions>();
+
+            Extensions.Base.Extension.Init(services, services.BuildServiceProvider());
 
             builder.AddExtCore(config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"] != null ? $"{env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"]}" : null, includingSubpaths: true);
         }

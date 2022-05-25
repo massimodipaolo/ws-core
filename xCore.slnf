@@ -1,0 +1,8 @@
+{
+  "solution": {
+    "path": "ws-core.sln",
+    "projects": [
+      "tests\\xCore\\xCore.csproj"
+    ]
+  }
+}

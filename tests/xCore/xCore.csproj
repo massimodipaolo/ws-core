@@ -31,7 +31,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.HealthChecks.Hangfire" Version="6.0.2" />
-		<PackageReference Include="Carter" Version="6.0.0" />
 		<PackageReference Include="Hangfire.Core" Version="1.7.28" />
 		<PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />		
 		<PackageReference Include="Hangfire.InMemory" Version="0.3.4" />

@@ -3,7 +3,7 @@ using Ws.Core.Extensions.Data.Cache;
 
 namespace xCore.Controllers
 {
-
+    /*
     [ApiController]
     [ApiExplorerSettings(GroupName = "admin")]
     [Route("api/[controller]")]
@@ -34,4 +34,5 @@ namespace xCore.Controllers
         public override async Task<IActionResult> Stop() => await base.Stop();
 
     }
+    */
 }

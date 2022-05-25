@@ -12,11 +12,11 @@ namespace xCore
 
         [Theory]
         [InlineData("/?culture=fr-FR", "fr-FR")]
-        [InlineData("/api/diagnostic?culture=en-US", "en-US")]
+        [InlineData($"/{nameof(Ws.Core.Extensions)}/{nameof(Ws.Core.Extensions.Diagnostic)}?culture=en-US", "en-US")]
         public async Task Get_HeaderCurrentCulture(string url, string expectedCulture)
         {
             // Arrange
-            var factory = GetFactory(WebApplicationFactoryType.Local);
+            var factory = GetFactory(WebApplicationFactoryType.Development);
             var client = factory.CreateClient();
             // Act
             var response = await client.GetAsync(url);

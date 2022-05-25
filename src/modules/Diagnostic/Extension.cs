@@ -1,11 +1,25 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Carter;
+using Carter.Response;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Ws.Core.Extensions.Diagnostic;
 
-public class Extension : Base.Extension
+public class Extension : Base.Extension, ICarterModule
 {
     private Options options => GetOptions<Options>() ?? new Options();
+
+    public void AddRoutes(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder app)
+    {
+        var _name = nameof(Diagnostic);
+        var tag = $"{nameof(Extensions)}-{_name}".ToLower();
+        var prefix = $"{nameof(Extensions)}/{_name}";
+        app.MapGet($"{prefix}".ToLower(), AppRuntime.Get).WithTags(tag);
+        app.MapPost($"{prefix}/{nameof(AppRuntime.Stop)}".ToLower(), AppRuntime.Stop).WithTags(tag);
+        app.MapPost($"{prefix}/config/reload".ToLower(), AppRuntime.ReloadConfiguration).WithTags(tag);
+    }
+
     public override void Execute(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
     {
         // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-logging/?view=aspnetcore-6.0
@@ -24,17 +38,5 @@ public class Extension : Base.Extension
 
         if (options.Profiler?.Enable == true)
             app.UseMiniProfiler();
-
-#warning TODO : move here Extensions.Api diagnostic (GET e /stop)
-        /*
-        app.MapPost("/configuration/reload", (Microsoft.Extensions.Configuration.IConfiguration config) =>
-        {
-            if (config is Microsoft.Extensions.Configuration.IConfigurationRoot root)
-            {
-                root.Reload();
-            }
-            return Microsoft.AspNetCore.Http.Results.NoContent();
-        });
-        */
     }
 }

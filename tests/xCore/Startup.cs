@@ -36,7 +36,11 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
         builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.Comment,int>), typeof(Ws.Core.Extensions.Data.Repository.EF.SqlServer<Models.Comment,int>));
         */
 
-        builder.Services.AddCarter();
+        var carterModules = Ws.Core.Extensions.Base.Util.GetAllTypesOf<ICarterModule>();
+        if (carterModules.Any())
+            builder.Services.AddCarter(configurator: _ => _
+                .WithModules(carterModules.ToArray())
+                );
     }
 
     public void Use(WebApplication app)

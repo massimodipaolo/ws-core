@@ -34,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Code\" />
+    <Folder Include="Controllers\" />
     <Folder Include="Extensions\" />
     <Folder Include="Files\Entity\" />
   </ItemGroup>
