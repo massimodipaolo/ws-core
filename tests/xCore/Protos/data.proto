@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+option csharp_namespace = "xCore";
+
+package data;
+
+service Data {
+  rpc EventLogData (EventLogQuery) returns (EventLogResponse);
+  rpc EventLogDataStream (EventLogQuery) returns (stream EventLogItem);
+}
+
+message EventLogQuery {
+  int32 number = 1; //100,1000,10000,100000,500000
+  enum Source {
+	memory = 0;
+	njson = 1;
+	msjson = 2;
+	buf = 3;
+  }
+  Source source = 2;
+}
+
+message EventLogResponse {
+  repeated EventLogItem items = 1; 
+}
+
+message EventLogItem {
+	string name = 1;
+	string deviceVendor = 2;
+	string deviceProduct = 3;
+	string deviceVersion = 4;
+	string signatureId = 5;
+	string severity = 6;
+	string eventStartTime = 7;
+	string deviceReceivedTime = 8;
+	string message = 9;
+	string sourceHost = 10;
+	string sourceMacAddress = 11;
+	string destinationHost = 12;
+	string destinationMacAddress = 13;
+	string sourceUserName = 14;
+	string sourceUID = 15;
+	string externalId = 16;
+	string cs1Label = 17;
+	string cs1 = 18;
+	string payload = 19;
+}

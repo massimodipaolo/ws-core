@@ -14,6 +14,12 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
         base.ConfigureServices(builder);        
         Ws.Core.AppInfo<Ws.Core.AppConfig>.Set(env: env, config: config, services: builder.Services);
 
+        builder.Services.AddGrpc(_ =>
+        {
+            _.MaxReceiveMessageSize = 10 /*MB*/ * 1024 * 1024; 
+            _.MaxSendMessageSize = 100 /*MB*/ * 1024 * 1024; 
+        });
+
         /*
         builder.Services
             .Decorate<Ws.Core.Extensions.Message.IMessage, xCore.Decorators.IMessageLogger>()
@@ -61,7 +67,7 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
                     new() { Address = email, Name = email, Type = Ws.Core.Extensions.Message.Message.ActorType.Primary }
                 },
                 Subject = $"Decorators 🎍 demo 👹",
-                Content = content,
+                Content = content, 
                 Format = "html"
             };
             await svc.SendAsync(message, throwException: true);
@@ -75,6 +81,10 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
             app.Lifetime,
             services.GetRequiredService<ILogger<Ws.Core.Program>>()
             );
+
+        app.MapGrpcService<Services.Data>();
+        app.MapGet("/api/data/event-log/{number}/{source}", xCore.Services.Data.GetEventLogDataApi);
+        app.MapPost("/api/data/event-log/{destination}", xCore.Services.Data.PostEventLogDataApi);
 
         app.MapCarter();
     }

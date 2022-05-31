@@ -14,9 +14,9 @@ public class AppEmbeddedDbContextExt : Ws.Core.Extensions.Data.EF.SQLite.DbConte
     }
 }
 
-public class Data : BaseTest
+public class Repository : BaseTest
 {
-    public Data(Program factory, ITestOutputHelper output) : base(factory, output) {}
+    public Repository(Program factory, ITestOutputHelper output) : base(factory, output) {}
 
     [Theory]
     // default

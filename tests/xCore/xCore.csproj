@@ -30,9 +30,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Protobuf Include="Protos\data.proto" GrpcServices="Server" />
+	</ItemGroup>	
+
+	<ItemGroup>
 		<PackageReference Include="AspNetCore.HealthChecks.Hangfire" Version="6.0.2" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
 		<PackageReference Include="Hangfire.Core" Version="1.7.28" />
-		<PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />		
+		<PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />
 		<PackageReference Include="Hangfire.InMemory" Version="0.3.4" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.3" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
@@ -42,7 +47,7 @@
 		<PackageReference Include="xunit" Version="2.4.1" />
 		<PackageReference Include="xunit.runner.utility" Version="2.4.1" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
-		<PackageReference Include="coverlet.collector" Version="3.1.2">			
+		<PackageReference Include="coverlet.collector" Version="3.1.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

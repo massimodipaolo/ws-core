@@ -202,6 +202,7 @@ _Pvt_Extensions
 /samples/**/Extensions/
 # Test
 /tests/**/*.xml
+/tests/**/data
 /tests/**/wwwroot
 /tests/**/Extensions/**/
 /tests/**/Files/*.*
@@ -210,4 +211,3 @@ _Pvt_Extensions
 # Pack
 /.build
 *.db
-
