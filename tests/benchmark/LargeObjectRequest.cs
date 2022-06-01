@@ -6,6 +6,8 @@ using Grpc.Core;
 namespace benchmark
 {
     [SimpleJob(warmupCount: 1, launchCount: 1, invocationCount: 2, targetCount: 10)]
+    //[EventPipeProfiler(BenchmarkDotNet.Diagnosers.EventPipeProfile.CpuSampling)]
+    [MemoryDiagnoser]
     //[RPlotExporter]
     public class LargeObjectRequest
     {
