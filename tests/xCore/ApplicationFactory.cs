@@ -33,25 +33,41 @@ public class LocalApplicationFactory : WebApplicationFactory<Program>, IWebAppli
 public class MockApplicationFactory : WebApplicationFactory<Program>, IWebApplicationFactoryEnvironment
 {
     public string Environment => "Mock";
+
+    protected override TestServer CreateServer(IWebHostBuilder builder)
+    {
+        builder.UseEnvironment(Environment);
+        return base.CreateServer(builder);
+    }
     protected override IHost CreateHost(IHostBuilder builder)
     {
+        builder.UseEnvironment(Environment);
         // override test services
         builder.ConfigureServices(_ =>
         {
-            /*
+            
             _
                 .RemoveAll(typeof(IRepository<,>))
-                .RemoveAll<Ws.Core.Extensions.HealthCheck.Checks.AppLog.IAppLogService>();
-            */
+                .RemoveAll<Ws.Core.Extensions.HealthCheck.Checks.AppLog.IAppLogService>()
+                ;
+            
 
             // db repo
             _
                 //.AddTransient(typeof(Ws.Core.Extensions.Data.Repository.InMemory<,>), typeof(Ws.Core.Extensions.Data.Repository.InMemory<,>))
+                .AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<xCore.Endpoints.Agenda,string>), typeof(Ws.Core.Extensions.Data.Repository.InMemory<xCore.Endpoints.Agenda,string>))
                 .AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<,>), typeof(Ws.Core.Extensions.Data.Repository.InMemory<,>))
                 //.AddTransient(typeof(Ws.Core.Extensions.HealthCheck.Checks.AppLog.IAppLogService), typeof(xCore.HealthCheckAppLogService<Ws.Core.Extensions.Data.Repository.InMemory<Log,int>>))
                 ;
         });        
         return base.CreateHost(builder);
+    }
+
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.UseEnvironment(Environment);
+        //builder.UseConfiguration(new ConfigurationBuilder().AddJsonFile($"ext-settings.{Environment}.json").Build());
+        base.ConfigureWebHost(builder);
     }
 }
 

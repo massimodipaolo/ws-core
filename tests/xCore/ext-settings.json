@@ -344,7 +344,7 @@
             }
           },
           "ui": {
-            "enabled": true,
+            "enable": true,
             "_dbPath": "Files\\healthchecksdb",
             "_injectCss": "wwwroot/healthcheck-ui/style.css",
             "endpoints": [

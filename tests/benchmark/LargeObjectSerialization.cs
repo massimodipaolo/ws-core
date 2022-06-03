@@ -3,7 +3,7 @@
 namespace benchmark
 {
     [SimpleJob(warmupCount: 1, launchCount: 1, invocationCount: 2, targetCount: 10)]
-    //[EventPipeProfiler(BenchmarkDotNet.Diagnosers.EventPipeProfile.CpuSampling)]
+    //[EventPipeProfiler(BenchmarkDotNet.Diagnosers.EventPipeProfile.CpuSampling)] // => https://https://www.speedscope.app/
     [MemoryDiagnoser]
     //[RPlotExporter]
     public class LargeObjectSerialization
