@@ -27,7 +27,7 @@
         "options": {
           "serialization": {
             "nullValueHandling": "Ignore",
-            "formatting": "None",
+            "formatting": "Indented",
             "referenceLoopHandling": "Ignore",
             "__converters": [
               {
@@ -188,7 +188,14 @@
       },
       "Ws.Core.Extensions.Data.FileSystem": {
         "priority": 440,
-        "options": { "folder": "./data" }
+        "options": {
+          "folder": "./data",
+          "serialization": {
+            "nullValueHandling": "Ignore",
+            "formatting": "Indented",
+            "referenceLoopHandling": "Ignore"
+          }
+        }
       },
       "Ws.Core.Extensions.Message": {
         "priority": 600,

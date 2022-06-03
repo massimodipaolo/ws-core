@@ -26,8 +26,9 @@ namespace Ws.Core.Extensions.Data.Repository
                     using var stream = File.Open(_path, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite);
                     using var reader = new StreamReader(stream);
                     var readed = reader.ReadToEnd();
+                    var jsonSetting = _options?.Serialization?.ToJsonSerializerSettings();
                     if (!string.IsNullOrEmpty(readed))
-                        _collection = Newtonsoft.Json.JsonConvert.DeserializeObject<List<T>>(readed);
+                        _collection = System.Text.Json.JsonSerializer.Deserialize<List<T>>(readed, jsonSetting);
                     break;
                 }
             }
@@ -130,7 +131,7 @@ namespace Ws.Core.Extensions.Data.Repository
         {
 
             var jsonSetting = _options?.Serialization?.ToJsonSerializerSettings();
-            File.WriteAllText(_path, Newtonsoft.Json.JsonConvert.SerializeObject(_collection, jsonSetting));
+            File.WriteAllText(_path, System.Text.Json.JsonSerializer.Serialize(_collection, jsonSetting));
         }
     }
 }

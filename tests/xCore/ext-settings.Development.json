@@ -61,6 +61,12 @@
             "implementationType": "Ws.Core.Extensions.Data.Repository.EF.SQLite`2[[xCore.Models.Cms.Admin_Permission, xCore],[System.Int32]], Ws.Core.Extensions.Data.EF.SQLite",
             "lifeTime": "Transient",
             "overrideIfAlreadyRegistered": true
+          },
+          {
+            "serviceType": "Ws.Core.Extensions.Data.IRepository`2[[xCore.Models.User2, xCore],[System.Int32]], Ws.Core.Extensions.Data",
+            "implementationType": "Ws.Core.Extensions.Data.Repository.FileSystem`2[[xCore.Models.User2, xCore],[System.Int32]], Ws.Core.Extensions.Data.FileSystem",
+            "lifeTime": "Transient",
+            "overrideIfAlreadyRegistered": true
           }
         ]
       },

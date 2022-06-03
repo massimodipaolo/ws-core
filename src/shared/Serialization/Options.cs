@@ -7,13 +7,68 @@ namespace Ws.Core.Shared.Serialization
 {
     public class Options
     {
-        public Newtonsoft.Json.NullValueHandling NullValueHandling { get; set; } = Newtonsoft.Json.NullValueHandling.Ignore;
-        public Newtonsoft.Json.Formatting Formatting { get; set; } = Newtonsoft.Json.Formatting.None;
-        public Newtonsoft.Json.ReferenceLoopHandling ReferenceLoopHandling { get; set; } = Newtonsoft.Json.ReferenceLoopHandling.Error;
+        
+        public NullValueHandlingOptions NullValueHandling { get; set; } = NullValueHandlingOptions.Ignore;
+        public FormattingOptions Formatting { get; set; } = FormattingOptions.None;
+        public ReferenceLoopHandlingOptions ReferenceLoopHandling { get; set; } = ReferenceLoopHandlingOptions.Serialize;
+
+        /// <summary>
+        /// https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to?pivots=dotnet-6-0#support-polymorphic-deserialization
+        /// </summary>
+        /*
         public Newtonsoft.Json.DateParseHandling DateParseHandling { get; set; } = Newtonsoft.Json.DateParseHandling.DateTime;
         public Newtonsoft.Json.DateTimeZoneHandling DateTimeZoneHandling { get; set; } = Newtonsoft.Json.DateTimeZoneHandling.RoundtripKind;
         public Newtonsoft.Json.TypeNameHandling TypeNameHandling { get; set; } = Newtonsoft.Json.TypeNameHandling.None;
         public Newtonsoft.Json.TypeNameAssemblyFormatHandling TypeNameAssemblyFormatHandling { get; set; } = Newtonsoft.Json.TypeNameAssemblyFormatHandling.Simple;
+        */
+
+        #region enum options
+        //
+        // Summary:
+        //     Specifies null value handling options for the Newtonsoft.Json.JsonSerializer.
+        public enum NullValueHandlingOptions
+        {
+            //
+            // Summary:
+            //     Include null values when serializing and deserializing objects.
+            Include,
+            //
+            // Summary:
+            //     Ignore null values when serializing and deserializing objects.
+            Ignore
+        }
+
+        //
+        // Summary:
+        //     Specifies formatting options for the Newtonsoft.Json.JsonTextWriter.
+        public enum FormattingOptions
+        {
+            //
+            // Summary:
+            //     No special formatting is applied. This is the default.
+            None,
+            //
+            // Summary:
+            //     Causes child objects to be indented according to the Newtonsoft.Json.JsonTextWriter.Indentation
+            //     and Newtonsoft.Json.JsonTextWriter.IndentChar settings.
+            Indented
+        }
+
+        //
+        // Summary:
+        //     Specifies reference loop handling options for the Newtonsoft.Json.JsonSerializer.
+        public enum ReferenceLoopHandlingOptions
+        {
+            // Summary:
+            //     Ignore loop references and do not serialize.
+            Ignore,
+            //
+            // Summary:
+            //     Serialize loop references.
+            Serialize
+        }
+        #endregion 
+
         /// <summary>
         /// List of assembly/JsonConvert type to apply
         /// </summary>
@@ -29,6 +84,7 @@ namespace Ws.Core.Shared.Serialization
             public string Type { get; set; }
         }
 
+        /*
         public Newtonsoft.Json.JsonSerializerSettings ToJsonSerializerSettings()
         {
             var settings = new Newtonsoft.Json.JsonSerializerSettings()
@@ -43,7 +99,16 @@ namespace Ws.Core.Shared.Serialization
             };
             return settings;
         }
+        */
 
+        public System.Text.Json.JsonSerializerOptions ToJsonSerializerSettings()
+        {
+            var settings = new System.Text.Json.JsonSerializerOptions() {};
+            FromJsonSerializerSettings(ref settings);
+            return settings;
+        }
+
+        /*
         public void FromJsonSerializerSettings(ref Newtonsoft.Json.JsonSerializerSettings settings)
         {
             settings.NullValueHandling = this.NullValueHandling;
@@ -55,7 +120,69 @@ namespace Ws.Core.Shared.Serialization
             settings.TypeNameAssemblyFormatHandling = this.TypeNameAssemblyFormatHandling;
             AddConverters(ref settings);
         }
+        */
+        public void FromJsonSerializerSettings(ref System.Text.Json.JsonSerializerOptions settings)
+        {
+            /*
+            options.NullValueHandling = this.NullValueHandling;
+            options.Formatting = this.Formatting;
+            options.ReferenceLoopHandling = this.ReferenceLoopHandling;
+            options.DateParseHandling = this.DateParseHandling;
+            options.DateTimeZoneHandling = this.DateTimeZoneHandling;
+            options.TypeNameHandling = this.TypeNameHandling;
+            options.TypeNameAssemblyFormatHandling = this.TypeNameAssemblyFormatHandling;
+            */
+            if (NullValueHandling == NullValueHandlingOptions.Ignore)
+                settings.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
+            settings.WriteIndented = (Formatting == FormattingOptions.Indented);
+            settings.ReferenceHandler = (ReferenceLoopHandling == ReferenceLoopHandlingOptions.Ignore) ?
+                   System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles :
+                   System.Text.Json.Serialization.ReferenceHandler.Preserve
+                   ;
+            settings.AllowTrailingCommas = true;
+            settings.PropertyNameCaseInsensitive = true;
+           
+            AddConverters(ref settings);
+        }
 
+        private void AddConverters(ref System.Text.Json.JsonSerializerOptions settings)
+        {
+            if (Converters != null && Converters.Any())
+                foreach (var converter in Converters.Where(_ => _ != null))
+                {
+                    var assembly = AppDomain.CurrentDomain.GetAssemblies().AsEnumerable().Where(_ => _.FullName?.Split(',')[0] == converter.Assembly).FirstOrDefault();
+                    if (null != assembly)
+                    {
+                        try
+                        {
+                            Type converterType = System.Reflection.Assembly.LoadFrom(assembly.Location).GetType(converter.Type);
+                            if (typeof(System.Text.Json.Serialization.JsonConverter).IsAssignableFrom(converterType))
+                            {
+                                System.Text.Json.Serialization.JsonConverter obj = null;
+                                try
+                                {
+                                    // try parms object[] parameters
+                                    obj = (System.Text.Json.Serialization.JsonConverter)Activator.CreateInstance(
+                                            converterType,
+                                            new object[] {
+                                                new Microsoft.AspNetCore.Http.HttpContextAccessor()
+                                            });
+                                }
+                                catch
+                                {
+                                    // Try parameterless ctor
+                                    obj = (System.Text.Json.Serialization.JsonConverter)Activator.CreateInstance(converterType);
+                                }
+                                if (obj != null)
+                                    settings.Converters.Add(obj);
+                            }
+                        }
+                        catch { }
+                    }
+                }
+        }
+
+        /*
         private void AddConverters(ref Newtonsoft.Json.JsonSerializerSettings settings)
         {
             if (Converters != null && Converters.Any())
@@ -92,6 +219,6 @@ namespace Ws.Core.Shared.Serialization
                     }
                 }
         }
-
+        */
     }
 }

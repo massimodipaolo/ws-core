@@ -12,7 +12,7 @@ namespace Ws.Core.Extensions.Api
     {
         private Options _options => GetOptions<Options>();
         public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
-        {            
+        {
             base.Execute(builder, serviceProvider);
 
             builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -32,21 +32,21 @@ namespace Ws.Core.Extensions.Api
             }
 
             builder.Services
-                .AddControllers()                
+                .AddControllers()
+                .AddJsonOptions(_ =>
+                {
+                    var _setting = _.JsonSerializerOptions;
+                    _options.Serialization.FromJsonSerializerSettings(ref _setting);
+                })
+                /*
                 .AddNewtonsoftJson(opt =>
                 {
                     var _setting = opt.SerializerSettings;
                     _options.Serialization.FromJsonSerializerSettings(ref _setting);
                 }
                 )
-                /*
-                .AddJsonOptions(opt =>
-                {
-                    var _setting = opt.JsonSerializerOptions;
-                    _options.Serialization.FromJsonSerializerSettings(ref _setting);
-                })
                 */
-            ;                           
+            ;
 
             var _doc = _options.Documentation;
             if (_doc != null)
@@ -137,14 +137,14 @@ namespace Ws.Core.Extensions.Api
         }
 
         public override void Execute(WebApplication app)
-        {            
+        {
             base.Execute(app);
 
             app.MapControllers();
 
             if (_options.Session != null)
-                app.UseSession();           
-            
+                app.UseSession();
+
             var _doc = _options.Documentation;
 
             if (_doc != null)
@@ -156,7 +156,7 @@ namespace Ws.Core.Extensions.Api
                     {
                         doc.Host = rq.Host.Value;
                     });*/
-                });                
+                });
 
                 app.UseSwaggerUI(opt =>
                 {

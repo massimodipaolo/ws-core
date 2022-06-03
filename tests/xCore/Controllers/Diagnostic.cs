@@ -3,36 +3,27 @@ using Ws.Core.Extensions.Data.Cache;
 
 namespace xCore.Controllers
 {
-    /*
+    
     [ApiController]
     [ApiExplorerSettings(GroupName = "admin")]
     [Route("api/[controller]")]
     //[Authorize(Policy = nameof(UserRole.Admin))]
-    public class Diagnostic : Ws.Core.Extensions.Api.Controllers.DiagnosticController<Ws.Core.AppConfig>
+    public class Diagnostic : Ws.Core.Extensions.Api.Controllers.BaseController
     {
-        public Diagnostic(
-            ICache cache,
-            IConfiguration config,
-            IWebHostEnvironment env,
-            IHostApplicationLifetime applicationLifetime,
-            IHttpContextAccessor ctx) :
-            base(
-                cache,
-                config,
-                env,
-                applicationLifetime,
-                ctx)
+
+        public Diagnostic(IHttpContextAccessor ctx) :
+            base(ctx)
         { }
 
         //[Authorize(Policy = nameof(UserRole.Admin))]
         [HttpGet]
-        public override IActionResult Get() => base.Get();
-
-        //[Authorize(Policy = nameof(UserRole.Supervisor))]
-        [HttpGet]
-        [Route("Stop")]
-        public override async Task<IActionResult> Stop() => await base.Stop();
+        [ProducesResponseType(typeof(Ws.Core.Extensions.Diagnostic.AppRuntime), 200)]
+        public IActionResult Get(
+            [FromServices] ICache cache,
+            [FromServices] IConfiguration config,
+            [FromServices] IWebHostEnvironment env
+            ) => Ok(Ws.Core.Extensions.Diagnostic.AppRuntime<Ws.Core.AppConfig>.Get(cache, config, env, _ctx));
 
     }
-    */
+
 }

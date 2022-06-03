@@ -10,6 +10,7 @@ namespace xCore
         [Theory]
         [InlineData("/swagger")]
         [InlineData("/swagger/public/swagger.json")]
+        [InlineData($"/api/diagnostic?culture=en-US")]
         [InlineData($"/{nameof(Extensions)}/{nameof(Ws.Core.Extensions.Diagnostic)}?culture=en-US")]
         [InlineData("/foo?culture=it-IT")]
         [InlineData("/api/log")]

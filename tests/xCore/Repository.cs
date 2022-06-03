@@ -25,6 +25,7 @@ public class Repository : BaseTest
     [InlineData(typeof(Ws.Core.Extensions.Data.IRepository<Endpoints.Agenda, string>), typeof(Ws.Core.Extensions.Data.Repository.EF.MySql<Endpoints.Agenda, string>))]
     // override by injector
     [InlineData(typeof(Ws.Core.Extensions.Data.IRepository<Log, int>), typeof(Ws.Core.Extensions.Data.Repository.EF.SQLite<Log, int>))]
+    [InlineData(typeof(Ws.Core.Extensions.Data.IRepository<Models.User2, int>), typeof(Ws.Core.Extensions.Data.Repository.FileSystem<Models.User2, int>))]
     public void Check_RepositoryType(Type Tinterface, Type ExpectedTimplementation)
         => base.Check_ServiceImplementation(Tinterface, ExpectedTimplementation);
 }

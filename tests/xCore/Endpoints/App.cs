@@ -11,6 +11,7 @@ public class App : CrudOp, ICarterModule
     {
         var _prefix = "/api/app";
         app.MapGet($"{_prefix}/{nameof(User)}", GetAll<User,int>).WithTags(nameof(App));
+        app.MapGet($"{_prefix}/{nameof(User2)}", GetAll<User2, int>).WithTags(nameof(App));
         app.MapGet($"{_prefix}/{nameof(User)}/{{id}}", GetById<User, int>).WithTags(nameof(App));
         app.MapGet($"{_prefix}/{nameof(User)}/ext/{{id}}",
             (int id, IRepository<User, int> _repo, IRepository<Comment, int> _repoComment, IRepository<Photo, int> _repoPhoto) =>
@@ -39,6 +40,7 @@ public class App : CrudOp, ICarterModule
             .WithTags(nameof(App));
         app.MapPost($"{_prefix}/{nameof(User)}", Create<User,int>).WithTags(nameof(App));
         app.MapPut($"{_prefix}/{nameof(User)}/{{id}}", Update<User,int>).WithTags(nameof(App));
+        app.MapPut($"{_prefix}/{nameof(User2)}/{{id}}", Update<User2, int>).WithTags(nameof(App));
         app.MapDelete($"{_prefix}/{nameof(User)}/{{id}}", Delete<User,int>).WithTags(nameof(App));
 
         app.MapGet($"{_prefix}/{nameof(Post)}", GetAll<Post, int>).WithTags(nameof(App));

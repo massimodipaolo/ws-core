@@ -22,8 +22,9 @@ public class Home : ICarterModule
         <hr>
         <ul class=""list-group list-group-flush"">
           <li class=""list-group-item""><samp>/foo</samp> Route on Startup <a href=""/foo"" target=""_blank""> => </a></li>
-          <li class=""list-group-item""><samp>/api/diagnostic</samp> Legacy controller <a href=""/api/diagnostic"" target=""_blank""> => </a></li>
           <li class=""list-group-item""><samp>/api/{nameof(xCore.Endpoints.Agenda).ToLower()}</samp> Api module <a href=""/api/{nameof(xCore.Endpoints.Agenda)}"" target=""_blank""> => </a></li>
+          <li class=""list-group-item""><samp>/{nameof(Extensions).ToLower()}/{nameof(Ws.Core.Extensions.Diagnostic).ToLower()}</samp> Api on ref module <a href=""/{nameof(Extensions)}/{nameof(Ws.Core.Extensions.Diagnostic)}"" target=""_blank""> => </a></li>
+          <li class=""list-group-item""><samp>/api/diagnostic</samp> Legacy controller <a href=""/api/diagnostic"" target=""_blank""> => </a></li>          
           <li class=""list-group-item""><samp>/healthchecks-ui</samp> NuGet extension <a href=""/healthchecks-ui"" target=""_blank""> => </a> | <a href=""/healthz/checks"" target=""_blank""> Checks </a></li>
           <li class=""list-group-item""><samp>/hangfire</samp> App extension <a href=""/hangfire"" target=""_blank""> => </a></li>
           <li class=""list-group-item""><samp>/image.processor.demo</samp> Dll extension <a href=""/media/index.html"" target=""_blank""> => </a></li>

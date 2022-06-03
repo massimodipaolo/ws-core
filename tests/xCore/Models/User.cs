@@ -38,3 +38,4 @@ public class User: IEntity<int>, IApp
     public virtual ICollection<Album> Albums { get; set; }
     public virtual ICollection<Todo> Todos { get; set; }
 }
+public class User2 : User, IEntity<int>, IApp { }

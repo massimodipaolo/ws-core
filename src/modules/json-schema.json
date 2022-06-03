@@ -247,9 +247,10 @@
           "default": "None"
         },
         "referenceLoopHandling": {
-          "enum": [ "Error", "Ignore", "Serialize" ],
-          "default": "Error"
+          "enum": [ "Ignore", "Serialize" ],
+          "default": "Serialize"
         },
+        /*
         "dateParseHandling": {
           "enum": [ "None", "DateTime", "DateTimeOffset" ],
           "default": "DateTime"
@@ -266,6 +267,7 @@
           "enum": [ "Simple", "Full" ],
           "default": "Simple"
         },
+        */
         "converters": {
           "type": "array",
           "description": "List of assembly/JsonConvert type to apply",
