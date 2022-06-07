@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Hosting;
 using Ws.Core.Extensions;
+using Carter;
 
 namespace Ws.Core
 {
@@ -49,6 +50,12 @@ namespace Ws.Core
             Extensions.Base.Extension.Init(services, services.BuildServiceProvider());
 
             builder.AddExtCore(config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"] != null ? $"{env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"]}" : null, includingSubpaths: true);
+
+            var carterModules = Ws.Core.Extensions.Base.Util.GetAllTypesOf<ICarterModule>();
+            if (carterModules.Any())
+                builder.Services.AddCarter(configurator: _ => _
+                    .WithModules(carterModules.ToArray())
+                    );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +69,8 @@ namespace Ws.Core
             }
 
             app.UseExtCore();
+
+            app.MapCarter();
 
             static string _extSerialize(IDictionary<string, Configuration.Assembly> list) => list == null ? null : string.Join(" | ", list?.Where(ext => ext.Value.Priority > 0)?.OrderBy(ext => ext.Value.Priority)?.Select(_ => _.Key));
 

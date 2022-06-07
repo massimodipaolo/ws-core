@@ -41,12 +41,6 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
         builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.Post,int>), typeof(Ws.Core.Extensions.Data.Repository.EF.SqlServer<Models.Post,int>));
         builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.Comment,int>), typeof(Ws.Core.Extensions.Data.Repository.EF.SqlServer<Models.Comment,int>));
         */
-
-        var carterModules = Ws.Core.Extensions.Base.Util.GetAllTypesOf<ICarterModule>();
-        if (carterModules.Any())
-            builder.Services.AddCarter(configurator: _ => _
-                .WithModules(carterModules.ToArray())
-                );
     }
 
     public void Use(WebApplication app)
@@ -86,7 +80,6 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
         app.MapGet("/api/data/event-log/{number}/{source}", xCore.Services.Data.GetEventLogDataApi);
         app.MapPost("/api/data/event-log/{destination}", xCore.Services.Data.PostEventLogDataApi);
 
-        app.MapCarter();
     }
     public override void Configure(WebApplication app, IOptionsMonitor<Ws.Core.AppConfig> appConfigMonitor, IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor, IHostApplicationLifetime lifetime, ILogger<Ws.Core.Program> logger)
     {

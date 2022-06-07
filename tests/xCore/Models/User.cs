@@ -38,4 +38,8 @@ public class User: IEntity<int>, IApp
     public virtual ICollection<Album> Albums { get; set; }
     public virtual ICollection<Todo> Todos { get; set; }
 }
+
+/// <summary>
+/// Note: EF map User to User2 view!
+/// </summary>
 public class User2 : User, IEntity<int>, IApp { }
