@@ -24,12 +24,15 @@ namespace xCore
                 _ => _factory
             };
         
-        public async Task Get_EndpointsReturnSuccess(string url, WebApplicationFactoryType factoryType = WebApplicationFactoryType.Development)
+        public async Task Get_EndpointsReturnSuccess(
+            string url, 
+            WebApplicationFactoryType factoryType = WebApplicationFactoryType.Development, 
+            WebApplicationFactoryClientOptions clientOptions = null)
         {
 
             // Arrange
             var factory = GetFactory(factoryType);         
-            HttpClient client = factory.CreateClient();
+            HttpClient client = factory.CreateClient(clientOptions ?? new WebApplicationFactoryClientOptions() { });
 
             // Act
             var response = await client.GetAsync(url);
@@ -49,7 +52,6 @@ namespace xCore
             // Assert
             response.EnsureSuccessStatusCode(); // Status Code 200-299
         }
-
 
         public void Check_ServiceImplementation(Type Tinterface, Type ExpectedTimplementation, WebApplicationFactoryType factoryType = WebApplicationFactoryType.Development)
         {

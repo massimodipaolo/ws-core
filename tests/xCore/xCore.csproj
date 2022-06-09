@@ -61,6 +61,7 @@
 		<ProjectReference Include="..\..\src\modules\Data.FileSystem\Data.FileSystem.csproj" />
 		<ProjectReference Include="..\..\src\modules\Data\Data.csproj" />
 		<ProjectReference Include="..\..\src\modules\Diagnostic\Diagnostic.csproj" />
+		<ProjectReference Include="..\..\src\modules\Gateway\Gateway.csproj" />
 		<ProjectReference Include="..\..\src\modules\HealthCheck\HealthCheck.csproj" />
 		<ProjectReference Include="..\..\src\modules\Message\Message.csproj" />
 		<ProjectReference Include="..\..\src\modules\StaticFiles\StaticFiles.csproj" />

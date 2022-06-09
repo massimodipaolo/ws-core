@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<PackageVersion>6.0.0</PackageVersion>
+		<PackageId>Ws.Core.Extensions.Gateway</PackageId>
+		<AssemblyName>Ws.Core.Extensions.Gateway</AssemblyName>
+		<RootNamespace>Ws.Core.Extensions.Gateway</RootNamespace>
+		<Authors>Massimo Di Paolo</Authors>
+		<Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
+		<Description>Api Gateway</Description>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageReleaseNotes></PackageReleaseNotes>
+		<PackageTags>gateway, Ocelot</PackageTags>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Ocelot" Version="18.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
+	</ItemGroup>
+
+</Project>

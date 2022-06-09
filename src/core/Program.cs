@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System.IO;
 using System.Reflection;
 
 namespace Ws.Core
@@ -37,11 +36,15 @@ namespace Ws.Core
                 .ConfigureLogging((ctx, logging) =>
                 {
                     logging.ClearProviders();
-                    logging.AddConfiguration(ctx.Configuration.GetSection("Logging"));
+                    logging.AddConfiguration(ctx.Configuration.GetSection("Logging")); // app-settings.json, app-settings.{env}.json
+
                     if (ctx.HostingEnvironment.EnvironmentName == Environments.Development || ctx.HostingEnvironment.EnvironmentName == "Local")
                     {
-                        logging.AddDebug();
+                        logging.AddConsole();
+                        //logging.AddJsonConsole();
+                        //logging.AddDebug();
                     }
+
                 })
                 .ConfigureAppConfiguration((ctx, config) =>
                 {

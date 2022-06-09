@@ -8,6 +8,14 @@
       },
       "applicationUrl": "https://localhost:60935;http://localhost:60936"
     },
+    "xCore.local": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Local"
+      },
+      "applicationUrl": "https://localhost:60935;http://localhost:60936"
+    },
     "WSL": {
       "commandName": "WSL2",
       "launchBrowser": true,

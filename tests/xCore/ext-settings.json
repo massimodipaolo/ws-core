@@ -379,6 +379,84 @@
           "httpLogging": { "enable": false },
           "profiler": { "enable": true }
         }
+      },
+      "Ws.Core.Extensions.Gateway": {
+        "priority": 999,
+        "options": {
+          "mapWhen": "/bing",
+          "ocelot": {
+            "Routes": [
+              {
+                "UpstreamPathTemplate": "/bing/{everything}",
+                "_UpstreamHttpMethod": [ "OPTIONS", "POST", "PUT", "GET", "DELETE" ],
+                "_UpstreamHost": "host.com",
+                "DangerousAcceptAnyServerCertificateValidator": true,
+                "DownstreamPathTemplate": "/search?q={everything}",
+                "DownstreamScheme": "https",
+                "DownstreamHostAndPorts": [
+                  {
+                    "_Host": "localhost",
+                    "_Port": 60936,
+                    "Host": "www.bing.com",
+                    "Port": 443
+                  }
+                ],
+                "_RateLimitOptions": {
+                  "ClientWhitelist": [],
+                  "EnableRateLimiting": true,
+                  "Period": "1s",
+                  "PeriodTimespan": 1, // retry after
+                  "Limit": 3
+                },
+                "Priority": 1
+              }
+            ],
+            "_DynamicRoutes": [
+            ],
+            "_Aggregates": [
+            ],
+            "GlobalConfiguration": {
+              "BaseUrl": "https://localhost:60935",
+              "_RequestIdKey": null,
+              "_ServiceDiscoveryProvider": {
+                "Scheme": null,
+                "Host": null,
+                "Port": 0,
+                "Type": null,
+                "Token": null,
+                "ConfigurationKey": null,
+                "PollingInterval": 0,
+                "Namespace": null
+              },
+              "_RateLimitOptions": {
+                "ClientIdHeader": "ClientId",
+                "QuotaExceededMessage": null,
+                "RateLimitCounterPrefix": "ocelot",
+                "DisableRateLimitHeaders": false,
+                "HttpStatusCode": 429
+              },
+              "_QoSOptions": {
+                "ExceptionsAllowedBeforeBreaking": 0,
+                "DurationOfBreak": 0,
+                "TimeoutValue": 0
+              },
+              "_LoadBalancerOptions": {
+                "Type": null,
+                "Key": null,
+                "Expiry": 0
+              },
+              "_DownstreamScheme": null,
+              "_HttpHandlerOptions": {
+                "AllowAutoRedirect": false,
+                "UseCookieContainer": false,
+                "UseTracing": false,
+                "UseProxy": true,
+                "MaxConnectionsPerServer": 2147483647
+              },
+              "_DownstreamHttpVersion": null
+            }
+          }
+        }
       }
     },
     "injectors": []

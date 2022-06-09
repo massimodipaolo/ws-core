@@ -970,6 +970,22 @@
                 }
               }
             },
+            "Ws.Core.Extensions.Gateway": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "mapWhen":  { "type": "string"},
+                    "ocelot": {
+                      "$ref": "https://json.schemastore.org/ocelot.json"
+                    }
+                  }
+                }
+              }
+            },
             "Ws.Core.Extensions.HealthCheck": {
               "allOf": [
                 { "$ref": "#/definitions/assembly" }
