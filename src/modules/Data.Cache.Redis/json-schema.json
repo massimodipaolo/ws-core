@@ -1,0 +1,295 @@
+{
+  "definitions": {
+    "CommandMap": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false
+    },
+    "ConfigurationOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "abortOnConnectFail": {
+          "type": "boolean"
+        },
+        "allowAdmin": {
+          "type": "boolean"
+        },
+        "useSsl": {
+          "type": "boolean"
+        },
+        "ssl": {
+          "type": "boolean"
+        },
+        "sslProtocols": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            null,
+            "None",
+            "Ssl2",
+            "Ssl3",
+            "Tls",
+            "Default",
+            "Tls11",
+            "Tls12",
+            "Tls13"
+          ]
+        },
+        "channelPrefix": {
+          "$ref": "#/definitions/RedisChannel"
+        },
+        "clientName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "connectRetry": {
+          "type": "integer"
+        },
+        "commandMap": {
+          "$ref": "#/definitions/CommandMap"
+        },
+        "configurationChannel": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "connectTimeout": {
+          "type": "integer"
+        },
+        "reconnectRetryPolicy": {
+          "$ref": "#/definitions/IReconnectRetryPolicy"
+        },
+        "defaultVersion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "endPoints": {
+          "$ref": "#/definitions/EndPointCollection"
+        },
+        "highPrioritySocketThreads": {
+          "type": "boolean"
+        },
+        "keepAlive": {
+          "type": "integer"
+        },
+        "password": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "proxy": {
+          "type": "string",
+          "enum": [
+            "None",
+            "Twemproxy"
+          ]
+        },
+        "resolveDns": {
+          "type": "boolean"
+        },
+        "serviceName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "socketManager": {
+          "$ref": "#/definitions/SocketManager"
+        },
+        "sslHost": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "syncTimeout": {
+          "type": "integer"
+        },
+        "responseTimeout": {
+          "type": "integer"
+        },
+        "tieBreaker": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "writeBuffer": {
+          "type": "integer"
+        },
+        "defaultDatabase": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "configCheckSeconds": {
+          "type": "integer"
+        }
+      }
+    },
+    "Duration": {
+      "description": "Tier cache expiration in minutes",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "fast": {
+          "type": "integer",
+          "default": 10
+        },
+        "medium": {
+          "type": "integer",
+          "default": 60
+        },
+        "slow": {
+          "type": "integer",
+          "default": 240
+        },
+        "never": {
+          "type": "integer",
+          "default": 1440
+        }
+      }
+    },
+    "EndPoint": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "addressFamily": {
+          "type": "string",
+          "enum": [
+            "Unspecified",
+            "Unix",
+            "InterNetwork",
+            "ImpLink",
+            "Pup",
+            "Chaos",
+            "NS",
+            "Ipx",
+            "Osi",
+            "Iso",
+            "Ecma",
+            "DataKit",
+            "Ccitt",
+            "Sna",
+            "DecNet",
+            "DataLink",
+            "Lat",
+            "HyperChannel",
+            "AppleTalk",
+            "NetBios",
+            "VoiceView",
+            "FireFox",
+            "Banyan",
+            "Atm",
+            "InterNetworkV6",
+            "Cluster",
+            "Ieee12844",
+            "Irda",
+            "NetworkDesigners",
+            "Max",
+            "Packet",
+            "ControllerAreaNetwork",
+            "Unknown"
+          ]
+        }
+      }
+    },
+    "EndPointCollection": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/EndPoint"
+      }
+    },
+    "IReconnectRetryPolicy": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "RedisCacheOptions": {
+      "description": "Redis client options",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "configuration": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "configurationOptions": {
+          "$ref": "#/definitions/ConfigurationOptions"
+        },
+        "instanceName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "RedisChannel": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "isNullOrEmpty": {
+          "type": "boolean"
+        }
+      }
+    },
+    "SocketManager": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "client": {
+      "$ref": "#/definitions/RedisCacheOptions"
+    },
+    "entryExpirationInMinutes": {
+      "$ref": "#/definitions/Duration"
+    }
+  }
+}

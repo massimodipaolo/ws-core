@@ -1,0 +1,81 @@
+{
+  "definitions": {
+    "Dictionary<String, String>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "FolderOption": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "defaultFiles": {
+          "$ref": "#/definitions/String[]"
+        },
+        "enableDirectoryBrowser": {
+          "type": "boolean"
+        },
+        "path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "requestPath": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "headers": {
+          "$ref": "#/definitions/Dictionary<String, String>"
+        },
+        "mimEtypes": {
+          "$ref": "#/definitions/Dictionary<String, String>"
+        },
+        "isRelativePath": {
+          "type": "boolean"
+        }
+      }
+    },
+    "FolderOption[]": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/FolderOption"
+      }
+    },
+    "String[]": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "paths": {
+      "$ref": "#/definitions/FolderOption[]"
+    }
+  }
+}

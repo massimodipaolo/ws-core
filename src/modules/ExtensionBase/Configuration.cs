@@ -25,7 +25,7 @@ namespace Ws.Core.Extensions.Base
             public string Name { get; set; }
             public int Priority { get; set; } = 0;
         }
-        public class Injector : Assembly
+        public class Injector : Assembly, IOptions
         {
             public Injector(): base() {}
             public ServiceOption[] Services { get; set; }

@@ -1,11 +1,14 @@
 ﻿using Microsoft.Extensions.Caching.Redis;
+using System.ComponentModel;
 using Ws.Core.Extensions.Base;
 
 namespace Ws.Core.Extensions.Data.Cache.Redis
 {
     public class Options : IOptions
     {
+        [Description("Redis client options")]
         public RedisCacheOptions Client { get; set; }
-        public static Ws.Core.Extensions.Data.Cache.Options.Duration EntryExpirationInMinutes { get; set; }
+        [Description("Tier cache expiration in minutes")]
+        public Ws.Core.Extensions.Data.Cache.Options.Duration EntryExpirationInMinutes { get; set; } = new();
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel;
 
 namespace Ws.Core.Extensions.Data.EF
 {
@@ -10,13 +11,15 @@ namespace Ws.Core.Extensions.Data.EF
         /// <summary>
         /// Excludes the given entity type from the model. This method is typically used to remove types from the model that were added by convention., i.e. `MyNamespace.MyClass, MyAssembly`
         /// </summary>
-        public string[] Ignore { get; set; }
+        [Description("Excludes the given entity type from the model. This method is typically used to remove types from the model that were added by convention., i.e. `MyNamespace.MyClass, MyAssembly`")]
+        public string[]? Ignore { get; set; }
         /// <summary>
         /// Serialize/deserialize type/interface, mapped on a text column
         /// </summary>
-        public string[] JsonConvert { get; set; }
-        public IEnumerable<MappingConfig> Mappings { get; set; }
-        public IncludeNavigationPropertiesConfig IncludeNavigationProperties { get; set; }
+        [Description("Serialize/deserialize type/interface, mapped on a text column")]
+        public string[]? JsonConvert { get; set; }
+        public IEnumerable<MappingConfig>? Mappings { get; set; }
+        public IncludeNavigationPropertiesConfig? IncludeNavigationProperties { get; set; }
         public class MappingConfig
         {
             public string NameSpace { get; set; }
@@ -25,7 +28,7 @@ namespace Ws.Core.Extensions.Data.EF
             public string Schema { get; set; }
             public string IdColumnName { get; set; }
             public bool IdHasDefaultValue { get; set; } = true;
-            public IEnumerable<PropertyConfig> Properties { get; set; }
+            public IEnumerable<PropertyConfig>? Properties { get; set; }
             public class PropertyConfig
             {
                 public string Name { get; set; }
@@ -57,20 +60,24 @@ namespace Ws.Core.Extensions.Data.EF
                 /// <summary>
                 /// Include the main navigation properties
                 /// </summary>
+                [Description("Include the main navigation properties")]
                 public bool Enable { get; set; }
                 /// <summary>
                 /// List of typeof(T).FullName to exclude from then Enabled directive
                 /// </summary>
+                [Description("List of typeof(T).FullName to exclude from then Enabled directive")]
                 public IEnumerable<string> Except { get; set; }
                 /// <summary>
                 /// Set custom navigation paths. This setting overrides the Enabled/Except properties
                 /// </summary>
+                [Description("Set custom navigation paths. This setting overrides the Enabled/Except properties")]
                 public IEnumerable<NavigationPaths> Explicit { get; set; }
                 public class NavigationPaths
                 {
                     /// <summary>
                     /// typeof(T).FullName
                     /// </summary>
+                    [Description("typeof(T).FullName")]
                     public string Entity { get; set; }
                     /// <summary>
                     /// Array of indented navigation paths to include
@@ -80,7 +87,14 @@ namespace Ws.Core.Extensions.Data.EF
                     ///     ["Customer"]
                     /// ]
                     /// </summary>
-                    public IEnumerable<IEnumerable<string>> Paths { get; set; }
+                    [Description("Array of indented navigation paths to include" +
+                        "i.e. for Order entity" +
+                        "[" +
+                        "   [\"OrderDetail\",\"Product\",\"Supplier\"]," +
+                        "   [\"Customer\"]" +
+                        "]"
+                        )]
+                    public IEnumerable<IEnumerable<string>>? Paths { get; set; }
                 }
             }
         }

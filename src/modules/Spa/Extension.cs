@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
@@ -27,8 +27,6 @@ namespace Ws.Core.Extensions.Spa
                     {
                         _.RootPath = options.RootPath;
                     });
-                    if (options.Prerendering != null && options.Prerendering.Enable)
-                        builder.Services.AddSpaPrerenderer();
                 }
             }
             catch (Exception ex)
@@ -60,9 +58,9 @@ namespace Ws.Core.Extensions.Spa
                     else
                         app.UseSpaStaticFiles();
 
-                    if (options.Prerendering != null && options.Prerendering.Enable && options.Prerendering.CacheResponse != null && options.Prerendering.CacheResponse.Enable)
+                    if (options.CacheResponse?.Enable == true)
                     {
-                        app.UseMiddleware<ResponseCacheMiddleware>(options.Prerendering.CacheResponse);
+                        app.UseMiddleware<ResponseCacheMiddleware>(options.CacheResponse);
                     };
 
                     app.UseSpa(_ =>
@@ -70,56 +68,14 @@ namespace Ws.Core.Extensions.Spa
                         _.Options.DefaultPage = options.DefaultPage;
                         _.Options.SourcePath = options.SourcePath;
                         _.Options.StartupTimeout = TimeSpan.FromSeconds(options.StartupTimeoutInSeconds);
-
-                        if (options.Prerendering != null && options.Prerendering.Enable)
-                        {
-                            _.UseSpaPrerendering(conf =>
-                            {
-                                if (!string.IsNullOrEmpty(options.Prerendering.BootModuleBuilderScript))
-                                    conf.BootModuleBuilder = new AngularCliBuilder(npmScript: options.Prerendering.BootModuleBuilderScript);
-                                conf.BootModulePath = options.Prerendering.BootModulePath;
-                                conf.ExcludeUrls = options.Prerendering.ExcludeUrls;
-                                if (options.Prerendering.ContextData != null && options.Prerendering.ContextData.Any())
-                                {
-                                    conf.SupplyData = (ctx, data) =>
-                                    {
-                                        foreach (var p in options.Prerendering.ContextData)
-                                        {
-                                            switch (p)
-                                            {
-                                                case "cookies":
-                                                    data[p] = ctx.Request?.Cookies;
-                                                    break;
-                                                case "features":
-                                                    data[p] = ctx.Features;
-                                                    break;
-                                                case "headers":
-                                                    data[p] = ctx.Request?.Headers;
-                                                    break;
-                                                case "items":
-                                                    data[p] = ctx.Items;
-                                                    break;
-                                                case "session":
-                                                    data[p] = ctx.Session;
-                                                    break;
-                                                case "user":
-                                                    data[p] = ctx.User;
-                                                    break;
-                                                case "webSockets":
-                                                    data[p] = ctx.WebSockets;
-                                                    break;
-                                            }
-                                        }
-                                    };
-                                }
-                            });
-                        }
-
+                        //_.Options.PackageManagerCommand = "npm run dev";
+                        
                         if (!string.IsNullOrEmpty(options.SpaDevelopmentServer))
                             _.UseProxyToSpaDevelopmentServer(new Uri(options.SpaDevelopmentServer));
-                        else if (!string.IsNullOrEmpty(options.CliServerScript))
-                            _.UseAngularCliServer(npmScript: options.CliServerScript);
-
+                        //else 
+                        if (!string.IsNullOrEmpty(options.CliServerScript))
+                            _.UseReactDevelopmentServer(npmScript: options.CliServerScript);
+                        
                     });
                 }
             }

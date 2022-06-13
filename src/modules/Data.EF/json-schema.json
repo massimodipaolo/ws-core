@@ -1,0 +1,240 @@
+{
+  "definitions": {
+    "IEnumerable<IEnumerable<String>>": {
+      "description": "Array of indented navigation paths to includei.e. for Order entity[   [\"OrderDetail\",\"Product\",\"Supplier\"],   [\"Customer\"]]",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/IEnumerable<String>-1"
+      }
+    },
+    "IEnumerable<MappingConfig>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/MappingConfig"
+      }
+    },
+    "IEnumerable<NavigationPaths>": {
+      "description": "Set custom navigation paths. This setting overrides the Enabled/Except properties",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/NavigationPaths"
+      }
+    },
+    "IEnumerable<PropertyConfig>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/PropertyConfig"
+      }
+    },
+    "IEnumerable<String>": {
+      "description": "List of typeof(T).FullName to exclude from then Enabled directive",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "IEnumerable<String>-1": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "IncludeNavigationPropertiesConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "list": {
+          "$ref": "#/definitions/Operation"
+        },
+        "find": {
+          "$ref": "#/definitions/Operation"
+        }
+      }
+    },
+    "MappingConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "nameSpace": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "table": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "schema": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "idColumnName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "idHasDefaultValue": {
+          "type": "boolean"
+        },
+        "properties": {
+          "$ref": "#/definitions/IEnumerable<PropertyConfig>"
+        }
+      }
+    },
+    "NavigationPaths": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "entity": {
+          "description": "typeof(T).FullName",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "paths": {
+          "$ref": "#/definitions/IEnumerable<IEnumerable<String>>"
+        }
+      }
+    },
+    "Operation": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "enable": {
+          "description": "Include the main navigation properties",
+          "type": "boolean"
+        },
+        "except": {
+          "$ref": "#/definitions/IEnumerable<String>"
+        },
+        "explicit": {
+          "$ref": "#/definitions/IEnumerable<NavigationPaths>"
+        }
+      }
+    },
+    "PropertyConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "column": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ignore": {
+          "type": "boolean"
+        },
+        "jsonConvert": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "hasConversion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "String[]": {
+      "description": "Excludes the given entity type from the model. This method is typically used to remove types from the model that were added by convention., i.e. `MyNamespace.MyClass, MyAssembly`",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "String[]-1": {
+      "description": "Serialize/deserialize type/interface, mapped on a text column",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "ignore": {
+      "$ref": "#/definitions/String[]"
+    },
+    "jsonConvert": {
+      "$ref": "#/definitions/String[]-1"
+    },
+    "mappings": {
+      "$ref": "#/definitions/IEnumerable<MappingConfig>"
+    },
+    "includeNavigationProperties": {
+      "$ref": "#/definitions/IncludeNavigationPropertiesConfig"
+    }
+  }
+}

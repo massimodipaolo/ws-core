@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Ws.Core.Extensions.Data
@@ -14,19 +15,27 @@ namespace Ws.Core.Extensions.Data
 
     public class DbConnection
     {
+        [Description("Connection alias")]
+        [DefaultValue("default")]
         public string Name { get; set; } = "default";
         public string ConnectionString { get; set; }
         public string Database { get; set; }
-        public ServiceResolverCriteria ServiceResolver { get; set; } = new ServiceResolverCriteria();
+        [Description("Criteria selectors (assembly/namespace/type) to map IEntity to a connection")]
+        public ServiceResolverCriteria ServiceResolver { get; set; } = new();
         public class ServiceResolverCriteria
         {
-            public ServiceResolverSelector Include { get; set; } = new ServiceResolverSelector();
-            public ServiceResolverSelector Exclude { get; set; } = new ServiceResolverSelector();
+            [Description("Criteria to include IEntity")]
+            public ServiceResolverSelector Include { get; set; } = new();
+            [Description("Criteria to exclude IEntity")]
+            public ServiceResolverSelector Exclude { get; set; } = new();
         }
         public class ServiceResolverSelector
         {
+            [Description("Type.Assembly, i.e. xCore")]
             public string[] Assembly { get; set; } = Array.Empty<string>();
+            [Description("Type.Namespace, i.e. xCore.Models.Cms")]
             public string[] Namespace { get; set; } = Array.Empty<string>();
+            [Description("Type.FullName, i.e. xCore.Models.Cms.User")]
             public string[] FullName { get; set; } = Array.Empty<string>();
         }
     }

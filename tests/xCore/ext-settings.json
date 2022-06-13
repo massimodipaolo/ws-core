@@ -5,13 +5,13 @@
     "folder": "Extensions",
     "enableShutDownOnChange": false,
     "assemblies": {
-      "Ws.Core.Extensions.ImageProcessor": { "priority": 90 },
+      "Ws.Core.Extensions.ImageProcessor": { "priority": 90},
       "Ws.Core.Extensions.StaticFiles": {
         "priority": 100,
         "options": {
           "paths": [
             {
-              "enableDirectoryBrowser": true,
+              "enableDirectoryBrowser": false,
               "headers": {
                 "Cache-Control": "public,max-age=43200"
               }
@@ -59,6 +59,17 @@
               "includeControllerComments": true
             }
           }
+        }
+      },
+      "_Ws.Core.Extensions.Spa": {
+        "priority": 9999,
+        "options": {
+          "sourcePath": "app",
+          "rootPath": "app/out",
+          "defaultPage": "/index.html",
+          "_cliServerScript": "dev",
+          "_spaDevelopmentServer": "http://localhost:3000",
+          "cacheResponse": {"enable": true, "addEarlyHints": {"enable": true}}
         }
       },
       "Ws.Core.Extensions.Data.EF": {
@@ -377,19 +388,19 @@
         "priority": 999,
         "options": {
           "httpLogging": { "enable": false },
-          "profiler": { "enable": true }
+          "profiler": { "enable": true, "config": { "EnableDebugMode": true, "ColorScheme": "Light"} }
         }
       },
       "Ws.Core.Extensions.Gateway": {
         "priority": 999,
         "options": {
-          "mapWhen": "/bing",
-          "ocelot": {
+          "MapWhen": "/bing",
+          "Ocelot": {
             "Routes": [
               {
                 "UpstreamPathTemplate": "/bing/{everything}",
                 "_UpstreamHttpMethod": [ "OPTIONS", "POST", "PUT", "GET", "DELETE" ],
-                "_UpstreamHost": "host.com",
+                "_UpstreamHost": "host.com",                
                 "DangerousAcceptAnyServerCertificateValidator": true,
                 "DownstreamPathTemplate": "/search?q={everything}",
                 "DownstreamScheme": "https",

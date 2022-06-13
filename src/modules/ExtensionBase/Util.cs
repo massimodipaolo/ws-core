@@ -5,6 +5,7 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyModel;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Serialization;
 
 namespace Ws.Core.Extensions.Base
 {
@@ -17,6 +18,8 @@ namespace Ws.Core.Extensions.Base
         public Util()
         {
         }
+
+        #region Reflection
 
         public static IEnumerable<Assembly> GetAllAssemblies()
         {
@@ -69,6 +72,9 @@ namespace Ws.Core.Extensions.Base
                 .Where(t => t.FullName == typeFullName)?
                 .FirstOrDefault();
 
+        #endregion
+
+        #region Tools
         public sealed class Locker : IDisposable
         {
             private SemaphoreSlim _semaphoreSlim { get; set; }
@@ -105,6 +111,8 @@ namespace Ws.Core.Extensions.Base
                 _semaphoreSlim.Release();
             }
         }
+
+        #endregion Tool
 
     }
 }

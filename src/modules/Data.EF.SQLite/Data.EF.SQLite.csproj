@@ -7,7 +7,8 @@
 	  <AssemblyName>Ws.Core.Extensions.Data.EF.SQLite</AssemblyName>
 	  <RootNamespace>Ws.Core.Extensions.Data.EF.SQLite</RootNamespace>
 	  <Authors>Massimo Di Paolo</Authors>
-	  <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>	  
+	  <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
+	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>	  
   </PropertyGroup>
 
 	<PropertyGroup>

@@ -1,0 +1,1271 @@
+{
+  "definitions": {
+    "Assembly": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "definedTypes": {
+          "$ref": "#/definitions/IEnumerable<TypeInfo>"
+        },
+        "exportedTypes": {
+          "$ref": "#/definitions/IEnumerable<Type>"
+        },
+        "codeBase": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "entryPoint": {
+          "$ref": "#/definitions/MethodInfo"
+        },
+        "fullName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "imageRuntimeVersion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "isDynamic": {
+          "type": "boolean"
+        },
+        "location": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reflectionOnly": {
+          "type": "boolean"
+        },
+        "isCollectible": {
+          "type": "boolean"
+        },
+        "isFullyTrusted": {
+          "type": "boolean"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "escapedCodeBase": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "manifestModule": {
+          "$ref": "#/definitions/Module"
+        },
+        "modules": {
+          "$ref": "#/definitions/IEnumerable<Module>"
+        },
+        "globalAssemblyCache": {
+          "type": "boolean"
+        },
+        "hostContext": {
+          "type": "integer"
+        },
+        "securityRuleSet": {
+          "type": "string",
+          "enum": [
+            "None",
+            "Level1",
+            "Level2"
+          ]
+        }
+      }
+    },
+    "CommandTimeOutConfig": {
+      "description": "Max execution time in seconds",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "read": {
+          "type": "integer",
+          "default": 60
+        },
+        "write": {
+          "type": "integer",
+          "default": 120
+        },
+        "sync": {
+          "type": "integer",
+          "default": 180
+        }
+      }
+    },
+    "ConstructorInfo": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memberType": {
+          "type": "string",
+          "enum": [
+            "Constructor",
+            "Event",
+            "Field",
+            "Method",
+            "Property",
+            "TypeInfo",
+            "Custom",
+            "NestedType",
+            "All"
+          ]
+        },
+        "attributes": {
+          "type": "string",
+          "enum": [
+            "ReuseSlot",
+            "PrivateScope",
+            "Private",
+            "FamANDAssem",
+            "Assembly",
+            "Family",
+            "FamORAssem",
+            "Public",
+            "MemberAccessMask",
+            "UnmanagedExport",
+            "Static",
+            "Final",
+            "Virtual",
+            "HideBySig",
+            "NewSlot",
+            "VtableLayoutMask",
+            "CheckAccessOnOverride",
+            "Abstract",
+            "SpecialName",
+            "RTSpecialName",
+            "PinvokeImpl",
+            "HasSecurity",
+            "RequireSecObject",
+            "ReservedMask"
+          ]
+        },
+        "methodImplementationFlags": {
+          "type": "string",
+          "enum": [
+            "IL",
+            "Managed",
+            "Native",
+            "OPTIL",
+            "Runtime",
+            "CodeTypeMask",
+            "Unmanaged",
+            "ManagedMask",
+            "NoInlining",
+            "ForwardRef",
+            "Synchronized",
+            "NoOptimization",
+            "PreserveSig",
+            "AggressiveInlining",
+            "AggressiveOptimization",
+            "InternalCall",
+            "MaxMethodImplVal"
+          ]
+        },
+        "callingConvention": {
+          "type": "string",
+          "enum": [
+            "Standard",
+            "VarArgs",
+            "Any",
+            "HasThis",
+            "ExplicitThis"
+          ]
+        },
+        "isAbstract": {
+          "type": "boolean"
+        },
+        "isConstructor": {
+          "type": "boolean"
+        },
+        "isFinal": {
+          "type": "boolean"
+        },
+        "isHideBySig": {
+          "type": "boolean"
+        },
+        "isSpecialName": {
+          "type": "boolean"
+        },
+        "isStatic": {
+          "type": "boolean"
+        },
+        "isVirtual": {
+          "type": "boolean"
+        },
+        "isAssembly": {
+          "type": "boolean"
+        },
+        "isFamily": {
+          "type": "boolean"
+        },
+        "isFamilyAndAssembly": {
+          "type": "boolean"
+        },
+        "isFamilyOrAssembly": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
+        },
+        "isPublic": {
+          "type": "boolean"
+        },
+        "isConstructedGenericMethod": {
+          "type": "boolean"
+        },
+        "isGenericMethod": {
+          "type": "boolean"
+        },
+        "isGenericMethodDefinition": {
+          "type": "boolean"
+        },
+        "containsGenericParameters": {
+          "type": "boolean"
+        },
+        "methodHandle": {
+          "$ref": "#/definitions/RuntimeMethodHandle"
+        },
+        "isSecurityCritical": {
+          "type": "boolean"
+        },
+        "isSecuritySafeCritical": {
+          "type": "boolean"
+        },
+        "isSecurityTransparent": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "declaringType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reflectedType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "module": {
+          "$ref": "#/definitions/Module"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "isCollectible": {
+          "type": "boolean"
+        },
+        "metadataToken": {
+          "type": "integer"
+        }
+      }
+    },
+    "CustomAttributeData": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "attributeType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "constructor": {
+          "$ref": "#/definitions/ConstructorInfo"
+        },
+        "constructorArguments": {
+          "$ref": "#/definitions/IList<CustomAttributeTypedArgument>"
+        },
+        "namedArguments": {
+          "$ref": "#/definitions/IList<CustomAttributeNamedArgument>"
+        }
+      }
+    },
+    "CustomAttributeNamedArgument": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "memberInfo": {
+          "$ref": "#/definitions/MemberInfo"
+        },
+        "typedValue": {
+          "$ref": "#/definitions/CustomAttributeTypedArgument"
+        },
+        "memberName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "isField": {
+          "type": "boolean"
+        }
+      }
+    },
+    "CustomAttributeTypedArgument": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "argumentType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "value": {}
+      }
+    },
+    "DbConnection": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "name": {
+          "description": "Connection alias",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": "default"
+        },
+        "connectionString": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "database": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "serviceResolver": {
+          "$ref": "#/definitions/ServiceResolverCriteria"
+        }
+      }
+    },
+    "Dictionary<String, String>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "Func<DbConnection, DbConnection>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target": {},
+        "method": {
+          "$ref": "#/definitions/MethodInfo"
+        }
+      }
+    },
+    "Func<DbTransaction, DbTransaction>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target": {},
+        "method": {
+          "$ref": "#/definitions/MethodInfo"
+        }
+      }
+    },
+    "Func<Object, String, Object>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target": {},
+        "method": {
+          "$ref": "#/definitions/MethodInfo"
+        }
+      }
+    },
+    "ICustomAttributeProvider": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "IEnumerable<CustomAttributeData>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/CustomAttributeData"
+      }
+    },
+    "IEnumerable<DbConnection>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/DbConnection"
+      }
+    },
+    "IEnumerable<MappingConfig>": {
+      "description": "Map entity type to a set of stored procedure",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/MappingConfig"
+      }
+    },
+    "IEnumerable<Module>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/Module"
+      }
+    },
+    "IEnumerable<Type>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "IEnumerable<TypeInfo>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "IList<CustomAttributeNamedArgument>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/CustomAttributeNamedArgument"
+      }
+    },
+    "IList<CustomAttributeTypedArgument>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/CustomAttributeTypedArgument"
+      }
+    },
+    "List<Object>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {}
+    },
+    "List<String>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "MappingConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "nameSpace": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "description": "Entity type name => typeof(T).Name",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "schema": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": "main StoredProcedureConfig.Schema"
+        },
+        "storedProcedure": {
+          "description": "Stored procedure name. Will be trasformed in {schema}.entity_{name}_{method}",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "methods": {
+          "$ref": "#/definitions/String[]-3"
+        },
+        "commandTimeOut": {
+          "$ref": "#/definitions/CommandTimeOutConfig"
+        }
+      }
+    },
+    "MemberInfo": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memberType": {
+          "type": "string",
+          "enum": [
+            "Constructor",
+            "Event",
+            "Field",
+            "Method",
+            "Property",
+            "TypeInfo",
+            "Custom",
+            "NestedType",
+            "All"
+          ]
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "declaringType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reflectedType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "module": {
+          "$ref": "#/definitions/Module"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "isCollectible": {
+          "type": "boolean"
+        },
+        "metadataToken": {
+          "type": "integer"
+        }
+      }
+    },
+    "MergeConfig": {
+      "description": "EFCore.BulkExtensions.BulkConfig merge options",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "useTempDB": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "bulkCopyTimeout": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "updateByProperties": {
+          "$ref": "#/definitions/List<String>"
+        },
+        "propertiesToExcludeOnUpdate": {
+          "$ref": "#/definitions/List<String>"
+        },
+        "propertiesToExcludeOnCompare": {
+          "$ref": "#/definitions/List<String>"
+        },
+        "propertiesToExclude": {
+          "$ref": "#/definitions/List<String>"
+        },
+        "propertiesToIncludeOnUpdate": {
+          "$ref": "#/definitions/List<String>"
+        },
+        "propertiesToIncludeOnCompare": {
+          "$ref": "#/definitions/List<String>"
+        },
+        "propertiesToInclude": {
+          "$ref": "#/definitions/List<String>"
+        },
+        "preserveInsertOrder": {
+          "type": "boolean"
+        },
+        "setOutputIdentity": {
+          "type": "boolean"
+        },
+        "batchSize": {
+          "type": "integer"
+        },
+        "notifyAfter": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "enableStreaming": {
+          "type": "boolean"
+        },
+        "uniqueTableNameTempDb": {
+          "type": "boolean"
+        },
+        "customDestinationTableName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "customSourceTableName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "customSourceDestinationMappingColumns": {
+          "$ref": "#/definitions/Dictionary<String, String>"
+        },
+        "trackingEntities": {
+          "type": "boolean"
+        },
+        "withHoldlock": {
+          "type": "boolean"
+        },
+        "calculateStats": {
+          "type": "boolean"
+        },
+        "ignoreRowVersion": {
+          "type": "boolean"
+        },
+        "statsInfo": {
+          "$ref": "#/definitions/StatsInfo"
+        },
+        "timeStampInfo": {
+          "$ref": "#/definitions/TimeStampInfo"
+        },
+        "enableShadowProperties": {
+          "type": "boolean"
+        },
+        "shadowPropertyValue": {
+          "$ref": "#/definitions/Func<Object, String, Object>"
+        },
+        "temporalColumns": {
+          "$ref": "#/definitions/List<String>"
+        },
+        "includeGraph": {
+          "type": "boolean"
+        },
+        "omitClauseExistsExcept": {
+          "type": "boolean"
+        },
+        "doNotUpdateIfTimeStampChanged": {
+          "type": "boolean"
+        },
+        "srid": {
+          "type": "integer"
+        },
+        "dateTime2PrecisionForceRound": {
+          "type": "boolean"
+        },
+        "onSaveChangesSetFK": {
+          "type": "boolean"
+        },
+        "sqlBulkCopyOptions": {
+          "type": "string",
+          "enum": [
+            "Default",
+            "KeepIdentity",
+            "CheckConstraints",
+            "TableLock",
+            "KeepNulls",
+            "FireTriggers",
+            "UseInternalTransaction",
+            "AllowEncryptedValueModifications"
+          ]
+        },
+        "underlyingConnection": {
+          "$ref": "#/definitions/Func<DbConnection, DbConnection>"
+        },
+        "underlyingTransaction": {
+          "$ref": "#/definitions/Func<DbTransaction, DbTransaction>"
+        }
+      }
+    },
+    "MethodInfo": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memberType": {
+          "type": "string",
+          "enum": [
+            "Constructor",
+            "Event",
+            "Field",
+            "Method",
+            "Property",
+            "TypeInfo",
+            "Custom",
+            "NestedType",
+            "All"
+          ]
+        },
+        "returnParameter": {
+          "$ref": "#/definitions/ParameterInfo"
+        },
+        "returnType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "returnTypeCustomAttributes": {
+          "$ref": "#/definitions/ICustomAttributeProvider"
+        },
+        "attributes": {
+          "type": "string",
+          "enum": [
+            "ReuseSlot",
+            "PrivateScope",
+            "Private",
+            "FamANDAssem",
+            "Assembly",
+            "Family",
+            "FamORAssem",
+            "Public",
+            "MemberAccessMask",
+            "UnmanagedExport",
+            "Static",
+            "Final",
+            "Virtual",
+            "HideBySig",
+            "NewSlot",
+            "VtableLayoutMask",
+            "CheckAccessOnOverride",
+            "Abstract",
+            "SpecialName",
+            "RTSpecialName",
+            "PinvokeImpl",
+            "HasSecurity",
+            "RequireSecObject",
+            "ReservedMask"
+          ]
+        },
+        "methodImplementationFlags": {
+          "type": "string",
+          "enum": [
+            "IL",
+            "Managed",
+            "Native",
+            "OPTIL",
+            "Runtime",
+            "CodeTypeMask",
+            "Unmanaged",
+            "ManagedMask",
+            "NoInlining",
+            "ForwardRef",
+            "Synchronized",
+            "NoOptimization",
+            "PreserveSig",
+            "AggressiveInlining",
+            "AggressiveOptimization",
+            "InternalCall",
+            "MaxMethodImplVal"
+          ]
+        },
+        "callingConvention": {
+          "type": "string",
+          "enum": [
+            "Standard",
+            "VarArgs",
+            "Any",
+            "HasThis",
+            "ExplicitThis"
+          ]
+        },
+        "isAbstract": {
+          "type": "boolean"
+        },
+        "isConstructor": {
+          "type": "boolean"
+        },
+        "isFinal": {
+          "type": "boolean"
+        },
+        "isHideBySig": {
+          "type": "boolean"
+        },
+        "isSpecialName": {
+          "type": "boolean"
+        },
+        "isStatic": {
+          "type": "boolean"
+        },
+        "isVirtual": {
+          "type": "boolean"
+        },
+        "isAssembly": {
+          "type": "boolean"
+        },
+        "isFamily": {
+          "type": "boolean"
+        },
+        "isFamilyAndAssembly": {
+          "type": "boolean"
+        },
+        "isFamilyOrAssembly": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
+        },
+        "isPublic": {
+          "type": "boolean"
+        },
+        "isConstructedGenericMethod": {
+          "type": "boolean"
+        },
+        "isGenericMethod": {
+          "type": "boolean"
+        },
+        "isGenericMethodDefinition": {
+          "type": "boolean"
+        },
+        "containsGenericParameters": {
+          "type": "boolean"
+        },
+        "methodHandle": {
+          "$ref": "#/definitions/RuntimeMethodHandle"
+        },
+        "isSecurityCritical": {
+          "type": "boolean"
+        },
+        "isSecuritySafeCritical": {
+          "type": "boolean"
+        },
+        "isSecurityTransparent": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "declaringType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reflectedType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "module": {
+          "$ref": "#/definitions/Module"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "isCollectible": {
+          "type": "boolean"
+        },
+        "metadataToken": {
+          "type": "integer"
+        }
+      }
+    },
+    "Module": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "assembly": {
+          "$ref": "#/definitions/Assembly"
+        },
+        "fullyQualifiedName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mdStreamVersion": {
+          "type": "integer"
+        },
+        "moduleVersionId": {
+          "type": "string"
+        },
+        "scopeName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "moduleHandle": {
+          "$ref": "#/definitions/ModuleHandle"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "metadataToken": {
+          "type": "integer"
+        }
+      }
+    },
+    "ModuleHandle": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "mdStreamVersion": {
+          "type": "integer"
+        }
+      }
+    },
+    "ParameterInfo": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "attributes": {
+          "type": "string",
+          "enum": [
+            "None",
+            "In",
+            "Out",
+            "Lcid",
+            "Retval",
+            "Optional",
+            "HasDefault",
+            "HasFieldMarshal",
+            "Reserved3",
+            "Reserved4",
+            "ReservedMask"
+          ]
+        },
+        "member": {
+          "$ref": "#/definitions/MemberInfo"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parameterType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "position": {
+          "type": "integer"
+        },
+        "isIn": {
+          "type": "boolean"
+        },
+        "isLcid": {
+          "type": "boolean"
+        },
+        "isOptional": {
+          "type": "boolean"
+        },
+        "isOut": {
+          "type": "boolean"
+        },
+        "isRetval": {
+          "type": "boolean"
+        },
+        "defaultValue": {},
+        "rawDefaultValue": {},
+        "hasDefaultValue": {
+          "type": "boolean"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "metadataToken": {
+          "type": "integer"
+        }
+      }
+    },
+    "RuntimeMethodHandle": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      }
+    },
+    "ServiceResolverCriteria": {
+      "description": "Criteria selectors (assembly/namespace/type) to map IEntity to a connection",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "include": {
+          "$ref": "#/definitions/ServiceResolverSelector"
+        },
+        "exclude": {
+          "$ref": "#/definitions/ServiceResolverSelector-1"
+        }
+      }
+    },
+    "ServiceResolverSelector": {
+      "description": "Criteria to include IEntity",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "assembly": {
+          "$ref": "#/definitions/String[]"
+        },
+        "namespace": {
+          "$ref": "#/definitions/String[]-1"
+        },
+        "fullName": {
+          "$ref": "#/definitions/String[]-2"
+        }
+      }
+    },
+    "ServiceResolverSelector-1": {
+      "description": "Criteria to exclude IEntity",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "assembly": {
+          "$ref": "#/definitions/String[]"
+        },
+        "namespace": {
+          "$ref": "#/definitions/String[]-1"
+        },
+        "fullName": {
+          "$ref": "#/definitions/String[]-2"
+        }
+      }
+    },
+    "StatsInfo": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "statsNumberInserted": {
+          "type": "integer"
+        },
+        "statsNumberUpdated": {
+          "type": "integer"
+        },
+        "statsNumberDeleted": {
+          "type": "integer"
+        }
+      }
+    },
+    "StoredProcedureConfig": {
+      "description": "Use stored procedure instead of EF methods",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "schema": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": "dbo"
+        },
+        "mappings": {
+          "$ref": "#/definitions/IEnumerable<MappingConfig>"
+        }
+      }
+    },
+    "String[]": {
+      "description": "Type.Assembly, i.e. xCore",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "String[]-1": {
+      "description": "Type.Namespace, i.e. xCore.Models.Cms",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "String[]-2": {
+      "description": "Type.FullName, i.e. xCore.Models.Cms.User",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "String[]-3": {
+      "description": "Call sp for one or more methods only: List,Find,Add,AddMany,Update,UpdateMany,Merge,Delete,DeleteMany; empty => all methods",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "TimeStampInfo": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "numberOfSkippedForUpdate": {
+          "type": "integer"
+        },
+        "entitiesOutput": {
+          "$ref": "#/definitions/List<Object>"
+        }
+      }
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "connections": {
+      "$ref": "#/definitions/IEnumerable<DbConnection>"
+    },
+    "serviceLifetime": {
+      "type": "string",
+      "default": "Scoped",
+      "enum": [
+        "Singleton",
+        "Scoped",
+        "Transient"
+      ]
+    },
+    "storedProcedure": {
+      "$ref": "#/definitions/StoredProcedureConfig"
+    },
+    "merge": {
+      "$ref": "#/definitions/MergeConfig"
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "definitions": {
+    "Endpoint": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "address": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "port": {
+          "type": "integer"
+        },
+        "userName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "password": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "enableSsl": {
+          "type": "boolean"
+        },
+        "skipCertificateValidation": {
+          "type": "boolean"
+        }
+      }
+    },
+    "IEnumerable<Endpoint>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/Endpoint"
+      }
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "senders": {
+      "$ref": "#/definitions/IEnumerable<Endpoint>"
+    },
+    "receivers": {
+      "$ref": "#/definitions/IEnumerable<Endpoint>"
+    }
+  }
+}

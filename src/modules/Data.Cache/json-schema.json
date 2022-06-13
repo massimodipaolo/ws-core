@@ -1,0 +1,45 @@
+{
+  "definitions": {
+    "Duration": {
+      "description": "Tier cache expiration in minutes",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "fast": {
+          "type": "integer",
+          "default": 10
+        },
+        "medium": {
+          "type": "integer",
+          "default": 60
+        },
+        "slow": {
+          "type": "integer",
+          "default": 240
+        },
+        "never": {
+          "type": "integer",
+          "default": 1440
+        }
+      }
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "Memory",
+        "Distributed"
+      ]
+    },
+    "entryExpirationInMinutes": {
+      "$ref": "#/definitions/Duration"
+    }
+  }
+}

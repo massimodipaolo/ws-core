@@ -1,0 +1,221 @@
+{
+  "definitions": {
+    "CacheResponseOptions": {
+      "description": "Cache prerendering output, injecting app ICache implementation",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "default": true
+        },
+        "addEarlyHints": {
+          "$ref": "#/definitions/EarlyHintsOptions"
+        },
+        "skipQueryStringPath": {
+          "description": "If true, don't cache parameterized path",
+          "type": "boolean",
+          "default": true
+        },
+        "skipFilePath": {
+          "description": "If true, cache only extensionless path",
+          "type": "boolean",
+          "default": true
+        },
+        "excludePaths": {
+          "$ref": "#/definitions/String[]-1"
+        },
+        "includePaths": {
+          "$ref": "#/definitions/String[]-2"
+        }
+      }
+    },
+    "Dictionary<String, String>": {
+      "description": "Dictionary of key/value response header, i.e. \"Cache-Control\": \"public,max-age=43200\"",
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "Dictionary<String, String>-1": {
+      "description": "Dictionary of key/value extention/content-type, i.e. \".myapp\": \"application/x-msdownload\"",
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "EarlyHintsOptions": {
+      "description": "Browsers that support preload will initiate earlier fetch of page resources: https://www.w3.org/TR/preload",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "default": false
+        },
+        "types": {
+          "$ref": "#/definitions/String[]"
+        },
+        "maxItemsPerType": {
+          "type": "integer",
+          "default": 10
+        },
+        "allowServerPush": {
+          "description": "https://www.w3.org/TR/preload/#server-push-http-2",
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "Options": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "path": {
+          "description": "Relative or UNC path",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "requestPath": {
+          "description": "Virtual path, i.e. /downloads",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "headers": {
+          "$ref": "#/definitions/Dictionary<String, String>"
+        },
+        "mimEtypes": {
+          "$ref": "#/definitions/Dictionary<String, String>-1"
+        },
+        "isRelativePath": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Options[]": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/Options"
+      }
+    },
+    "String[]": {
+      "description": "\"script\", \"style\", \"image\": https://www.w3.org/TR/preload/#as-attribute",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "String[]-1": {
+      "description": "Array of path prefixes for which cache is disabled",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "String[]-2": {
+      "description": "Array of path prefixes for which cache is always enabled",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "rootPath": {
+      "description": "Path relative to the application root, of the directory in which the physical files are located. If the specified directory does not exist, then the SpaStaticFiles middleware will not serve any static files.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": "client/dist"
+    },
+    "defaultPage": {
+      "description": "Default page that hosts your SPA user interface",
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": "/index.html"
+    },
+    "sourcePath": {
+      "description": "Path, relative to the application working directory, of the directory that contains the SPA source files during development.The directory may not exist in published applications",
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": "client"
+    },
+    "startupTimeoutInSeconds": {
+      "description": "Maximum duration that a request will wait for the SPA to become ready to serve to the client",
+      "type": "integer",
+      "default": 90
+    },
+    "spaDevelopmentServer": {
+      "description": "Use only in development! Forward incoming requests to a local development server,i.e. http://localhost:3000.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "cliServerScript": {
+      "description": "Use only in development! The name of the script in your package.json file that launches the React CLI process, i.e. start. This handles requests by passing them through to an instance of the React CLI server; alternative to spaDevelopmentServer",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "staticFilesPaths": {
+      "$ref": "#/definitions/Options[]"
+    },
+    "cacheResponse": {
+      "$ref": "#/definitions/CacheResponseOptions"
+    }
+  }
+}

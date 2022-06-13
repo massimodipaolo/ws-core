@@ -1,0 +1,93 @@
+{
+  "definitions": {
+    "Duration": {
+      "description": "Tier cache expiration in minutes",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "fast": {
+          "type": "integer",
+          "default": 10
+        },
+        "medium": {
+          "type": "integer",
+          "default": 60
+        },
+        "slow": {
+          "type": "integer",
+          "default": 240
+        },
+        "never": {
+          "type": "integer",
+          "default": 1440
+        }
+      }
+    },
+    "ISystemClock": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "utcNow": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "SqlServerCacheOptions": {
+      "description": "SqlServer cache client",
+      "type": [
+        "object",
+        "null"
+      ],
+      "default": "ConnString: local Trusted; Tbl: dbo.Entry",
+      "properties": {
+        "systemClock": {
+          "$ref": "#/definitions/ISystemClock"
+        },
+        "expiredItemsDeletionInterval": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "connectionString": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "schemaName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tableName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "defaultSlidingExpiration": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "client": {
+      "$ref": "#/definitions/SqlServerCacheOptions"
+    },
+    "entryExpirationInMinutes": {
+      "$ref": "#/definitions/Duration"
+    }
+  }
+}

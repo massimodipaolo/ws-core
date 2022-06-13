@@ -21,7 +21,7 @@ namespace Ws.Core.Extensions.Data.EF.MySql
             {
                 var hcBuilder = builder.Services.AddHealthChecks();
 
-                ServiceLifetime lifetime = ServiceLifetime.Scoped;
+                ServiceLifetime lifetime = options.ServiceLifetime;
                 HashSet<Data.DbConnectionSelector> connectionSelectorTable = new();
                 var _index = 0;
                 foreach (var conn in connections)

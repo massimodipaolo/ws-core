@@ -11,7 +11,8 @@
     <Description>DbContext and IRepository interface for EF-based extensions</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>Health check</PackageReleaseNotes>
-    <PackageTags>EF data mapper</PackageTags> 
+    <PackageTags>EF data mapper</PackageTags>
+	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <PropertyGroup>

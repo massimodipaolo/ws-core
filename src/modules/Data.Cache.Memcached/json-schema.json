@@ -1,0 +1,225 @@
+{
+  "definitions": {
+    "Authentication": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parameters": {
+          "$ref": "#/definitions/Dictionary<String, String>"
+        }
+      }
+    },
+    "Dictionary<String, String>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "Duration": {
+      "description": "Tier cache expiration in minutes",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "fast": {
+          "type": "integer",
+          "default": 10
+        },
+        "medium": {
+          "type": "integer",
+          "default": 60
+        },
+        "slow": {
+          "type": "integer",
+          "default": 240
+        },
+        "never": {
+          "type": "integer",
+          "default": 1440
+        }
+      }
+    },
+    "INodeFailurePolicyFactory": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "IProviderFactory<IMemcachedNodeLocator>": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "List<Server>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/Server"
+      }
+    },
+    "MemcachedClientOptions": {
+      "description": "Memcached client options",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "enum": [
+            "Binary",
+            "Text"
+          ]
+        },
+        "socketPool": {
+          "$ref": "#/definitions/SocketPoolOptions"
+        },
+        "servers": {
+          "$ref": "#/definitions/List<Server>"
+        },
+        "authentication": {
+          "$ref": "#/definitions/Authentication"
+        },
+        "keyTransformer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "transcoder": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nodeLocatorFactory": {
+          "$ref": "#/definitions/IProviderFactory<IMemcachedNodeLocator>"
+        },
+        "value": {
+          "$ref": "#/definitions/MemcachedClientOptions-1"
+        }
+      }
+    },
+    "MemcachedClientOptions-1": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "enum": [
+            "Binary",
+            "Text"
+          ]
+        },
+        "socketPool": {
+          "$ref": "#/definitions/SocketPoolOptions"
+        },
+        "servers": {
+          "$ref": "#/definitions/List<Server>"
+        },
+        "authentication": {
+          "$ref": "#/definitions/Authentication"
+        },
+        "keyTransformer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "transcoder": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nodeLocatorFactory": {
+          "$ref": "#/definitions/IProviderFactory<IMemcachedNodeLocator>"
+        },
+        "value": {
+          "$ref": "#/definitions/MemcachedClientOptions-1"
+        }
+      }
+    },
+    "Server": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "address": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "port": {
+          "type": "integer"
+        }
+      }
+    },
+    "SocketPoolOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "minPoolSize": {
+          "type": "integer"
+        },
+        "maxPoolSize": {
+          "type": "integer"
+        },
+        "connectionTimeout": {
+          "type": "string"
+        },
+        "receiveTimeout": {
+          "type": "string"
+        },
+        "deadTimeout": {
+          "type": "string"
+        },
+        "queueTimeout": {
+          "type": "string"
+        },
+        "initPoolTimeout": {
+          "type": "string"
+        },
+        "failurePolicyFactory": {
+          "$ref": "#/definitions/INodeFailurePolicyFactory"
+        }
+      }
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "client": {
+      "$ref": "#/definitions/MemcachedClientOptions"
+    },
+    "entryExpirationInMinutes": {
+      "$ref": "#/definitions/Duration"
+    }
+  }
+}

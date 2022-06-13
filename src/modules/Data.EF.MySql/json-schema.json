@@ -1,0 +1,151 @@
+{
+  "definitions": {
+    "DbConnection": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "name": {
+          "description": "Connection alias",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": "default"
+        },
+        "connectionString": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "database": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "serviceResolver": {
+          "$ref": "#/definitions/ServiceResolverCriteria"
+        }
+      }
+    },
+    "IEnumerable<DbConnection>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/DbConnection"
+      }
+    },
+    "ServiceResolverCriteria": {
+      "description": "Criteria selectors (assembly/namespace/type) to map IEntity to a connection",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "include": {
+          "$ref": "#/definitions/ServiceResolverSelector"
+        },
+        "exclude": {
+          "$ref": "#/definitions/ServiceResolverSelector-1"
+        }
+      }
+    },
+    "ServiceResolverSelector": {
+      "description": "Criteria to include IEntity",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "assembly": {
+          "$ref": "#/definitions/String[]"
+        },
+        "namespace": {
+          "$ref": "#/definitions/String[]-1"
+        },
+        "fullName": {
+          "$ref": "#/definitions/String[]-2"
+        }
+      }
+    },
+    "ServiceResolverSelector-1": {
+      "description": "Criteria to exclude IEntity",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "assembly": {
+          "$ref": "#/definitions/String[]"
+        },
+        "namespace": {
+          "$ref": "#/definitions/String[]-1"
+        },
+        "fullName": {
+          "$ref": "#/definitions/String[]-2"
+        }
+      }
+    },
+    "String[]": {
+      "description": "Type.Assembly, i.e. xCore",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "String[]-1": {
+      "description": "Type.Namespace, i.e. xCore.Models.Cms",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "String[]-2": {
+      "description": "Type.FullName, i.e. xCore.Models.Cms.User",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "connections": {
+      "$ref": "#/definitions/IEnumerable<DbConnection>"
+    },
+    "serviceLifetime": {
+      "type": "string",
+      "enum": [
+        "Singleton",
+        "Scoped",
+        "Transient"
+      ]
+    }
+  }
+}

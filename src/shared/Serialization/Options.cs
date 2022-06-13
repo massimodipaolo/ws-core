@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -7,9 +8,11 @@ namespace Ws.Core.Shared.Serialization
 {
     public class Options
     {
-        
+        [DefaultValue(NullValueHandlingOptions.Ignore)]
         public NullValueHandlingOptions NullValueHandling { get; set; } = NullValueHandlingOptions.Ignore;
+        [DefaultValue(FormattingOptions.None)]
         public FormattingOptions Formatting { get; set; } = FormattingOptions.None;
+        [DefaultValue(ReferenceLoopHandlingOptions.Serialize)]
         public ReferenceLoopHandlingOptions ReferenceLoopHandling { get; set; } = ReferenceLoopHandlingOptions.Serialize;
 
         /// <summary>
@@ -67,11 +70,12 @@ namespace Ws.Core.Shared.Serialization
             //     Serialize loop references.
             Serialize
         }
-        #endregion 
+        #endregion
 
         /// <summary>
         /// List of assembly/JsonConvert type to apply
         /// </summary>
+        [Description("List of assembly/JsonConvert type to apply")]
         public JsonConverterDiscover[] Converters { get; set; } = Array.Empty<JsonConverterDiscover>();
 
         public class JsonConverterDiscover
@@ -79,8 +83,10 @@ namespace Ws.Core.Shared.Serialization
             /// <summary>
             /// Assembly full name
             /// </summary>
+            [Description("Assembly full name")]
             public string Assembly { get; set; }
             // JsonConverter class full name
+            [Description("JsonConverter class full name")]
             public string Type { get; set; }
         }
 

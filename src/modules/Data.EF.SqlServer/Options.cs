@@ -3,20 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using Ws.Core.Extensions.Base;
 using Microsoft.Extensions.DependencyInjection;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Ws.Core.Extensions.Data.EF.SqlServer
 {
-    public class Options : IOptions
+    public class Options: IOptions
     {
         public IEnumerable<Data.DbConnection> Connections { get; set; }
+        [DefaultValue(ServiceLifetime.Scoped)]
         public ServiceLifetime ServiceLifetime { get; set; } = ServiceLifetime.Scoped;
+        [Description("Use stored procedure instead of EF methods")]
         public StoredProcedureConfig StoredProcedure { get; set; }
         public class StoredProcedureConfig
         {
             /// <summary>
             /// Stored procedure schema; default: dbo
             /// </summary>
+            [DefaultValue("dbo")]
             public string Schema { get; set; } = "dbo";
+            [Description("Map entity type to a set of stored procedure")]
             public IEnumerable<MappingConfig> Mappings { get; set; }
             public class MappingConfig
             {
@@ -24,19 +30,26 @@ namespace Ws.Core.Extensions.Data.EF.SqlServer
                 /// <summary>
                 /// Entity type name
                 /// </summary>
+                [Description("Entity type name => typeof(T).Name")]
                 public string Name { get; set; }
                 /// <summary>
                 /// default: StoredProcedureConfig.Schema
                 /// </summary>
+                [DefaultValue("main StoredProcedureConfig.Schema")]
                 public string Schema { get; set; }
                 /// <summary>
                 /// Stored procedure name; default: Name
                 /// </summary>
+                [Description("Stored procedure name. Will be trasformed in {schema}.entity_{name}_{method}")]
                 public string StoredProcedure { get; set; }
+
                 /// <summary>
                 /// Call sp for this methods only; default: all methods
                 /// </summary>
-                public IEnumerable<MethodType> Methods { get; set; }
+                [Description("Call sp for one or more methods only: List,Find,Add,AddMany,Update,UpdateMany,Merge,Delete,DeleteMany; empty => all methods")]
+                [EnumDataType(typeof(MethodType))]
+                public string[]? Methods { get; set; }
+
                 public enum MethodType
                 {
                     List,
@@ -50,18 +63,24 @@ namespace Ws.Core.Extensions.Data.EF.SqlServer
                     DeleteMany
                 }
 
-                public CommandTimeOutConfig CommandTimeOut { get; set; }
                 /// <summary>
                 /// Max execution time in seconds
                 /// </summary>
+                [Description("Max execution time in seconds")]
+                public CommandTimeOutConfig CommandTimeOut { get; set; }
+
                 public class CommandTimeOutConfig
                 {
+                    [DefaultValue(60)]
                     public int Read { get; set; }
+                    [DefaultValue(120)]
                     public int Write { get; set; }
+                    [DefaultValue(180)]
                     public int Sync { get; set; }
                 }
             }
         }
+        [Description("EFCore.BulkExtensions.BulkConfig merge options")]
         public MergeConfig Merge { get; set; }
         public class MergeConfig : EFCore.BulkExtensions.BulkConfig
         {
@@ -96,7 +115,7 @@ namespace Ws.Core.Extensions.Data.EF.SqlServer.Extensions
     public static class OptionExtensions
     {
         public static bool? HasMethod(this Options.StoredProcedureConfig.MappingConfig mapping, Options.StoredProcedureConfig.MappingConfig.MethodType method)
-            =>
-            mapping == null || mapping.Methods == null || !mapping.Methods.Any() || mapping.Methods.Contains(method);
+            => 
+            mapping == null || mapping.Methods == null || !mapping.Methods.Any() || mapping.Methods.Any(_ => _.Equals(method.ToString()));
     }
 }

@@ -16,12 +16,8 @@ namespace Ws.Core.Extensions.Data.Cache
         {
             base.Execute(builder, serviceProvider);
 
-            // default entry expiration
-            if (Options.EntryExpirationInMinutes == null)
-                Options.EntryExpirationInMinutes = new Options.Duration();
-
             // init/override default cache profile
-            //CacheEntryOptions.Expiration.Set();
+            // CacheEntryOptions.Expiration.Set();
 
             builder.Services
                         .AddMemoryCache()

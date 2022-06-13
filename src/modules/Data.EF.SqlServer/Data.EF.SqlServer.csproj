@@ -12,6 +12,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>    
     <PackageReleaseNotes>Health check</PackageReleaseNotes>
     <PackageTags></PackageTags>
+	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>	  
   </PropertyGroup>
 
   <PropertyGroup>

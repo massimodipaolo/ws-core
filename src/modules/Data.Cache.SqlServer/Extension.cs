@@ -15,10 +15,6 @@ namespace Ws.Core.Extensions.Data.Cache.SqlServer
         {
             base.Execute(builder, serviceProvider);
 
-            // default entry expiration
-            if (Options.EntryExpirationInMinutes == null)
-                Options.EntryExpirationInMinutes = new Cache.Options.Duration();
-
             var connectionString = options.Client?.ConnectionString ?? "Server=.;Database=Cache;Trusted_Connection=True;";
             var schema = options.Client?.SchemaName ?? "dbo";
             var table = options.Client?.TableName ?? "Entry";

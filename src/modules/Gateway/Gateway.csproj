@@ -14,10 +14,11 @@
 		<PackageTags>gateway, Ocelot</PackageTags>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Ocelot" Version="18.0.0" />
+		<PackageReference Include="Ocelot" Version="18.0.0" />		
 	</ItemGroup>
 
 	<ItemGroup>

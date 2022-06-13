@@ -15,9 +15,6 @@ namespace Ws.Core.Extensions.Data.Cache.Memcached
 
             if (options.Client != null)
             {
-                // default entry expiration
-                if (Options.EntryExpirationInMinutes == null)
-                    Options.EntryExpirationInMinutes = new Core.Extensions.Data.Cache.Options.Duration();
 
                 // init/override default cache profile
                 //CacheEntryOptions.Expiration.Set();

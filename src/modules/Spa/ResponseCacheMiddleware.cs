@@ -19,9 +19,9 @@ namespace Ws.Core.Extensions.Spa
         private readonly RequestDelegate _next;
         private readonly ICache _cache;
         private readonly IDiscriminator<ResponseCacheMiddleware> _discriminator;
-        private readonly Options.PrerenderingOptions.CacheResponseOptions _options;
+        private readonly Options.CacheResponseOptions _options;
 
-        public ResponseCacheMiddleware(ICache cache, IDiscriminator<ResponseCacheMiddleware> discriminator, RequestDelegate next, Options.PrerenderingOptions.CacheResponseOptions options)
+        public ResponseCacheMiddleware(ICache cache, IDiscriminator<ResponseCacheMiddleware> discriminator, RequestDelegate next, Options.CacheResponseOptions options)
         {
             _next = next;
             _cache = cache;
@@ -112,7 +112,7 @@ namespace Ws.Core.Extensions.Spa
                 var document = await context.OpenAsync(req => req.Content(html));
                 string baseh = document.GetElementsByTagName("base").FirstOrDefault()?.GetAttribute("href") ?? "";
                 string _base(string path)
-                => new[] { "http://", "https://" }.Any(schema => path.StartsWith(schema, StringComparison.OrdinalIgnoreCase)) ? "" : baseh;
+                => new[] { "http://", "https://" }.Any(schema => path?.StartsWith(schema, StringComparison.OrdinalIgnoreCase) == true) ? "" : baseh;
                 string _directive(string path, string type)
                 => $"<{_base(path)}{path}>; rel=preload; as={type};{(!_options.AddEarlyHints.AllowServerPush ? "nopush;" : "")}";
 
@@ -124,7 +124,7 @@ namespace Ws.Core.Extensions.Spa
                     var hints = type switch
                     {
                         "style" => document.GetElementsByTagName("link")?.Where(_ => _.GetAttribute("rel") == "stylesheet")?.Take(items)?.Select(_ => _directive(_.GetAttribute("href"), type)),
-                        "script" => document.Scripts?.Where(_ => _.Type == "text/javascript")?.Take(items)?.Select(_ => _directive(_.Source, type)),
+                        "script" => document.Scripts?/*.Where(_ => _.Type?.Contains("javascript") == true)?*/.Take(items)?.Select(_ => _directive(_.Source, type)),
                         "image" => document.GetElementsByTagName("img")?.Take(items)?.Select(_ => _directive(_.GetAttribute("src"), type)),
                         _ => null
                     };

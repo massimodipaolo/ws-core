@@ -13,6 +13,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>.netcore 6</PackageReleaseNotes>
     <PackageTags></PackageTags>
+	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>	  
   </PropertyGroup>
 
   <PropertyGroup>

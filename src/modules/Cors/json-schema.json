@@ -1,0 +1,115 @@
+{
+  "definitions": {
+    "PolicyOption": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "origins": {
+          "$ref": "#/definitions/String[]"
+        },
+        "methods": {
+          "$ref": "#/definitions/String[]-1"
+        },
+        "headers": {
+          "$ref": "#/definitions/String[]-2"
+        },
+        "exposedHeaders": {
+          "$ref": "#/definitions/String[]-3"
+        },
+        "allowCredentials": {
+          "description": "Credentials include cookies as well as HTTP authentication schemes",
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": false
+        },
+        "preflightMaxAgeInSeconds": {
+          "description": "Value in seconds. The Access-Control-Max-Age header specifies how long the response to the preflight request can be cached",
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "PolicyOption[]": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/PolicyOption"
+      }
+    },
+    "String[]": {
+      "description": "To allow one or more specific origins",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "String[]-1": {
+      "description": "GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS,TRACE",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "String[]-2": {
+      "description": "To whitelist specific headers",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "String[]-3": {
+      "description": "The CORS spec calls simple response headers. Specify other headers available to the application",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "policies": {
+      "$ref": "#/definitions/PolicyOption[]"
+    }
+  }
+}

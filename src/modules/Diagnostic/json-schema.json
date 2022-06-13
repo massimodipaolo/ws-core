@@ -1,0 +1,1351 @@
+{
+  "definitions": {
+    "Action<Exception>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target": {},
+        "method": {
+          "$ref": "#/definitions/MethodInfo"
+        }
+      }
+    },
+    "Assembly": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "definedTypes": {
+          "$ref": "#/definitions/IEnumerable<TypeInfo>"
+        },
+        "exportedTypes": {
+          "$ref": "#/definitions/IEnumerable<Type>"
+        },
+        "codeBase": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "entryPoint": {
+          "$ref": "#/definitions/MethodInfo"
+        },
+        "fullName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "imageRuntimeVersion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "isDynamic": {
+          "type": "boolean"
+        },
+        "location": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reflectionOnly": {
+          "type": "boolean"
+        },
+        "isCollectible": {
+          "type": "boolean"
+        },
+        "isFullyTrusted": {
+          "type": "boolean"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "escapedCodeBase": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "manifestModule": {
+          "$ref": "#/definitions/Module"
+        },
+        "modules": {
+          "$ref": "#/definitions/IEnumerable<Module>"
+        },
+        "globalAssemblyCache": {
+          "type": "boolean"
+        },
+        "hostContext": {
+          "type": "integer"
+        },
+        "securityRuleSet": {
+          "type": "string",
+          "enum": [
+            "None",
+            "Level1",
+            "Level2"
+          ]
+        }
+      }
+    },
+    "ClientTiming": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start": {
+          "type": "number"
+        },
+        "duration": {
+          "type": "number"
+        }
+      }
+    },
+    "ClientTimings": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "redirectCount": {
+          "type": "integer"
+        },
+        "timings": {
+          "$ref": "#/definitions/List<ClientTiming>"
+        }
+      }
+    },
+    "ConstructorInfo": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memberType": {
+          "type": "string",
+          "enum": [
+            "Constructor",
+            "Event",
+            "Field",
+            "Method",
+            "Property",
+            "TypeInfo",
+            "Custom",
+            "NestedType",
+            "All"
+          ]
+        },
+        "attributes": {
+          "type": "string",
+          "enum": [
+            "ReuseSlot",
+            "PrivateScope",
+            "Private",
+            "FamANDAssem",
+            "Assembly",
+            "Family",
+            "FamORAssem",
+            "Public",
+            "MemberAccessMask",
+            "UnmanagedExport",
+            "Static",
+            "Final",
+            "Virtual",
+            "HideBySig",
+            "NewSlot",
+            "VtableLayoutMask",
+            "CheckAccessOnOverride",
+            "Abstract",
+            "SpecialName",
+            "RTSpecialName",
+            "PinvokeImpl",
+            "HasSecurity",
+            "RequireSecObject",
+            "ReservedMask"
+          ]
+        },
+        "methodImplementationFlags": {
+          "type": "string",
+          "enum": [
+            "IL",
+            "Managed",
+            "Native",
+            "OPTIL",
+            "Runtime",
+            "CodeTypeMask",
+            "Unmanaged",
+            "ManagedMask",
+            "NoInlining",
+            "ForwardRef",
+            "Synchronized",
+            "NoOptimization",
+            "PreserveSig",
+            "AggressiveInlining",
+            "AggressiveOptimization",
+            "InternalCall",
+            "MaxMethodImplVal"
+          ]
+        },
+        "callingConvention": {
+          "type": "string",
+          "enum": [
+            "Standard",
+            "VarArgs",
+            "Any",
+            "HasThis",
+            "ExplicitThis"
+          ]
+        },
+        "isAbstract": {
+          "type": "boolean"
+        },
+        "isConstructor": {
+          "type": "boolean"
+        },
+        "isFinal": {
+          "type": "boolean"
+        },
+        "isHideBySig": {
+          "type": "boolean"
+        },
+        "isSpecialName": {
+          "type": "boolean"
+        },
+        "isStatic": {
+          "type": "boolean"
+        },
+        "isVirtual": {
+          "type": "boolean"
+        },
+        "isAssembly": {
+          "type": "boolean"
+        },
+        "isFamily": {
+          "type": "boolean"
+        },
+        "isFamilyAndAssembly": {
+          "type": "boolean"
+        },
+        "isFamilyOrAssembly": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
+        },
+        "isPublic": {
+          "type": "boolean"
+        },
+        "isConstructedGenericMethod": {
+          "type": "boolean"
+        },
+        "isGenericMethod": {
+          "type": "boolean"
+        },
+        "isGenericMethodDefinition": {
+          "type": "boolean"
+        },
+        "containsGenericParameters": {
+          "type": "boolean"
+        },
+        "methodHandle": {
+          "$ref": "#/definitions/RuntimeMethodHandle"
+        },
+        "isSecurityCritical": {
+          "type": "boolean"
+        },
+        "isSecuritySafeCritical": {
+          "type": "boolean"
+        },
+        "isSecurityTransparent": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "declaringType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reflectedType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "module": {
+          "$ref": "#/definitions/Module"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "isCollectible": {
+          "type": "boolean"
+        },
+        "metadataToken": {
+          "type": "integer"
+        }
+      }
+    },
+    "CustomAttributeData": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "attributeType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "constructor": {
+          "$ref": "#/definitions/ConstructorInfo"
+        },
+        "constructorArguments": {
+          "$ref": "#/definitions/IList<CustomAttributeTypedArgument>"
+        },
+        "namedArguments": {
+          "$ref": "#/definitions/IList<CustomAttributeNamedArgument>"
+        }
+      }
+    },
+    "CustomAttributeNamedArgument": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "memberInfo": {
+          "$ref": "#/definitions/MemberInfo"
+        },
+        "typedValue": {
+          "$ref": "#/definitions/CustomAttributeTypedArgument"
+        },
+        "memberName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "isField": {
+          "type": "boolean"
+        }
+      }
+    },
+    "CustomAttributeTypedArgument": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "argumentType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "value": {}
+      }
+    },
+    "CustomTiming": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "commandString": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "executeType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "stackTraceSnippet": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "startMilliseconds": {
+          "type": "number"
+        },
+        "durationMilliseconds": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "firstFetchDurationMilliseconds": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "errored": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Dictionary<String, List<CustomTiming>>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "$ref": "#/definitions/List<CustomTiming>"
+      }
+    },
+    "Dictionary<String, String>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "Func<HttpRequest, Boolean>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target": {},
+        "method": {
+          "$ref": "#/definitions/MethodInfo"
+        }
+      }
+    },
+    "Func<HttpRequest, String>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target": {},
+        "method": {
+          "$ref": "#/definitions/MethodInfo"
+        }
+      }
+    },
+    "Func<HttpRequest, Task<Boolean>>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target": {},
+        "method": {
+          "$ref": "#/definitions/MethodInfo"
+        }
+      }
+    },
+    "Func<IStopwatch>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target": {},
+        "method": {
+          "$ref": "#/definitions/MethodInfo"
+        }
+      }
+    },
+    "HashSet<String>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "HttpLoggingOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "enable": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/HttpLoggingOptions-1"
+        }
+      }
+    },
+    "HttpLoggingOptions-1": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "loggingFields": {
+          "type": "string",
+          "enum": [
+            "None",
+            "RequestPath",
+            "RequestQuery",
+            "RequestProtocol",
+            "RequestMethod",
+            "RequestScheme",
+            "RequestProperties",
+            "ResponseStatusCode",
+            "RequestHeaders",
+            "RequestPropertiesAndHeaders",
+            "ResponseHeaders",
+            "ResponsePropertiesAndHeaders",
+            "RequestTrailers",
+            "ResponseTrailers",
+            "RequestBody",
+            "Request",
+            "ResponseBody",
+            "Response",
+            "All"
+          ]
+        },
+        "requestHeaders": {
+          "$ref": "#/definitions/ISet<String>"
+        },
+        "responseHeaders": {
+          "$ref": "#/definitions/ISet<String>"
+        },
+        "mediaTypeOptions": {
+          "$ref": "#/definitions/MediaTypeOptions"
+        },
+        "requestBodyLogLimit": {
+          "type": "integer"
+        },
+        "responseBodyLogLimit": {
+          "type": "integer"
+        }
+      }
+    },
+    "IAsyncProfilerProvider": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "currentProfiler": {
+          "$ref": "#/definitions/MiniProfiler"
+        }
+      }
+    },
+    "IAsyncStorage": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "ICustomAttributeProvider": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "IEnumerable<CustomAttributeData>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/CustomAttributeData"
+      }
+    },
+    "IEnumerable<Module>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/Module"
+      }
+    },
+    "IEnumerable<Type>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "IEnumerable<TypeInfo>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "IList<CustomAttributeNamedArgument>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/CustomAttributeNamedArgument"
+      }
+    },
+    "IList<CustomAttributeTypedArgument>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/CustomAttributeTypedArgument"
+      }
+    },
+    "ISet<String>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "ISqlFormatter": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "List<ClientTiming>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/ClientTiming"
+      }
+    },
+    "List<CustomTiming>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/CustomTiming"
+      }
+    },
+    "List<Timing>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/Timing"
+      }
+    },
+    "MediaTypeOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false
+    },
+    "MemberInfo": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memberType": {
+          "type": "string",
+          "enum": [
+            "Constructor",
+            "Event",
+            "Field",
+            "Method",
+            "Property",
+            "TypeInfo",
+            "Custom",
+            "NestedType",
+            "All"
+          ]
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "declaringType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reflectedType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "module": {
+          "$ref": "#/definitions/Module"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "isCollectible": {
+          "type": "boolean"
+        },
+        "metadataToken": {
+          "type": "integer"
+        }
+      }
+    },
+    "MethodInfo": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memberType": {
+          "type": "string",
+          "enum": [
+            "Constructor",
+            "Event",
+            "Field",
+            "Method",
+            "Property",
+            "TypeInfo",
+            "Custom",
+            "NestedType",
+            "All"
+          ]
+        },
+        "returnParameter": {
+          "$ref": "#/definitions/ParameterInfo"
+        },
+        "returnType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "returnTypeCustomAttributes": {
+          "$ref": "#/definitions/ICustomAttributeProvider"
+        },
+        "attributes": {
+          "type": "string",
+          "enum": [
+            "ReuseSlot",
+            "PrivateScope",
+            "Private",
+            "FamANDAssem",
+            "Assembly",
+            "Family",
+            "FamORAssem",
+            "Public",
+            "MemberAccessMask",
+            "UnmanagedExport",
+            "Static",
+            "Final",
+            "Virtual",
+            "HideBySig",
+            "NewSlot",
+            "VtableLayoutMask",
+            "CheckAccessOnOverride",
+            "Abstract",
+            "SpecialName",
+            "RTSpecialName",
+            "PinvokeImpl",
+            "HasSecurity",
+            "RequireSecObject",
+            "ReservedMask"
+          ]
+        },
+        "methodImplementationFlags": {
+          "type": "string",
+          "enum": [
+            "IL",
+            "Managed",
+            "Native",
+            "OPTIL",
+            "Runtime",
+            "CodeTypeMask",
+            "Unmanaged",
+            "ManagedMask",
+            "NoInlining",
+            "ForwardRef",
+            "Synchronized",
+            "NoOptimization",
+            "PreserveSig",
+            "AggressiveInlining",
+            "AggressiveOptimization",
+            "InternalCall",
+            "MaxMethodImplVal"
+          ]
+        },
+        "callingConvention": {
+          "type": "string",
+          "enum": [
+            "Standard",
+            "VarArgs",
+            "Any",
+            "HasThis",
+            "ExplicitThis"
+          ]
+        },
+        "isAbstract": {
+          "type": "boolean"
+        },
+        "isConstructor": {
+          "type": "boolean"
+        },
+        "isFinal": {
+          "type": "boolean"
+        },
+        "isHideBySig": {
+          "type": "boolean"
+        },
+        "isSpecialName": {
+          "type": "boolean"
+        },
+        "isStatic": {
+          "type": "boolean"
+        },
+        "isVirtual": {
+          "type": "boolean"
+        },
+        "isAssembly": {
+          "type": "boolean"
+        },
+        "isFamily": {
+          "type": "boolean"
+        },
+        "isFamilyAndAssembly": {
+          "type": "boolean"
+        },
+        "isFamilyOrAssembly": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
+        },
+        "isPublic": {
+          "type": "boolean"
+        },
+        "isConstructedGenericMethod": {
+          "type": "boolean"
+        },
+        "isGenericMethod": {
+          "type": "boolean"
+        },
+        "isGenericMethodDefinition": {
+          "type": "boolean"
+        },
+        "containsGenericParameters": {
+          "type": "boolean"
+        },
+        "methodHandle": {
+          "$ref": "#/definitions/RuntimeMethodHandle"
+        },
+        "isSecurityCritical": {
+          "type": "boolean"
+        },
+        "isSecuritySafeCritical": {
+          "type": "boolean"
+        },
+        "isSecurityTransparent": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "declaringType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reflectedType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "module": {
+          "$ref": "#/definitions/Module"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "isCollectible": {
+          "type": "boolean"
+        },
+        "metadataToken": {
+          "type": "integer"
+        }
+      }
+    },
+    "MiniProfiler": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "started": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "durationMilliseconds": {
+          "type": "number"
+        },
+        "machineName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "customLinks": {
+          "$ref": "#/definitions/Dictionary<String, String>"
+        },
+        "root": {
+          "$ref": "#/definitions/Timing"
+        },
+        "clientTimings": {
+          "$ref": "#/definitions/ClientTimings"
+        },
+        "user": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "hasUserViewed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "MiniProfilerOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "routeBasePath": {
+          "type": "string"
+        },
+        "shouldProfile": {
+          "$ref": "#/definitions/Func<HttpRequest, Boolean>"
+        },
+        "resultsAuthorize": {
+          "$ref": "#/definitions/Func<HttpRequest, Boolean>"
+        },
+        "resultsAuthorizeAsync": {
+          "$ref": "#/definitions/Func<HttpRequest, Task<Boolean>>"
+        },
+        "resultsListAuthorize": {
+          "$ref": "#/definitions/Func<HttpRequest, Boolean>"
+        },
+        "resultsListAuthorizeAsync": {
+          "$ref": "#/definitions/Func<HttpRequest, Task<Boolean>>"
+        },
+        "userIdProvider": {
+          "$ref": "#/definitions/Func<HttpRequest, String>"
+        },
+        "enableServerTimingHeader": {
+          "type": "boolean"
+        },
+        "enableMvcFilterProfiling": {
+          "type": "boolean"
+        },
+        "mvcFilterMinimumSaveMs": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "enableMvcViewProfiling": {
+          "type": "boolean"
+        },
+        "mvcViewMinimumSaveMs": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "versionHash": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "enableDebugMode": {
+          "type": "boolean"
+        },
+        "excludedAssemblies": {
+          "$ref": "#/definitions/HashSet<String>"
+        },
+        "excludedTypes": {
+          "$ref": "#/definitions/HashSet<String>"
+        },
+        "excludedMethods": {
+          "$ref": "#/definitions/HashSet<String>"
+        },
+        "ignoredPaths": {
+          "$ref": "#/definitions/HashSet<String>"
+        },
+        "maxUnviewedProfiles": {
+          "type": "integer"
+        },
+        "stackMaxLength": {
+          "type": "integer"
+        },
+        "trackConnectionOpenClose": {
+          "type": "boolean"
+        },
+        "trivialDurationThresholdMilliseconds": {
+          "type": "number"
+        },
+        "popupShowTimeWithChildren": {
+          "type": "boolean"
+        },
+        "popupShowTrivial": {
+          "type": "boolean"
+        },
+        "popupMaxTracesToShow": {
+          "type": "integer"
+        },
+        "popupRenderPosition": {
+          "type": "string",
+          "enum": [
+            "Left",
+            "Right",
+            "BottomLeft",
+            "BottomRight"
+          ]
+        },
+        "colorScheme": {
+          "type": "string",
+          "enum": [
+            "Light",
+            "Dark",
+            "Auto"
+          ]
+        },
+        "popupToggleKeyboardShortcut": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "popupStartHidden": {
+          "type": "boolean"
+        },
+        "showControls": {
+          "type": "boolean"
+        },
+        "ignoredDuplicateExecuteTypes": {
+          "$ref": "#/definitions/HashSet<String>"
+        },
+        "excludeStackTraceSnippetFromCustomTimings": {
+          "type": "boolean"
+        },
+        "storage": {
+          "$ref": "#/definitions/IAsyncStorage"
+        },
+        "sqlFormatter": {
+          "$ref": "#/definitions/ISqlFormatter"
+        },
+        "profilerProvider": {
+          "$ref": "#/definitions/IAsyncProfilerProvider"
+        },
+        "stopwatchProvider": {
+          "$ref": "#/definitions/Func<IStopwatch>"
+        },
+        "onInternalError": {
+          "$ref": "#/definitions/Action<Exception>"
+        }
+      }
+    },
+    "Module": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "assembly": {
+          "$ref": "#/definitions/Assembly"
+        },
+        "fullyQualifiedName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mdStreamVersion": {
+          "type": "integer"
+        },
+        "moduleVersionId": {
+          "type": "string"
+        },
+        "scopeName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "moduleHandle": {
+          "$ref": "#/definitions/ModuleHandle"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "metadataToken": {
+          "type": "integer"
+        }
+      }
+    },
+    "ModuleHandle": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "mdStreamVersion": {
+          "type": "integer"
+        }
+      }
+    },
+    "ParameterInfo": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "attributes": {
+          "type": "string",
+          "enum": [
+            "None",
+            "In",
+            "Out",
+            "Lcid",
+            "Retval",
+            "Optional",
+            "HasDefault",
+            "HasFieldMarshal",
+            "Reserved3",
+            "Reserved4",
+            "ReservedMask"
+          ]
+        },
+        "member": {
+          "$ref": "#/definitions/MemberInfo"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parameterType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "position": {
+          "type": "integer"
+        },
+        "isIn": {
+          "type": "boolean"
+        },
+        "isLcid": {
+          "type": "boolean"
+        },
+        "isOptional": {
+          "type": "boolean"
+        },
+        "isOut": {
+          "type": "boolean"
+        },
+        "isRetval": {
+          "type": "boolean"
+        },
+        "defaultValue": {},
+        "rawDefaultValue": {},
+        "hasDefaultValue": {
+          "type": "boolean"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "metadataToken": {
+          "type": "integer"
+        }
+      }
+    },
+    "ProfilerOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "enable": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/MiniProfilerOptions"
+        }
+      }
+    },
+    "RuntimeMethodHandle": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      }
+    },
+    "Timing": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "durationMilliseconds": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "startMilliseconds": {
+          "type": "number"
+        },
+        "children": {
+          "$ref": "#/definitions/List<Timing>"
+        },
+        "customTimings": {
+          "$ref": "#/definitions/Dictionary<String, List<CustomTiming>>"
+        },
+        "debugInfo": {
+          "$ref": "#/definitions/TimingDebugInfo"
+        }
+      }
+    },
+    "TimingDebugInfo": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "richHtmlStack": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "commonStackStart": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "profiler": {
+      "$ref": "#/definitions/ProfilerOptions"
+    },
+    "httpLogging": {
+      "$ref": "#/definitions/HttpLoggingOptions"
+    }
+  }
+}

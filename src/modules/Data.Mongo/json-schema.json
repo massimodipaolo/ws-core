@@ -1,0 +1,94 @@
+{
+  "definitions": {
+    "DbConnection": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "connectionString": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "database": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "serviceResolver": {
+          "$ref": "#/definitions/ServiceResolverCriteria"
+        }
+      }
+    },
+    "IEnumerable<DbConnection>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/DbConnection"
+      }
+    },
+    "ServiceResolverCriteria": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "include": {
+          "$ref": "#/definitions/ServiceResolverSelector"
+        },
+        "exclude": {
+          "$ref": "#/definitions/ServiceResolverSelector"
+        }
+      }
+    },
+    "ServiceResolverSelector": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "assembly": {
+          "$ref": "#/definitions/String[]"
+        },
+        "namespace": {
+          "$ref": "#/definitions/String[]"
+        },
+        "fullName": {
+          "$ref": "#/definitions/String[]"
+        }
+      }
+    },
+    "String[]": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "connections": {
+      "$ref": "#/definitions/IEnumerable<DbConnection>"
+    }
+  }
+}

@@ -15,10 +15,6 @@ namespace Ws.Core.Extensions.Data.Cache.Redis
         {
             base.Execute(builder, serviceProvider);
 
-            // default entry expiration
-            if (Options.EntryExpirationInMinutes == null)
-                Options.EntryExpirationInMinutes = new Cache.Options.Duration();
-
             var host = options?.Client?.Configuration ?? "localhost:6379";
             builder.Services
                 .AddHealthChecks()

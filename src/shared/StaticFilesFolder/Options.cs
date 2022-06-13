@@ -6,15 +6,20 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Ws.Core.Shared.StaticFilesFolder
 {
     public class Options
     {
+        [Description("Relative or UNC path")]
         public string Path { get; set; }
+        [Description("Virtual path, i.e. /downloads")]
         public string RequestPath { get; set; }
+        [Description("Dictionary of key/value response header, i.e. \"Cache-Control\": \"public,max-age=43200\"")]
         public Dictionary<string, string> Headers { get; set; }
+        [Description("Dictionary of key/value extention/content-type, i.e. \".myapp\": \"application/x-msdownload\"")]
         public Dictionary<string, string> MIMEtypes { get; set; }
         private bool? _isRelativePath;
         public bool IsRelativePath

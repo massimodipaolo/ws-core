@@ -1,0 +1,615 @@
+{
+  "definitions": {
+    "AggregateRouteConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "routeKey": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parameter": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "jsonPath": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "Dictionary<String, String>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "FileAggregateRoute": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "routeKeys": {
+          "$ref": "#/definitions/List<String>"
+        },
+        "routeKeysConfig": {
+          "$ref": "#/definitions/List<AggregateRouteConfig>"
+        },
+        "upstreamPathTemplate": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "upstreamHost": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "routeIsCaseSensitive": {
+          "type": "boolean"
+        },
+        "aggregator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "upstreamHttpMethod": {
+          "$ref": "#/definitions/List<String>"
+        },
+        "priority": {
+          "type": "integer"
+        }
+      }
+    },
+    "FileAuthenticationOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "authenticationProviderKey": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "allowedScopes": {
+          "$ref": "#/definitions/List<String>"
+        }
+      }
+    },
+    "FileCacheOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "ttlSeconds": {
+          "type": "integer"
+        },
+        "region": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "FileConfiguration": {
+      "description": "Ocelot config: https://ocelot.readthedocs.io/en/latest/features/configuration.html",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "routes": {
+          "$ref": "#/definitions/List<FileRoute>"
+        },
+        "dynamicRoutes": {
+          "$ref": "#/definitions/List<FileDynamicRoute>"
+        },
+        "aggregates": {
+          "$ref": "#/definitions/List<FileAggregateRoute>"
+        },
+        "globalConfiguration": {
+          "$ref": "#/definitions/FileGlobalConfiguration"
+        }
+      }
+    },
+    "FileDynamicRoute": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "serviceName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rateLimitRule": {
+          "$ref": "#/definitions/FileRateLimitRule"
+        },
+        "downstreamHttpVersion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "FileGlobalConfiguration": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "requestIdKey": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "serviceDiscoveryProvider": {
+          "$ref": "#/definitions/FileServiceDiscoveryProvider"
+        },
+        "rateLimitOptions": {
+          "$ref": "#/definitions/FileRateLimitOptions"
+        },
+        "qoSOptions": {
+          "$ref": "#/definitions/FileQoSOptions"
+        },
+        "baseUrl": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "loadBalancerOptions": {
+          "$ref": "#/definitions/FileLoadBalancerOptions"
+        },
+        "downstreamScheme": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "httpHandlerOptions": {
+          "$ref": "#/definitions/FileHttpHandlerOptions"
+        },
+        "downstreamHttpVersion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "FileHostAndPort": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "host": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "port": {
+          "type": "integer"
+        }
+      }
+    },
+    "FileHttpHandlerOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "allowAutoRedirect": {
+          "type": "boolean"
+        },
+        "useCookieContainer": {
+          "type": "boolean"
+        },
+        "useTracing": {
+          "type": "boolean"
+        },
+        "useProxy": {
+          "type": "boolean"
+        },
+        "maxConnectionsPerServer": {
+          "type": "integer"
+        }
+      }
+    },
+    "FileLoadBalancerOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "key": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "expiry": {
+          "type": "integer"
+        }
+      }
+    },
+    "FileQoSOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "exceptionsAllowedBeforeBreaking": {
+          "type": "integer"
+        },
+        "durationOfBreak": {
+          "type": "integer"
+        },
+        "timeoutValue": {
+          "type": "integer"
+        }
+      }
+    },
+    "FileRateLimitOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "clientIdHeader": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "quotaExceededMessage": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rateLimitCounterPrefix": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "disableRateLimitHeaders": {
+          "type": "boolean"
+        },
+        "httpStatusCode": {
+          "type": "integer"
+        }
+      }
+    },
+    "FileRateLimitRule": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "clientWhitelist": {
+          "$ref": "#/definitions/List<String>"
+        },
+        "enableRateLimiting": {
+          "type": "boolean"
+        },
+        "period": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "periodTimespan": {
+          "type": "number"
+        },
+        "limit": {
+          "type": "integer"
+        }
+      }
+    },
+    "FileRoute": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "downstreamPathTemplate": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "upstreamPathTemplate": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "upstreamHttpMethod": {
+          "$ref": "#/definitions/List<String>"
+        },
+        "downstreamHttpMethod": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "addHeadersToRequest": {
+          "$ref": "#/definitions/Dictionary<String, String>"
+        },
+        "upstreamHeaderTransform": {
+          "$ref": "#/definitions/Dictionary<String, String>"
+        },
+        "downstreamHeaderTransform": {
+          "$ref": "#/definitions/Dictionary<String, String>"
+        },
+        "addClaimsToRequest": {
+          "$ref": "#/definitions/Dictionary<String, String>"
+        },
+        "routeClaimsRequirement": {
+          "$ref": "#/definitions/Dictionary<String, String>"
+        },
+        "addQueriesToRequest": {
+          "$ref": "#/definitions/Dictionary<String, String>"
+        },
+        "changeDownstreamPathTemplate": {
+          "$ref": "#/definitions/Dictionary<String, String>"
+        },
+        "requestIdKey": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fileCacheOptions": {
+          "$ref": "#/definitions/FileCacheOptions"
+        },
+        "routeIsCaseSensitive": {
+          "type": "boolean"
+        },
+        "serviceName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "serviceNamespace": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "downstreamScheme": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "qoSOptions": {
+          "$ref": "#/definitions/FileQoSOptions"
+        },
+        "loadBalancerOptions": {
+          "$ref": "#/definitions/FileLoadBalancerOptions"
+        },
+        "rateLimitOptions": {
+          "$ref": "#/definitions/FileRateLimitRule"
+        },
+        "authenticationOptions": {
+          "$ref": "#/definitions/FileAuthenticationOptions"
+        },
+        "httpHandlerOptions": {
+          "$ref": "#/definitions/FileHttpHandlerOptions"
+        },
+        "downstreamHostAndPorts": {
+          "$ref": "#/definitions/List<FileHostAndPort>"
+        },
+        "upstreamHost": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "key": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "delegatingHandlers": {
+          "$ref": "#/definitions/List<String>"
+        },
+        "priority": {
+          "type": "integer"
+        },
+        "timeout": {
+          "type": "integer"
+        },
+        "dangerousAcceptAnyServerCertificateValidator": {
+          "type": "boolean"
+        },
+        "securityOptions": {
+          "$ref": "#/definitions/FileSecurityOptions"
+        },
+        "downstreamHttpVersion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "FileSecurityOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "ipAllowedList": {
+          "$ref": "#/definitions/List<String>"
+        },
+        "ipBlockedList": {
+          "$ref": "#/definitions/List<String>"
+        }
+      }
+    },
+    "FileServiceDiscoveryProvider": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "scheme": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "host": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "port": {
+          "type": "integer"
+        },
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "token": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "configurationKey": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "pollingInterval": {
+          "type": "integer"
+        },
+        "namespace": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "List<AggregateRouteConfig>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/AggregateRouteConfig"
+      }
+    },
+    "List<FileAggregateRoute>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/FileAggregateRoute"
+      }
+    },
+    "List<FileDynamicRoute>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/FileDynamicRoute"
+      }
+    },
+    "List<FileHostAndPort>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/FileHostAndPort"
+      }
+    },
+    "List<FileRoute>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/FileRoute"
+      }
+    },
+    "List<String>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "mapWhen": {
+      "description": "Regex-based role to use gateway pipeline, otherwise catchAll request",
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": "string empty"
+    },
+    "ocelot": {
+      "$ref": "#/definitions/FileConfiguration"
+    }
+  }
+}

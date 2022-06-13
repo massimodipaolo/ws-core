@@ -1,0 +1,298 @@
+{
+  "definitions": {
+    "CookieOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "name": {
+          "description": "The name of the cookie.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": ".api.Session"
+        },
+        "httpOnly": {
+          "description": "Indicates whether a cookie is accessible by client-side script.",
+          "type": "boolean",
+          "default": true
+        },
+        "path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "domain": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sameSite": {
+          "type": "string",
+          "enum": [
+            "None",
+            "Lax",
+            "Strict",
+            "Unspecified"
+          ]
+        },
+        "securePolicy": {
+          "type": "string",
+          "enum": [
+            "SameAsRequest",
+            "Always",
+            "None"
+          ]
+        },
+        "expiration": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "maxAge": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "isEssential": {
+          "type": "boolean"
+        }
+      }
+    },
+    "DocumentationOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "routePrefix": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": "swagger"
+        },
+        "ui": {
+          "$ref": "#/definitions/UiOptions"
+        },
+        "endpoints": {
+          "$ref": "#/definitions/IEnumerable<EndpointOptions>"
+        },
+        "xmlComments": {
+          "$ref": "#/definitions/XmlCommentsOptions"
+        },
+        "securityDefinitions": {
+          "$ref": "#/definitions/SecurityDefinitionsOptions"
+        }
+      },
+      "required": [
+        "endpoints"
+      ]
+    },
+    "EndpointOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": "v{index}"
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": "API v{index}"
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": "{Id}"
+        }
+      }
+    },
+    "IEnumerable<EndpointOptions>": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/EndpointOptions"
+      }
+    },
+    "JsonConverterDiscover": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "assembly": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "JsonConverterDiscover[]": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/JsonConverterDiscover"
+      }
+    },
+    "Options": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "nullValueHandling": {
+          "type": "string",
+          "enum": [
+            "Include",
+            "Ignore"
+          ]
+        },
+        "formatting": {
+          "type": "string",
+          "enum": [
+            "None",
+            "Indented"
+          ]
+        },
+        "referenceLoopHandling": {
+          "type": "string",
+          "enum": [
+            "Ignore",
+            "Serialize"
+          ]
+        },
+        "converters": {
+          "$ref": "#/definitions/JsonConverterDiscover[]"
+        }
+      }
+    },
+    "SecurityDefinitionsOptions": {
+      "description": "Add one or more security definitions, describing how your api is protected",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "bearer": {
+          "description": "Add Authorization header for bearer token",
+          "type": "boolean",
+          "default": false
+        },
+        "cookies": {
+          "$ref": "#/definitions/String[]"
+        }
+      }
+    },
+    "SessionOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "cookie": {
+          "$ref": "#/definitions/CookieOptions"
+        },
+        "idleTimeoutInMinutes": {
+          "description": "The IdleTimeout indicates how long the session can be idle before its contents are abandoned. Each session access resets the timeout. Note this only applies to the content of the session, not the cookie.",
+          "type": "integer",
+          "default": 20
+        }
+      }
+    },
+    "String[]": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "UiOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "injectJs": {
+          "description": "Relative path of additional js file, added in wwwroot folder; i.e. \"/swagger-ui/custom.js\"",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "injectCss": {
+          "description": "Relative path of additional css file, added in wwwroot folder; i.e. \"/swagger-ui/custom.css\"",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "XmlCommentsOptions": {
+      "description": "To include Xml Comments, open the Properties dialog for your project, click the \"Build\" tab and ensure that \"XML documentation file\" is checked.\n This will produce a file containing all XML comments at build-time.\nAt this point, any classes or methods that are NOT annotated with XML comments will trigger a build warning.\n To suppress this, enter the warning code 1591 into the \"Suppress warnings\" field in the properties dialog.",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "fileName": {
+          "description": "i.e. api.xml\nCheck PropertyGroup>DocumentationFile value in your .csproj file.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": "System.Reflection.Assembly.GetExecutingAssembly().GetName().Name"
+        },
+        "includeControllerComments": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "serialization": {
+      "$ref": "#/definitions/Options"
+    },
+    "session": {
+      "$ref": "#/definitions/SessionOptions"
+    },
+    "documentation": {
+      "$ref": "#/definitions/DocumentationOptions"
+    }
+  }
+}
