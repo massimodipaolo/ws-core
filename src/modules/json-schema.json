@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema",
-  "title": "JSON Schema for extensions modules",
+  "title": "json-schema for extensions modules",
   "type": "object",
   "definitions": {
     "assembly": {
@@ -161,106 +161,6 @@
               ],
               "properties": {
                 "options": { "$ref": "spa/json-schema.json#" }
-              },
-              "_properties": {
-                "options": {
-                  "type": "object",
-                  "properties": {
-                    "rootPath": {
-                      "type": "string",
-                      "description": "Path relative to the application root, of the directory in which the physical files are located. If the specified directory does not exist, then the SpaStaticFiles middleware will not serve any static files.",
-                      "default": "Client/dist/browser"
-                    },
-                    "defaultPage": {
-                      "type": "string",
-                      "description": "Default page that hosts your SPA user interface",
-                      "default": "/index.html"
-                    },
-                    "sourcePath": {
-                      "type": "string",
-                      "description": "Path, relative to the application working directory, of the directory that contains the SPA source files during development. The directory may not exist in published applications",
-                      "default": "Client"
-                    },
-                    "startupTimeoutInSeconds": {
-                      "type": "integer",
-                      "description": "Maximum duration that a request will wait for the SPA to become ready to serve to the client",
-                      "default": 90
-                    },
-                    "spaDevelopmentServer": {
-                      "type": "string",
-                      "description": "Use only in development! Forward incoming requests to a local development server,i.e. http://localhost:3000."
-                    },
-                    "cliServerScript": {
-                      "type": "string",
-                      "description": "Use only in development! The name of the script in your package.json file that launches the React CLI process, i.e. start. This handles requests by passing them through to an instance of the React CLI server; alternative to spaDevelopmentServer"
-                    },
-                    "staticFilesPaths": {
-                      "type": "array",
-                      "items": {
-                        "allOf": [
-                          { "$ref": "#/definitions/staticFilesFolder" }
-                        ]
-                      }
-                    },
-                    "cacheResponse": {
-                      "type": "object",
-                      "description": "Cache prerendering output, injecting app ICache implementation",
-                      "properties": {
-                        "enable": {
-                          "type": "boolean",
-                          "default": true
-                        },
-                        "skipQueryStringPath": {
-                          "type": "boolean",
-                          "description": "If true, don't cache parameterized path",
-                          "default": true
-                        },
-                        "skipFilePath": {
-                          "type": "boolean",
-                          "description": "If true, cache only extensionless path",
-                          "default": true
-                        },
-                        "addEarlyHints": {
-                          "type": "object",
-                          "description": "Browsers that support preload will initiate earlier fetch of page resources: https://www.w3.org/TR/preload",
-                          "properties": {
-                            "enable": {
-                              "type": "boolean",
-                              "default": false
-                            },
-                            "types": {
-                              "type": "array",
-                              "items": {
-                                "enum": [ "script", "style", "image" ]
-                              },
-                              "description": "https://www.w3.org/TR/preload/#as-attribute",
-                              "uniqueItems": true
-                            },
-                            "maxItemsPerType": {
-                              "type": "integer",
-                              "default": 10
-                            },
-                            "allowServerPush": {
-                              "type": "boolean",
-                              "description": "https://www.w3.org/TR/preload/#server-push-http-2",
-                              "default": true
-                            }
-                          }
-                        },
-                        "excludePaths": {
-                          "type": "array",
-                          "items": { "type": "string" },
-                          "description": "Array of path prefixes for which cache is disabled"
-                        },
-                        "includePaths": {
-                          "type": "array",
-                          "items": { "type": "string" },
-                          "description": "Array of path prefixes for which cache is always enabled"
-                        }
-                      }
-                    }
-                  }
-                }
               }
             },
             "Ws.Core.Extensions.StaticFiles": {
