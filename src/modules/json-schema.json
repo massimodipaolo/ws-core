@@ -31,7 +31,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "api/json-schema.json#" }
+                "options": { "$ref": "Api/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.Cors": {
@@ -39,7 +39,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "cors/json-schema.json#" }
+                "options": { "$ref": "Cors/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.Data": { "$ref": "#/definitions/assembly" },
@@ -48,7 +48,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "data.cache/json-schema.json#" }
+                "options": { "$ref": "Data.Cache/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.Data.Cache.Memcached": {
@@ -56,7 +56,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "data.cache.memcached/json-schema.json#" }
+                "options": { "$ref": "Data.Cache.Memcached/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.Data.Cache.Redis": {
@@ -64,7 +64,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "data.cache.redis/json-schema.json#" }
+                "options": { "$ref": "Data.Cache.Redis/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.Data.Cache.SqlServer": {
@@ -72,7 +72,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "data.cache.sqlserver/json-schema.json#" }
+                "options": { "$ref": "Data.Cache.SqlServer/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.Data.EF": {
@@ -80,7 +80,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "data.ef/json-schema.json#" }
+                "options": { "$ref": "Data.EF/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.Data.EF.MySql": {
@@ -88,7 +88,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "data.ef.mysql/json-schema.json#" }
+                "options": { "$ref": "Data.EF.MySql/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.Data.EF.SQLite": {
@@ -96,7 +96,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "data.ef.sqlite/json-schema.json#" }
+                "options": { "$ref": "Data.EF.SQLite/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.Data.EF.SqlServer": {
@@ -104,7 +104,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "data.ef.sqlserver/json-schema.json#" }
+                "options": { "$ref": "Data.EF.SqlServer/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.Data.FileSystem": {
@@ -112,7 +112,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "data.filesystem/json-schema.json#" }
+                "options": { "$ref": "Data.FileSystem/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.Data.Mongo": {
@@ -120,7 +120,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "data.mongo/json-schema.json#" }
+                "options": { "$ref": "Data.Mongo/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.Diagnostic": {
@@ -128,7 +128,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "diagnostic/json-schema.json#" }
+                "options": { "$ref": "Diagnostic/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.Gateway": {
@@ -136,7 +136,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "gateway/json-schema.json#" }
+                "options": { "$ref": "Gateway/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.HealthCheck": {
@@ -144,7 +144,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "healthcheck/json-schema.json#" }
+                "options": { "$ref": "HealthCheck/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.Message": {
@@ -152,7 +152,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "message/json-schema.json#" }
+                "options": { "$ref": "Message/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.Spa": {
@@ -160,7 +160,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "spa/json-schema.json#" }
+                "options": { "$ref": "Spa/json-schema.json#" }
               }
             },
             "Ws.Core.Extensions.StaticFiles": {
@@ -168,7 +168,7 @@
                 { "$ref": "#/definitions/assembly" }
               ],
               "properties": {
-                "options": { "$ref": "staticfiles/json-schema.json#" }
+                "options": { "$ref": "StaticFiles/json-schema.json#" }
               }
             }
           },
@@ -181,7 +181,7 @@
           }
         },
         "injectors": {
-          "$ref": "../core/extensions/injector-json-schema.json#"
+          "$ref": "../core/Extensions/injector-json-schema.json#"
         }
       }
     }
