@@ -39,7 +39,7 @@ namespace Ws.Core.Extensions.Base
         protected Configuration.Assembly Assembly => Extensions?.FirstOrDefault(_ => _.Name == AssemblyName);
 
         protected string ConfigSectionPathOptions => $"{Configuration.SectionRoot}:Assemblies:{AssemblyName}:Options";
-        protected T GetOptions<T>() where T : class, new()
+        protected T GetOptions<T>() where T :  class, IOptions, new()
         {
             var obj = new T();
             if (Assembly != null)
@@ -51,9 +51,17 @@ namespace Ws.Core.Extensions.Base
             return obj;
         }
 
-        public virtual T ReloadOptions<T>() where T : class, new()
+        protected (string prefix, string tag) GetApiRoute([System.Runtime.CompilerServices.CallerMemberName] string caller = "") 
         {
-            static string serialize(object t) => Newtonsoft.Json.JsonConvert.SerializeObject(t);
+            var _name = Assembly?.Name ?? caller?.ToLower();
+            var tag = $"{nameof(Extensions)}-{_name}".ToLower();
+            var prefix = $"{nameof(Extensions)}/{_name}".ToLower();
+            return (prefix,tag);
+        }
+
+        public virtual T ReloadOptions<T>() where T : class, IOptions, new()
+        {
+            static string serialize(object t) => System.Text.Json.JsonSerializer.Serialize(t);
             var _current = GetOptions<T>();
             if (serialize(Option<T>.Value ?? new T()) == serialize(_current ?? new T()))
             {

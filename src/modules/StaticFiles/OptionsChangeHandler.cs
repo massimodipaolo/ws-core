@@ -12,7 +12,7 @@ namespace Ws.Core.Extensions.StaticFiles
         {
             base.HandleEvent(ctx);
             var ext = new Extension();
-            var options = ext.ReloadOptions<List<Options>>();
+            var options = ext.ReloadOptions<Options>();
             if (options != null) {
                 if (ctx.Configuration.EnableShutDownOnChange)
                     ctx.Lifetime.StopApplication();
