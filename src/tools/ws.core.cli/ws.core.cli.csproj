@@ -8,11 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.2.4" />
+    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.14" />
     <PackageReference Include="Spectre.Console" Version="0.44.0" />
+    <PackageReference Include="System.Management.Automation" Version="7.2.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\modules\ExtensionBase\ExtensionBase.csproj" />
   </ItemGroup>
+
+	<!--Target Name="PostBuild" BeforeTargets="PostBuildEvent" Condition="$(Configuration)=='Debug'">
+		<Exec Command="xcopy $(ProjectDir)$(OutDir) $(SolutionDir)cli  /q /i /y" />
+	</Target-->	
 
 </Project>

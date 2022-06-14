@@ -200,12 +200,13 @@ _Pvt_Extensions
 # Sample: specific repository
 #/samples
 /samples/**/Extensions/
-# Test
+# Test / analysis
 /tests/**/*.xml
 /tests/**/data
 /tests/**/wwwroot
 /tests/**/Extensions/**/
 /tests/**/Files/*.*
+/.sonarqube
 # Task Secret
 .env
 # Pack
