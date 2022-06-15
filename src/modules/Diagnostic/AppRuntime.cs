@@ -16,6 +16,7 @@ namespace Ws.Core.Extensions.Diagnostic
         public dynamic? Cache { get; set; }
         public dynamic? Environment { get; set; }
         public dynamic? Config { get; set; }
+        public IEnumerable<string>? Assemblies { get; set; }
         public dynamic? Extensions { get; set; }
         public dynamic? Services { get; set; }
         public struct InfoData
@@ -52,8 +53,8 @@ namespace Ws.Core.Extensions.Diagnostic
             {
                 Info = new()
                 {
-                    Uptime = Startup<TConfig>.Uptime,
-                    ServerFeatures = AppInfo<TConfig>.App?.ServerFeatures?.Select(_ => new KeyValuePair<string, string>(_.Key.ToString(), _.Value?.ToString() ?? "")),
+                    Uptime = Startup.Uptime,
+                    ServerFeatures = AppInfo.App?.ServerFeatures?.Select(_ => new KeyValuePair<string, string>(_.Key.ToString(), _.Value?.ToString() ?? "")),
                     Computer = new()
                     {
                         MachineName = System.Environment.MachineName,
@@ -81,12 +82,15 @@ namespace Ws.Core.Extensions.Diagnostic
                     .OrderBy(conf => conf.Key)
                     .ToDictionary(conf => conf.Key, conf => conf.Value)
                 },
+                Assemblies = new ExtCore.Application.DefaultAssemblyProvider(AppInfo.ServiceProvider)
+                    .GetAssemblies(Startup.ExtCoreExtensionsPath(config, env), includingSubpaths: true)
+                    .Select(_ => _.FullName ?? ""),
                 Extensions = ExtCore.Infrastructure.ExtensionManager.GetInstances<ExtCore.Infrastructure.Actions.IConfigureBuilder>()
                     .UnionInjector()
-                    .Where(_ => _ is ExtCore.Infrastructure.ExtensionBase)
-                    .Select(_ => new { ((ExtCore.Infrastructure.ExtensionBase)_)?.Name, _?.Priority })
+                    .Where(_ => _ is Ws.Core.Extensions.Base.Extension)
+                    .Select(_ => new { ((Ws.Core.Extensions.Base.Extension)_)?.Name, _?.Priority })
                     .OrderBy(_ => _.Priority),
-                Services = AppInfo<TConfig>.Services?.Select(_ => new
+                Services = AppInfo.Services?.Select(_ => new
                 {
                     Type = _.ServiceType?.FullName,
                     ImplementationType = _.ImplementationType?.FullName,
@@ -105,13 +109,5 @@ namespace Ws.Core.Extensions.Diagnostic
             await Task.Run(() => applicationLifetime.StopApplication());
             return Task.FromResult(new { Startup<TConfig>.Uptime, status = "Stopping" });
         }
-
-        public static bool ReloadConfiguration(Microsoft.Extensions.Configuration.IConfiguration config)
-        {
-            var _isRoot = (config is Microsoft.Extensions.Configuration.IConfigurationRoot);
-            if (_isRoot) ((Microsoft.Extensions.Configuration.IConfigurationRoot)config).Reload();
-            return _isRoot;
-        }
-
     }
 }

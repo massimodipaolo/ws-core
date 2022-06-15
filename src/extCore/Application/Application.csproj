@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Authors>Dmitry Sikorsky</Authors>
+    <Copyright>Copyright © 2015 Dmitry Sikorsky</Copyright>
+    <Description>Free, open source and cross-platform framework for creating modular and extendable web applications based on ASP.NET Core.</Description>
+    <VersionPrefix>7.0.0</VersionPrefix>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>ExtCore.Application</AssemblyName>
+    <PackageId>ExtCore.Application</PackageId>
+	<RootNamespace>ExtCore.Application</RootNamespace>	  
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageProjectUrl>https://extcore.net/</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
+    <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

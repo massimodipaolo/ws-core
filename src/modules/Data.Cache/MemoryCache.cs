@@ -14,9 +14,9 @@ namespace Ws.Core.Extensions.Data.Cache
     }
     public class MemoryCache : ICache
     {
-        protected readonly IMemoryCache _client;
-        private static CancellationTokenSource _resetCacheToken = new CancellationTokenSource();
-        private static IProducerConsumerCollection<string> _keys = new ConcurrentBag<string>();
+        protected readonly IMemoryCache? _client;
+        private static CancellationTokenSource _resetCacheToken { get; set; } = new ();
+        private static IProducerConsumerCollection<string> _keys { get; set; } = new ConcurrentBag<string>();
         public MemoryCache() { }
 
         public MemoryCache(IMemoryCache client)
@@ -26,21 +26,21 @@ namespace Ws.Core.Extensions.Data.Cache
 
         public IEnumerable<string> Keys => _keys;
 
-        public object Get(string key)
-        {
-            _client.TryGetValue(key, out object _value);
-            return _value;
-        }
+        public object? Get(string key) => Get<object>(key);
 
-        public T Get<T>(string key)
+        public T? Get<T>(string key)
         {
-            _client.TryGetValue(key, out T _value);
-            return _value;
+            if (_client != null)
+            {
+                _client.TryGetValue(key, out T _value);
+                return _value;
+            }
+            return default;
         }
 
         public void Set(string key, object value)
         {
-            _client.Set(key, value, new CancellationChangeToken(_resetCacheToken.Token));
+            _client?.Set(key, value, new CancellationChangeToken(_resetCacheToken.Token));
             _keys.TryAdd(key);
         }
 
@@ -48,13 +48,13 @@ namespace Ws.Core.Extensions.Data.Cache
         {
             var _options = new MemoryCacheEntryOptions() { AbsoluteExpiration = options.AbsoluteExpiration, AbsoluteExpirationRelativeToNow = options.AbsoluteExpirationRelativeToNow, SlidingExpiration = options.SlidingExpiration };
             _options.AddExpirationToken(new CancellationChangeToken(_resetCacheToken.Token));
-            _client.Set(key, value, _options);
+            _client?.Set(key, value, _options);
             _keys.TryAdd(key);
         }
 
         public void Remove(string key)
         {
-            _client.Remove(key);
+            _client?.Remove(key);
             _ = _keys.TryTake(out _);
         }
 

@@ -2,26 +2,28 @@
 
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <PackageVersion>6.0.0</PackageVersion>
-    <PackageId>Ws.Core.Extensions.Data</PackageId>
+		<TargetFramework>net6.0</TargetFramework>
+		<PackageVersion>6.0.0</PackageVersion>
+		<PackageId>Ws.Core.Extensions.Data</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Data</AssemblyName>
 		<RootNamespace>Ws.Core.Extensions.Data</RootNamespace>
-    <Authors>Massimo Di Paolo</Authors>
-    <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
-    <Description></Description>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.netcore 6</PackageReleaseNotes>
-    <PackageTags></PackageTags> 
-  </PropertyGroup>
+		<Authors>Massimo Di Paolo</Authors>
+		<Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
+		<Description></Description>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageReleaseNotes>.netcore 6</PackageReleaseNotes>
+		<PackageTags></PackageTags>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <NoWarn>1701;1702;1705;1591</NoWarn>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<NoWarn>1701;1702;1705;1591</NoWarn>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
+	</ItemGroup>
 
-</Project> 
+</Project>

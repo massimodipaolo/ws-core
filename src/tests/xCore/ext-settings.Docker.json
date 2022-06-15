@@ -1,0 +1,101 @@
+﻿{
+  "$schema": "../../modules/json-schema.json#",
+  "__$schema": "https://raw.githubusercontent.com/massimodipaolo/ws-core/master/src/modules/json-schema.json",
+  "extConfig": {
+    "folder": "Extensions",
+    "enableShutDownOnChange": false,
+    "assemblies": {
+      "Ws.Core.Extensions.Data.EF.SqlServer": {
+        "priority": 410,
+        "options": {
+          "connections": [
+            {
+              "name": "store",
+              "connectionString": "Server=mssql-01;Database=ws-core-store;User Id=ws-core-usr;Password=3/4yQKrIeDZf+OAH3480Vn3OAuQTtKcNcDKzLuEP8UM=;MultipleActiveResultSets=true"
+            },
+            {
+              "name": "app",
+              "connectionString": "Server=mssql-02;Database=ws-core;User Id=ws-core-usr;Password=a2b352dd-2cfe-434d-9f3a-34d04639a5e6;MultipleActiveResultSets=true"
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Data.EF.MySql": {
+        "priority": 420,
+        "options": {
+          "connections": [
+            {
+              "name": "default",
+              "connectionString": "Server=mariadb-01;Port=3306;Database=ws-core;Uid=root;Pwd=WS-1234-secret;"
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Message": {
+        "priority": 600,
+        "options": {
+          "senders": [
+            {
+              "address": "mailserver",
+              "port": 25
+            }
+          ],
+          "receivers": [
+            {
+              "address": "mailserver",
+              "port": 110
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.HealthCheck": {
+        "priority": 999,
+        "options": {
+          "checks": {
+            "storage": [
+              {
+                "driver": "/",
+                "minimumFreeMb": 2048,
+                "status": "Degraded",
+                "name": "disk"
+              }
+            ],
+            "memory": {
+              "maximumAllocatedMb": 500
+            },
+            "process": [
+              {
+                "processName": "devenv",
+                "name": "devenv",
+                "status": "Degraded",
+                "tags": [ "infrastructure", "on-premises" ]
+              }
+            ],
+            "tcp": [
+              {
+                "host": "mailserver",
+                "port": 25,
+                "name": "mailserver"
+              },
+              {
+                "host": "mssql-01",
+                "port": 1433,
+                "name": "mssql-01"
+              }
+            ]
+          },
+          "ui": {
+            "enable": true,
+            "webhooks": [
+              {
+                "uri": "/healthz/checks",
+                "name": "web-app"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "injectors": []
+  }
+}

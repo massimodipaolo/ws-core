@@ -9,32 +9,15 @@ namespace web
 {
     public class Startup: Ws.Core.Startup<Ws.Core.AppConfig>
     {
-        public Startup(WebApplicationBuilder builder): base(builder.Environment, (IConfiguration)builder.Services.BuildServiceProvider().GetRequiredService<IConfiguration>()) 
+        public Startup(WebApplicationBuilder builder): base(builder.Environment, builder.Services.BuildServiceProvider().GetRequiredService<IConfiguration>()) 
         { }
 
         public void Add(WebApplicationBuilder builder) => ConfigureServices(builder);
 
         public override void ConfigureServices(WebApplicationBuilder builder)
         {
-            //builder.Services.AddResponseCompression(_ => _.EnableForHttps = true);
-            //builder.Services.AddControllers();
-            //builder.Services.AddTransient<Ws.Core.Extensions.HealthCheck.Checks.AppLog.IAppLogService, Code.HealthCheckAppLogService>();
-
             base.ConfigureServices(builder);
-
-            //builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.AppDbContext), typeof(Code.AppDbContextExt));
-
-            /* override repository */
-            // Cms            
-            //services.AddTransient(typeof(core.Extensions.Data.IRepository<Server.Models.Page, int>), typeof(core.Extensions.Data.Repository.SqlRepository<Server.Models.Page, int>));
-            /*
-            services.AddTransient(
-                typeof(Ws.Core.Extensions.Data.IRepository<Code.User, Guid>), 
-                typeof(Ws.Core.Extensions.Data.Repository.EF.SqlServer<Code.User, Guid>)
-                );
-            */
-
-            Ws.Core.AppInfo<Ws.Core.AppConfig>.Set(env: env, config: config, services: builder.Services);
+            Ws.Core.AppInfo<Ws.Core.AppConfig>.ConfigureServices(env: env, config: config, services: builder.Services);
         }
 
         public void Use(WebApplication app)
@@ -52,22 +35,20 @@ namespace web
             WebApplication app, 
             IOptionsMonitor<Ws.Core.AppConfig> appConfigMonitor, 
             IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor, 
-            IHostApplicationLifetime applicationLifetime, 
+            IHostApplicationLifetime lifetime, 
             ILogger<Ws.Core.Program> logger
             )
         {
             logger.LogInformation("Start");
 
-            //app.UseResponseCompression();
+            Ws.Core.AppInfo<Ws.Core.AppConfig>.ConfigureApp(app: app, appConfigMonitor: appConfigMonitor, extConfigMonitor: extConfigMonitor, loggerFactory: app.Services?.GetRequiredService<ILoggerFactory>(), lifetime: lifetime);
 
-            Ws.Core.AppInfo<Ws.Core.AppConfig>.Set(app: app, appConfigMonitor: appConfigMonitor, extConfigMonitor: extConfigMonitor, loggerFactory: app.Services?.GetRequiredService<ILoggerFactory>(), lifetime: applicationLifetime);
-
-            base.Configure(app, appConfigMonitor, extConfigMonitor, applicationLifetime, logger);
+            base.Configure(app, appConfigMonitor, extConfigMonitor, lifetime, logger);
 
             app.MapGet("/ping", () => "pong");
 
             //shutdown
-            applicationLifetime.ApplicationStopping.Register(() =>
+            lifetime.ApplicationStopping.Register(() =>
             {
                 logger.LogInformation("Shutdown");
             }

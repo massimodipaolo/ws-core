@@ -22,20 +22,20 @@ namespace Ws.Core.Extensions.Data.EF
         public IncludeNavigationPropertiesConfig? IncludeNavigationProperties { get; set; }
         public class MappingConfig
         {
-            public string NameSpace { get; set; }
-            public string Name { get; set; }
-            public string Table { get; set; }
-            public string Schema { get; set; }
-            public string IdColumnName { get; set; }
+            public string? NameSpace { get; set; }
+            public string? Name { get; set; }
+            public string? Table { get; set; }
+            public string? Schema { get; set; }
+            public string? IdColumnName { get; set; }
             public bool IdHasDefaultValue { get; set; } = true;
             public IEnumerable<PropertyConfig>? Properties { get; set; }
             public class PropertyConfig
             {
-                public string Name { get; set; }
-                public string Column { get; set; }
+                public string? Name { get; set; }
+                public string? Column { get; set; }
                 public bool Ignore { get; set; } = false;
                 public bool? JsonConvert { get; set; }
-                public string HasConversion { get; set; }
+                public string? HasConversion { get; set; }
                 
                 public static readonly Type[] ColumnClrTypeConversions =
                 {
@@ -53,32 +53,33 @@ namespace Ws.Core.Extensions.Data.EF
             }
         }
         public class IncludeNavigationPropertiesConfig {
-            public Operation List { get; set; }
-            public Operation Find { get; set; } 
+            public Operation? List { get; set; }
+            public Operation? Find { get; set; } 
             public class Operation
             {
                 /// <summary>
                 /// Include the main navigation properties
                 /// </summary>
                 [Description("Include the main navigation properties")]
-                public bool Enable { get; set; }
+                [DefaultValue(false)]
+                public bool Enable { get; set; } = false;
                 /// <summary>
                 /// List of typeof(T).FullName to exclude from then Enabled directive
                 /// </summary>
                 [Description("List of typeof(T).FullName to exclude from then Enabled directive")]
-                public IEnumerable<string> Except { get; set; }
+                public string[]? Except { get; set; } = Array.Empty<string>();
                 /// <summary>
                 /// Set custom navigation paths. This setting overrides the Enabled/Except properties
                 /// </summary>
                 [Description("Set custom navigation paths. This setting overrides the Enabled/Except properties")]
-                public IEnumerable<NavigationPaths> Explicit { get; set; }
+                public IEnumerable<NavigationPaths>? Explicit { get; set; }
                 public class NavigationPaths
                 {
                     /// <summary>
                     /// typeof(T).FullName
                     /// </summary>
                     [Description("typeof(T).FullName")]
-                    public string Entity { get; set; }
+                    public string? Entity { get; set; }
                     /// <summary>
                     /// Array of indented navigation paths to include
                     /// i.e. for Order entity

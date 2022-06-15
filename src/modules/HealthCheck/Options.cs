@@ -118,7 +118,7 @@ namespace Ws.Core.Extensions.HealthCheck
             public class EndpointOptions
             {
                 public string Name { get; set; }
-                [Description("i.e. http://host:8001/healthz, skip check if empty")]
+                [Description("i.e. /healthz/checks, or absolute path to external endopoints. Skip check if empty")]
                 public string Uri { get; set; }
             }
             public class WebhookOptions: EndpointOptions

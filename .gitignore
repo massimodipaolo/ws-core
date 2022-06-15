@@ -201,11 +201,12 @@ _Pvt_Extensions
 #/samples
 /samples/**/Extensions/
 # Test / analysis
-/tests/**/*.xml
-/tests/**/data
-/tests/**/wwwroot
-/tests/**/Extensions/**/
-/tests/**/Files/*.*
+/src/tests/**/*.xml
+/src/tests/**/data
+/src/tests/**/wwwroot
+/src/tests/**/Extensions/**/
+/src/tests/**/Files/*.*
+/src/tests/xCore/_results/
 /.sonarqube
 # Task Secret
 .env

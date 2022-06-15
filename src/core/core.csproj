@@ -41,7 +41,7 @@
     </Folder>
   </ItemGroup>
   <ItemGroup>    
-    <ProjectReference Include="..\extCore\WebApplication\ExtCore.Application.csproj" />    
+    <ProjectReference Include="..\extCore\Application\Application.csproj" />    
     <ProjectReference Include="..\modules\ExtensionBase\ExtensionBase.csproj" />
   </ItemGroup>   
 </Project> 

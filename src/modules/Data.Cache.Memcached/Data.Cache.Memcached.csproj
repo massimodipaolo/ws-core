@@ -1,30 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <PackageVersion>6.0.0</PackageVersion>
-    <PackageId>Ws.Core.Extensions.Data.Cache.Memcached</PackageId>
-    <AssemblyName>Ws.Core.Extensions.Data.Cache.Memcached</AssemblyName>
-    <RootNamespace>Ws.Core.Extensions.Data.Cache.Memcached</RootNamespace>
-    <Authors>Massimo Di Paolo</Authors>
-    <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
-    <Description>
-    </Description>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.netcore 6</PackageReleaseNotes>
-    <PackageTags></PackageTags>
-	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<PackageVersion>6.0.0</PackageVersion>
+		<PackageId>Ws.Core.Extensions.Data.Cache.Memcached</PackageId>
+		<AssemblyName>Ws.Core.Extensions.Data.Cache.Memcached</AssemblyName>
+		<RootNamespace>Ws.Core.Extensions.Data.Cache.Memcached</RootNamespace>
+		<Authors>Massimo Di Paolo</Authors>
+		<Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
+		<Description>
+		</Description>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageReleaseNotes>.netcore 6</PackageReleaseNotes>
+		<PackageTags></PackageTags>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <NoWarn>1701;1702;1705;1591</NoWarn>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<NoWarn>1701;1702;1705;1591</NoWarn>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="EnyimMemcachedCore" Version="2.5.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Data.Cache\Data.Cache.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="EnyimMemcachedCore" Version="2.5.3" />
+	</ItemGroup>
 </Project>

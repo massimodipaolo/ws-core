@@ -1,6 +1,7 @@
 ﻿using Carter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,14 +15,21 @@ using Ws.Core.Extensions.Base;
 
 namespace Ws.Core
 {
-    public class Startup<TOptions> where TOptions : class, IAppConfiguration
+    public class Startup
     {
+        protected Startup() { }
+        public static readonly DateTime Uptime = DateTime.Now;
+        protected string appConfigSectionRoot { get; set; } = nameof(AppConfig);
         protected IWebHostEnvironment env { get; set; }
         protected IConfiguration config;
-        private IServiceCollection services;
-        public static readonly DateTime Uptime = DateTime.Now;
+        public static readonly Func<IConfiguration, IWebHostEnvironment, string> ExtCoreExtensionsPath = (config, env)
+            => config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"] != null
+            ? $"{env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"]}"
+            : null;
+    }
+    public class Startup<TOptions> : Startup where TOptions : class, IAppConfiguration
+    {
         private string _extLastConfigAssembliesSerialized { get; set; }
-        protected string AppConfigSectionRoot { get; set; } = nameof(AppConfig);
 
         public Startup(IWebHostEnvironment hostingEnvironment, IConfiguration configuration)
         {
@@ -33,7 +41,7 @@ namespace Ws.Core
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public virtual void ConfigureServices(WebApplicationBuilder builder)
         {
-            services = builder.Services;
+            var services = builder.Services;
 
             services.AddOptions();
 
@@ -41,13 +49,13 @@ namespace Ws.Core
 
             services.Configure<Configuration>(config.GetSection(Core.Extensions.Base.Configuration.SectionRoot));
 
-            services.Configure<TOptions>(config.GetSection(AppConfigSectionRoot));
+            services.Configure<TOptions>(config.GetSection(appConfigSectionRoot));
 
             services.AddSingleton<IAppConfiguration, TOptions>();
 
             Extensions.Base.Extension.Init(services, services.BuildServiceProvider());
 
-            builder.AddExtCore(config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"] != null ? $"{env.ContentRootPath}{System.IO.Path.DirectorySeparatorChar}{config[$"{Extensions.Base.Configuration.SectionRoot}:Folder"]}" : null, includingSubpaths: true);
+            builder.AddExtCore(ExtCoreExtensionsPath(config, env), includingSubpaths: true);
 
             var carterModules = Ws.Core.Extensions.Base.Util.GetAllTypesOf<ICarterModule>();
             if (carterModules.Any())
@@ -80,20 +88,10 @@ namespace Ws.Core
                 var _extCurrentAssembliesSerialized = _extSerialize(extConfig.Assemblies);
                 var isUpdatable = _extCurrentAssembliesSerialized == _extLastConfigAssembliesSerialized;
 
-                logger.LogInformation($"Config changed {DateTime.Now}; Is updatable: {isUpdatable} ");
-
-                if (isUpdatable)
-                    _extLastConfigAssembliesSerialized = _extCurrentAssembliesSerialized;
+                logger.LogInformation("Config changed; Is updatable: {isUpdatable} ", isUpdatable);
 
                 if (!isUpdatable && extConfig.EnableShutDownOnChange)
-                {
                     lifetime.StopApplication();
-                }
-                else
-                    ExtCore.Events.Event<Extensions.Base.IConfigurationChangeEvent, Extensions.Base.ConfigurationChangeContext>
-                    .Broadcast(new Extensions.Base.ConfigurationChangeContext()
-                    { App = app, Lifetime = lifetime, Configuration = extConfig }
-                    );
             });
 
         }

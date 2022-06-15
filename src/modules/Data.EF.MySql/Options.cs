@@ -1,15 +1,13 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
-using Ws.Core.Extensions.Base;
-using Microsoft.Extensions.DependencyInjection;
 using System.ComponentModel;
+using Ws.Core.Extensions.Base;
 
-namespace Ws.Core.Extensions.Data.EF.MySql
+namespace Ws.Core.Extensions.Data.EF.MySql;
+
+public class Options : IOptions
 {
-    public class Options : IOptions
-    {
-        public IEnumerable<Extensions.Data.DbConnection> Connections { get; set; }
-        [DefaultValue(ServiceLifetime.Scoped)]
-        public ServiceLifetime ServiceLifetime { get; set; } = ServiceLifetime.Scoped;
-    }
+    public IEnumerable<Extensions.Data.DbConnection>? Connections { get; set; }
+    [DefaultValue(ServiceLifetime.Scoped)]
+    public ServiceLifetime ServiceLifetime { get; set; } = ServiceLifetime.Scoped;
 }

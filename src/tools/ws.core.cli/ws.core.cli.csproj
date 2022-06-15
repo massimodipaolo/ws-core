@@ -5,6 +5,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyName>ws.core.cli</AssemblyName> 
+    <RootNamespace>ws.core.cli</RootNamespace>     	  
   </PropertyGroup>
 
   <ItemGroup>

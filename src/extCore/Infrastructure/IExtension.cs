@@ -12,25 +12,5 @@ namespace ExtCore.Infrastructure
     /// Gets the name of the extension.
     /// </summary>
     string Name { get; }
-
-    /// <summary>
-    /// Gets the description of the extension.
-    /// </summary>
-    string Description { get; }
-
-    /// <summary>
-    /// Gets the URL of the extension.
-    /// </summary>
-    string Url { get; }
-
-    /// <summary>
-    /// Gets the version of the extension.
-    /// </summary>
-    string Version { get; }
-
-    /// <summary>
-    /// Gets the authors of the extension (separated by commas).
-    /// </summary>
-    string Authors { get; }
   }
 }

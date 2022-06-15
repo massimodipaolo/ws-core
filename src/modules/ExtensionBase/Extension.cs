@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace Ws.Core.Extensions.Base
 {
-    public class Extension : ExtCore.Infrastructure.ExtensionBase, ExtCore.Infrastructure.Actions.IConfigureBuilder, ExtCore.Infrastructure.Actions.IConfigureApp
+    public class Extension : ExtCore.Infrastructure.IExtension, ExtCore.Infrastructure.Actions.IConfigureBuilder, ExtCore.Infrastructure.Actions.IConfigureApp
     {
         private static IServiceProvider _serviceProvider;
         private static IServiceCollection _serviceCollection;
@@ -34,7 +34,6 @@ namespace Ws.Core.Extensions.Base
                                            .Get<IDictionary<string, Extensions.Base.Configuration.Assembly>>()?
                                            .OrderBy(_ => _.Value.Priority)?
                                            .Select(_ => new Configuration.Assembly() { Name = _.Key, Priority = _.Value.Priority });
-        //.Select((e,i) => new Configuration.Assembly() {Name = e.Key,Priority=i});
 
         protected Configuration.Assembly Assembly => Extensions?.FirstOrDefault(_ => _.Name == AssemblyName);
 
@@ -59,44 +58,22 @@ namespace Ws.Core.Extensions.Base
             return (prefix,tag);
         }
 
-        public virtual T ReloadOptions<T>() where T : class, IOptions, new()
-        {
-            static string serialize(object t) => System.Text.Json.JsonSerializer.Serialize(t);
-            var _current = GetOptions<T>();
-            if (serialize(Option<T>.Value ?? new T()) == serialize(_current ?? new T()))
-            {
-                logger.LogInformation($"{Name}: No changes, skip {DateTime.Now}");
-                return null;
-            }
-            else
-            {
-                Option<T>.Value = _current;
-                logger.LogInformation($"{Name}: Options reloaded {DateTime.Now}");
-                return _current;
-            }
-        }
-
-        public override string Name => AssemblyName;
-
-        //IConfigureAction 
-        public virtual int Priority => Assembly?.Priority ?? 0; // (Assembly?.Priority + 1) * 100 ?? 0;
+        public virtual string Name => AssemblyName ?? GetType().FullName;
+        public virtual int Priority => Assembly?.Priority ?? 0; 
 
         //IConfigureBuilder
         public virtual void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
         {
-            // default generic discriminator
-            builder.Services.TryAddSingleton(typeof(IDiscriminator), typeof(Discriminator));
-            builder.Services.TryAddSingleton(typeof(IDiscriminator<>), typeof(Discriminator<>));
         }
 
         //IConfigureApp
         public virtual void Execute(WebApplication app)
         {
-            //IServiceProvider serviceProvider = app.Services;
         }
 
         public class Option<T>
-        {
+        {            
+            protected Option() { }
             public static T Value { get; set; }
         }
 

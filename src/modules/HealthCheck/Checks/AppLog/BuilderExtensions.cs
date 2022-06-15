@@ -25,16 +25,12 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="IHealthChecksBuilder"/>.</returns>
         public static IHealthChecksBuilder AddAppLog(
             this IHealthChecksBuilder builder, 
-            //Action<Ws.Core.Extensions.HealthCheck.Checks.AppLog.Options> setup,
             Ws.Core.Extensions.HealthCheck.Checks.AppLog.Options appLogOptions,
             string name = default, 
             HealthStatus? failureStatus = default, 
             IEnumerable<string> tags = default, 
             TimeSpan? timeout = default) 
         {
-            //var appLogOptions = new Ws.Core.Extensions.HealthCheck.Checks.AppLog.Options();
-            //setup?.Invoke(appLogOptions);
-
             try
             {
                 Type type = null;
@@ -59,7 +55,7 @@ namespace Microsoft.Extensions.DependencyInjection
             }
             catch(Exception ex) {
                 var logger = builder.Services.BuildServiceProvider().GetService<ILoggerFactory>();
-                logger?.CreateLogger<HealthCheckRegistration>()?.LogError(ex, $"Error adding {nameof(AppLogHealthCheckBuilderExtensions)} health check");
+                logger?.CreateLogger<HealthCheckRegistration>()?.LogError(ex, "Error adding {extension} health check", nameof(AppLogHealthCheckBuilderExtensions));
             }
 
             return builder;

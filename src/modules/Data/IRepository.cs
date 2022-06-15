@@ -22,9 +22,9 @@ namespace Ws.Core.Extensions.Data
         void Delete(T entity);
         void DeleteMany(IEnumerable<T> entities);
     }
-    public interface IRepository<T, TKey> : IRepository<T> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
+    public interface IRepository<T, TKey> : IRepository<T> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>, IComparable<TKey>
     {
-        T Find(TKey Id);
+        T? Find(TKey? Id);
     }
 
     [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]

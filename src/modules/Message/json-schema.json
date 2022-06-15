@@ -28,10 +28,13 @@
           ]
         },
         "enableSsl": {
-          "type": "boolean"
+          "type": "boolean",
+          "default": false
         },
         "skipCertificateValidation": {
-          "type": "boolean"
+          "description": "Only available in DEBUG mode",
+          "type": "boolean",
+          "default": false
         }
       }
     },

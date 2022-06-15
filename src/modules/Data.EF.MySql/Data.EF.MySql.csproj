@@ -13,6 +13,8 @@
 		<PackageReleaseNotes>Health check</PackageReleaseNotes>
 		<PackageTags></PackageTags>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>		
 	</PropertyGroup>
 
 	<PropertyGroup>

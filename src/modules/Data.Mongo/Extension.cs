@@ -15,14 +15,12 @@ namespace Ws.Core.Extensions.Data.Mongo
     {
         private Options options => GetOptions<Options>();
 
-        //private static T BsonClassMap<core.Extensions.Data.Entity<T>> map => default(T);
-
         public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
         {
             base.Execute(builder, serviceProvider);
 
             var connections = options?.Connections;
-            if (connections != null && connections.Any())
+            if (connections?.Any() == true)
             {
                 // Mappings
                 var tKeys = new KeyValuePair<Type, IBsonSerializer>[] {

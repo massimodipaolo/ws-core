@@ -1,0 +1,14 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    },
+    "Console": {
+      "LogLevel": {
+        "Default": "Error",
+        "Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware": "Information"
+      }
+    }
+  }
+}

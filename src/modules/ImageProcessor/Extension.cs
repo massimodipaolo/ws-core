@@ -12,7 +12,6 @@ namespace Ws.Core.Extensions.ImageProcessor;
 
 public class Extension : Base.Extension
 {
-    //private Options _options => GetOptions<Options>();
 
     public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
     {
@@ -30,14 +29,10 @@ public class Extension : Base.Extension
                 .SetRequestParser<QueryCollectionRequestParser>()
                 .Configure<PhysicalFileSystemCacheOptions>(options =>
                 {
-                    //options.CacheRoot = "wwwroot";
+                    options.CacheRoot = "wwwroot";
                     options.CacheFolder = "is-cache";
                 })
                 .SetCache<PhysicalFileSystemCache>()
-                /*
-                .SetCacheKey<UriRelativeLowerInvariantCacheKey>()
-                .SetCacheHash<SHA256CacheHash>()
-                */
                 .ClearProviders()
                 .AddProvider<PhysicalFileSystemProvider>()
                 .ClearProcessors()

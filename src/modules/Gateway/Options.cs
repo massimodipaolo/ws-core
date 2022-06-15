@@ -9,7 +9,7 @@ public class Options : IOptions
     [DefaultValue("string empty")]
     public string MapWhen { get; set; } = "";
     [Description("Ocelot config: https://ocelot.readthedocs.io/en/latest/features/configuration.html")]
-    public Ocelot.Configuration.File.FileConfiguration Ocelot { get; set; }
+    public Ocelot.Configuration.File.FileConfiguration? Ocelot { get; set; }
     public Options() {
     }
 

@@ -1,18 +1,16 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Text;
-using System.Linq;
 
 namespace Ws.Core.Extensions.Data.Cache
 {
-    public class DistributedCache<T> : DistributedCache, ICache<T> where T : class {
+    public class DistributedCache<T> : DistributedCache, ICache<T> where T : class
+    {
         public DistributedCache(IDistributedCache client) : base(client) { }
     }
     public class DistributedCache : ICache
     {
-        protected readonly IDistributedCache _client;
+        protected readonly IDistributedCache? _client;
         private const string _keyCollection = "___all_keys";
 
         public DistributedCache() { }
@@ -24,17 +22,22 @@ namespace Ws.Core.Extensions.Data.Cache
 
         public IEnumerable<string> Keys => Get<HashSet<string>>(_keyCollection) ?? new HashSet<string>();
 
-        public object Get(string key) => Get<object>(key);
+        public object? Get(string key) => Get<object>(key);
 
-        public T Get<T>(string key)
+        public T? Get<T>(string key)
         {
-            try {
-                var result = _client.Get(key);
+            try
+            {
+                var result = _client?.Get(key);
                 if (result != null)
                 {
                     return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(result));
                 }
-            } catch { }
+            }
+            catch
+            {
+                return default;
+            }
             return default;
         }
 
@@ -43,7 +46,7 @@ namespace Ws.Core.Extensions.Data.Cache
             Set(key, value, null);
         }
 
-        public void Set(string key, object value, ICacheEntryOptions options)
+        public void Set(string key, object value, ICacheEntryOptions? options)
         {
             var _options = new DistributedCacheEntryOptions();
             if (options != null)
@@ -52,9 +55,9 @@ namespace Ws.Core.Extensions.Data.Cache
                 _options.AbsoluteExpirationRelativeToNow = options.AbsoluteExpirationRelativeToNow;
                 _options.SlidingExpiration = options.SlidingExpiration;
             }
-            try {
-                _client.Set(key, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)), _options);
-            } catch { }
+
+            _client?.Set(key, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)), _options);
+
             if (key != _keyCollection && !Keys.Contains(key))
                 SyncKeys(Keys.Append(key).ToHashSet<string>());
 
@@ -62,21 +65,21 @@ namespace Ws.Core.Extensions.Data.Cache
 
         public void Remove(string key)
         {
-            try { _client.Remove(key); } catch { }
+            _remove(key); 
 
             if (Keys.Contains(key))
                 SyncKeys(Keys.Where(_ => _ != key).ToHashSet<string>());
         }
 
-        public void RemoveAndSkipSync(string key)
+        private void _remove(string key)
         {
-            try { _client.Remove(key);  } catch { }
+            _client?.Remove(key); 
         }
 
         public void Clear()
         {
             foreach (var k in Keys)
-                RemoveAndSkipSync(k);
+                _remove(k);
 
             SyncKeys(new HashSet<string>());
         }

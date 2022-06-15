@@ -137,12 +137,14 @@
       ],
       "properties": {
         "assembly": {
+          "description": "Assembly full name",
           "type": [
             "string",
             "null"
           ]
         },
         "type": {
+          "description": "JsonConverter class full name",
           "type": [
             "string",
             "null"
@@ -151,6 +153,7 @@
       }
     },
     "JsonConverterDiscover[]": {
+      "description": "List of assembly/JsonConvert type to apply",
       "type": [
         "array",
         "null"
@@ -167,6 +170,7 @@
       "properties": {
         "nullValueHandling": {
           "type": "string",
+          "default": "Ignore",
           "enum": [
             "Include",
             "Ignore"
@@ -174,6 +178,7 @@
         },
         "formatting": {
           "type": "string",
+          "default": "None",
           "enum": [
             "None",
             "Indented"
@@ -181,6 +186,7 @@
         },
         "referenceLoopHandling": {
           "type": "string",
+          "default": "Serialize",
           "enum": [
             "Ignore",
             "Serialize"
