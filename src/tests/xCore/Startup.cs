@@ -35,6 +35,11 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
 
         // override repo
         builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.Agenda, string>), typeof(Ws.Core.Extensions.Data.Repository.EF.MySql<Models.Agenda, string>));
+        builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.CrudBase3, Guid>), typeof(Ws.Core.Extensions.Data.Repository.Mongo<Models.CrudBase3, Guid>));
+
+        // override cache 
+        builder.Services.AddSingleton(typeof(Ws.Core.Extensions.Data.Cache.ICache<Models.CrudBase2>), typeof(Ws.Core.Extensions.Data.Cache.SqlServer.SqlCache<Models.CrudBase2>));
+        //builder.Services.AddSingleton(typeof(Ws.Core.Extensions.Data.Cache.ICache<Models.CrudBase3>), typeof(Ws.Core.Extensions.Data.Cache.Redis.RedisCache<Models.CrudBase3>));        
         /*
         builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.User,int>), typeof(Ws.Core.Extensions.Data.Repository.FileSystem<Models.User,int>));
         builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.Album,int>), typeof(Ws.Core.Extensions.Data.Repository.EF.SqlServer<Models.Album,int>));
@@ -98,8 +103,6 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
         app.MapGrpcService<Services.Data>();
         app.MapGet("/api/data/event-log/{number}/{source}", xCore.Services.Data.GetEventLogDataApi);
         app.MapPost("/api/data/event-log/{destination}", xCore.Services.Data.PostEventLogDataApi);
-
-        Ws.Core.Extensions.Api.Options apiOpt = Ws.Core.Extensions.Base.Extension.Option<Ws.Core.Extensions.Api.Options>.Value;
 
     }
     public override void Configure(WebApplication app, IOptionsMonitor<Ws.Core.AppConfig> appConfigMonitor, IOptionsMonitor<Ws.Core.Extensions.Base.Configuration> extConfigMonitor, IHostApplicationLifetime lifetime, ILogger<Ws.Core.Program> logger)

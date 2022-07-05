@@ -31,13 +31,6 @@
     "null"
   ],
   "properties": {
-    "type": {
-      "type": "string",
-      "enum": [
-        "Memory",
-        "Distributed"
-      ]
-    },
     "entryExpirationInMinutes": {
       "$ref": "#/definitions/Duration"
     }

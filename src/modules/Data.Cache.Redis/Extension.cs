@@ -21,17 +21,16 @@ namespace Ws.Core.Extensions.Data.Cache.Redis
                 .AddRedis(host, name:"cache-redis", failureStatus: Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded, tags: new[] { "cache", "redis" });
 
             builder.Services
-                //.AddMemoryCache()
-                //.AddDistributedMemoryCache()
                 .AddDistributedRedisCache(_ =>
-                { _.Configuration = host; _.InstanceName = options?.Client?.InstanceName ?? "master"; }
+                { 
+                    _.Configuration = host; 
+                    _.InstanceName = options?.Client?.InstanceName ?? "master";
+                }
                 );
 
             //DI
-            builder.Services.TryAddSingleton(typeof(ICache), typeof(DistributedCache));
-            builder.Services.TryAddSingleton(typeof(ICache<>), typeof(DistributedCache<>));
-            builder.Services.TryAddTransient(typeof(ICacheRepository<,>), typeof(Repository.CachedRepository<,>));
-
+            builder.Services.TryAddSingleton(typeof(ICache), typeof(RedisCache));
+            builder.Services.TryAddSingleton(typeof(ICache<>), typeof(RedisCache<>));            
         }
     }
 }

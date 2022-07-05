@@ -138,7 +138,7 @@ namespace xCore
                 $"{response.RequestMessage?.Method} {response.RequestMessage?.RequestUri?.ToString() ?? ""}", 
                 response.StatusCode.ToString(), 
                 response.Headers.ToString(),
-                contentType, 
+                response.Content?.Headers?.ToString() ?? "",
                 content);
             return content;
         }

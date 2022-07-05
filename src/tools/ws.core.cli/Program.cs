@@ -1,25 +1,26 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
-using Newtonsoft.Json.Schema.Generation;
-using Newtonsoft.Json.Schema.Infrastructure;
-using Newtonsoft.Json.Serialization;
-using Spectre.Console;
+﻿using Spectre.Console;
 using Spectre.Console.Cli;
 using System.Reflection;
 using ws.core.cli.Command;
 
 var app = new CommandApp();
+app.SetDefaultCommand<GenerateJsonSchema>();
+
 app.Configure(config =>
 {
+    var name = Assembly.GetEntryAssembly()?.GetName()?.Name ?? "";
     AnsiConsole.Write(
-        new FigletText(Assembly.GetEntryAssembly()?.GetName()?.Name ?? "")
+        new FigletText(name)
             .LeftAligned()
             .Color(Color.Silver));
 
+    config
+    .CaseSensitivity(CaseSensitivity.None)
+    .SetApplicationName(name)
+    .ValidateExamples();
+
     config.AddCommand<GenerateJsonSchema>("jschema")
-        //.WithAlias("hola")
         .WithDescription(":bookmark_tabs: Generate modules [hotpink3]json-schema.json[/]")
         .WithExample(new[] { "jschema" });
 });
-return app.Run(args);
+return await app.RunAsync(args).ConfigureAwait(false);

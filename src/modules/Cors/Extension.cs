@@ -35,14 +35,7 @@ namespace Ws.Core.Extensions.Cors
                 if (namedPolicies?.Count() == 1)
                     app.UseCors(namedPolicies?.FirstOrDefault()?.Name ?? "");
                 else
-                {   // https://stackoverflow.com/a/59662110
-                    IDictionary<string, string> customPolicies = new Dictionary<string, string>();
-                    foreach (var p in namedPolicies ?? Array.Empty<Options.PolicyOption>())
-                        foreach (var o in p.Origins ?? Array.Empty<string>())
-                            if (!customPolicies.ContainsKey(o))
-                                customPolicies.Add(o, p.Name ?? "");
-                    app.UseMiddleware<Cors.MultiOriginMiddleware>(customPolicies);
-                }
+                    _useMultiOriginCors(app);
             }
             else // deny all
                 app.UseCors(_ => _.SetIsOriginAllowed(_ => false));
@@ -53,7 +46,7 @@ namespace Ws.Core.Extensions.Cors
         {
             options.AddPolicy(policy.Name ?? "", _ =>
             {
-                _.WithOrigins((policy.Origins ?? Array.Empty<string>()).Distinct().ToArray());
+                _.WithOrigins((policy.Origins ?? Array.Empty<string>()).Distinct().ToArray()).SetIsOriginAllowedToAllowWildcardSubdomains();
 
                 var _methods = policy.Methods?.Where(__ => !string.IsNullOrEmpty(__));
                 if (_methods?.Any() == true) { _.WithMethods(_methods.Distinct().ToArray()); } else { _.AllowAnyMethod(); }
@@ -70,7 +63,20 @@ namespace Ws.Core.Extensions.Cors
 
             });
         }
-
+        
+        /// <summary>
+        /// https://stackoverflow.com/a/59662110
+        /// </summary>
+        /// <param name="app"></param>
+        private void _useMultiOriginCors(WebApplication app)
+        {
+            IDictionary<string, string> originPolicies = new Dictionary<string, string>();
+            foreach (var p in namedPolicies ?? Array.Empty<Options.PolicyOption>())
+                foreach (var origin in p.Origins ?? Array.Empty<string>())
+                    if (!originPolicies.ContainsKey(origin))
+                        originPolicies.Add(origin, p.Name ?? "");
+            app.UseMiddleware<Cors.MultiOriginMiddleware>(originPolicies);
+        }
     }
 
 }

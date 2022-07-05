@@ -12,25 +12,25 @@ namespace Ws.Core.Extensions.ImageProcessor;
 
 public class Extension : Base.Extension
 {
-
-    public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
+    private Options options => GetOptions<Options>() ?? new Options();
+    public override void Execute(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
     {
-        builder.Services.AddImageSharp(options =>
+        builder.Services.AddImageSharp(o =>
         {
-            options.Configuration = Configuration.Default;
-            options.BrowserMaxAge = TimeSpan.FromDays(7);
-            options.CacheMaxAge = TimeSpan.FromDays(365);
-            options.CachedNameLength = 12;
-            options.OnParseCommandsAsync = _ => Task.CompletedTask;
-            options.OnBeforeSaveAsync = _ => Task.CompletedTask;
-            options.OnProcessedAsync = _ => Task.CompletedTask;
-            options.OnPrepareResponseAsync = _ => Task.CompletedTask;
+            o.Configuration = options.Config?.Configuration ?? Configuration.Default;
+            o.BrowserMaxAge = options.Config?.BrowserMaxAge ?? TimeSpan.FromDays(7); 
+            o.CacheMaxAge = options.Config?.CacheMaxAge ?? TimeSpan.FromDays(365); 
+            o.CachedNameLength = options.Config?.CachedNameLength ?? 8; 
+            o.OnParseCommandsAsync = _ => Task.CompletedTask;
+            o.OnBeforeSaveAsync = _ => Task.CompletedTask;
+            o.OnProcessedAsync = _ => Task.CompletedTask;
+            o.OnPrepareResponseAsync = _ => Task.CompletedTask;
         })
                 .SetRequestParser<QueryCollectionRequestParser>()
-                .Configure<PhysicalFileSystemCacheOptions>(options =>
+                .Configure<PhysicalFileSystemCacheOptions>(o =>
                 {
-                    options.CacheRoot = "wwwroot";
-                    options.CacheFolder = "is-cache";
+                    o.CacheRoot = options.FileSystemCache?.CacheRoot ?? "wwwroot";
+                    o.CacheFolder = options.FileSystemCache?.CacheFolder ?? "is-cache";
                 })
                 .SetCache<PhysicalFileSystemCache>()
                 .ClearProviders()

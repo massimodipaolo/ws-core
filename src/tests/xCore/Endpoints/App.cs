@@ -66,6 +66,17 @@ public class App : CrudOp, ICarterModule
         app.MapDelete($"{_prefix}/{nameof(CrudBase2)}", DeleteMany<CrudBase2, Guid>).WithTags(nameof(App));
         app.MapPost($"{_prefix}/{nameof(CrudBase2)}/merge/{{operation}}", Merge<CrudBase2, Guid>).WithTags(nameof(App));
 
+        // Data.Mongo
+        app.MapGet($"{_prefix}/{nameof(CrudBase3)}", GetAll<CrudBase3, Guid>).WithTags(nameof(App));
+        app.MapGet($"{_prefix}/{nameof(CrudBase3)}/{{id}}", GetById<CrudBase3, Guid>).WithTags(nameof(App));
+        app.MapPost($"{_prefix}/{nameof(CrudBase3)}", Create<CrudBase3, Guid>).WithTags(nameof(App));
+        app.MapPost($"{_prefix}/{nameof(CrudBase3)}/range", CreateMany<CrudBase3, Guid>).WithTags(nameof(App));
+        app.MapPut($"{_prefix}/{nameof(CrudBase3)}/{{id}}", Update<CrudBase3, Guid>).WithTags(nameof(App));
+        app.MapPut($"{_prefix}/{nameof(CrudBase3)}", UpdateMany<CrudBase3, Guid>).WithTags(nameof(App));
+        app.MapDelete($"{_prefix}/{nameof(CrudBase3)}/{{id}}", Delete<CrudBase3, Guid>).WithTags(nameof(App));
+        app.MapDelete($"{_prefix}/{nameof(CrudBase3)}", DeleteMany<CrudBase3, Guid>).WithTags(nameof(App));
+        app.MapPost($"{_prefix}/{nameof(CrudBase3)}/merge/{{operation}}", Merge<CrudBase3, Guid>).WithTags(nameof(App));
+
         // Data.FileSystem
         app.MapGet($"{_prefix}/{nameof(User2)}", GetAll<User2, int>).WithTags(nameof(App));
         app.MapGet($"{_prefix}/{nameof(User2)}/{{id}}", GetById<User2, int>).WithTags(nameof(App));

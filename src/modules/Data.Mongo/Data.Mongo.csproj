@@ -21,7 +21,7 @@
   
   <ItemGroup>
 		<PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="6.0.2" />
-		<PackageReference Include="MongoDB.Driver" Version="2.15.0" />
+		<PackageReference Include="MongoDB.Driver" Version="2.16.1" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Data\Data.csproj" />

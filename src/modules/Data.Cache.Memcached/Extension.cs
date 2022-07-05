@@ -20,7 +20,6 @@ public class Extension : Base.Extension
             //DI
             builder.Services.TryAddSingleton(typeof(ICache), typeof(MemcachedCache));
             builder.Services.TryAddSingleton(typeof(ICache<>), typeof(MemcachedCache<>));
-            builder.Services.TryAddTransient(typeof(ICacheRepository<,>), typeof(Repository.CachedRepository<,>));
         }
     }
 

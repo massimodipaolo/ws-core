@@ -147,6 +147,14 @@
                 "options": { "$ref": "HealthCheck/json-schema.json#" }
               }
             },
+            "Ws.Core.Extensions.ImageProcessor": {
+              "allOf": [
+                { "$ref": "#/definitions/assembly" }
+              ],
+              "properties": {
+                "options": { "$ref": "ImageProcessor/json-schema.json#" }
+              }
+            },
             "Ws.Core.Extensions.Message": {
               "allOf": [
                 { "$ref": "#/definitions/assembly" }

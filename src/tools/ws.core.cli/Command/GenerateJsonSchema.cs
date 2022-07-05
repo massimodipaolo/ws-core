@@ -67,7 +67,13 @@ public class GenerateJsonSchema : Command<GenerateJsonSchema.Settings>
 
     public static bool GenerateOptionsJsonSchema(string assemblyFile, string extensionPath)
     {
-        var extOptions = Assembly.Load(File.ReadAllBytes(assemblyFile))?.ExportedTypes?.FirstOrDefault(t => t != null && typeof(Ws.Core.Extensions.Base.IOptions).IsAssignableFrom(t) && !t.IsInterface);
+        
+#pragma warning disable S3885 // "Assembly.Load" should be used: need LoadFrom to dynamically load dependencies context 
+        var extOptions = Assembly
+            .LoadFrom(assemblyFile)
+            .ExportedTypes?
+            .FirstOrDefault(t => t != null && typeof(Ws.Core.Extensions.Base.IOptions).IsAssignableFrom(t) && !t.IsInterface);
+#pragma warning restore S3885 // "Assembly.Load" should be used
         if (extOptions != null)
         {
             var schemaGenerator = new JSchemaGenerator

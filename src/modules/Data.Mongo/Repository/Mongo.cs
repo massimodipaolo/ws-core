@@ -17,7 +17,12 @@ namespace Ws.Core.Extensions.Data.Repository
         {
             var _db = _config.Connections?.FirstOrDefault(_ => _.Name == name);
             if (null == _db) return null;
-            return new MongoClient(_db.ConnectionString).GetDatabase(_db.Database).GetCollection<T>(typeof(T).Name);
+            IMongoDatabase db = new MongoClient(_db.ConnectionString).GetDatabase(_db.Database);
+            var collection = db.ListCollectionNames().ToEnumerable()
+                .FirstOrDefault(_ => new string[] { typeof(T).FullName, typeof(T).Name }.Contains(_, System.StringComparer.OrdinalIgnoreCase));
+            if (collection != null)
+                return db.GetCollection<T>(collection, new MongoCollectionSettings() { AssignIdOnInsert = false });
+            return null;
         }
 
         public Mongo(IOptions<Extensions.Data.Mongo.Options> config)
@@ -69,16 +74,17 @@ namespace Ws.Core.Extensions.Data.Repository
             {
                 if (operation == RepositoryMergeOperation.Sync)
                 {
-                    _collection?.Find(_ => !entities.Any(__ => __.Id.Equals(_.Id)))?.ForEachAsync(_ => Delete(_));
+                    _collection?.DeleteMany(_ => true);
+                    _collection?.InsertMany(entities);
                 }
-                _collection?.Find(_ => true)?.ForEachAsync(_ =>
-                {
-                    var entity = entities.FirstOrDefault(__ => __.Id.Equals(_.Id));
-                    if (entity != null)
-                        Update(entity);
-                    else
-                        Add(entity);
-                });
+                else
+                    foreach (var entity in entities)
+                    {
+                        if (Find(entity.Id) != null)
+                            Update(entity);
+                        else
+                            Add(entity);
+                    }
             }
         }
 
@@ -91,7 +97,8 @@ namespace Ws.Core.Extensions.Data.Repository
         public void DeleteMany(IEnumerable<T> entities)
         {
             if (entities != null && entities.Any())
-                _collection?.DeleteMany(_ => entities.Any(__ => __.Id.Equals(_.Id)));
+                foreach (var entity in entities)
+                    Delete(entity);
         }
     }
 }

@@ -19,3 +19,15 @@ public record CrudBase2 : IRecord, IAppTracked, IEntity<Guid>
     public Guid Id { get; set; } = Guid.NewGuid();
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 }
+
+public record CrudBase3 : IRecord, IAppTracked, IEntity<Guid>
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+}
+
+public record CrudBase4 : IRecord, IAppTracked, IEntity<Guid>
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+}

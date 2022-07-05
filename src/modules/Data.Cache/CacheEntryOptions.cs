@@ -1,14 +1,10 @@
-﻿namespace Ws.Core.Extensions.Data.Cache;
+﻿using Microsoft.Extensions.Caching.Distributed;
 
-public class CacheEntryOptions : ICacheEntryOptions
+namespace Ws.Core.Extensions.Data.Cache;
+
+public class CacheEntryOptions : DistributedCacheEntryOptions
 {
     public CacheEntryOptions() { }
-
-    public DateTimeOffset? AbsoluteExpiration { get; set; }
-
-    public TimeSpan? AbsoluteExpirationRelativeToNow { get; set; }
-
-    public TimeSpan? SlidingExpiration { get; set; }
 
     public class Expiration
     {

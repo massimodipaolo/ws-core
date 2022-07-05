@@ -40,18 +40,21 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Grpc.AspNetCore" Version="2.46.0" />
-		<PackageReference Include="Hangfire.Core" Version="1.7.28" />
-		<PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.47.0" />
+		<PackageReference Include="Hangfire.Core" Version="1.7.30" />
+		<PackageReference Include="Hangfire.AspNetCore" Version="1.7.30" />
 		<PackageReference Include="Hangfire.InMemory" Version="0.3.4" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.3" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
-		<PackageReference Include="Moq" Version="4.17.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.6" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.16.1" />
+		<PackageReference Include="Moq" Version="4.18.1" />
 		<PackageReference Include="Polly" Version="7.2.3" />
 		<PackageReference Include="xunit" Version="2.4.1" />
 		<PackageReference Include="xunit.runner.utility" Version="2.4.1" />
-		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="coverlet.collector" Version="3.1.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -62,14 +65,20 @@
 		<ProjectReference Include="..\..\core\core.csproj" />
 		<ProjectReference Include="..\..\modules\Api\Api.csproj" />
 		<ProjectReference Include="..\..\modules\Cors\Cors.csproj" />
+		<ProjectReference Include="..\..\modules\Data.Cache.Memcached\Data.Cache.Memcached.csproj" />
+		<ProjectReference Include="..\..\modules\Data.Cache.Redis\Data.Cache.Redis.csproj" />
+		<ProjectReference Include="..\..\modules\Data.Cache.SqlServer\Data.Cache.SqlServer.csproj" />
+		<ProjectReference Include="..\..\modules\Data.Cache\Data.Cache.csproj" />
 		<ProjectReference Include="..\..\modules\Data.EF.MySql\Data.EF.MySql.csproj" />
 		<ProjectReference Include="..\..\modules\Data.EF.SQLite\Data.EF.SQLite.csproj" />
 		<ProjectReference Include="..\..\modules\Data.EF.SqlServer\Data.EF.SqlServer.csproj" />
 		<ProjectReference Include="..\..\modules\Data.FileSystem\Data.FileSystem.csproj" />
+		<ProjectReference Include="..\..\modules\Data.Mongo\Data.Mongo.csproj" />
 		<ProjectReference Include="..\..\modules\Data\Data.csproj" />
 		<ProjectReference Include="..\..\modules\Diagnostic\Diagnostic.csproj" />
 		<ProjectReference Include="..\..\modules\Gateway\Gateway.csproj" />
 		<ProjectReference Include="..\..\modules\HealthCheck\HealthCheck.csproj" />
+		<ProjectReference Include="..\..\modules\ImageProcessor\ImageProcessor.csproj" />
 		<ProjectReference Include="..\..\modules\Message\Message.csproj" />
 		<ProjectReference Include="..\..\modules\StaticFiles\StaticFiles.csproj" />
 	</ItemGroup>

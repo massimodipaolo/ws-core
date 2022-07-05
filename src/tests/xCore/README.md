@@ -1,7 +1,7 @@
 
 # xCore
 
-Unit/Integration/Functional testing
+Integration/Functional testing
 
 
 ## Code coverage

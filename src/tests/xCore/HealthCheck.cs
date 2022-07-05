@@ -14,7 +14,6 @@ namespace xCore
         [Theory]
         [InlineData("/healthz")]
         [InlineData("/healthz/checks")]
-        [InlineData("/healthchecks-api")]
         [InlineData("/healthchecks-ui")]
         [InlineData("/healthchecks-webhooks")]
         public async Task Get_Endpoints(string url) => await Get_EndpointsReturnSuccess(url);
@@ -40,7 +39,7 @@ namespace xCore
         public HealthCheckAppLogService(TRepo repo): base(repo) {}
     }
 
-    public record Log : IRecord, ILog, IEntity<int>
+    public record Log : IRecord, ILog, IAppTracked, IEntity<int>
     {
         public int Id { get; set; }
         public string MachineName { get; set; }

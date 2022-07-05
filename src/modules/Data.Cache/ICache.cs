@@ -1,18 +1,18 @@
-﻿using System;
+﻿using Microsoft.Extensions.Caching.Distributed;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Ws.Core.Extensions.Data.Cache
 {
-    public interface ICache
+    public interface ICache: IDistributedCache
     {
         IEnumerable<string> Keys { get; }
-        object? Get(string key);
         T? Get<T>(string key);
-        void Set(string key, object value);
-        void Set(string key, object value, ICacheEntryOptions options);
-        void Remove(string key);
+        Task<T?> GetAsync<T>(string key);
+        Task SetObjectAsync(string key, object value, DistributedCacheEntryOptions options, CancellationToken token = default);
         void Clear();
+        Task ClearAsync(CancellationToken token = default);
     }
 
     /// <summary>
@@ -27,4 +27,5 @@ namespace Ws.Core.Extensions.Data.Cache
 #pragma warning restore S2326 // Unused type parameters should be removed
     {
     }
+
 }

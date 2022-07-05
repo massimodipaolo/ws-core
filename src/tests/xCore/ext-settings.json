@@ -5,7 +5,20 @@
     "folder": "Extensions",
     "enableShutDownOnChange": false,
     "assemblies": {
-      "Ws.Core.Extensions.ImageProcessor": { "priority": 90 },
+      "Ws.Core.Extensions.ImageProcessor": {
+        "priority": 90,
+        "options": {
+          "config": {
+            "browserMaxAge": "7.00:00:00",
+            "cacheMaxAge": "365.00:00:00",
+            "cachedNameLength": 12
+          },
+          "fileSystemCache": {
+            "cacheRoot": "wwwroot",
+            "cacheFolder": "is-cache"
+          }
+        }
+      },
       "Ws.Core.Extensions.StaticFiles": {
         "priority": 100,
         "options": {
@@ -113,6 +126,56 @@
           "cacheResponse": {
             "enable": true,
             "addEarlyHints": { "enable": true }
+          }
+        }
+      },
+      "Ws.Core.Extensions.Data.Cache": {
+        "priority": 300,
+        "options": {
+          "entryExpirationInMinutes": {
+            "fast": 1,
+            "medium": 5,
+            "slow": 60,
+            "never": 3600
+          }
+        }
+      },
+      "Ws.Core.Extensions.Data.Cache.SqlServer": {
+        "priority": 310,
+        "options": {
+          "client": {
+            "connectionString": "Server=.,14332;Database=Cache;User Id=cacheUser;Password=C4$hUs3r-Strong!Pa$$w0rd;MultipleActiveResultSets=true",
+            "schemaName": "dbo",
+            "tableName": "Entry"
+          },
+          "entryExpirationInMinutes": {
+            "fast": 2,
+            "medium": 10,
+            "slow": 120,
+            "never": 3600
+          }
+        }
+      },
+      "Ws.Core.Extensions.Data.Cache.Redis": {
+        "priority": 320,
+        "options": {
+          "client": {
+            "instanceName": "master",
+            "configuration": "localhost:6379",
+            "configurationOptions": { "abortOnConnectFail": false }
+          }
+        }
+      },
+      "Ws.Core.Extensions.Data.Cache.Memcached": {
+        "priority": 330,
+        "options": {
+          "client": {
+            "servers": [
+              {
+                "address": "localhost",
+                "port": 11211
+              }
+            ]
           }
         }
       },
@@ -293,8 +356,20 @@
           }
         }
       },
-      "Ws.Core.Extensions.Data": {
+      "Ws.Core.Extensions.Data.Mongo": {
         "priority": 450,
+        "options": {
+          "connections": [
+            {
+              "name": "default",
+              "connectionString": "mongodb://root:WS-1234-secret@localhost:27017",
+              "database": "ws-core"
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Data": {
+        "priority": 460,
         "options": {}
       },
       "Ws.Core.Extensions.Message": {

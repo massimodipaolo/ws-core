@@ -8,6 +8,7 @@ using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson;
 using Microsoft.Extensions.DependencyModel;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Logging;
 
 namespace Ws.Core.Extensions.Data.Mongo
 {
@@ -31,11 +32,18 @@ namespace Ws.Core.Extensions.Data.Mongo
                 };
                 foreach (var tKey in tKeys)
                 {
-                    var cm = new BsonClassMap(tKey.Key);
-                    cm.AutoMap();
-                    cm.MapIdMember(tKey.Key.GetMember("Id").Single());
-                    cm.IdMemberMap.SetSerializer(tKey.Value);
-                    BsonClassMap.RegisterClassMap(cm);
+                    try
+                    {
+                        var cm = new BsonClassMap(tKey.Key);
+                        cm.AutoMap();
+                        cm.MapIdMember(tKey.Key.GetMember("Id").Single());
+                        cm.IdMemberMap.SetSerializer(tKey.Value);
+                        if (!BsonClassMap.GetRegisteredClassMaps().Contains(cm))
+                            BsonClassMap.RegisterClassMap(cm);
+                    }
+                    catch(Exception ex) {
+                        serviceProvider?.GetService<Microsoft.Extensions.Logging.ILogger<Ws.Core.Extensions.Data.Mongo.Extension>>()?.LogWarning(ex, "");
+                    }
                 }
 
                 var hcBuilder = builder.Services.AddHealthChecks();

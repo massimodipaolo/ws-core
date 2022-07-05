@@ -30,6 +30,7 @@ public class Repository : BaseTest
     [InlineData(typeof(Ws.Core.Extensions.Data.IRepository<Models.CrudBase2, Guid>), typeof(Ws.Core.Extensions.Data.Repository.EF.SqlServer<Models.CrudBase2, Guid>))]
     // override on startup
     [InlineData(typeof(Ws.Core.Extensions.Data.IRepository<Models.Agenda, string>), typeof(Ws.Core.Extensions.Data.Repository.EF.MySql<Models.Agenda, string>))]
+    [InlineData(typeof(Ws.Core.Extensions.Data.IRepository<Models.CrudBase3, Guid>), typeof(Ws.Core.Extensions.Data.Repository.Mongo<Models.CrudBase3, Guid>))]
     // override by injector
     [InlineData(typeof(Ws.Core.Extensions.Data.IRepository<Log, int>), typeof(Ws.Core.Extensions.Data.Repository.EF.SQLite<Log, int>))]
     [InlineData(typeof(Ws.Core.Extensions.Data.IRepository<Models.User2, int>), typeof(Ws.Core.Extensions.Data.Repository.FileSystem<Models.User2, int>))]
@@ -60,6 +61,8 @@ public class Repository : BaseTest
     [Fact]
     public async Task Check_SqlServerStoredProcedureCrudOp() => await Check_CrudOp<Models.CrudBase2, Guid>();
     [Fact]
+    public async Task Check_MongoCrudOp() => await Check_CrudOp<Models.CrudBase3, Guid>();
+    [Fact]
     public async Task Check_MySqlCrudOp() => await Check_CrudOp<Models.Agenda, string>();
 
     protected async Task Check_CrudOp<T, TKey>(WebApplicationFactoryType factoryType = WebApplicationFactoryType.Development) where T : IRecord, IEntity<TKey>, IAppTracked, new() where TKey : IEquatable<TKey>, IComparable<TKey>
@@ -88,7 +91,7 @@ public class Repository : BaseTest
             Assert.True(putId.response.IsSuccessStatusCode);
             var getPutId = await Get_EndpointsResponse($"{_prefix}/{toPut.Id}", factoryType);
             var getIdUpdated = JsonSerializer.Deserialize<T>(getPutId.content);
-            Assert.True(getIdUpdated?.CreatedAt.ToString("yyyyMMddHHmmss") == newTrackingDate.ToString("yyyyMMddHHmmss"));
+            Assert.True(getIdUpdated?.CreatedAt.ToUniversalTime().ToString("yyyyMMddHHmmss") == newTrackingDate.ToUniversalTime().ToString("yyyyMMddHHmmss"));
 
             // Post
             var toPost = getIdCurrent with { Id = new T().Id, CreatedAt = DateTime.Now };
@@ -154,7 +157,7 @@ public class Repository : BaseTest
     private static bool _isEquals<T, TKey>(IEnumerable<T> obj1, IEnumerable<T> obj2)
     where T : IRecord, IEntity<TKey>, IAppTracked, new() where TKey : IEquatable<TKey>, IComparable<TKey>
     {
-        Func<IEnumerable<T>, int> _hash = (obj) => string.Concat(obj.OrderByDescending(_ => _.CreatedAt).ThenBy(_ => _.Id).Select(_ => $"{_.Id}-{_.CreatedAt.ToString("yyyyMMddHHmmss")}|")).GetHashCode();
+        Func<IEnumerable<T>, int> _hash = (obj) => string.Concat(obj.OrderByDescending(_ => _.CreatedAt).ThenBy(_ => _.Id).Select(_ => $"{_.Id}-{_.CreatedAt.ToUniversalTime().ToString("yyyyMMddHHmmss")}|")).GetHashCode();
         return _hash(obj1) == _hash(obj2);
     }
 }

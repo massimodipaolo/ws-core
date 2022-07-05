@@ -1,0 +1,1057 @@
+{
+  "definitions": {
+    "Assembly": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "definedTypes": {
+          "$ref": "#/definitions/IEnumerable<TypeInfo>"
+        },
+        "exportedTypes": {
+          "$ref": "#/definitions/IEnumerable<Type>"
+        },
+        "codeBase": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "entryPoint": {
+          "$ref": "#/definitions/MethodInfo"
+        },
+        "fullName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "imageRuntimeVersion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "isDynamic": {
+          "type": "boolean"
+        },
+        "location": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reflectionOnly": {
+          "type": "boolean"
+        },
+        "isCollectible": {
+          "type": "boolean"
+        },
+        "isFullyTrusted": {
+          "type": "boolean"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "escapedCodeBase": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "manifestModule": {
+          "$ref": "#/definitions/Module"
+        },
+        "modules": {
+          "$ref": "#/definitions/IEnumerable<Module>"
+        },
+        "globalAssemblyCache": {
+          "type": "boolean"
+        },
+        "hostContext": {
+          "type": "integer"
+        },
+        "securityRuleSet": {
+          "type": "string",
+          "enum": [
+            "None",
+            "Level1",
+            "Level2"
+          ]
+        }
+      }
+    },
+    "Configuration": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "maxDegreeOfParallelism": {
+          "type": "integer"
+        },
+        "streamProcessingBufferSize": {
+          "type": "integer"
+        },
+        "properties": {
+          "$ref": "#/definitions/IDictionary<Object, Object>"
+        },
+        "imageFormats": {
+          "$ref": "#/definitions/IEnumerable<IImageFormat>"
+        },
+        "readOrigin": {
+          "type": "string",
+          "enum": [
+            "Begin",
+            "Current"
+          ]
+        },
+        "imageFormatsManager": {
+          "$ref": "#/definitions/ImageFormatManager"
+        },
+        "memoryAllocator": {
+          "$ref": "#/definitions/MemoryAllocator"
+        }
+      }
+    },
+    "ConstructorInfo": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memberType": {
+          "type": "string",
+          "enum": [
+            "Constructor",
+            "Event",
+            "Field",
+            "Method",
+            "Property",
+            "TypeInfo",
+            "Custom",
+            "NestedType",
+            "All"
+          ]
+        },
+        "attributes": {
+          "type": "string",
+          "enum": [
+            "ReuseSlot",
+            "PrivateScope",
+            "Private",
+            "FamANDAssem",
+            "Assembly",
+            "Family",
+            "FamORAssem",
+            "Public",
+            "MemberAccessMask",
+            "UnmanagedExport",
+            "Static",
+            "Final",
+            "Virtual",
+            "HideBySig",
+            "NewSlot",
+            "VtableLayoutMask",
+            "CheckAccessOnOverride",
+            "Abstract",
+            "SpecialName",
+            "RTSpecialName",
+            "PinvokeImpl",
+            "HasSecurity",
+            "RequireSecObject",
+            "ReservedMask"
+          ]
+        },
+        "methodImplementationFlags": {
+          "type": "string",
+          "enum": [
+            "IL",
+            "Managed",
+            "Native",
+            "OPTIL",
+            "Runtime",
+            "CodeTypeMask",
+            "Unmanaged",
+            "ManagedMask",
+            "NoInlining",
+            "ForwardRef",
+            "Synchronized",
+            "NoOptimization",
+            "PreserveSig",
+            "AggressiveInlining",
+            "AggressiveOptimization",
+            "InternalCall",
+            "MaxMethodImplVal"
+          ]
+        },
+        "callingConvention": {
+          "type": "string",
+          "enum": [
+            "Standard",
+            "VarArgs",
+            "Any",
+            "HasThis",
+            "ExplicitThis"
+          ]
+        },
+        "isAbstract": {
+          "type": "boolean"
+        },
+        "isConstructor": {
+          "type": "boolean"
+        },
+        "isFinal": {
+          "type": "boolean"
+        },
+        "isHideBySig": {
+          "type": "boolean"
+        },
+        "isSpecialName": {
+          "type": "boolean"
+        },
+        "isStatic": {
+          "type": "boolean"
+        },
+        "isVirtual": {
+          "type": "boolean"
+        },
+        "isAssembly": {
+          "type": "boolean"
+        },
+        "isFamily": {
+          "type": "boolean"
+        },
+        "isFamilyAndAssembly": {
+          "type": "boolean"
+        },
+        "isFamilyOrAssembly": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
+        },
+        "isPublic": {
+          "type": "boolean"
+        },
+        "isConstructedGenericMethod": {
+          "type": "boolean"
+        },
+        "isGenericMethod": {
+          "type": "boolean"
+        },
+        "isGenericMethodDefinition": {
+          "type": "boolean"
+        },
+        "containsGenericParameters": {
+          "type": "boolean"
+        },
+        "methodHandle": {
+          "$ref": "#/definitions/RuntimeMethodHandle"
+        },
+        "isSecurityCritical": {
+          "type": "boolean"
+        },
+        "isSecuritySafeCritical": {
+          "type": "boolean"
+        },
+        "isSecurityTransparent": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "declaringType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reflectedType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "module": {
+          "$ref": "#/definitions/Module"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "isCollectible": {
+          "type": "boolean"
+        },
+        "metadataToken": {
+          "type": "integer"
+        }
+      }
+    },
+    "CustomAttributeData": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "attributeType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "constructor": {
+          "$ref": "#/definitions/ConstructorInfo"
+        },
+        "constructorArguments": {
+          "$ref": "#/definitions/IList<CustomAttributeTypedArgument>"
+        },
+        "namedArguments": {
+          "$ref": "#/definitions/IList<CustomAttributeNamedArgument>"
+        }
+      }
+    },
+    "CustomAttributeNamedArgument": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "memberInfo": {
+          "$ref": "#/definitions/MemberInfo"
+        },
+        "typedValue": {
+          "$ref": "#/definitions/CustomAttributeTypedArgument"
+        },
+        "memberName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "isField": {
+          "type": "boolean"
+        }
+      }
+    },
+    "CustomAttributeTypedArgument": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "argumentType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "value": {}
+      }
+    },
+    "Func<FormattedImage, Task>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target": {},
+        "method": {
+          "$ref": "#/definitions/MethodInfo"
+        }
+      }
+    },
+    "Func<HttpContext, Task>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target": {},
+        "method": {
+          "$ref": "#/definitions/MethodInfo"
+        }
+      }
+    },
+    "Func<ImageCommandContext, Task>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target": {},
+        "method": {
+          "$ref": "#/definitions/MethodInfo"
+        }
+      }
+    },
+    "Func<ImageProcessingContext, Task>": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target": {},
+        "method": {
+          "$ref": "#/definitions/MethodInfo"
+        }
+      }
+    },
+    "ICustomAttributeProvider": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "IDictionary<Object, Object>": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "IEnumerable<CustomAttributeData>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/CustomAttributeData"
+      }
+    },
+    "IEnumerable<IImageFormat>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/IImageFormat"
+      }
+    },
+    "IEnumerable<Module>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/Module"
+      }
+    },
+    "IEnumerable<String>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "IEnumerable<Type>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "IEnumerable<TypeInfo>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "IImageFormat": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "defaultMimeType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mimeTypes": {
+          "$ref": "#/definitions/IEnumerable<String>"
+        },
+        "fileExtensions": {
+          "$ref": "#/definitions/IEnumerable<String>"
+        }
+      }
+    },
+    "IList<CustomAttributeNamedArgument>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/CustomAttributeNamedArgument"
+      }
+    },
+    "IList<CustomAttributeTypedArgument>": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/CustomAttributeTypedArgument"
+      }
+    },
+    "ImageFormatManager": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "imageFormats": {
+          "$ref": "#/definitions/IEnumerable<IImageFormat>"
+        }
+      }
+    },
+    "ImageSharpMiddlewareOptions": {
+      "description": "ImageSharp.Web config: https://docs.sixlabors.com/articles/imagesharp.web/gettingstarted.html",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "configuration": {
+          "$ref": "#/definitions/Configuration"
+        },
+        "memoryStreamManager": {
+          "$ref": "#/definitions/RecyclableMemoryStreamManager"
+        },
+        "useInvariantParsingCulture": {
+          "type": "boolean"
+        },
+        "browserMaxAge": {
+          "type": "string"
+        },
+        "cacheMaxAge": {
+          "type": "string"
+        },
+        "cachedNameLength": {
+          "type": "integer"
+        },
+        "onParseCommandsAsync": {
+          "$ref": "#/definitions/Func<ImageCommandContext, Task>"
+        },
+        "onBeforeSaveAsync": {
+          "$ref": "#/definitions/Func<FormattedImage, Task>"
+        },
+        "onProcessedAsync": {
+          "$ref": "#/definitions/Func<ImageProcessingContext, Task>"
+        },
+        "onPrepareResponseAsync": {
+          "$ref": "#/definitions/Func<HttpContext, Task>"
+        }
+      }
+    },
+    "MemberInfo": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memberType": {
+          "type": "string",
+          "enum": [
+            "Constructor",
+            "Event",
+            "Field",
+            "Method",
+            "Property",
+            "TypeInfo",
+            "Custom",
+            "NestedType",
+            "All"
+          ]
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "declaringType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reflectedType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "module": {
+          "$ref": "#/definitions/Module"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "isCollectible": {
+          "type": "boolean"
+        },
+        "metadataToken": {
+          "type": "integer"
+        }
+      }
+    },
+    "MemoryAllocator": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "MethodInfo": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memberType": {
+          "type": "string",
+          "enum": [
+            "Constructor",
+            "Event",
+            "Field",
+            "Method",
+            "Property",
+            "TypeInfo",
+            "Custom",
+            "NestedType",
+            "All"
+          ]
+        },
+        "returnParameter": {
+          "$ref": "#/definitions/ParameterInfo"
+        },
+        "returnType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "returnTypeCustomAttributes": {
+          "$ref": "#/definitions/ICustomAttributeProvider"
+        },
+        "attributes": {
+          "type": "string",
+          "enum": [
+            "ReuseSlot",
+            "PrivateScope",
+            "Private",
+            "FamANDAssem",
+            "Assembly",
+            "Family",
+            "FamORAssem",
+            "Public",
+            "MemberAccessMask",
+            "UnmanagedExport",
+            "Static",
+            "Final",
+            "Virtual",
+            "HideBySig",
+            "NewSlot",
+            "VtableLayoutMask",
+            "CheckAccessOnOverride",
+            "Abstract",
+            "SpecialName",
+            "RTSpecialName",
+            "PinvokeImpl",
+            "HasSecurity",
+            "RequireSecObject",
+            "ReservedMask"
+          ]
+        },
+        "methodImplementationFlags": {
+          "type": "string",
+          "enum": [
+            "IL",
+            "Managed",
+            "Native",
+            "OPTIL",
+            "Runtime",
+            "CodeTypeMask",
+            "Unmanaged",
+            "ManagedMask",
+            "NoInlining",
+            "ForwardRef",
+            "Synchronized",
+            "NoOptimization",
+            "PreserveSig",
+            "AggressiveInlining",
+            "AggressiveOptimization",
+            "InternalCall",
+            "MaxMethodImplVal"
+          ]
+        },
+        "callingConvention": {
+          "type": "string",
+          "enum": [
+            "Standard",
+            "VarArgs",
+            "Any",
+            "HasThis",
+            "ExplicitThis"
+          ]
+        },
+        "isAbstract": {
+          "type": "boolean"
+        },
+        "isConstructor": {
+          "type": "boolean"
+        },
+        "isFinal": {
+          "type": "boolean"
+        },
+        "isHideBySig": {
+          "type": "boolean"
+        },
+        "isSpecialName": {
+          "type": "boolean"
+        },
+        "isStatic": {
+          "type": "boolean"
+        },
+        "isVirtual": {
+          "type": "boolean"
+        },
+        "isAssembly": {
+          "type": "boolean"
+        },
+        "isFamily": {
+          "type": "boolean"
+        },
+        "isFamilyAndAssembly": {
+          "type": "boolean"
+        },
+        "isFamilyOrAssembly": {
+          "type": "boolean"
+        },
+        "isPrivate": {
+          "type": "boolean"
+        },
+        "isPublic": {
+          "type": "boolean"
+        },
+        "isConstructedGenericMethod": {
+          "type": "boolean"
+        },
+        "isGenericMethod": {
+          "type": "boolean"
+        },
+        "isGenericMethodDefinition": {
+          "type": "boolean"
+        },
+        "containsGenericParameters": {
+          "type": "boolean"
+        },
+        "methodHandle": {
+          "$ref": "#/definitions/RuntimeMethodHandle"
+        },
+        "isSecurityCritical": {
+          "type": "boolean"
+        },
+        "isSecuritySafeCritical": {
+          "type": "boolean"
+        },
+        "isSecurityTransparent": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "declaringType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reflectedType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "module": {
+          "$ref": "#/definitions/Module"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "isCollectible": {
+          "type": "boolean"
+        },
+        "metadataToken": {
+          "type": "integer"
+        }
+      }
+    },
+    "Module": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "assembly": {
+          "$ref": "#/definitions/Assembly"
+        },
+        "fullyQualifiedName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mdStreamVersion": {
+          "type": "integer"
+        },
+        "moduleVersionId": {
+          "type": "string"
+        },
+        "scopeName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "moduleHandle": {
+          "$ref": "#/definitions/ModuleHandle"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "metadataToken": {
+          "type": "integer"
+        }
+      }
+    },
+    "ModuleHandle": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "mdStreamVersion": {
+          "type": "integer"
+        }
+      }
+    },
+    "ParameterInfo": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "attributes": {
+          "type": "string",
+          "enum": [
+            "None",
+            "In",
+            "Out",
+            "Lcid",
+            "Retval",
+            "Optional",
+            "HasDefault",
+            "HasFieldMarshal",
+            "Reserved3",
+            "Reserved4",
+            "ReservedMask"
+          ]
+        },
+        "member": {
+          "$ref": "#/definitions/MemberInfo"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parameterType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "position": {
+          "type": "integer"
+        },
+        "isIn": {
+          "type": "boolean"
+        },
+        "isLcid": {
+          "type": "boolean"
+        },
+        "isOptional": {
+          "type": "boolean"
+        },
+        "isOut": {
+          "type": "boolean"
+        },
+        "isRetval": {
+          "type": "boolean"
+        },
+        "defaultValue": {},
+        "rawDefaultValue": {},
+        "hasDefaultValue": {
+          "type": "boolean"
+        },
+        "customAttributes": {
+          "$ref": "#/definitions/IEnumerable<CustomAttributeData>"
+        },
+        "metadataToken": {
+          "type": "integer"
+        }
+      }
+    },
+    "PhysicalFileSystemCacheOptions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "cacheFolder": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cacheRoot": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "RecyclableMemoryStreamManager": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "blockSize": {
+          "type": "integer"
+        },
+        "largeBufferMultiple": {
+          "type": "integer"
+        },
+        "useMultipleLargeBuffer": {
+          "type": "boolean"
+        },
+        "useExponentialLargeBuffer": {
+          "type": "boolean"
+        },
+        "maximumBufferSize": {
+          "type": "integer"
+        },
+        "smallPoolFreeSize": {
+          "type": "integer"
+        },
+        "smallPoolInUseSize": {
+          "type": "integer"
+        },
+        "largePoolFreeSize": {
+          "type": "integer"
+        },
+        "largePoolInUseSize": {
+          "type": "integer"
+        },
+        "smallBlocksFree": {
+          "type": "integer"
+        },
+        "largeBuffersFree": {
+          "type": "integer"
+        },
+        "maximumFreeSmallPoolBytes": {
+          "type": "integer"
+        },
+        "maximumFreeLargePoolBytes": {
+          "type": "integer"
+        },
+        "maximumStreamCapacity": {
+          "type": "integer"
+        },
+        "generateCallStacks": {
+          "type": "boolean"
+        },
+        "aggressiveBufferReturn": {
+          "type": "boolean"
+        },
+        "throwExceptionOnToArray": {
+          "type": "boolean"
+        }
+      }
+    },
+    "RuntimeMethodHandle": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "config": {
+      "$ref": "#/definitions/ImageSharpMiddlewareOptions"
+    },
+    "fileSystemCache": {
+      "$ref": "#/definitions/PhysicalFileSystemCacheOptions"
+    }
+  }
+}
