@@ -18,6 +18,7 @@ public class Extension : Base.Extension
             builder.Services.AddEnyimMemcached(config.GetSection($"{ConfigSectionPathOptions}:Client"));
 
             //DI
+            builder.Services.AddSingleton<IExpirationTier<MemcachedCache>>(_ => new ExpirationTier<MemcachedCache>(options.EntryExpirationInMinutes));
             builder.Services.TryAddSingleton(typeof(ICache), typeof(MemcachedCache));
             builder.Services.TryAddSingleton(typeof(ICache<>), typeof(MemcachedCache<>));
         }

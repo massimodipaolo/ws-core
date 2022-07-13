@@ -136,7 +136,7 @@
             "fast": 1,
             "medium": 5,
             "slow": 60,
-            "never": 3600
+            "never": 1440
           }
         }
       },
@@ -152,7 +152,7 @@
             "fast": 2,
             "medium": 10,
             "slow": 120,
-            "never": 3600
+            "never": 2880
           }
         }
       },

@@ -35,6 +35,7 @@ namespace Ws.Core.Extensions.Data.Cache.SqlServer
                 );
 
             //DI
+            builder.Services.AddSingleton<IExpirationTier<SqlCache>>(_ => new ExpirationTier<SqlCache>(options.EntryExpirationInMinutes));
             builder.Services.TryAddSingleton(typeof(ICache), typeof(SqlCache));
             builder.Services.TryAddSingleton(typeof(ICache<>), typeof(SqlCache<>));
         }

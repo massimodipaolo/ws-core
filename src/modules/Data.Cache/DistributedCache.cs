@@ -10,12 +10,15 @@ namespace Ws.Core.Extensions.Data.Cache
     {
         private const string _keyCollection = "___all_keys";
         private readonly IDistributedCache _client;
-        public DistributedCache(IDistributedCache client) { 
+        private readonly IExpirationTier _expirationTier;
+        public DistributedCache(IDistributedCache client, IExpirationTier expirationTier)
+        {
             _client = client;
+            _expirationTier = expirationTier;
         }
 
         public IEnumerable<string> Keys => Get<HashSet<string>>(_keyCollection) ?? new HashSet<string>();
-
+        public IExpirationTier ExpirationTier => _expirationTier;
         public byte[] Get(string key) => _client.Get(key);
 
         public async Task<byte[]> GetAsync(string key, CancellationToken token = default) => await _client.GetAsync(key, token);
@@ -76,12 +79,7 @@ namespace Ws.Core.Extensions.Data.Cache
         }
 
         private async Task SyncKeysAsync(HashSet<string> keys)
-        => await SetObjectAsync(_keyCollection, keys, Data.Cache.CacheEntryOptions.Expiration.Never);
+        => await SetObjectAsync(_keyCollection, keys, ExpirationTier.Never);
 
-    }
-
-    public class DistributedCache<T> : DistributedCache, ICache<T> where T : class
-    {
-        public DistributedCache(IDistributedCache client) : base(client) { }
     }
 }

@@ -29,6 +29,7 @@ namespace Ws.Core.Extensions.Data.Cache.Redis
                 );
 
             //DI
+            builder.Services.AddSingleton<IExpirationTier<RedisCache>>(_ => new ExpirationTier<RedisCache>(options.EntryExpirationInMinutes));
             builder.Services.TryAddSingleton(typeof(ICache), typeof(RedisCache));
             builder.Services.TryAddSingleton(typeof(ICache<>), typeof(RedisCache<>));            
         }

@@ -35,7 +35,7 @@
         ]
       },
       {
-        "priority": 399,
+        "priority": 390,
         "name": "data-cache-override",
         "services": [
           {

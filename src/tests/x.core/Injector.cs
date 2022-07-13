@@ -42,7 +42,7 @@ namespace x.core
             _output.Write(url, response.StatusCode.ToString(), response.Headers.ToString(), response.Content.Headers.ToString(), content);
 
             // Assert
-            Assert.Equal(content, expectedContent);
+            Assert.Equal(expectedContent, content);
         }
 
         [Theory]

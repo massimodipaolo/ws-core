@@ -19,7 +19,7 @@ namespace x.core
         /// env variable                cli arg
         /// ------------------------------------------------------------------
         /// ASPNETCORE_ENVIRONMENT      --environment=Development
-        /// ASPNETCORE_CONTENTROOT      --contentRoot=C:\Projects\ws-core\x.core
+        /// ASPNETCORE_CONTENTROOT      --contentRoot=C:\Projects\ws-core\src\tests\x.core
         /// ASPNETCORE_APPLICATIONNAME  --applicationName=x.core
         /// </summary>
         /// <param name="args"></param>

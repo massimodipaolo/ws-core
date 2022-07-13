@@ -1,5 +1,5 @@
 
-# x.core
+# x.cli
 
 Integration/Functional testing
 

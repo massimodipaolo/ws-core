@@ -8,6 +8,7 @@ namespace Ws.Core.Extensions.Data.Cache
     public interface ICache: IDistributedCache
     {
         IEnumerable<string> Keys { get; }
+        IExpirationTier ExpirationTier { get; }
         T? Get<T>(string key);
         Task<T?> GetAsync<T>(string key);
         Task SetObjectAsync(string key, object value, DistributedCacheEntryOptions options, CancellationToken token = default);
