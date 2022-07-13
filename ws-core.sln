@@ -50,8 +50,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.EF", "src\modules\Data
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cors", "src\modules\Cors\Cors.csproj", "{08FB2C9F-D526-43C3-AEF1-16A46AD31A76}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spa", "src\modules\Spa\Spa.csproj", "{D641E4B4-AEBB-4493-937B-682283515164}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{72F2A867-A2F5-40EE-8B63-00D2E7634D03}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Serialization", "src\shared\Serialization\Serialization.shproj", "{BEBEC343-27A0-432A-97A4-D0EE58174B45}"
@@ -88,9 +86,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\extCore\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{93F7E0F1-B626-4C68-ACF8-303E8BD8C51E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xCore", "src\tests\xCore\xCore.csproj", "{410DA1E4-49FE-4CA0-BBBE-7CEFB06D1E32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "x.core", "src\tests\x.core\x.core.csproj", "{410DA1E4-49FE-4CA0-BBBE-7CEFB06D1E32}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "benchmark", "src\tests\benchmark\benchmark.csproj", "{C30115FA-C157-4161-9B9D-832395D87B5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "x.cli", "src\tests\x.cli\x.cli.csproj", "{0CC1F2A1-7CC3-4150-BFA1-7BEF7A3CCA8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -154,10 +154,6 @@ Global
 		{08FB2C9F-D526-43C3-AEF1-16A46AD31A76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08FB2C9F-D526-43C3-AEF1-16A46AD31A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08FB2C9F-D526-43C3-AEF1-16A46AD31A76}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D641E4B4-AEBB-4493-937B-682283515164}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D641E4B4-AEBB-4493-937B-682283515164}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D641E4B4-AEBB-4493-937B-682283515164}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D641E4B4-AEBB-4493-937B-682283515164}.Release|Any CPU.Build.0 = Release|Any CPU
 		{463941C8-5B67-433C-94ED-4CE7CB94EDFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{463941C8-5B67-433C-94ED-4CE7CB94EDFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{463941C8-5B67-433C-94ED-4CE7CB94EDFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -210,6 +206,10 @@ Global
 		{C30115FA-C157-4161-9B9D-832395D87B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C30115FA-C157-4161-9B9D-832395D87B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C30115FA-C157-4161-9B9D-832395D87B5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CC1F2A1-7CC3-4150-BFA1-7BEF7A3CCA8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CC1F2A1-7CC3-4150-BFA1-7BEF7A3CCA8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CC1F2A1-7CC3-4150-BFA1-7BEF7A3CCA8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CC1F2A1-7CC3-4150-BFA1-7BEF7A3CCA8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -230,7 +230,6 @@ Global
 		{4F2E79A7-5EC9-4AA3-AF43-BEE9F3E0E048} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
 		{5C49E15D-CD3B-4E30-B371-6AC99C81CA69} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
 		{08FB2C9F-D526-43C3-AEF1-16A46AD31A76} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
-		{D641E4B4-AEBB-4493-937B-682283515164} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
 		{72F2A867-A2F5-40EE-8B63-00D2E7634D03} = {2EC986FB-3831-46DF-AFF0-D6AE6128C55E}
 		{BEBEC343-27A0-432A-97A4-D0EE58174B45} = {72F2A867-A2F5-40EE-8B63-00D2E7634D03}
 		{F0B64CF6-D886-4A3E-B49A-DB3828F8F4E5} = {72F2A867-A2F5-40EE-8B63-00D2E7634D03}
@@ -250,6 +249,7 @@ Global
 		{93F7E0F1-B626-4C68-ACF8-303E8BD8C51E} = {2EC986FB-3831-46DF-AFF0-D6AE6128C55E}
 		{410DA1E4-49FE-4CA0-BBBE-7CEFB06D1E32} = {93F7E0F1-B626-4C68-ACF8-303E8BD8C51E}
 		{C30115FA-C157-4161-9B9D-832395D87B5D} = {93F7E0F1-B626-4C68-ACF8-303E8BD8C51E}
+		{0CC1F2A1-7CC3-4150-BFA1-7BEF7A3CCA8D} = {93F7E0F1-B626-4C68-ACF8-303E8BD8C51E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1713483-7DCD-42EB-A437-F0BBBAC5F4EF}
@@ -259,7 +259,6 @@ Global
 		src\shared\Serialization\Serialization.projitems*{946ddfe8-60c9-4f1f-ae3f-66adc604e797}*SharedItemsImports = 5
 		src\shared\StaticFilesFolder\StaticFilesFolder.projitems*{a943b2ef-2fd0-416a-9c54-877ffa0c000a}*SharedItemsImports = 5
 		src\shared\Serialization\Serialization.projitems*{bebec343-27a0-432a-97a4-d0ee58174b45}*SharedItemsImports = 13
-		src\shared\StaticFilesFolder\StaticFilesFolder.projitems*{d641e4b4-aebb-4493-937b-682283515164}*SharedItemsImports = 5
 		src\shared\StaticFilesFolder\StaticFilesFolder.projitems*{f0b64cf6-d886-4a3e-b49a-db3828f8f4e5}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

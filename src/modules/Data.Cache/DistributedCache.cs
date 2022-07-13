@@ -76,7 +76,7 @@ namespace Ws.Core.Extensions.Data.Cache
         }
 
         private async Task SyncKeysAsync(HashSet<string> keys)
-        => await SetObjectAsync(_keyCollection, keys, new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1) });
+        => await SetObjectAsync(_keyCollection, keys, Data.Cache.CacheEntryOptions.Expiration.Never);
 
     }
 

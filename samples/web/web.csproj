@@ -22,7 +22,6 @@
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.Hangfire" Version="6.0.2" />
     <PackageReference Include="Hangfire" Version="1.7.30" />
-    <PackageReference Include="NLog.Config" Version="4.7.15" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>

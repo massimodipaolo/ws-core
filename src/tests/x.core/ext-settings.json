@@ -1,0 +1,663 @@
+﻿{
+  "$schema": "../../modules/json-schema.json#",
+  "__$schema": "https://raw.githubusercontent.com/massimodipaolo/ws-core/master/src/modules/json-schema.json",
+  "extConfig": {
+    "folder": "Extensions",
+    "enableShutDownOnChange": false,
+    "assemblies": {
+      "Ws.Core.Extensions.ImageProcessor": {
+        "priority": 90,
+        "options": {
+          "config": {
+            "browserMaxAge": "7.00:00:00",
+            "cacheMaxAge": "365.00:00:00",
+            "cachedNameLength": 12
+          },
+          "fileSystemCache": {
+            "cacheRoot": "wwwroot",
+            "cacheFolder": "is-cache"
+          }
+        }
+      },
+      "Ws.Core.Extensions.StaticFiles": {
+        "priority": 100,
+        "options": {
+          "paths": [
+            {
+              "enableDirectoryBrowser": false,
+              "headers": {
+                "Cache-Control": "public,max-age=43200"
+              },
+              "defaultFiles": [ "index.html" ]
+            },
+            {
+              "requestPath": "/public",
+              "path": "wwwroot/public",
+              "enableDirectoryBrowser": true
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Cors": {
+        "priority": 200,
+        "options": {
+          "policies": [
+            {
+              "name": "pAllowAnyVerb",
+              "allowCredentials": true,
+              "origins": [ "https://localhost:60935" ]
+            },
+            {
+              "name": "pAllowOnlyGet",
+              "methods": [ "HEAD", "OPTIONS", "GET" ],
+              "allowCredentials": true,
+              "origins": [ "https://foo.bar.com" ]
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Api": {
+        "priority": 300,
+        "options": {
+          "serialization": {
+            "nullValueHandling": "Ignore",
+            "formatting": "Indented",
+            "referenceLoopHandling": "Ignore",
+            "converters": [
+              {
+                "assembly": "Ws.Core.Extensions.Api",
+                "type": "Ws.Core.Shared.Serialization.ExceptionConverter"
+              }
+            ],
+            "__converters": [
+              {
+                "assembly": "Newtonsoft.Json",
+                "type": "Newtonsoft.Json.Converters.StringEnumConverter"
+              },
+              {
+                "assembly": "web",
+                "type": "web.Code.LocaleJsonConverter"
+              }
+            ]
+          },
+          "session": {
+            "cookie": {
+              "name": ".api.Session",
+              "httpOnly": true,
+              "isEssential": true
+            },
+            "idleTimeoutInMinutes": 20
+          },
+          "documentation": {
+            "routePrefix": "swagger",
+            "securityDefinitions": {
+              "bearer": true,
+              "cookies": [ ".auth.api.Cookie" ]
+            },
+            "ui": {
+              "injectCss": "/swagger-ui/custom.css",
+              "injectJs": "/swagger-ui/custom.js"
+            },
+            "endpoints": [
+              {
+                "id": "public",
+                "title": "public api",
+                "version": "v1"
+              },
+              {
+                "id": "admin"
+              }
+            ],
+            "xmlComments": {
+              "fileName": "x.core.xml",
+              "includeControllerComments": true
+            }
+          }
+        }
+      },
+      "__Ws.Core.Extensions.Spa": {
+        "priority": 9999,
+        "options": {
+          "sourcePath": "app",
+          "rootPath": "app/out",
+          "defaultPage": "/index.html",
+          "_cliServerScript": "dev",
+          "_spaDevelopmentServer": "http://localhost:3000",
+          "cacheResponse": {
+            "enable": true,
+            "addEarlyHints": { "enable": true }
+          }
+        }
+      },
+      "Ws.Core.Extensions.Data.Cache": {
+        "priority": 300,
+        "options": {
+          "entryExpirationInMinutes": {
+            "fast": 1,
+            "medium": 5,
+            "slow": 60,
+            "never": 3600
+          }
+        }
+      },
+      "Ws.Core.Extensions.Data.Cache.SqlServer": {
+        "priority": 310,
+        "options": {
+          "client": {
+            "connectionString": "Server=.,14332;Database=Cache;User Id=cacheUser;Password=C4$hUs3r-Strong!Pa$$w0rd;MultipleActiveResultSets=true",
+            "schemaName": "dbo",
+            "tableName": "Entry"
+          },
+          "entryExpirationInMinutes": {
+            "fast": 2,
+            "medium": 10,
+            "slow": 120,
+            "never": 3600
+          }
+        }
+      },
+      "Ws.Core.Extensions.Data.Cache.Redis": {
+        "priority": 320,
+        "options": {
+          "client": {
+            "instanceName": "master",
+            "configuration": "localhost:6379",
+            "configurationOptions": { "abortOnConnectFail": false }
+          }
+        }
+      },
+      "Ws.Core.Extensions.Data.Cache.Memcached": {
+        "priority": 330,
+        "options": {
+          "client": {
+            "servers": [
+              {
+                "address": "localhost",
+                "port": 11211
+              }
+            ]
+          }
+        }
+      },
+      "Ws.Core.Extensions.Data.EF": {
+        "priority": 400,
+        "options": {
+          "jsonConvert": [ "x.core.Models.IAppJsonSerializable, x.core" ],
+          "includeNavigationProperties": {
+            "list": {
+              "enable": false,
+              "except": [ "x.core.Models.Store.Product" ]
+            },
+            "find": {
+              "enable": true,
+              "explicit": [
+                {
+                  "entity": "x.core.Models.User",
+                  "paths": [
+                    [ "Albums", "Photos" ]
+                  ],
+                  "_paths": [
+                    [ "Posts", "Comments" ],
+                    [ "Albums", "Photos" ],
+                    [ "Todos" ]
+                  ]
+                }
+              ]
+            }
+          },
+          "mappings": [
+            {
+              "name": "Log",
+              "properties": [
+                {
+                  "name": "Level",
+                  "hasConversion": "string"
+                }
+              ]
+            },
+            {
+              "namespace": "x.core.Models.Store",
+              "name": "Brand",
+              "schema": "production"
+            },
+            {
+              "namespace": "x.core.Models.Store",
+              "name": "Category",
+              "schema": "production"
+            },
+            {
+              "namespace": "x.core.Models.Store",
+              "name": "Product",
+              "schema": "production"
+            },
+            {
+              "namespace": "x.core.Models.Cms",
+              "name": "Admin_User",
+              "table": "Admin_Users"
+            },
+            {
+              "namespace": "x.core.Models.Cms",
+              "name": "Admin_Role",
+              "table": "Admin_Roles"
+            },
+            {
+              "namespace": "x.core.Models.Cms",
+              "name": "Admin_Users_Roles_Links",
+              "properties": [
+                {
+                  "name": "Admin_UserId",
+                  "column": "User_Id"
+                },
+                {
+                  "name": "Admin_RoleId",
+                  "column": "Role_Id"
+                }
+              ]
+            },
+            {
+              "namespace": "x.core.Models.Cms",
+              "name": "Admin_Permission",
+              "table": "Admin_Permissions"
+            },
+            {
+              "namespace": "x.core.Models",
+              "name": "CrudBase1",
+              "schema": "crud",
+              "table": "base1"
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Data.EF.SqlServer": {
+        "priority": 410,
+        "options": {
+          "connections": [
+            {
+              "name": "store",
+              "connectionString": "Server=.,14331;Database=ws-core-store;User Id=ws-core-usr;Password=3/4yQKrIeDZf+OAH3480Vn3OAuQTtKcNcDKzLuEP8UM=;MultipleActiveResultSets=true",
+              "serviceResolver": {
+                "include": { "namespace": [ "x.core.Models.Store" ] }
+              }
+            },
+            {
+              "name": "app",
+              "connectionString": "Server=.,14332;Database=ws-core;User Id=ws-core-usr;Password=a2b352dd-2cfe-434d-9f3a-34d04639a5e6;MultipleActiveResultSets=true"
+            }
+          ],
+          "merge": {
+            "useTempDB": true,
+            "bulkCopyTimeout": 60
+          },
+          "storedProcedure": {
+            "schema": "dbo",
+            "mappings": [
+              {
+                "nameSpace": "x.core.Models",
+                "name": "CrudBase2",
+                "methods": [ "List", "Find", "Add", "AddMany", "Update", "UpdateMany", "Delete", "DeleteMany", "Merge" ],
+                "schema": "crud",
+                "storedProcedure": "base2",
+                "commandTimeOut": {
+                  "read": 60,
+                  "write": 120,
+                  "sync": 180
+                }
+              }
+            ]
+          }
+        }
+      },
+      "Ws.Core.Extensions.Data.EF.MySql": {
+        "priority": 420,
+        "options": {
+          "connections": [
+            {
+              "name": "default",
+              "connectionString": "Server=localhost;Port=33061;Database=ws-core;Uid=root;Pwd=WS-1234-secret;",
+              "serviceResolver": { "exclude": { "assembly": [ "FakeAssembly" ] } }
+            },
+            {
+              "name": "backup",
+              "connectionString": "Server=localhost;Port=33061;Database=ws-core;Uid=root;Pwd=WS-1234-secret;"
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Data.EF.SQLite": {
+        "priority": 430,
+        "options": {
+          "connections": [
+            {
+              "name": "default",
+              "connectionString": "Data Source=./data/ws-core.db"
+            },
+            {
+              "name": "cms",
+              "connectionString": "Data Source=./data/strapi-quickstart.db",
+              "serviceResolver": { "include": { "namespace": [ "x.core.Models.Cms" ] } }
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Data.FileSystem": {
+        "priority": 440,
+        "options": {
+          "folder": "./data",
+          "serialization": {
+            "nullValueHandling": "Ignore",
+            "formatting": "Indented",
+            "referenceLoopHandling": "Ignore",
+            "converters": [
+              {
+                "assembly": "Ws.Core.Extensions.Api",
+                "type": "Ws.Core.Shared.Serialization.ExceptionConverter"
+              }
+            ]
+          }
+        }
+      },
+      "Ws.Core.Extensions.Data.Mongo": {
+        "priority": 450,
+        "options": {
+          "connections": [
+            {
+              "name": "default",
+              "connectionString": "mongodb://root:WS-1234-secret@localhost:27017",
+              "database": "ws-core"
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Data": {
+        "priority": 460,
+        "options": {}
+      },
+      "Ws.Core.Extensions.Message": {
+        "priority": 600,
+        "options": {
+          "senders": [
+            {
+              "address": "127.0.0.1",
+              "port": 2025
+            }
+          ],
+          "receivers": [
+            {
+              "address": "127.0.0.1",
+              "port": 2110,
+              "userName": "massimo.dipaolo@mail.local",
+              "password": "4CH9cDnxNJ",
+              "enableSsl": true,
+              "skipCertificateValidation": true
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.HealthCheck": {
+        "priority": 999,
+        "options": {
+          "routes": [
+            {
+              "path": "/healthz",
+              "contentType": "text",
+              "skipChecks": true
+            },
+            {
+              "path": "/healthz/checks",
+              "contentType": "json",
+              "skipChecks": false,
+              "_authHosts": [ "localhost:32040" ]
+            }
+          ],
+          "checks": {
+            "storage": [
+              {
+                "driver": "C:\\",
+                "minimumFreeMb": 2048,
+                "status": "Degraded",
+                "name": "diskC",
+                "tags": [ "infrastructure", "on-premises" ]
+              }
+            ],
+            "memory": {
+              "maximumAllocatedMb": 500,
+              "status": "Degraded",
+              "tags": [ "infrastructure", "on-premises" ]
+            },
+            "process": [
+              {
+                "processName": "devenv",
+                "name": "devenv",
+                "status": "Degraded",
+                "tags": [ "infrastructure", "on-premises" ]
+              }
+            ],
+            "tcp": [
+              {
+                "host": "127.0.0.1",
+                "port": 2025,
+                "name": "mailserver",
+                "tags": [ "infrastructure", "local", "smtp" ]
+              },
+              {
+                "host": "127.0.0.1",
+                "port": 14331,
+                "name": "mssql-01",
+                "tags": [ "infrastructure", "local", "db" ]
+              }
+            ],
+            "http": [
+              {
+                "url": "https://www.google.com",
+                "name": "outbound",
+                "status": "Unhealthy",
+                "tags": [ "network", "firewall" ]
+              }
+            ],
+            "appLog": {
+              "appLogService": "x.core.HealthCheckAppLogService, x.core",
+              "takeLastLog": {
+                "criteria": "Top",
+                "value": 1000
+              },
+              "logIgnoreRoles": [
+                {
+                  "level": "Warn",
+                  "selectors": [
+                    { "logger": { "list": [ "PUCBM.Hub.Controllers.PrenotingController" ] } },
+                    {
+                      "logger": {
+                        "list": [ "Eurospin", "PUCBM" ],
+                        "role": "StartWith"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "level": "Error",
+                  "selectors": [
+                    {
+                      "logger": {
+                        "list": [ "Aves.Booking.RatePlan", "Eurospin.Server.Extensions.ImageSharpExtension", "SixLabors.ImageSharp.Web.Middleware.ImageSharpMidd" ],
+                        "role": "EqualTo"
+                      }
+                    },
+                    {
+                      "logger": {
+                        "list": [ "NodeServices" ],
+                        "role": "Contains"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "healthStatusCheckers": [
+                {
+                  "level": "Warn",
+                  "minCounters": [
+                    {
+                      "minEntry": 1000,
+                      "healthStatus": "Degraded"
+                    },
+                    {
+                      "minEntry": 10000,
+                      "healthStatus": "Unhealthy"
+                    }
+                  ]
+                },
+                {
+                  "level": "Error",
+                  "minCounters": [
+                    {
+                      "minEntry": 100,
+                      "healthStatus": "Degraded"
+                    },
+                    {
+                      "minEntry": 1000,
+                      "healthStatus": "Unhealthy"
+                    }
+                  ]
+                },
+                {
+                  "level": "Fatal",
+                  "minCounters": [
+                    {
+                      "minEntry": 10,
+                      "healthStatus": "Unhealthy"
+                    }
+                  ]
+                }
+              ],
+              "logMessageAggregate": {
+                "truncateLengthAt": 255,
+                "maxLevenshteinDistanceFactor": 90
+              },
+              "tags": [ "app" ]
+            }
+          },
+          "ui": {
+            "enable": true,
+            "injectCss": "wwwroot/healthcheck-ui/style.css",
+            "endpoints": [
+              {
+                "uri": "/healthz/checks",
+                "name": "web-app"
+              }
+            ],
+            "webhooks": [
+              {
+                "name": "web",
+                "uri": "/hook/healthz",
+                "payload": "{\"title\": \"The HealthCheck '[[LIVENESS]]' is failing\",\"text\": \"Error message: [[FAILURE]]\\r\\n[[DESCRIPTIONS]]\",\"isFailure\": true}",
+                "restorePayload": "{\"title\": \"The HealthCheck '[[LIVENESS]]' is recovered\",\"text\": \"All is up and running\"}"
+              }
+            ],
+            "evaluationTimeInSeconds": 60,
+            "minimumSecondsBetweenFailureNotifications": 300
+          }
+        }
+      },
+      "Ws.Core.Extensions.Diagnostic": {
+        "priority": 999,
+        "options": {
+          "httpLogging": {
+            "enable": true,
+            "config": {
+              "loggingFields": "All",
+              "requestBodyLogLimit": 4096,
+              "responseBodyLogLimit": 4096,
+              "requestHeaders": [ "Host", "Referer", "sec-ch-ua" ],
+              "responseHeaders": [ "Cache-Control", "Content-Encoding", "Content-Type", "Set-Cookie" ]
+            }
+          },
+          "profiler": {
+            "enable": true,
+            "config": {
+              "EnableDebugMode": true,
+              "ColorScheme": "Light"
+            }
+          }
+        }
+      },
+      "Ws.Core.Extensions.Gateway": {
+        "priority": 999,
+        "options": {
+          "MapWhen": "/bing",
+          "Ocelot": {
+            "Routes": [
+              {
+                "UpstreamPathTemplate": "/bing/{everything}",
+                "_UpstreamHttpMethod": [ "OPTIONS", "POST", "PUT", "GET", "DELETE" ],
+                "_UpstreamHost": "host.com",
+                "DangerousAcceptAnyServerCertificateValidator": true,
+                "DownstreamPathTemplate": "/search?q={everything}",
+                "DownstreamScheme": "https",
+                "DownstreamHostAndPorts": [
+                  {
+                    "_Host": "localhost",
+                    "_Port": 60936,
+                    "Host": "www.bing.com",
+                    "Port": 443
+                  }
+                ],
+                "_RateLimitOptions": {
+                  "ClientWhitelist": [],
+                  "EnableRateLimiting": true,
+                  "Period": "1s",
+                  "PeriodTimespan": 1, // retry after
+                  "Limit": 3
+                },
+                "Priority": 1
+              }
+            ],
+            "_DynamicRoutes": [
+            ],
+            "_Aggregates": [
+            ],
+            "GlobalConfiguration": {
+              "BaseUrl": "https://localhost:60935",
+              "_RequestIdKey": null,
+              "_ServiceDiscoveryProvider": {
+                "Scheme": null,
+                "Host": null,
+                "Port": 0,
+                "Type": null,
+                "Token": null,
+                "ConfigurationKey": null,
+                "PollingInterval": 0,
+                "Namespace": null
+              },
+              "_RateLimitOptions": {
+                "ClientIdHeader": "ClientId",
+                "QuotaExceededMessage": null,
+                "RateLimitCounterPrefix": "ocelot",
+                "DisableRateLimitHeaders": false,
+                "HttpStatusCode": 429
+              },
+              "_QoSOptions": {
+                "ExceptionsAllowedBeforeBreaking": 0,
+                "DurationOfBreak": 0,
+                "TimeoutValue": 0
+              },
+              "_LoadBalancerOptions": {
+                "Type": null,
+                "Key": null,
+                "Expiry": 0
+              },
+              "_DownstreamScheme": null,
+              "_HttpHandlerOptions": {
+                "AllowAutoRedirect": false,
+                "UseCookieContainer": false,
+                "UseTracing": false,
+                "UseProxy": true,
+                "MaxConnectionsPerServer": 2147483647
+              },
+              "_DownstreamHttpVersion": null
+            }
+          }
+        }
+      }
+    },
+    "injectors": []
+  }
+}

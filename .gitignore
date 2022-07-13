@@ -206,7 +206,7 @@ _Pvt_Extensions
 /src/tests/**/wwwroot
 /src/tests/**/Extensions/**/
 /src/tests/**/Files/*.*
-/src/tests/xCore/_results/
+/src/tests/**/_results/
 /.sonarqube
 # Task Secret
 .env

@@ -1,0 +1,54 @@
+{
+  "profiles": {
+    "x.core": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:60935;http://localhost:60936"
+    },
+    "x.core.local": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Local"
+      },
+      "applicationUrl": "https://localhost:60935;http://localhost:60936"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "launchBrowser": true,
+      "launchUrl": "https://localhost:60935",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "https://localhost:60935;http://localhost:60936"
+      },
+      "distributionName": ""
+    },
+    "WSL.local": {
+      "commandName": "WSL2",
+      "launchBrowser": true,
+      "launchUrl": "https://localhost:60935",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Local",
+        "ASPNETCORE_URLS": "https://localhost:60935;http://localhost:60936"
+      },
+      "distributionName": ""
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "DockerfileRunArguments": "--name x.core --hostname x.core --network container-network",
+      "environmentVariables": {
+        "_ASPNETCORE_URLS": "https://+:443;http://+:80",
+        "ASPNETCORE_HTTPS_PORT": "60935",
+        "ASPNETCORE_ENVIRONMENT": "Docker"
+      },
+      "httpPort": 60936,
+      "useSSL": true,
+      "sslPort": 60935
+    }
+  }
+}

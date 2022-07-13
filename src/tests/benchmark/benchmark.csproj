@@ -11,8 +11,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Content Include="..\xCore\data\event-log.json" Link="data\event-log.json" CopyToOutputDirectory="Always" />
-		<Content Include="..\xCore\data\event-log.buf" Link="data\event-log.buf" CopyToOutputDirectory="Always" />
+		<Content Include="..\x.core\data\event-log.json" Link="data\event-log.json" CopyToOutputDirectory="Always" />
+		<Content Include="..\x.core\data\event-log.buf" Link="data\event-log.buf" CopyToOutputDirectory="Always" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -27,7 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\xCore\xCore.csproj" />
+		<ProjectReference Include="..\x.core\x.core.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

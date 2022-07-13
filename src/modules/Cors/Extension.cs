@@ -41,7 +41,6 @@ namespace Ws.Core.Extensions.Cors
                 app.UseCors(_ => _.SetIsOriginAllowed(_ => false));
         }
 
-
         private static void _addPolicy(Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions options, Options.PolicyOption policy)
         {
             options.AddPolicy(policy.Name ?? "", _ =>
