@@ -15,16 +15,6 @@ namespace Ws.Core.Shared.Serialization
         [DefaultValue(ReferenceLoopHandlingOptions.Serialize)]
         public ReferenceLoopHandlingOptions ReferenceLoopHandling { get; set; } = ReferenceLoopHandlingOptions.Serialize;
 
-        /// <summary>
-        /// https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to?pivots=dotnet-6-0#support-polymorphic-deserialization
-        /// </summary>
-        /*
-        public Newtonsoft.Json.DateParseHandling DateParseHandling { get; set; } = Newtonsoft.Json.DateParseHandling.DateTime;
-        public Newtonsoft.Json.DateTimeZoneHandling DateTimeZoneHandling { get; set; } = Newtonsoft.Json.DateTimeZoneHandling.RoundtripKind;
-        public Newtonsoft.Json.TypeNameHandling TypeNameHandling { get; set; } = Newtonsoft.Json.TypeNameHandling.None;
-        public Newtonsoft.Json.TypeNameAssemblyFormatHandling TypeNameAssemblyFormatHandling { get; set; } = Newtonsoft.Json.TypeNameAssemblyFormatHandling.Simple;
-        */
-
         #region enum options
         //
         // Summary:
@@ -84,60 +74,20 @@ namespace Ws.Core.Shared.Serialization
             /// Assembly full name
             /// </summary>
             [Description("Assembly full name")]
-            public string Assembly { get; set; }
+            public string? Assembly { get; set; }
             // JsonConverter class full name
             [Description("JsonConverter class full name")]
-            public string Type { get; set; }
+            public string? Type { get; set; }
         }
-
-        /*
-        public Newtonsoft.Json.JsonSerializerSettings ToJsonSerializerSettings()
-        {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings()
-            {
-                NullValueHandling = this.NullValueHandling,
-                Formatting = this.Formatting,
-                ReferenceLoopHandling = this.ReferenceLoopHandling,
-                DateParseHandling = this.DateParseHandling,
-                DateTimeZoneHandling = this.DateTimeZoneHandling,
-                TypeNameHandling = this.TypeNameHandling,
-                TypeNameAssemblyFormatHandling = this.TypeNameAssemblyFormatHandling
-            };
-            return settings;
-        }
-        */
 
         public System.Text.Json.JsonSerializerOptions ToJsonSerializerSettings()
         {
-            var settings = new System.Text.Json.JsonSerializerOptions() {};
+            var settings = new System.Text.Json.JsonSerializerOptions() { };
             FromJsonSerializerSettings(ref settings);
             return settings;
         }
-
-        /*
-        public void FromJsonSerializerSettings(ref Newtonsoft.Json.JsonSerializerSettings settings)
-        {
-            settings.NullValueHandling = this.NullValueHandling;
-            settings.Formatting = this.Formatting;
-            settings.ReferenceLoopHandling = this.ReferenceLoopHandling;
-            settings.DateParseHandling = this.DateParseHandling;
-            settings.DateTimeZoneHandling = this.DateTimeZoneHandling;
-            settings.TypeNameHandling = this.TypeNameHandling;
-            settings.TypeNameAssemblyFormatHandling = this.TypeNameAssemblyFormatHandling;
-            AddConverters(ref settings);
-        }
-        */
         public void FromJsonSerializerSettings(ref System.Text.Json.JsonSerializerOptions settings)
         {
-            /*
-            options.NullValueHandling = this.NullValueHandling;
-            options.Formatting = this.Formatting;
-            options.ReferenceLoopHandling = this.ReferenceLoopHandling;
-            options.DateParseHandling = this.DateParseHandling;
-            options.DateTimeZoneHandling = this.DateTimeZoneHandling;
-            options.TypeNameHandling = this.TypeNameHandling;
-            options.TypeNameAssemblyFormatHandling = this.TypeNameAssemblyFormatHandling;
-            */
             if (NullValueHandling == NullValueHandlingOptions.Ignore)
                 settings.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
             settings.WriteIndented = (Formatting == FormattingOptions.Indented);
@@ -147,84 +97,52 @@ namespace Ws.Core.Shared.Serialization
                    ;
             settings.AllowTrailingCommas = true;
             settings.PropertyNameCaseInsensitive = true;
-           
+
             AddConverters(ref settings);
         }
 
         private void AddConverters(ref System.Text.Json.JsonSerializerOptions settings)
         {
-            if (Converters != null && Converters.Any())
+            _addDefaultConverters(ref settings);
+            if (Converters?.Any() == true)
                 foreach (var converter in Converters.Where(_ => _ != null))
-                {
-                    var assembly = AppDomain.CurrentDomain.GetAssemblies().AsEnumerable().Where(_ => _.FullName?.Split(',')[0] == converter.Assembly).FirstOrDefault();
-                    if (null != assembly)
-                    {
-                        try
-                        {
-                            Type converterType = System.Reflection.Assembly.LoadFrom(assembly.Location).GetType(converter.Type);
-                            if (typeof(System.Text.Json.Serialization.JsonConverter).IsAssignableFrom(converterType))
-                            {
-                                System.Text.Json.Serialization.JsonConverter obj = null;
-                                try
-                                {
-                                    // try parms object[] parameters
-                                    obj = (System.Text.Json.Serialization.JsonConverter)Activator.CreateInstance(
-                                            converterType,
-                                            new object[] {
-                                                new Microsoft.AspNetCore.Http.HttpContextAccessor()
-                                            });
-                                }
-                                catch
-                                {
-                                    // Try parameterless ctor
-                                    obj = (System.Text.Json.Serialization.JsonConverter)Activator.CreateInstance(converterType);
-                                }
-                                if (obj != null)
-                                    settings.Converters.Add(obj);
-                            }
-                        }
-                        catch { }
-                    }
-                }
+                    if (_loadConverter(converter) is System.Text.Json.Serialization.JsonConverter jsonConverter && !settings.Converters.Any(_ => _.ToString() == jsonConverter.ToString()))
+                        settings.Converters.Add(jsonConverter);
         }
 
-        /*
-        private void AddConverters(ref Newtonsoft.Json.JsonSerializerSettings settings)
+        private static void _addDefaultConverters(ref System.Text.Json.JsonSerializerOptions settings)
         {
-            if (Converters != null && Converters.Any())
-                foreach (var converter in Converters.Where(_ => _ != null))
-                {
-                    var assembly = AppDomain.CurrentDomain.GetAssemblies().AsEnumerable().Where(_ => _.FullName?.Split(',')[0] == converter.Assembly).FirstOrDefault();
-                    if (null != assembly)
-                    {
-                        try
-                        {
-                            Type converterType = System.Reflection.Assembly.LoadFrom(assembly.Location).GetType(converter.Type);
-                            if (typeof(Newtonsoft.Json.JsonConverter).IsAssignableFrom(converterType))
-                            {
-                                Newtonsoft.Json.JsonConverter obj = null;
-                                try
-                                {
-                                    // try parms object[] parameters
-                                    obj = (Newtonsoft.Json.JsonConverter)Activator.CreateInstance(
-                                            converterType,
-                                            new object[] {
-                                                new Microsoft.AspNetCore.Http.HttpContextAccessor()
-                                            });
-                                }
-                                catch
-                                {
-                                    // Try parameterless ctor
-                                    obj = (Newtonsoft.Json.JsonConverter)Activator.CreateInstance(converterType);
-                                }
-                                if (obj != null)
-                                    settings.Converters.Add(obj);
-                            }
-                        }
-                        catch { }
-                    }
-                }
+            settings.Converters.Add(new Serialization.ExceptionConverter());
         }
-        */
+
+        private static object? _loadConverter(JsonConverterDiscover converter)
+        {
+            var assembly = AppDomain.CurrentDomain.GetAssemblies().AsEnumerable()?.FirstOrDefault(_ => _.FullName?.Split(',')[0] == converter.Assembly);
+            if (assembly != null && converter != null)
+            {
+                Type? converterType = System.Reflection.Assembly.Load(System.IO.File.ReadAllBytes(assembly.Location))?.GetType(converter.Type ?? "");
+                if (converterType != null && typeof(System.Text.Json.Serialization.JsonConverter).IsAssignableFrom(converterType))
+                    return _createConverter(converterType);
+            }
+            return null;
+        }
+        private static object? _createConverter(Type converterType)
+        {
+            object? obj;
+            try
+            {
+                // try parms object[] parameters
+                obj = Activator.CreateInstance(
+                        converterType,
+                        new object[] { new Microsoft.AspNetCore.Http.HttpContextAccessor() }
+                        );
+            }
+            catch
+            {
+                // Try parameterless ctor
+                obj = Activator.CreateInstance(converterType);
+            }
+            return obj;
+        }
     }
 }

@@ -13,22 +13,21 @@ namespace Ws.Core.Extensions.Data.EF
 
     public static class ValueConversionExtensions
     {
-        private static readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+        private static readonly JsonSerializerSettings _jsonSettings = new() { NullValueHandling = NullValueHandling.Ignore };
 
         public static PropertyBuilder HasJsonConversion(this PropertyBuilder propertyBuilder, Type type)
         {
 
-            JsonValueConverter<object, string> converter = new JsonValueConverter<object, string>(
+            JsonValueConverter<object, string> converter = new (
                 t => JsonConvert.SerializeObject(t ?? default, type, _jsonSettings),
-                s => JsonConvert.DeserializeObject(s, type, _jsonSettings),
+                s => JsonConvert.DeserializeObject(s, type, _jsonSettings) ?? new object(),
                 type,
                 null
             );
 
-            JsonValueComparer<object> comparer = new JsonValueComparer<object>(
+            JsonValueComparer<object> comparer = new (
                 (l, r) => JsonConvert.SerializeObject(l, type, _jsonSettings) == JsonConvert.SerializeObject(r, type, _jsonSettings),
                 v => v == null ? 0 : JsonConvert.SerializeObject(v, type, _jsonSettings).GetHashCode(),
-                //v => v == null ? default : JsonConvert.DeserializeObject(JsonConvert.SerializeObject(v, type, _jsonSettings), type, _jsonSettings),
                 type,
                 _jsonSettings
             );
@@ -48,7 +47,8 @@ namespace Ws.Core.Extensions.Data.EF
             Expression<Func<TModel, TProvider>> convertToProviderExpression,
             Expression<Func<TProvider, TModel>> convertFromProviderExpression,
             Type tModel,
-            ConverterMappingHints mappingHints = null) : base(convertToProviderExpression, convertFromProviderExpression, mappingHints)
+            ConverterMappingHints? mappingHints = null) 
+            : base(convertToProviderExpression, convertFromProviderExpression, mappingHints)
         {
             _tModel = tModel;
         }
@@ -60,9 +60,8 @@ namespace Ws.Core.Extensions.Data.EF
         private Type _type { get; set; }
         private JsonSerializerSettings _jsonSettings { get; set; }
         public JsonValueComparer(
-            Expression<Func<T, T, bool>> equalsExpression,
+            Expression<Func<T?, T?, bool>> equalsExpression,
             Expression<Func<T, int>> hashCodeExpression,
-            //Expression<Func<T, T>> snapshotExpression,
             Type type,
             JsonSerializerSettings jsonSettings
             ) : base(equalsExpression, hashCodeExpression/*, snapshotExpression*/)
@@ -71,7 +70,7 @@ namespace Ws.Core.Extensions.Data.EF
             _jsonSettings = jsonSettings;
         }
         public override Type Type => _type;
-        public override object Snapshot(object instance)
+        public override object? Snapshot(object? instance)
         {
             return instance == null ? default : JsonConvert.DeserializeObject(JsonConvert.SerializeObject(instance, _type, _jsonSettings), _type, _jsonSettings);
         }

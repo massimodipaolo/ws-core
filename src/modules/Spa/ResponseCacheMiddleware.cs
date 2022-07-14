@@ -75,7 +75,7 @@ namespace Ws.Core.Extensions.Spa
                         var hints = await PreloadHints(text);
                         AddEarlyHints(ctx, hints);
 
-                        _cache.Set(key, new Obj() { Html = text, EarlyHints = hints }, CacheEntryOptions.Expiration.Never);
+                        await _cache.SetObjectAsync(key, new Obj() { Html = text, EarlyHints = hints }, CacheEntryOptions.Expiration.Never);
                     }
 
                     await ctx.Response.Body.CopyToAsync(stream);

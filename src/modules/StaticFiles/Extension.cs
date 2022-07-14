@@ -20,57 +20,72 @@ namespace Ws.Core.Extensions.StaticFiles
         {
             get
             {
-                Options opts = GetOptions<Options>();
-                var res = new List<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)>();
-
-                if (opts == null || opts.Paths == null || !opts.Paths.Any())
-                {
-                    opts = new Options()
-                    {
-                        Paths = new Options.FolderOption[] {
-                        new Options.FolderOption() {}
-                    }
-                    };
-                }
-
-                foreach (var opt in opts.Paths)
-                {
-                    if (opt != null)
-                    {
-                        //StaticFileOptions
-                        var staticFileOptions = opt.GetStaticFileOptions(env?.ContentRootPath ?? Directory.GetCurrentDirectory(),logger);
-
-                        //DirectoryBrowser
-                        DirectoryBrowserOptions directoryBrowserOptions = null;
-                        if (opt.EnableDirectoryBrowser)
-                        {
-                            directoryBrowserOptions = new DirectoryBrowserOptions();
-                            if (!string.IsNullOrEmpty(opt.Path))
-                                directoryBrowserOptions.FileProvider = staticFileOptions.FileProvider;
-                            if (!string.IsNullOrEmpty(opt.RequestPath))
-                                directoryBrowserOptions.RequestPath = staticFileOptions.RequestPath;
-                        }
-
-                        //DefaultFiles
-                        DefaultFilesOptions defaultFilesOptions = null;
-                        if (opt.DefaultFiles?.Length > 0)
-                        {
-                            defaultFilesOptions = new DefaultFilesOptions();
-                            if (!string.IsNullOrEmpty(opt.Path))
-                                defaultFilesOptions.FileProvider = staticFileOptions.FileProvider;
-                            if (!string.IsNullOrEmpty(opt.RequestPath))
-                                defaultFilesOptions.RequestPath = staticFileOptions.RequestPath;
-                            defaultFilesOptions.DefaultFileNames.Clear();
-                            foreach (var f in opt.DefaultFiles)
-                                defaultFilesOptions.DefaultFileNames.Add(f);
-                        }
-
-                        res.Add((staticFileOptions, directoryBrowserOptions, defaultFilesOptions));
-                    }
-                }
-
-                return res;
+                return _getSettings();
             }
+        }
+
+        private List<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)> _getSettings()
+        {
+            
+            var res = new List<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)>();
+
+            foreach (var opt in _configureFolderOptions())
+            {
+                if (opt != null)
+                {
+                    var staticFileOptions = opt.GetStaticFileOptions(env?.ContentRootPath ?? Directory.GetCurrentDirectory(), logger);
+                    res.Add((
+                        staticFileOptions, 
+                        _configureDirectoryBrowser(staticFileOptions,opt),
+                        _configureDefaultFiles(staticFileOptions,opt)));
+                }
+            }
+
+            return res;
+        }
+        private FolderOption[] _configureFolderOptions()
+        {
+            Options opts = GetOptions<Options>();
+            if (opts == null || opts.Paths == null || !opts.Paths.Any())
+            {
+                opts = new Options()
+                {
+                    Paths = new FolderOption[] {
+                        new () {}
+                    }
+                };
+            }
+            return opts.Paths;
+        }
+        private static DirectoryBrowserOptions _configureDirectoryBrowser(StaticFileOptions staticFileOptions, FolderOption folderOptions)
+        {
+            DirectoryBrowserOptions directoryBrowserOptions = null;
+            if (folderOptions.EnableDirectoryBrowser)
+            {
+                directoryBrowserOptions = new DirectoryBrowserOptions();
+                if (!string.IsNullOrEmpty(folderOptions.Path))
+                    directoryBrowserOptions.FileProvider = staticFileOptions.FileProvider;
+                if (!string.IsNullOrEmpty(folderOptions.RequestPath))
+                    directoryBrowserOptions.RequestPath = staticFileOptions.RequestPath;
+            }
+            return directoryBrowserOptions;
+        }
+
+        private static DefaultFilesOptions _configureDefaultFiles(StaticFileOptions staticFileOptions, FolderOption folderOptions)
+        {
+            DefaultFilesOptions defaultFilesOptions = null;
+            if (folderOptions.DefaultFiles?.Length > 0)
+            {
+                defaultFilesOptions = new DefaultFilesOptions();
+                if (!string.IsNullOrEmpty(folderOptions.Path))
+                    defaultFilesOptions.FileProvider = staticFileOptions.FileProvider;
+                if (!string.IsNullOrEmpty(folderOptions.RequestPath))
+                    defaultFilesOptions.RequestPath = staticFileOptions.RequestPath;
+                defaultFilesOptions.DefaultFileNames.Clear();
+                foreach (var f in folderOptions.DefaultFiles)
+                    defaultFilesOptions.DefaultFileNames.Add(f);
+            }
+            return defaultFilesOptions;
         }
 
         public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)

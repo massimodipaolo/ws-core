@@ -1,89 +1,87 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Text;
-using System.Linq;
 
 namespace Ws.Core.Extensions.Data.Cache
 {
-    public class DistributedCache<T> : DistributedCache, ICache<T> where T : class {
-        public DistributedCache(IDistributedCache client) : base(client) { }
-    }
-    public class DistributedCache : ICache
+    public class DistributedCache: ICache
     {
-        protected readonly IDistributedCache _client;
         private const string _keyCollection = "___all_keys";
-
-        public DistributedCache() { }
-
-        public DistributedCache(IDistributedCache client)
-        {
+        private readonly IDistributedCache _client;
+        public DistributedCache(IDistributedCache client) { 
             _client = client;
         }
 
         public IEnumerable<string> Keys => Get<HashSet<string>>(_keyCollection) ?? new HashSet<string>();
 
-        public object Get(string key) => Get<object>(key);
+        public byte[] Get(string key) => _client.Get(key);
 
-        public T Get<T>(string key)
+        public async Task<byte[]> GetAsync(string key, CancellationToken token = default) => await _client.GetAsync(key, token);
+        public T? Get<T>(string key) => _get<T>(_client.Get(key));
+
+        public async Task<T?> GetAsync<T>(string key)
         {
-            try {
-                var result = _client.Get(key);
-                if (result != null)
-                {
-                    return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(result));
-                }
-            } catch { }
-            return default;
+            var source = await _client.GetAsync(key);
+            return await Task.FromResult(_get<T>(source));
         }
 
-        public void Set(string key, object value)
+        private static T? _get<T>(byte[]? source)
         {
-            Set(key, value, null);
-        }
-
-        public void Set(string key, object value, ICacheEntryOptions options)
-        {
-            var _options = new DistributedCacheEntryOptions();
-            if (options != null)
+            try
             {
-                _options.AbsoluteExpiration = options.AbsoluteExpiration;
-                _options.AbsoluteExpirationRelativeToNow = options.AbsoluteExpirationRelativeToNow;
-                _options.SlidingExpiration = options.SlidingExpiration;
+                return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(source ?? Array.Empty<byte>())) ?? default;
             }
-            try {
-                _client.Set(key, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)), _options);
-            } catch { }
-            if (key != _keyCollection && !Keys.Contains(key))
-                SyncKeys(Keys.Append(key).ToHashSet<string>());
-
+            catch
+            {
+                return default;
+            }
         }
 
-        public void Remove(string key)
+        public void Set(string key, byte[] value, DistributedCacheEntryOptions options) => SetAsync(key, value, options).RunSynchronously();
+
+        public async Task SetObjectAsync(string key, object value, DistributedCacheEntryOptions options, CancellationToken token = default)
+        => await SetAsync(key, Data.Cache.Util.ObjToByte(value), options, token);
+
+        public async Task SetAsync(string key, byte[] value, DistributedCacheEntryOptions options, CancellationToken token = default)
         {
-            try { _client.Remove(key); } catch { }
+            await _client.SetAsync(key, value, options, token);
+            if (key != _keyCollection && !Keys.Contains(key))
+                await SyncKeysAsync(Keys.Append(key).ToHashSet<string>());
+        }
+
+        public void Refresh(string key) => _client.Refresh(key);
+
+        public async Task RefreshAsync(string key, CancellationToken token = default) => await _client.RefreshAsync(key, token);
+
+        public void Remove(string key) => RemoveAsync(key).RunSynchronously();
+
+        public async Task RemoveAsync(string key, CancellationToken token = default)
+        {
+            await _client.RemoveAsync(key, token);
 
             if (Keys.Contains(key))
-                SyncKeys(Keys.Where(_ => _ != key).ToHashSet<string>());
+                await SyncKeysAsync(Keys.Where(_ => _ != key).ToHashSet<string>());
         }
 
-        public void RemoveAndSkipSync(string key)
+        public void Clear() => ClearAsync().RunSynchronously();
+
+        public async Task ClearAsync(CancellationToken token = default)
         {
-            try { _client.Remove(key);  } catch { }
+            foreach (var key in Keys)
+                await _client.RemoveAsync(key, token);
+
+            await SyncKeysAsync(new HashSet<string>());
         }
 
-        public void Clear()
-        {
-            foreach (var k in Keys)
-                RemoveAndSkipSync(k);
+        private async Task SyncKeysAsync(HashSet<string> keys)
+        => await SetObjectAsync(_keyCollection, keys, Data.Cache.CacheEntryOptions.Expiration.Never);
 
-            SyncKeys(new HashSet<string>());
-        }
+    }
 
-        private void SyncKeys(HashSet<string> keys)
-        {
-            Set(_keyCollection, keys, new CacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(30) });
-        }
+    public class DistributedCache<T> : DistributedCache, ICache<T> where T : class
+    {
+        public DistributedCache(IDistributedCache client) : base(client) { }
     }
 }

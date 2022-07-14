@@ -14,20 +14,5 @@ namespace ExtCore.Events
     /// Gets the name of the extension.
     /// </summary>
     public override string Name => "ExtCore.Events";
-
-    /// <summary>
-    /// Gets the URL of the extension.
-    /// </summary>
-    public override string Url => "https://extcore.net/";
-
-    /// <summary>
-    /// Gets the version of the extension.
-    /// </summary>
-    public override string Version => "7.0.0";
-
-    /// <summary>
-    /// Gets the authors of the extension (separated by commas).
-    /// </summary>
-    public override string Authors => "Dmitry Sikorsky";
   }
 }

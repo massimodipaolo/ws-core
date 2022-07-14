@@ -8,8 +8,8 @@ using System.Text;
 
 namespace Ws.Core.Extensions.Data.EF
 {
-    public interface IIncludableJoin<out TEntity, out TProperty> : IQueryable<TEntity>
-    {
+    public interface IIncludableJoin<out TEntity, out TProperty> : IQueryable<TEntity> {
+        IIncludableQueryable<TEntity, TProperty> GetQuery();
     }
 
     public class IncludableJoin<TEntity, TPreviousProperty> : IIncludableJoin<TEntity, TPreviousProperty>
@@ -35,7 +35,7 @@ namespace Ws.Core.Extensions.Data.EF
         public Type ElementType => _query.ElementType;
         public IQueryProvider Provider => _query.Provider;
 
-        internal IIncludableQueryable<TEntity, TPreviousProperty> GetQuery()
+        public IIncludableQueryable<TEntity, TPreviousProperty> GetQuery()
         {
             return _query;
         }

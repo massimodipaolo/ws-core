@@ -29,8 +29,7 @@
 	</ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\extCore\Events\ExtCore.Events.csproj" />
-    <ProjectReference Include="..\..\extCore\Infrastructure\ExtCore.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\extCore\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
  
 </Project>

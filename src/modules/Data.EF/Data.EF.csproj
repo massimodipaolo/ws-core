@@ -1,29 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <PackageVersion>6.0.0</PackageVersion>
-    <PackageId>Ws.Core.Extensions.Data.EF</PackageId>
-    <AssemblyName>Ws.Core.Extensions.Data.EF</AssemblyName>
-    <RootNamespace>Ws.Core.Extensions.Data.EF</RootNamespace>
-    <Authors>Massimo Di Paolo</Authors>
-    <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
-    <Description>DbContext and IRepository interface for EF-based extensions</Description>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Health check</PackageReleaseNotes>
-    <PackageTags>EF data mapper</PackageTags>
-	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<PackageVersion>6.0.0</PackageVersion>
+		<PackageId>Ws.Core.Extensions.Data.EF</PackageId>
+		<AssemblyName>Ws.Core.Extensions.Data.EF</AssemblyName>
+		<RootNamespace>Ws.Core.Extensions.Data.EF</RootNamespace>
+		<Authors>Massimo Di Paolo</Authors>
+		<Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
+		<Description>DbContext and IRepository interface for EF-based extensions</Description>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageReleaseNotes>Health check</PackageReleaseNotes>
+		<PackageTags>EF data mapper</PackageTags>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <NoWarn>1701;1702;1705;1591</NoWarn>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<NoWarn>1701;1702;1705;1591</NoWarn>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Data\Data.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Data\Data.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.7" />
+	</ItemGroup>
 </Project>

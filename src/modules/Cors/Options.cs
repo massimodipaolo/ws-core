@@ -11,8 +11,9 @@ namespace Ws.Core.Extensions.Cors
         public class PolicyOption
         {
             [Required]
-            public string Name { get; set; }
+            public string? Name { get; set; }
             [Description("To allow one or more specific origins")]
+            [Required]
             public string[]? Origins { get; set; }
             [Description("GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS,TRACE")]
             [EnumDataType(typeof(HttpMethod))]

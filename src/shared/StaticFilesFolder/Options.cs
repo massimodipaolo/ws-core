@@ -27,7 +27,7 @@ namespace Ws.Core.Shared.StaticFilesFolder
             get
             {
                 if (_isRelativePath == null)
-                    _isRelativePath = ((Path != null && System.Text.RegularExpressions.Regex.IsMatch(Path, @"^([a-z]:)*(\/*(\.*[a-z0-9]+\/)*(\.*[a-z0-9]+))")));
+                    _isRelativePath = Path != null && System.Text.RegularExpressions.Regex.IsMatch(Path, @"^([a-z]:)*(\/*(\.*[a-z0-9]+\/)*(\.*[a-z0-9]+))");
 
                 return _isRelativePath.Value;
             }
@@ -48,12 +48,11 @@ namespace Ws.Core.Shared.StaticFilesFolder
             {
                 try
                 {
-                    //TODO: Inject IFileProvider (or ServiceLocator serviceProvider.GetService<IFileProvider>()): https://docs.microsoft.com/en-us/aspnet/core/fundamentals/file-providers
                     staticFileOptions.FileProvider = FileProvider(basePath);
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex.Message);
+                    logger.LogError(ex, "");
                 }
             }
             if (!string.IsNullOrEmpty(RequestPath))

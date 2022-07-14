@@ -1,0 +1,117 @@
+﻿{
+  "$schema": "../../modules/json-schema.json#",
+  "__$schema": "https://raw.githubusercontent.com/massimodipaolo/ws-core/master/src/modules/json-schema.json",
+  "extConfig": {
+    "assemblies": {
+    },
+    "injectors": [
+      {
+        "priority": 101,
+        "services": [
+          {
+            "serviceType": "Ws.Core.Extensions.Message.IMessage",
+            "implementationType": "x.core.NotFoundInjectorServiceMessage",
+            "lifeTime": "Transient",
+            "overrideIfAlreadyRegistered": false
+          }
+        ],
+        "middlewares": [
+          {
+            "type": "x.core.Middlewares.RequestCulture"
+          }
+        ]
+      },
+      {
+        "priority": 301,
+        "name": "branch-write-text",        
+        "middlewares": [
+          {
+            "type": "x.core.Middlewares.WriteText",
+            "map": {
+              "pathMatch": "/branch",
+              "preserveMatchedPathSegment": true
+            }
+          }
+        ]
+      },
+      {
+        "priority": 399,
+        "name": "data-cache-override",
+        "services": [
+          {
+            "serviceType": "Ws.Core.Extensions.Data.Cache.ICache`1[[x.core.Models.CrudBase3, x.core]], Ws.Core.Extensions.Data.Cache",
+            "implementationType": "Ws.Core.Extensions.Data.Cache.Redis.RedisCache`1[[x.core.Models.CrudBase3, x.core]], Ws.Core.Extensions.Data.Cache.Redis",
+            "lifeTime": "Singleton",
+            "overrideIfAlreadyRegistered": true
+          },
+          {
+            "serviceType": "Ws.Core.Extensions.Data.Cache.ICache`1[[x.core.Log, x.core]], Ws.Core.Extensions.Data.Cache",
+            "implementationType": "Ws.Core.Extensions.Data.Cache.Memcached.MemcachedCache`1[[x.core.Log, x.core]], Ws.Core.Extensions.Data.Cache.Memcached",
+            "lifeTime": "Singleton",
+            "overrideIfAlreadyRegistered": true
+          }
+        ]
+      },
+      {
+        "priority": 405,
+        "name": "data-repository-override",
+        "services": [
+          {
+            "serviceType": "Ws.Core.Extensions.Data.IRepository`2[[x.core.Log, x.core],[System.Int32]], Ws.Core.Extensions.Data",
+            "implementationType": "Ws.Core.Extensions.Data.Repository.EF.SQLite`2[[x.core.Log, x.core],[System.Int32]], Ws.Core.Extensions.Data.EF.SQLite",
+            "lifeTime": "Transient",
+            "overrideIfAlreadyRegistered": true
+          },
+          {
+            "serviceType": "Ws.Core.Extensions.Data.IRepository`2[[x.core.Models.Cms.Admin_User, x.core],[System.Int32]], Ws.Core.Extensions.Data",
+            "implementationType": "Ws.Core.Extensions.Data.Repository.EF.SQLite`2[[x.core.Models.Cms.Admin_User, x.core],[System.Int32]], Ws.Core.Extensions.Data.EF.SQLite",
+            "lifeTime": "Transient",
+            "overrideIfAlreadyRegistered": true
+          },
+          {
+            "serviceType": "Ws.Core.Extensions.Data.IRepository`2[[x.core.Models.Cms.Admin_Role, x.core],[System.Int32]], Ws.Core.Extensions.Data",
+            "implementationType": "Ws.Core.Extensions.Data.Repository.EF.SQLite`2[[x.core.Models.Cms.Admin_Role, x.core],[System.Int32]], Ws.Core.Extensions.Data.EF.SQLite",
+            "lifeTime": "Transient",
+            "overrideIfAlreadyRegistered": true
+          },
+          {
+            "serviceType": "Ws.Core.Extensions.Data.IRepository`2[[x.core.Models.Cms.Admin_Permission, x.core],[System.Int32]], Ws.Core.Extensions.Data",
+            "implementationType": "Ws.Core.Extensions.Data.Repository.EF.SQLite`2[[x.core.Models.Cms.Admin_Permission, x.core],[System.Int32]], Ws.Core.Extensions.Data.EF.SQLite",
+            "lifeTime": "Transient",
+            "overrideIfAlreadyRegistered": true
+          },
+          {
+            "serviceType": "Ws.Core.Extensions.Data.IRepository`2[[x.core.Models.User2, x.core],[System.Int32]], Ws.Core.Extensions.Data",
+            "implementationType": "Ws.Core.Extensions.Data.Repository.FileSystem`2[[x.core.Models.User2, x.core],[System.Int32]], Ws.Core.Extensions.Data.FileSystem",
+            "lifeTime": "Transient",
+            "overrideIfAlreadyRegistered": true
+          },
+          {
+            "serviceType": "Ws.Core.Extensions.Data.IRepository`2[[x.core.Models.CrudBase, x.core],[System.String]], Ws.Core.Extensions.Data",
+            "implementationType": "Ws.Core.Extensions.Data.Repository.InMemory`2[[x.core.Models.CrudBase, x.core],[System.String]], Ws.Core.Extensions.Data",
+            "lifeTime": "Transient",
+            "overrideIfAlreadyRegistered": true
+          }
+        ]
+      },
+      {
+        "priority": 601,
+        "name": "IMessage-on-stereoids",
+        "decorators": [
+          {
+            "serviceType": "Ws.Core.Extensions.Message.IMessage",
+            "implementationType": "x.core.Decorators.IMessageLogger"
+          },
+          {
+            "serviceType": "Ws.Core.Extensions.Message.IMessage",
+            "implementationType": "x.core.Decorators.IMessageCopy"
+          },
+          {
+            "serviceType": "Ws.Core.Extensions.Message.IMessage",
+            "implementationType": "x.core.Decorators.IMessageSignature"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -8,7 +8,9 @@
 	  <RootNamespace>Ws.Core.Extensions.Data.EF.SQLite</RootNamespace>
 	  <Authors>Massimo Di Paolo</Authors>
 	  <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
-	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>	  
+	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Nullable>enable</Nullable>
   </PropertyGroup>
 
 	<PropertyGroup>
@@ -18,7 +20,7 @@
 	
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.Sqlite" Version="6.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.7" />
   </ItemGroup>
 
   <ItemGroup>

@@ -23,7 +23,7 @@ namespace Ws.Core.Extensions
                                                       orderby a.Priority
                                                       select a)
             {
-                logger.LogInformation($"Executing ConfigureServices action '{item.GetType().FullName}'");
+                logger.LogInformation("Executing ConfigureServices action '{type}'", item.GetType().FullName);
                 item.Execute(builder, serviceProvider);
                 // new container
                 serviceProvider = builder.Services.BuildServiceProvider();

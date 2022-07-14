@@ -8,13 +8,6 @@ namespace Ws.Core.Extensions.Data.Cache
 {
     public class Options : IOptions
     {
-        public Types Type { get; set; }
-        public enum Types
-        {
-            Memory,
-            Distributed
-        }
-
         [Description("Tier cache expiration in minutes")]
         public Duration? EntryExpirationInMinutes { get; set; } = new Duration();
         public class Duration

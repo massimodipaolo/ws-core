@@ -2,29 +2,27 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Ws.Core.Extensions.Data.EF.SQLite
+namespace Ws.Core.Extensions.Data.EF.SQLite;
+
+public class Extension : Base.Extension
 {
-    public class Extension : Base.Extension
+    private Options options => GetOptions<Options>();
+
+    public override void Execute(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
     {
-        private Options options => GetOptions<Options>();
+        base.Execute(builder, serviceProvider);
 
-        public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
+        if (options?.Connections?.Any() == true)
         {
-            base.Execute(builder, serviceProvider);
+            var hcBuilder = builder.Services.AddHealthChecks();
 
-            var connections = options?.Connections;
-            if (connections != null && connections.Any())
+            ServiceLifetime lifetime = options.ServiceLifetime;
+            HashSet<Data.DbConnectionSelector> connectionSelectorTable = new();
+            var _index = 0;
+            foreach (var conn in options.Connections)
             {
-                var hcBuilder = builder.Services.AddHealthChecks();
-
-                ServiceLifetime lifetime = ServiceLifetime.Scoped;
-                HashSet<Data.DbConnectionSelector> connectionSelectorTable = new();
-                var _index = 0;
-                foreach (var conn in connections)
+                if (!string.IsNullOrEmpty(conn.ConnectionString))
                 {
                     hcBuilder.AddSqlite(conn.ConnectionString, name: $"sqlite-{conn.Name}", tags: new[] { "db", "sql", "sqlite" });
 
@@ -33,16 +31,16 @@ namespace Ws.Core.Extensions.Data.EF.SQLite
 
                     connectionSelectorTable.Add(new(conn));
                 }
-
-                if (_index > 1)
-                {
-                    var dbContextCollection = Data.DbConnectionSelector.Collection(builder, connectionSelectorTable);
-                    var funcWrapper = new DbConnectionFunctionWrapper() { Func = type => (Data.DbConnection)dbContextCollection[type.FullName] };
-                    builder.Services.AddSingleton(typeof(DbConnectionFunctionWrapper), funcWrapper);
-                }
-
-                builder.Services.TryAddTransient(typeof(IRepository<,>), typeof(Repository.EF.SQLite<,>));
             }
+
+            if (_index > 1)
+            {
+                var dbContextCollection = Data.DbConnectionSelector.Collection(connectionSelectorTable);
+                var funcWrapper = new DbConnectionFunctionWrapper() { Func = type => (DbConnection)(dbContextCollection[type?.FullName ?? ""] ?? connectionSelectorTable.First()) };
+                builder.Services.AddSingleton(typeof(DbConnectionFunctionWrapper), funcWrapper);
+            }
+
+            builder.Services.TryAddTransient(typeof(IRepository<,>), typeof(Repository.EF.SQLite<,>));
         }
     }
 }

@@ -12,42 +12,38 @@ namespace Ws.Core.Extensions.Data.EF.SqlServer
     public class Extension : Base.Extension
     {
         public Options Options => GetOptions<Options>();
-        public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
+        public override void Execute(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
         {
             base.Execute(builder, serviceProvider);
 
-            var connections = Options?.Connections;
-            if (connections != null && connections.Any())
+            if (Options?.Connections?.Any() == true)
             {
                 var hcBuilder = builder.Services.AddHealthChecks();
 
                 ServiceLifetime lifetime = Options.ServiceLifetime;
                 HashSet<Data.DbConnectionSelector> connectionSelectorTable = new();
                 var _index = 0;
-                foreach (var conn in connections)
+                foreach (var conn in Options.Connections)
                 {
-                    hcBuilder.AddSqlServer(conn.ConnectionString, name: $"sqlserver-{conn.Name}", tags: new[] { "db", "sql", "sqlserver" });
-                    
-                    Action<DbContextOptionsBuilder> options = _ =>
+                    if (!string.IsNullOrEmpty(conn.ConnectionString))
                     {
-                        _.UseSqlServer(
-                            conn.ConnectionString,
-                            __ => { 
-                                __.EnableRetryOnFailure();
-                                #warning TODO use new execution strategy options
-                            }
-                        );
-                    };
-                    if (_index++ == 0)
-                        builder.Services.AddDbContext<DbContext>(options, lifetime);
+                        hcBuilder.AddSqlServer(conn.ConnectionString, name: $"sqlserver-{conn.Name}", tags: new[] { "db", "sql", "sqlserver" });
 
-                    connectionSelectorTable.Add(new(conn));
+                        Action<DbContextOptionsBuilder> optionBuilder = _ =>
+                        {
+                            _.UseSqlServer(conn.ConnectionString);
+                        };
+                        if (_index++ == 0)
+                            builder.Services.AddDbContext<DbContext>(optionBuilder, lifetime);
+
+                        connectionSelectorTable.Add(new(conn));
+                    }
                 }
 
                 if (_index > 1)
                 {
-                    var dbContextCollection = Data.DbConnectionSelector.Collection(builder, connectionSelectorTable);
-                    var funcWrapper = new DbConnectionFunctionWrapper() { Func = type => (Data.DbConnection)dbContextCollection[type.FullName] };
+                    var dbContextCollection = Data.DbConnectionSelector.Collection(connectionSelectorTable);
+                    var funcWrapper = new DbConnectionFunctionWrapper() { Func = type => (DbConnection)(dbContextCollection[type?.FullName ?? ""] ?? connectionSelectorTable.First()) };
                     builder.Services.AddSingleton(typeof(DbConnectionFunctionWrapper), funcWrapper);
                 }
 

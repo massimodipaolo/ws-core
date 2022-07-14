@@ -28,7 +28,8 @@ namespace Ws.Core.Extensions
                                               orderby a.Priority
                                               select a)
             {
-                logger.LogInformation($"Executing Configure action '{item.GetType().FullName}'");
+                // https://github.com/dotnet/roslyn-analyzers/issues/5626#issuecomment-1033240500
+                logger.LogInformation("Executing Configure action '{type}'",item.GetType().FullName);
                 item.Execute(app);
             }
         }

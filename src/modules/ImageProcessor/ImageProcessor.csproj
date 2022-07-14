@@ -12,6 +12,8 @@
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageReleaseNotes>Image processor extensions using SixLabors.ImageSharp.Web</PackageReleaseNotes>
 		<PackageTags>image processor</PackageTags>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>		
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>		
 	</PropertyGroup>
 

@@ -11,11 +11,15 @@ using Ws.Core.Extensions.Data.EF.SqlServer.Extensions;
 
 namespace Ws.Core.Extensions.Data.Repository.EF
 {
-    public class SqlServer<T, TKey> : EF<Ws.Core.Extensions.Data.EF.DbContext, T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>
+    public class SqlServer
     {
-        private static Data.EF.SqlServer.Options options { get; set; } = new Data.EF.SqlServer.Extension().Options ?? new Data.EF.SqlServer.Options();
-        private static IEnumerable<Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig> spMappings { get; set; }
-        private Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig sp { get; set; }
+        protected SqlServer() { }
+        internal static Data.EF.SqlServer.Options options { get; set; } = new Data.EF.SqlServer.Extension().Options ?? new Data.EF.SqlServer.Options();
+        internal static IEnumerable<Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig>? spMappings { get; set; }
+    }
+    public class SqlServer<T, TKey> : EF<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>, IComparable<TKey>
+    {
+        private Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig? sp { get; set; }
         private const string spPrefix = "entity";
 
         public SqlServer(Ws.Core.Extensions.Data.EF.SqlServer.DbContext context, IServiceProvider provider) : base(context, provider)
@@ -24,16 +28,17 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         }
 
         public SqlServer(Ws.Core.Extensions.Data.EF.SqlServer.DbContext context, Ws.Core.Extensions.Data.EF.SqlServer.DbConnectionFunctionWrapper funcWrapper, IServiceProvider provider)
-        : base(context, funcWrapper.Func(typeof(T)), provider) { 
-            Init(); 
+        : base(context, funcWrapper.Func(typeof(T)), provider)
+        {
+            Init();
         }
 
         private void Init()
         {
-            if (spMappings == null)
+            if (SqlServer.spMappings == null)
             {
-                var _spConfig = (options?.StoredProcedure ?? new Data.EF.SqlServer.Options.StoredProcedureConfig());
-                spMappings = _spConfig
+                var _spConfig = SqlServer.options?.StoredProcedure ?? new Data.EF.SqlServer.Options.StoredProcedureConfig();
+                SqlServer.spMappings = _spConfig
                             .Mappings?
                             .Select(_ =>
                             {
@@ -46,7 +51,7 @@ namespace Ws.Core.Extensions.Data.Repository.EF
                             ;
             }
 
-            sp = spMappings
+            sp = SqlServer.spMappings?
             .Where(_ =>
                     _.Name == typeof(T).Name
                     && (string.IsNullOrEmpty(_.NameSpace) || _.NameSpace == typeof(T).Namespace)
@@ -55,20 +60,19 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         }
 
         #region Override repo
-        //public override string Info => _context.Set<EntityOfString>().FromSqlInterpolated($"select @@version Id").AsEnumerable().FirstOrDefault().Id;
         public override IQueryable<T> List => sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.List) ?? false ? list : base.List;
         private IQueryable<T> list
         {
             get
             {
                 var json = ExecuteScalar(default).Result;
-                if (string.IsNullOrEmpty(json)) return null;
+                if (string.IsNullOrEmpty(json)) return Array.Empty<T>().AsQueryable();
 
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<T>>(json).AsQueryable();
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<T>>(json)?.AsQueryable() ?? Array.Empty<T>().AsQueryable();
             }
         }
-        public override T Find(TKey Id) => sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Find) ?? false ? find(Id) : base.Find(Id);
-        private T find(TKey Id)
+        public override T? Find(TKey? Id) => sp?.HasMethod(Data.EF.SqlServer.Options.StoredProcedureConfig.MappingConfig.MethodType.Find) ?? false ? find(Id) : base.Find(Id);
+        private T? find(TKey? Id)
         {
             var json = ExecuteScalar(Id).Result;
             if (string.IsNullOrEmpty(json)) return null;
@@ -124,19 +128,17 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         {
             if (entities != null)
             {
+                using var transaction = _context.Database.BeginTransaction();
+                switch (operation)
                 {
-                    using var transaction = _context.Database.BeginTransaction();
-                    switch (operation)
-                    {
-                        case RepositoryMergeOperation.Upsert:
-                            _context.BulkInsertOrUpdate<T>(entities.ToList(), options.Merge);
-                            break;
-                        case RepositoryMergeOperation.Sync:
-                            _context.BulkInsertOrUpdateOrDelete<T>(entities.ToList(), options.Merge);
-                            break;
-                    }
-                    transaction.Commit();
+                    case RepositoryMergeOperation.Upsert:
+                        _context.BulkInsertOrUpdate<T>(entities.ToList(), SqlServer.options.Merge);
+                        break;
+                    case RepositoryMergeOperation.Sync:
+                        _context.BulkInsertOrUpdateOrDelete<T>(entities.ToList(), SqlServer.options.Merge);
+                        break;
                 }
+                transaction.Commit();
             }
         }
 
@@ -165,19 +167,24 @@ namespace Ws.Core.Extensions.Data.Repository.EF
         private void ExecuteCrudCommand(T entity, string action)
         {
             if (entity != null)
-                executeCrudCommand(entity, action);
+                ExecuteCrudCommand((object)entity, action);
         }
 
         private void ExecuteCrudCommand(IEnumerable<T> entities, string action)
         {
-            if (entities != null && entities.Any())
-                executeCrudCommand(entities, action);
+            if (entities?.Any() == true)
+                ExecuteCrudCommand((object)entities, action);
         }
 
-        private void executeCrudCommand(object obj, string action)
+        private void ExecuteCrudCommand(object obj, string action)
         {
-            var data = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
-            ExecuteCrudCommand(action, data);
+            if (sp != null)
+            {
+                var data = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+                db<Data.EF.SqlServer.DbContext>()?.SetCommandTimeout(sp.CommandTimeOut.Write);
+                var query = $"exec [{sp.Schema}].[{spPrefix}_{sp.StoredProcedure}_{action}] {{0}}";
+                db<Data.EF.SqlServer.DbContext>()?.ExecuteSqlRaw(query, data);
+            }
         }
 
         private void ExecuteMergeCommand(IEnumerable<T> entities, RepositoryMergeOperation operation)
@@ -189,61 +196,52 @@ namespace Ws.Core.Extensions.Data.Repository.EF
             }
         }
 
-        private void ExecuteCrudCommand(string action, string data)
-        {
-            db().SetCommandTimeout(sp.CommandTimeOut?.Write ?? 60);
-            db().ExecuteSqlInterpolated(
-                $"exec [{sp.Schema}].{spPrefix}_{sp.StoredProcedure}_{action} {data}"
-                );
-        }
-
         private void ExecuteMergeCommand(string data, RepositoryMergeOperation operation)
         {
-            db().SetCommandTimeout(sp.CommandTimeOut?.Sync ?? 180);
-            db().ExecuteSqlInterpolated(
-                $"exec [{sp.Schema}].{spPrefix}_{sp.StoredProcedure}_merge {data},{operation}"
-                );
+            if (sp != null)
+            {
+                db<Data.EF.SqlServer.DbContext>()?.SetCommandTimeout(sp.CommandTimeOut.Sync);
+                var query = $"exec [{sp.Schema}].[{spPrefix}_{sp.StoredProcedure}_merge] {{0}},{{1}}";
+                db<Data.EF.SqlServer.DbContext>()?.ExecuteSqlRaw(query, data, operation);
+            }
         }
 
-        private async Task<string> ExecuteScalar(TKey Id)
+        private async Task<string> ExecuteScalar(TKey? Id)
         {
             var result = new System.Text.StringBuilder();
 
-            var cmd = db().GetDbConnection().CreateCommand();
-            cmd.CommandText = $"[{sp.Schema}].{spPrefix}_{sp.StoredProcedure}_select";
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.CommandTimeout = sp.CommandTimeOut?.Read ?? 120;
-
-            var param = cmd.CreateParameter();
-            param.ParameterName = "@id";
-            if (Id != null && !Id.Equals(default))
-                param.Value = Id;
-            else
-                param.Value = DBNull.Value;
-            cmd.Parameters.Add(param);
-
-            using (cmd)
+            if (sp != null)
             {
-                try
+                var cmd = db<Data.EF.SqlServer.DbContext>()?.GetDbConnection().CreateCommand();
+                if (cmd != null)
                 {
-                    if (cmd.Connection.State != System.Data.ConnectionState.Open)
-                        cmd.Connection.Open();
-                }
-                catch { }
+                    cmd.CommandText = $"[{sp.Schema}].{spPrefix}_{sp.StoredProcedure}_select";
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandTimeout = sp.CommandTimeOut.Read;
 
-                try
-                {
-                    using var reader = await cmd.ExecuteReaderAsync(System.Data.CommandBehavior.Default).ConfigureAwait(false);
-                    while (await reader.ReadAsync().ConfigureAwait(false))
-                        result.Append(reader.GetString(0));
-                }
-                catch
-                {
-                    throw;
-                }
-                finally
-                {
-                    cmd.Connection.Close();
+                    var param = cmd.CreateParameter();
+                    param.ParameterName = "@id";
+                    if (Id != null && !Id.Equals(default))
+                        param.Value = Id;
+                    else
+                        param.Value = DBNull.Value;
+                    cmd.Parameters.Add(param);
+
+                    using (cmd)
+                    {
+                        try
+                        {
+                            if (cmd.Connection?.State != System.Data.ConnectionState.Open)
+                                cmd.Connection?.Open();
+                            using var reader = await cmd.ExecuteReaderAsync(System.Data.CommandBehavior.Default).ConfigureAwait(false);
+                            while (await reader.ReadAsync().ConfigureAwait(false))
+                                result.Append(reader.GetString(0));
+                        }
+                        finally
+                        {
+                            cmd.Connection?.Close();
+                        }
+                    }
                 }
             }
             return result.ToString();

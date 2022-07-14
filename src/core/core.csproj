@@ -30,7 +30,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
-    <PackageReference Include="Scrutor" Version="4.1.0" />
+    <PackageReference Include="Scrutor" Version="4.2.0" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot/**/*.*" Pack="false" />
@@ -41,7 +41,7 @@
     </Folder>
   </ItemGroup>
   <ItemGroup>    
-    <ProjectReference Include="..\extCore\WebApplication\ExtCore.Application.csproj" />    
+    <ProjectReference Include="..\extCore\Application\Application.csproj" />    
     <ProjectReference Include="..\modules\ExtensionBase\ExtensionBase.csproj" />
   </ItemGroup>   
 </Project> 

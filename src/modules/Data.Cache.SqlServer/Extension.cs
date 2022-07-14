@@ -30,17 +30,13 @@ namespace Ws.Core.Extensions.Data.Cache.SqlServer
                     );
 
             builder.Services
-                //.AddMemoryCache()
-                //.AddDistributedMemoryCache()
                 .AddDistributedSqlServerCache(_ =>
                 { _.ConnectionString = connectionString; _.SchemaName = schema; _.TableName = table; }
                 );
 
             //DI
-            builder.Services.TryAddSingleton(typeof(ICache), typeof(DistributedCache));
-            builder.Services.TryAddSingleton(typeof(ICache<>), typeof(DistributedCache<>));
-            builder.Services.TryAddTransient(typeof(ICacheRepository<,>), typeof(Repository.CachedRepository<,>));
-
+            builder.Services.TryAddSingleton(typeof(ICache), typeof(SqlCache));
+            builder.Services.TryAddSingleton(typeof(ICache<>), typeof(SqlCache<>));
         }
     }
 }

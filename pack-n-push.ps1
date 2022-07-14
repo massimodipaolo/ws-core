@@ -28,30 +28,11 @@ if (! (Test-Path (Join-Path $build_dir "posh-build.ps1"))) { Write-Host "Install
 $packages_dir = Join-Path $build_dir "packages"
 $solution_file = Join-Path $path "ws-core.sln";
 
-target default -depends compile, test, deploy
+target default -depends compile, deploy
 
 target compile {
   Invoke-Dotnet build $solution_file -c $configuration --no-incremental `
 }
-
-target test {
-  $test = New-Prompt "Test Packages" "Do you want to invoke project tests?" @(
-    @("&N", "No, skip and upload the packages."),
-    @("&Y", "Yes.")
-  )
-
-  if ($test -eq 1) {
-      # Set the path to the projects you want to test.
-      $test_projects = @(
-        "$path\tests\xCore\xCore.csproj"
-        #,""
-      )
-
-      # This runs "dotnet test". Change to Invoke-Xunit to invoke "dotnet xunit"
-      Invoke-Tests $test_projects -c $configuration --no-build
-  }
-}
-
 target deploy {
   # Run dotnet pack to generate the nuget packages
   Remove-Item $packages_dir -Force -Recurse 2> $null

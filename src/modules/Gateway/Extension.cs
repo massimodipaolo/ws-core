@@ -12,17 +12,7 @@ public class Extension : Base.Extension
     {
         if (options.Ocelot != null)
         {
-            /*
-            builder.Host.ConfigureHostConfiguration(_ =>
-            {
-                //_.AddOcelot(builder.Environment); // ocelot.global.json + merge ocelot.{env}.json => ocelot.json            
-                string config = System.Text.Json.JsonSerializer.Serialize<Ocelot.Configuration.File.FileConfiguration>(options.Ocelot);
-                File.WriteAllText("ocelot.json", config);
-                _.AddJsonFile("ocelot.json", optional: false, reloadOnChange: false);
-            });
-            */
             var config = builder.Configuration.GetSection($"{ConfigSectionPathOptions}:{nameof(Options.Ocelot)}");
-            //Ocelot.Configuration.File.FileConfiguration opt = config.Get<Ocelot.Configuration.File.FileConfiguration>();
             builder.Services.AddOcelot(config);
         }
     }
