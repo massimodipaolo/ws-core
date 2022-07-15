@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
-using System.Text.Json;
-using System.Text.RegularExpressions;
-using Ws.Core.Extensions.Data;
-using Ws.Core.Extensions.HealthCheck.Checks.AppLog;
+﻿using System.Text.RegularExpressions;
 using Xunit;
 using Xunit.Abstractions;
-using AppLog = Ws.Core.Extensions.HealthCheck.Checks.AppLog;
 
 namespace x.core;
 

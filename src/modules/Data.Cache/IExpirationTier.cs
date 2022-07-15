@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Options;
 
 namespace Ws.Core.Extensions.Data.Cache;
 
@@ -18,8 +17,10 @@ public interface IExpirationTier
 /// <example>
 /// builder.Services.TryAddSingleton(typeof(IExpirationTier<![CDATA[<FooType>]]>), typeof(ExpirationTier<![CDATA[<FooType>]]>));
 /// </example>
-/// <typeparam name="T"></typeparam>
+/// <typeparam name="TCache"></typeparam>
+#pragma warning disable S2326 // Unused type parameters should be removed
 public interface IExpirationTier<TCache> : IExpirationTier where TCache : ICache { }
+#pragma warning restore S2326 // Unused type parameters should be removed
 
 public class ExpirationTier : IExpirationTier
 {

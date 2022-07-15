@@ -1,31 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <PackageVersion>6.0.0</PackageVersion>
-    <PackageId>Ws.Core.Extensions.Message</PackageId>
-    <AssemblyName>Ws.Core.Extensions.Message</AssemblyName>
-    <RootNamespace>Ws.Core.Extensions.Message</RootNamespace>
-    <Authors>Massimo Di Paolo</Authors>
-    <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
-    <Description>Send/Receive message via email</Description>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Health check</PackageReleaseNotes>
-    <PackageTags>extension message, email, smtp</PackageTags>    
-  </PropertyGroup> 
- 
-  <PropertyGroup>
-    <NoWarn>1701;1702;1705;1591</NoWarn>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<PackageVersion>6.0.0</PackageVersion>
+		<PackageId>Ws.Core.Extensions.Message</PackageId>
+		<AssemblyName>Ws.Core.Extensions.Message</AssemblyName>
+		<RootNamespace>Ws.Core.Extensions.Message</RootNamespace>
+		<Authors>Massimo Di Paolo</Authors>
+		<Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
+		<Description>Send/Receive message via email</Description>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageReleaseNotes>Health check</PackageReleaseNotes>
+		<PackageTags>extension message, email, smtp</PackageTags>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MailKit" Version="3.3.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.Network" Version="6.0.3" />
-  </ItemGroup>
+	<PropertyGroup>
+		<NoWarn>1701;1702;1705;1591</NoWarn>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
-  </ItemGroup>    
+	<ItemGroup>
+		<PackageReference Include="MailKit" Version="3.3.0" />
+		<PackageReference Include="AspNetCore.HealthChecks.Network" Version="6.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
+	</ItemGroup>
 
 </Project>

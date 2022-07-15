@@ -1,35 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk"> 
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <PackageVersion>6.0.0</PackageVersion>
-    <PackageId>Ws.Core.Extensions.Base</PackageId>
+		<TargetFramework>net6.0</TargetFramework>
+		<PackageVersion>6.0.0</PackageVersion>
+		<PackageId>Ws.Core.Extensions.Base</PackageId>
 		<AssemblyName>Ws.Core.Extensions.Base</AssemblyName>
-    <RootNamespace>Ws.Core.Extensions.Base</RootNamespace>
-    <Authors>Massimo Di Paolo</Authors>
-    <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
+		<RootNamespace>Ws.Core.Extensions.Base</RootNamespace>
+		<Authors>Massimo Di Paolo</Authors>
+		<Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
 		<Description>Base extension module, forked from ExtCore by Dmitry Sikorsky</Description>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Health check</PackageReleaseNotes>		
-		<PackageTags>extension base</PackageTags>		
+		<PackageReleaseNotes>Health check</PackageReleaseNotes>
+		<PackageTags>extension base</PackageTags>
 		<PreBuildEvent />
+		<ImplicitUsings>enable</ImplicitUsings>	
 	</PropertyGroup>
 
-  <PropertyGroup>
-    <NoWarn>1701;1702;1705;1591</NoWarn>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
-  
-  <ItemGroup>
+	<PropertyGroup>
+		<NoWarn>1701;1702;1705;1591</NoWarn>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Carter" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
 		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
 	</ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\..\extCore\Infrastructure\Infrastructure.csproj" />
-  </ItemGroup>
- 
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\extCore\Infrastructure\Infrastructure.csproj" />
+	</ItemGroup>
+
 </Project>

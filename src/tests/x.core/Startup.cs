@@ -1,5 +1,4 @@
-﻿using Carter;
-using Microsoft.AspNetCore.Http.Json;
+﻿using Microsoft.AspNetCore.Http.Json;
 using Microsoft.Extensions.Options;
 
 namespace x.core;

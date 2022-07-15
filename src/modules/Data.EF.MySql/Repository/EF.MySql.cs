@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ws.Core.Extensions.Data.Repository.EF;
+﻿namespace Ws.Core.Extensions.Data.Repository.EF;
 
 public class MySql<T, TKey> : EF<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>, IComparable<TKey>
 {

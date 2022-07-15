@@ -1,8 +1,7 @@
 ﻿using Carter;
-using System.Linq;
 using Ws.Core.Extensions.Data;
-using x.core.Models;
 using Ws.Core.Extensions.Data.Repository.EF;
+using x.core.Models;
 
 namespace x.core.Endpoints;
 

@@ -8,7 +8,7 @@ namespace Ws.Core.Extensions.Data.Cache.SqlServer
     {
         [Description("SqlServer cache client")]
         [DefaultValue("ConnString: local Trusted; Tbl: dbo.Entry")]
-        public SqlServerCacheOptions Client { get; set; }
+        public SqlServerCacheOptions? Client { get; set; }
         [Description("Tier cache expiration in minutes")]
         public Ws.Core.Extensions.Data.Cache.EntryExpiration EntryExpirationInMinutes { get; set; } = new();
 

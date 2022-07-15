@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
-using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Ws.Core.Extensions.HealthCheck.Checks.AppLog

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.HttpLogging;
-using StackExchange.Profiling;
+﻿using StackExchange.Profiling;
 using Ws.Core.Extensions.Base;
 
 namespace Ws.Core.Extensions.Diagnostic;
