@@ -1,6 +1,4 @@
 ﻿using Carter;
-using Ws.Core.Extensions.Data;
-using x.core.Models;
 
 namespace x.core.Endpoints;
 

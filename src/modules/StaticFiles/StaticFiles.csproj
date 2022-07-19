@@ -1,37 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup> 
-    <TargetFramework>net6.0</TargetFramework>
-    <PackageVersion>6.0.0</PackageVersion>   
-    <PackageId>Ws.Core.Extensions.StaticFiles</PackageId>
-    <AssemblyName>Ws.Core.Extensions.StaticFiles</AssemblyName>       
-    <RootNamespace>Ws.Core.Extensions.StaticFiles</RootNamespace>
-    <Authors>Massimo Di Paolo</Authors>
-    <Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
-    <Description>This extension enables the web app to serve static files. A physical file provider is used.</Description>    
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.netcore 3</PackageReleaseNotes>        
-    <PackageTags>static files staticfiles </PackageTags>      
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<PackageVersion>6.0.0</PackageVersion>
+		<PackageId>Ws.Core.Extensions.StaticFiles</PackageId>
+		<AssemblyName>Ws.Core.Extensions.StaticFiles</AssemblyName>
+		<RootNamespace>Ws.Core.Extensions.StaticFiles</RootNamespace>
+		<Authors>Massimo Di Paolo</Authors>
+		<Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
+		<Description>This extension enables the web app to serve static files. A physical file provider is used.</Description>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageReleaseNotes>.netcore 3</PackageReleaseNotes>
+		<PackageTags>static files staticfiles </PackageTags>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <NoWarn>1701;1702;1705;1591</NoWarn>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<NoWarn>1701;1702;1705;1591</NoWarn>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="6.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="6.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ExtensionBase\ExtensionBase.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="readme.txt" Pack="true" PackagePath=""></None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="readme.txt" Pack="true" PackagePath=""></None>
+	</ItemGroup>
 
-  <Import Project="..\..\shared\StaticFilesFolder\StaticFilesFolder.projitems" Label="Shared" />
+	<Import Project="..\..\shared\StaticFilesFolder\StaticFilesFolder.projitems" Label="Shared" />
 
 </Project>

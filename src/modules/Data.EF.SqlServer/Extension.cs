@@ -1,55 +1,50 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Ws.Core.Extensions.Data.EF.SqlServer
+namespace Ws.Core.Extensions.Data.EF.SqlServer;
+
+public class Extension : Base.Extension
 {
-    public class Extension : Base.Extension
+    public Options Options => GetOptions<Options>();
+    public override void Execute(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
     {
-        public Options Options => GetOptions<Options>();
-        public override void Execute(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
+        base.Execute(builder, serviceProvider);
+
+        if (Options?.Connections?.Any() == true)
         {
-            base.Execute(builder, serviceProvider);
+            var hcBuilder = builder.Services.AddHealthChecks();
 
-            if (Options?.Connections?.Any() == true)
+            ServiceLifetime lifetime = Options.ServiceLifetime;
+            HashSet<Data.DbConnectionSelector> connectionSelectorTable = new();
+            var _index = 0;
+            foreach (var conn in Options.Connections)
             {
-                var hcBuilder = builder.Services.AddHealthChecks();
-
-                ServiceLifetime lifetime = Options.ServiceLifetime;
-                HashSet<Data.DbConnectionSelector> connectionSelectorTable = new();
-                var _index = 0;
-                foreach (var conn in Options.Connections)
+                if (!string.IsNullOrEmpty(conn.ConnectionString))
                 {
-                    if (!string.IsNullOrEmpty(conn.ConnectionString))
+                    hcBuilder.AddSqlServer(conn.ConnectionString, name: $"sqlserver-{conn.Name}", tags: new[] { "db", "sql", "sqlserver" });
+
+                    Action<DbContextOptionsBuilder> optionBuilder = _ =>
                     {
-                        hcBuilder.AddSqlServer(conn.ConnectionString, name: $"sqlserver-{conn.Name}", tags: new[] { "db", "sql", "sqlserver" });
+                        _.UseSqlServer(conn.ConnectionString);
+                    };
+                    if (_index++ == 0)
+                        builder.Services.AddDbContext<DbContext>(optionBuilder, lifetime);
 
-                        Action<DbContextOptionsBuilder> optionBuilder = _ =>
-                        {
-                            _.UseSqlServer(conn.ConnectionString);
-                        };
-                        if (_index++ == 0)
-                            builder.Services.AddDbContext<DbContext>(optionBuilder, lifetime);
-
-                        connectionSelectorTable.Add(new(conn));
-                    }
+                    connectionSelectorTable.Add(new(conn));
                 }
-
-                if (_index > 1)
-                {
-                    var dbContextCollection = Data.DbConnectionSelector.Collection(connectionSelectorTable);
-                    var funcWrapper = new DbConnectionFunctionWrapper() { Func = type => (DbConnection)(dbContextCollection[type?.FullName ?? ""] ?? connectionSelectorTable.First()) };
-                    builder.Services.AddSingleton(typeof(DbConnectionFunctionWrapper), funcWrapper);
-                }
-
-
-                builder.Services.TryAddTransient(typeof(IRepository<,>), typeof(Repository.EF.SqlServer<,>));
             }
+
+            if (_index > 1)
+            {
+                var dbContextCollection = Data.DbConnectionSelector.Collection(connectionSelectorTable);
+                var funcWrapper = new DbConnectionFunctionWrapper() { Func = type => (DbConnection)(dbContextCollection[type?.FullName ?? ""] ?? connectionSelectorTable.First()) };
+                builder.Services.AddSingleton(typeof(DbConnectionFunctionWrapper), funcWrapper);
+            }
+
+
+            builder.Services.TryAddTransient(typeof(IRepository<,>), typeof(Repository.EF.SqlServer<,>));
         }
     }
 }

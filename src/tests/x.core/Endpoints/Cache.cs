@@ -39,18 +39,19 @@ public class Cache : ICarterModule
         var cached = await cache.GetAsync<IEnumerable<T>>(Key<T>());
         if (cached == null)
         {            
-            var list = repo.List.AsEnumerable().Take(5);
-            await cache.SetObjectAsync(Key<T>(), list, CacheEntryOptions.Expiration.Medium);
+            var list = repo.List.AsEnumerable().Take(5);            
+            await cache.SetObjectAsync(Key<T>(), list, cache.ExpirationTier.Medium);
 
             T? first = list.FirstOrDefault();
             if (first != null)
-                await cache.SetAsync(Key<T, TKey>(first.Id), Ws.Core.Extensions.Data.Cache.Util.ObjToByte(first), CacheEntryOptions.Expiration.Fast);
+                await cache.SetAsync(Key<T, TKey>(first.Id), Ws.Core.Extensions.Data.Cache.Util.ObjToByte(first), cache.ExpirationTier.Fast);
         }
         return Results.Ok(cached);
     }
     public async Task<IResult> Remove<T, TKey>(ICache<T> cache, TKey id) where T : IRecord, IEntity<TKey>, IAppTracked, new() where TKey : IEquatable<TKey>, IComparable<TKey>
     {
         var prev = cache.Keys.ToList();
+        await cache.RefreshAsync(Key<T, TKey>(id));
         await cache.RemoveAsync(Key<T, TKey>(id));
         return Results.Ok(new Dictionary<string, IEnumerable<string>>() { ["prev"] = prev, ["current"] = cache.Keys });
     }

@@ -1,5 +1,4 @@
-﻿using SixLabors.ImageSharp.Web;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Ws.Core.Extensions.Base;
 
 namespace Ws.Core.Extensions.ImageProcessor;

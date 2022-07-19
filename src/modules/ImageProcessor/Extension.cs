@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using System;
-using SixLabors.ImageSharp.Web.DependencyInjection;
-using SixLabors.ImageSharp.Web.Commands;
-using SixLabors.ImageSharp.Web.Caching;
-using SixLabors.ImageSharp.Web.Providers;
-using SixLabors.ImageSharp.Web.Processors;
 using SixLabors.ImageSharp;
-using System.Threading.Tasks;
+using SixLabors.ImageSharp.Web.Caching;
+using SixLabors.ImageSharp.Web.Commands;
+using SixLabors.ImageSharp.Web.DependencyInjection;
+using SixLabors.ImageSharp.Web.Processors;
+using SixLabors.ImageSharp.Web.Providers;
 
 namespace Ws.Core.Extensions.ImageProcessor;
 

@@ -1,9 +1,6 @@
-﻿using System.Linq;
+﻿namespace Ws.Core.Extensions.HealthCheck.Checks.AppLog;
 
-namespace Ws.Core.Extensions.HealthCheck.Checks.AppLog
+public interface IAppLogService
 {
-    public interface IAppLogService
-    {
-        IQueryable<ILog> List { get; }
-    }
+    IQueryable<ILog> List { get; }
 }

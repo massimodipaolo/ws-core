@@ -27,6 +27,6 @@ Generating schema for Gateway
          */
         Assert.Contains($"Module on {args[2]}", text);
         Assert.True(args[4].Split(',').All(_ => text.Contains($"Generating schema for {_}")));
-        Assert.True(args[4].Split(',').Count() == text.Split("👌 Done!").Length - 1);
+        Assert.True(args[4].Split(',').Length == text.Split("👌 Done!").Length - 1);
     }
 }

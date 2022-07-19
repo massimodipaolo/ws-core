@@ -1,5 +1,4 @@
-﻿using Carter;
-using Microsoft.AspNetCore.Http.Json;
+﻿using Microsoft.AspNetCore.Http.Json;
 using Microsoft.Extensions.Options;
 
 namespace x.core;
@@ -39,7 +38,7 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
 
         // override cache 
         builder.Services.AddSingleton(typeof(Ws.Core.Extensions.Data.Cache.ICache<Models.CrudBase2>), typeof(Ws.Core.Extensions.Data.Cache.SqlServer.SqlCache<Models.CrudBase2>));
-        //builder.Services.AddSingleton(typeof(Ws.Core.Extensions.Data.Cache.ICache<Models.CrudBase3>), typeof(Ws.Core.Extensions.Data.Cache.Redis.RedisCache<Models.CrudBase3>));        
+        
         /*
         builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.User,int>), typeof(Ws.Core.Extensions.Data.Repository.FileSystem<Models.User,int>));
         builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.Album,int>), typeof(Ws.Core.Extensions.Data.Repository.EF.SqlServer<Models.Album,int>));

@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Ws.Core;
 
-namespace Ws.Core
+public interface IAppConfiguration
 {
-    public interface IAppConfiguration
-    {
-        bool DeveloperExceptionPage { get; set; }
-    }
-
-    public class AppConfig : IAppConfiguration
-    {
-        public bool DeveloperExceptionPage { get; set; } = false;
-    }
-
-
+    bool DeveloperExceptionPage { get; set; }
 }
+
+public class AppConfig : IAppConfiguration
+{
+    public bool DeveloperExceptionPage { get; set; } = false;
+}
+
+
