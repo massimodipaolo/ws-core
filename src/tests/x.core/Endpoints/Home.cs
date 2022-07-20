@@ -24,7 +24,7 @@ public class Home : ICarterModule
           <li class=""list-group-item""><samp>/foo</samp> Route on Startup <a href=""/foo"" target=""_blank""> => </a></li>
           <li class=""list-group-item""><samp>/bing/foo</samp> Gateway map <a href=""/bing/foo"" target=""_blank""> => </a></li>
           <li class=""list-group-item""><samp>/api/{nameof(x.core.Endpoints.App).ToLower()}/{nameof(x.core.Models.Agenda).ToLower()}</samp> Api module <a href=""/api/{nameof(x.core.Endpoints.App).ToLower()}/{nameof(x.core.Models.Agenda)}"" target=""_blank""> => </a></li>
-          <li class=""list-group-item""><samp>/{nameof(Extensions).ToLower()}/{typeof(Ws.Core.Extensions.Diagnostic.AppRuntime).Namespace.ToLower()}</samp> Api on ref module <a href=""/{nameof(Extensions).ToLower()}/{typeof(Ws.Core.Extensions.Diagnostic.AppRuntime).Namespace.ToLower()}"" target=""_blank""> => </a></li>
+          <li class=""list-group-item""><samp>/{nameof(Extensions).ToLower()}/{typeof(Ws.Core.Extensions.Diagnostic.AppRuntime).Namespace?.ToLower()}</samp> Api on ref module <a href=""/{nameof(Extensions).ToLower()}/{typeof(Ws.Core.Extensions.Diagnostic.AppRuntime).Namespace?.ToLower()}"" target=""_blank""> => </a></li>
           <li class=""list-group-item""><samp>/api/diagnostic</samp> Legacy controller <a href=""/api/diagnostic"" target=""_blank""> => </a></li>          
           <li class=""list-group-item""><samp>/healthchecks-ui</samp> NuGet extension <a href=""/healthchecks-ui"" target=""_blank""> => </a> | <a href=""/healthz/checks"" target=""_blank""> Checks </a></li>
           <li class=""list-group-item""><samp>/hangfire</samp> App extension <a href=""/hangfire"" target=""_blank""> => </a></li>
@@ -48,11 +48,11 @@ class HtmlResult : IResult
     {
         _htmlContent = htmlContent;
     }
-    public async Task ExecuteAsync(HttpContext ctx)
+    public async Task ExecuteAsync(HttpContext httpContext)
     {
-        ctx.Response.ContentType = $"{System.Net.Mime.MediaTypeNames.Text.Html};charset=utf-8;";
-        ctx.Response.ContentLength = System.Text.Encoding.UTF8.GetByteCount(_htmlContent);        
-        await ctx.Response.WriteAsync(_htmlContent);
+        httpContext.Response.ContentType = $"{System.Net.Mime.MediaTypeNames.Text.Html};charset=utf-8;";
+        httpContext.Response.ContentLength = System.Text.Encoding.UTF8.GetByteCount(_htmlContent);        
+        await httpContext.Response.WriteAsync(_htmlContent);
     }
 }
 

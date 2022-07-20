@@ -23,7 +23,7 @@ target default -depends scan
 
 target scan {
   docker start $Env:SONAR_CONTAINER
-  dotnet sonarscanner begin /k:"ws-core-local" /d:sonar.host.url=$Env:SONAR_HOST_URL /d:sonar.login=$Env:SONAR_LOGIN /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="**/tests/**" /d:sonar.coverage.exclusions="**/tests/**"
+  dotnet sonarscanner begin /k:"ws-core-local" /d:sonar.host.url=$Env:SONAR_HOST_URL /d:sonar.login=$Env:SONAR_LOGIN /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="src/tests/**/*,sample/**/*" /d:sonar.coverage.exclusions="src/tests/**/*,sample/**/*"
   #dotnet build 
   dotnet build $solution_file -c $configuration --no-incremental
   dotnet sonarscanner end /d:sonar.login=$Env:SONAR_LOGIN

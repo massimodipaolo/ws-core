@@ -113,7 +113,7 @@ namespace x.core
             var client = _client(factoryType, clientOptions);
 
             // Act
-            var response = await client.SendAsync(new HttpRequestMessage() { RequestUri = new Uri($"{client.BaseAddress.OriginalString}{url}"), Method = HttpMethod.Delete, Content = value});
+            var response = await client.SendAsync(new HttpRequestMessage() { RequestUri = new Uri($"{client.BaseAddress?.OriginalString}{url}"), Method = HttpMethod.Delete, Content = value});
             var content = await _content(response);
 
             return (response, content);

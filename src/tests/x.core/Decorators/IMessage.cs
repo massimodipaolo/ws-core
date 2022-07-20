@@ -45,7 +45,11 @@ public class IMessageLogger: IMessage
 
     public async Task SendAsync(Ws.Core.Extensions.Message.Message message, bool throwException = false)
     {
-        _logger.LogInformation($"Sending message: {message.Subject} to {message.Recipients.FirstOrDefault(_ => _.Type ==  Ws.Core.Extensions.Message.Message.ActorType.Primary)}");
+        _logger.LogInformation(
+            "Sending message: {subject} to {recipient}",
+            message.Subject,
+            message.Recipients.FirstOrDefault(_ => _.Type == Ws.Core.Extensions.Message.Message.ActorType.Primary)
+            );
         await _inner.SendAsync(message,throwException);
     }
 

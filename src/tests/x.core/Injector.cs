@@ -22,8 +22,8 @@ public class Injector : BaseTest
         var response = await client.GetAsync(url);
 
         var content = await response.Content.ReadAsStringAsync();
-        response.Headers.TryGetValues("X-culture", out IEnumerable<string> values);
-        var culture = values?.FirstOrDefault();
+        response.Headers.TryGetValues("X-culture", out IEnumerable<string>? values);
+        var culture = values?.FirstOrDefault() ?? "";
         _output.Write(url, response.StatusCode.ToString(), response.Headers.ToString(), response.Content.Headers.ToString(), content, culture);
 
         // Assert

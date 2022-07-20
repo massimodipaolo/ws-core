@@ -20,32 +20,12 @@ public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
             _.MaxSendMessageSize = 100 /*MB*/ * 1024 * 1024; 
         });
 
-        /*
-        builder.Services
-            .Decorate<Ws.Core.Extensions.Message.IMessage, x.core.Decorators.IMessageLogger>()
-            .Decorate<Ws.Core.Extensions.Message.IMessage, x.core.Decorators.IMessageCopy>()
-            .Decorate<Ws.Core.Extensions.Message.IMessage, x.core.Decorators.IMessageSignature>()
-            ; 
-        */
-        //builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Log,int>), typeof(Ws.Core.Extensions.Data.Repository.InMemory<Log, int>));
-
-        // override dbContext
-        //builder.Services.AddTransient<Ws.Core.Extensions.Data.EF.SQLite.DbContext, x.core.AppEmbeddedDbContextExt>();
-
         // override repo
         builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.Agenda, string>), typeof(Ws.Core.Extensions.Data.Repository.EF.MySql<Models.Agenda, string>));
         builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.CrudBase3, Guid>), typeof(Ws.Core.Extensions.Data.Repository.Mongo<Models.CrudBase3, Guid>));
 
         // override cache 
-        builder.Services.AddSingleton(typeof(Ws.Core.Extensions.Data.Cache.ICache<Models.CrudBase2>), typeof(Ws.Core.Extensions.Data.Cache.SqlServer.SqlCache<Models.CrudBase2>));
-        
-        /*
-        builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.User,int>), typeof(Ws.Core.Extensions.Data.Repository.FileSystem<Models.User,int>));
-        builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.Album,int>), typeof(Ws.Core.Extensions.Data.Repository.EF.SqlServer<Models.Album,int>));
-        builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.Photo,int>), typeof(Ws.Core.Extensions.Data.Repository.EF.SqlServer<Models.Photo,int>));
-        builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.Post,int>), typeof(Ws.Core.Extensions.Data.Repository.EF.SqlServer<Models.Post,int>));
-        builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Models.Comment,int>), typeof(Ws.Core.Extensions.Data.Repository.EF.SqlServer<Models.Comment,int>));
-        */
+        builder.Services.AddSingleton(typeof(Ws.Core.Extensions.Data.Cache.ICache<Models.CrudBase2>), typeof(Ws.Core.Extensions.Data.Cache.SqlServer.SqlCache<Models.CrudBase2>));       
 
         Ws.Core.Extensions.Api.Options apiOpt = Ws.Core.Extensions.Base.Extension.Option<Ws.Core.Extensions.Api.Options>.Value;
         builder.Services.Configure<JsonOptions>(_ => {

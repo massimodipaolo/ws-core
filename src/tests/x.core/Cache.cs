@@ -11,7 +11,7 @@ public class Cache : BaseTest
     [Theory]
     // default
     [InlineData(typeof(Ws.Core.Extensions.Data.Cache.ICache), typeof(Ws.Core.Extensions.Data.Cache.MemoryCache))]
-    [InlineData(typeof(Ws.Core.Extensions.Data.Cache.ICache<Models.CrudBase1>), typeof(Ws.Core.Extensions.Data.Cache.MemoryCache<Models.CrudBase1>))]                         
+    [InlineData(typeof(Ws.Core.Extensions.Data.Cache.ICache<Models.CrudBase1>), typeof(Ws.Core.Extensions.Data.Cache.MemoryCache<Models.CrudBase1>))]
     // override on startup
     [InlineData(typeof(Ws.Core.Extensions.Data.Cache.ICache<Models.CrudBase2>), typeof(Ws.Core.Extensions.Data.Cache.SqlServer.SqlCache<Models.CrudBase2>))]
     // override by injector
@@ -25,7 +25,22 @@ public class Cache : BaseTest
     [InlineData(typeof(Models.CrudBase2))]
     [InlineData(typeof(Models.CrudBase3))]
     [InlineData(typeof(x.core.Log))]
-    public async Task Check_CrudOp(Type type) {
+    public async Task Check_CrudOp(Type type)
+    {
+
+        static object? _id<TKey>(string content) where TKey : IEquatable<TKey>, IComparable<TKey>
+        {
+            try
+            {
+                if (System.Text.Json.JsonSerializer.Deserialize(content, typeof(Ws.Core.Extensions.Data.Entity<TKey>[])) is Ws.Core.Extensions.Data.Entity<TKey>[] list)
+                    return (list.FirstOrDefault() is Ws.Core.Extensions.Data.Entity<TKey> entity) ? entity.Id : null;
+            } catch
+            {
+                return null;
+            }
+            return null;
+        }
+
         var url = $"/api/cache/{type.Name}".ToLower();
         // flush
         var (rsDelete, contentDelete) = await Delete_EndpointsResponse(url);
@@ -38,22 +53,19 @@ public class Cache : BaseTest
         var (rsGet2, contentGet2) = await Get_EndpointsResponse(url);
         Assert.True(!string.IsNullOrEmpty(contentGet2));
         // remove
-        object id;
-        try
+        object? id = _id<Guid>(contentGet2) ?? _id<int>(contentGet2) ?? _id<string>(contentGet2);
+        Assert.NotNull(id);
+        if (id != null)
         {
-            id = ((Ws.Core.Extensions.Data.Entity<Guid>[])System.Text.Json.JsonSerializer.Deserialize(contentGet2, typeof(Ws.Core.Extensions.Data.Entity<Guid>[]))).FirstOrDefault().Id;
-        } catch
-        {
-            id = ((Ws.Core.Extensions.Data.Entity<int>[])System.Text.Json.JsonSerializer.Deserialize(contentGet2, typeof(Ws.Core.Extensions.Data.Entity<int>[]))).FirstOrDefault().Id;
-        }            
-        var (rsDelete1, contentDelete1) = await Delete_EndpointsResponse($"{url}/{id}");
-        Assert.True(rsDelete1.IsSuccessStatusCode);
-        Dictionary<string, string[]> keys = (Dictionary<string, string[]>)System.Text.Json.JsonSerializer.Deserialize(contentDelete1, typeof(Dictionary<string, string[]>));
-        Assert.True(
-            new[] { x.core.Endpoints.Cache.Key(type), x.core.Endpoints.Cache.Key(type,id) }.All(_ => keys["prev"].Contains(_))
-            && keys["current"].Length == 1 
-            && keys["current"].Contains(x.core.Endpoints.Cache.Key(type))
-            );
+            var (rsDelete1, contentDelete1) = await Delete_EndpointsResponse($"{url}/{id}");
+            Assert.True(rsDelete1.IsSuccessStatusCode);
+            Assert.True(
+                (System.Text.Json.JsonSerializer.Deserialize(contentDelete1, typeof(Dictionary<string, string[]>)) is Dictionary<string, string[]> keys)
+                && new[] { x.core.Endpoints.Cache.Key(type), x.core.Endpoints.Cache.Key(type, id) }.All(_ => keys["prev"].Contains(_))
+                && keys["current"].Length == 1
+                && keys["current"].Contains(x.core.Endpoints.Cache.Key(type))
+                );
+        }
     }
 
     [Theory]

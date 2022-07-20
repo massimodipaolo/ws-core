@@ -16,13 +16,12 @@ public class App : CrudOp, ICarterModule
         app.MapGet($"{_prefix}/{nameof(User)}/{{id}}", GetById<User, int>).WithTags(nameof(App));
         app.MapGet($"{_prefix}/{nameof(User)}/ext/{{id}}",
             (int id, IRepository<User, int> _repo) =>
-            {
-                User user = _repo.List.Where(_ => _.Id.Equals(id))
-                    .IncludeJoin(_ => _.Posts).ThenIncludeJoin(_ => _.Comments)
-                    .FirstOrDefault()
-                    ;
-                return user != null ? Results.Ok(user) : Results.NotFound();
-            })
+             _repo.List.Where(_ => _.Id.Equals(id))?
+                .IncludeJoin(_ => _.Posts)?
+                .ThenIncludeJoin(_ => _.Comments)?
+                .FirstOrDefault() is User user 
+                ? Results.Ok(user) : Results.NotFound()
+            )
             .WithTags(nameof(App));
         app.MapPost($"{_prefix}/{nameof(User)}", Create<User, int>).WithTags(nameof(App));
         app.MapPost($"{_prefix}/{nameof(User)}/range", CreateMany<User, int>).WithTags(nameof(App));

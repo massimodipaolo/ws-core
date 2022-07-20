@@ -175,10 +175,13 @@ public class SqlServer<T, TKey> : EF<T, TKey> where T : class, IEntity<TKey> whe
         {
             var data = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
             db<Data.EF.SqlServer.DbContext>()?.SetCommandTimeout(sp.CommandTimeOut.Write);
-            var query = $"exec [{sp.Schema}].[{spPrefix}_{sp.StoredProcedure}_{action}] {{0}}";
-            db<Data.EF.SqlServer.DbContext>()?.ExecuteSqlRaw(query, data);
+            var cmd = $"exec [{sp.Schema}].[{spPrefix}_{sp.StoredProcedure}_{action}] {{0}}";
+            var query = System.Runtime.CompilerServices.FormattableStringFactory.Create(cmd, data);
+            db<Data.EF.SqlServer.DbContext>()?.ExecuteSqlInterpolated(query);
         }
     }
+
+
 
     private void ExecuteMergeCommand(IEnumerable<T> entities, RepositoryMergeOperation operation)
     {
@@ -194,8 +197,9 @@ public class SqlServer<T, TKey> : EF<T, TKey> where T : class, IEntity<TKey> whe
         if (sp != null)
         {
             db<Data.EF.SqlServer.DbContext>()?.SetCommandTimeout(sp.CommandTimeOut.Sync);
-            var query = $"exec [{sp.Schema}].[{spPrefix}_{sp.StoredProcedure}_merge] {{0}},{{1}}";
-            db<Data.EF.SqlServer.DbContext>()?.ExecuteSqlRaw(query, data, operation);
+            var cmd = $"exec [{sp.Schema}].[{spPrefix}_{sp.StoredProcedure}_merge] {{0}},{{1}}";
+            var query = System.Runtime.CompilerServices.FormattableStringFactory.Create(cmd, data, operation);
+            db<Data.EF.SqlServer.DbContext>()?.ExecuteSqlInterpolated(query);
         }
     }
 

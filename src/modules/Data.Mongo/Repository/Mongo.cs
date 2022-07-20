@@ -8,7 +8,7 @@ public class Mongo<T, TKey> : BaseRepository, IRepository<T, TKey> where T : cla
     private readonly Mongo.Options _config;
     private readonly IMongoCollection<T> _collection;
 
-    private IMongoCollection<T>? getCollectionByConnection(string name)
+    private IMongoCollection<T> getCollectionByConnection(string name)
     {
         var _db = _config.Connections?.FirstOrDefault(_ => _.Name == name);
         if (null == _db) return null;
