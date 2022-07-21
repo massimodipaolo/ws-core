@@ -22,7 +22,7 @@ public class RequestCulture
             CultureInfo.CurrentCulture = culture;
             CultureInfo.CurrentUICulture = culture;
             context.Response.Headers.Add(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("X-culture", cultureQuery));
-            _logger.LogInformation($"Invoked {nameof(RequestCulture)} middleware with [{cultureQuery}]");
+            _logger.LogInformation("Invoked {middleware} middleware with [{cultureQuery}]", nameof(RequestCulture), cultureQuery);
         }
         // Call the next delegate/middleware in the pipeline.
         await _next(context);

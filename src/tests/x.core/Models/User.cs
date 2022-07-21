@@ -38,7 +38,7 @@ public class User: IEntity<int>, IApp, IAppTracked
     /// <summary>
     /// Don't init to fixed-size collections like Array.Empty<![CDATA[<Post>]]>() => https://github.com/dotnet/efcore/issues/24497
     /// </summary>
-    public virtual ICollection<Post>? Posts { get; set; } // Array.Empty<Post>()
+    public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
     public virtual ICollection<Album>? Albums { get; set; } 
     public virtual ICollection<Todo>? Todos { get; set; }
 }

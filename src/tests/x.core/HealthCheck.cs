@@ -42,9 +42,9 @@ public class HealthCheckAppLogService<TRepo> : HealthCheckAppLogService where TR
 public record Log : IRecord, ILog, IAppTracked, IEntity<int>
 {
     public int Id { get; set; }
-    public string MachineName { get; set; }
-    public string Logger { get; set; }
+    public string MachineName { get; set; } = "";
+    public string Logger { get; set; } = "";
     public AppLog.LogLevel Level { get; set; }
-    public string Message { get; set; }
+    public string Message { get; set; } = "";
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 }

@@ -6,15 +6,15 @@ namespace x.core.Services;
 public class Data : x.core.Data.DataBase
 {
     private readonly IWebHostEnvironment _env;
-    private static IEnumerable<EventLogItem> _memoryData = null;
+    private static IEnumerable<EventLogItem>? _memoryData = null;
     private readonly static System.Text.Json.JsonSerializerOptions _msJsonOpt = new() { PropertyNameCaseInsensitive = true };
     public Data(IWebHostEnvironment env)
     {
         _env = env;
     }
 
-    private static IEnumerable<EventLogItem> _getTop(int number, EventLogQuery.Types.Source source, IWebHostEnvironment env)
-    => _deserialize(source, env)?.Take(number);
+    private static IEnumerable<EventLogItem> _getTop(int number, EventLogQuery.Types.Source source, IWebHostEnvironment? env = null)
+    => _deserialize(source, env)?.Take(number) ?? Array.Empty<EventLogItem>();
 
     /// <summary>
     /// Deserialize object from source
@@ -22,7 +22,7 @@ public class Data : x.core.Data.DataBase
     /// <param name="source"></param>
     /// <param name="env"></param>
     /// <returns></returns>
-    private static IEnumerable<EventLogItem> _deserialize(EventLogQuery.Types.Source source, IWebHostEnvironment env)
+    private static IEnumerable<EventLogItem>? _deserialize(EventLogQuery.Types.Source source, IWebHostEnvironment? env = null)
     {
         Func<string> _path = () => System.IO.Path.Combine(env?.ContentRootPath ?? Path.GetFullPath(Directory.GetCurrentDirectory()), "data", $"event-log.{(source == EventLogQuery.Types.Source.Buf ? "buf" : "json")}");
         Func<string> _jsonString = () =>
@@ -53,7 +53,7 @@ public class Data : x.core.Data.DataBase
     }
 
     private static void _serialize(IEnumerable<EventLogItem> data, EventLogQuery.Types.Source source)
-    {            
+    {
         Action<string> _write = (s) =>
         {
             using MemoryStream stream = new();
@@ -90,19 +90,14 @@ public class Data : x.core.Data.DataBase
         return await Task.FromResult<EventLogResponse>(response);
     }
 
-    public override async Task EventLogDataStream(EventLogQuery request, IServerStreamWriter<EventLogItem> stream, ServerCallContext context)
+    public override async Task EventLogDataStream(EventLogQuery request, IServerStreamWriter<EventLogItem> responseStream, ServerCallContext context)
     {
         var data = _getTop(request.Number, request.Source, _env);
         foreach (var item in data)
-            await stream.WriteAsync(item);
-        /*
-        var i = 0;
-        while (!context.CancellationToken.IsCancellationRequested && i++<data.Length)
-            await stream.WriteAsync(data[i]);
-        */
+            await responseStream.WriteAsync(item);
     }
 
-    public static IEnumerable<EventLogItem> GetEventLogDataApi(IWebHostEnvironment env, int number, EventLogQuery.Types.Source source)
+    public static IEnumerable<EventLogItem> GetEventLogDataApi(int number, EventLogQuery.Types.Source source, IWebHostEnvironment? env = null)
     => _getTop(number, source, env);
 
     public static void PostEventLogDataApi(IEnumerable<EventLogItem> data, EventLogQuery.Types.Source source)

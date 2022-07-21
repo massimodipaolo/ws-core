@@ -7,18 +7,21 @@ namespace x.core;
 
 public class Message : BaseTest
 {
-    private IMessage _service { get; set; }
+    private IMessage? _service { get; set; }
     public Message(Program factory, ITestOutputHelper output) : base(factory, output)
     {
-        _service = (IMessage)factory.Services.GetService(typeof(IMessage));
+        if (factory.Services.GetService(typeof(IMessage)) is IMessage __service)
+            _service = __service;
     }
 
     [Theory]
     [InlineData("ws-core@mail.local", "massimo.dipaolo@mail.local")]
     public async Task Send_Message(string sender, string recipient)
     {
+        Assert.NotNull(_service);
+
         // Arrange
-        Exception? _ex = null;            
+        Exception? _ex = null;
         var message = new Ws.Core.Extensions.Message.Message()
         {
             Sender = new Ws.Core.Extensions.Message.Message.Actor() { Address = sender, Name = sender },
@@ -31,20 +34,21 @@ public class Message : BaseTest
             Arguments = new { arg1 = "foo", arg2 = "bar" },
             Format = "html"
         };
-        message.Attachments = new List<Ws.Core.Extensions.Message.Message.Attachment>() { 
-            new() { Name = "message.txt", Content = System.Text.Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(message)) 
+        message.Attachments = new List<Ws.Core.Extensions.Message.Message.Attachment>() {
+            new() { Name = "message.txt", Content = System.Text.Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(message))
             } };
 
         // Act
-        try
-        {
-            await _service.SendAsync(message, throwException: true);
-        }
-        catch (Exception ex)
-        {
-            _ex = ex;
-            _output.Write(_service.GetType().ToString(), Newtonsoft.Json.JsonConvert.SerializeObject(_ex));
-        }
+        if (_service != null)
+            try
+            {
+                await _service.SendAsync(message, throwException: true);
+            }
+            catch (Exception ex)
+            {
+                _ex = ex;
+                _output.Write(_service.GetType().ToString(), Newtonsoft.Json.JsonConvert.SerializeObject(_ex));
+            }
 
         // Assert
         Assert.Equal("", _ex?.Message ?? "");
@@ -53,16 +57,18 @@ public class Message : BaseTest
     [Fact]
     public async Task Reveive_Message()
     {
-        try
-        {
-            IEnumerable<Ws.Core.Extensions.Message.Message> messages = await _service.ReceiveAsync();
-            _output.Write(_service.GetType().ToString(), Newtonsoft.Json.JsonConvert.SerializeObject(messages?.Take(1)));
-            Assert.True(messages is IEnumerable<Ws.Core.Extensions.Message.Message> &&  messages ?.Any() == true);
-        }
-        catch (Exception ex)
-        {
-            _output.Write(_service.GetType().ToString(), Newtonsoft.Json.JsonConvert.SerializeObject(ex));
-            Assert.True(false);
-        }
+        Assert.NotNull(_service);
+        if (_service != null)
+            try
+            {
+                IEnumerable<Ws.Core.Extensions.Message.Message> messages = await _service.ReceiveAsync();
+                _output.Write(_service.GetType().ToString(), Newtonsoft.Json.JsonConvert.SerializeObject(messages?.Take(1)));
+                Assert.True(messages is IEnumerable<Ws.Core.Extensions.Message.Message> && messages?.Any() == true);
+            }
+            catch (Exception ex)
+            {
+                _output.Write(_service.GetType().ToString(), Newtonsoft.Json.JsonConvert.SerializeObject(ex));
+                Assert.True(false);
+            }
     }
 }

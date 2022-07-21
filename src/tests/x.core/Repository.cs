@@ -42,10 +42,8 @@ public class Repository : BaseTest
     public async Task Check_InMemoryCrudOp() {
         // Arrange
         var factory = GetFactory(WebApplicationFactoryType.Development);
-        Ws.Core.Extensions.Data.IRepository<Models.CrudBase, string> _repo;
         using var scope = factory.Services.CreateScope();
-        _repo = (Ws.Core.Extensions.Data.IRepository<Models.CrudBase, string>)scope?.ServiceProvider?.GetService(typeof(Ws.Core.Extensions.Data.IRepository<Models.CrudBase, string>));
-        if (_repo != null)
+        if (scope?.ServiceProvider?.GetService(typeof(Ws.Core.Extensions.Data.IRepository<Models.CrudBase, string>)) is Ws.Core.Extensions.Data.IRepository<Models.CrudBase, string> _repo)
         {
             _repo.AddMany(Enumerable.Range(0, 10).Select(_ => new CrudBase() { }));
             await Check_CrudOp<Models.CrudBase, string>();
@@ -75,7 +73,7 @@ public class Repository : BaseTest
         Assert.True(getAll.response.IsSuccessStatusCode);
         List<T> entities = getAll.entities.ToList();
         Assert.True(entities?.Any() == true);
-        var entitiesCount = entities?.Count();
+        var entitiesCount = entities?.Count;
 
         if (entities != null && entities?.Any() == true)
         {
@@ -83,6 +81,11 @@ public class Repository : BaseTest
             var getId = await Get_EndpointsResponse($"{_prefix}/{entities?.First().Id?.ToString() ?? ""}", factoryType);
             Assert.True(getId.response.IsSuccessStatusCode);
             var getIdCurrent = JsonSerializer.Deserialize<T>(getId.content);
+            if (getIdCurrent == null)
+            {
+                Assert.True(false);
+                return;
+            }
 
             // Put
             var newTrackingDate = DateTime.Now;
@@ -100,8 +103,11 @@ public class Repository : BaseTest
 
             // Delete
             var getLastPost = await getAll<T, TKey>(_prefix, factoryType, 1);
-            var deleteId = await Delete_EndpointsResponse($"{_prefix}/{getLastPost.entities.FirstOrDefault().Id}", factoryType);
-            Assert.True(deleteId.response.IsSuccessStatusCode);
+            if (getLastPost.entities.FirstOrDefault() is T _lastPost)
+            {
+                var deleteId = await Delete_EndpointsResponse($"{_prefix}/{_lastPost.Id}", factoryType);
+                Assert.True(deleteId.response.IsSuccessStatusCode);
+            }
 
             // Put Many
             var toPutMany = await getAll<T, TKey>(_prefix, factoryType, 5);
@@ -128,13 +134,17 @@ public class Repository : BaseTest
             Assert.True(mergeUpsert.response.IsSuccessStatusCode);
 
             // Merge sync (with init getAll) 
-            var mergeSync = await Post_EndpointsResponse($"{_prefix}/merge/{RepositoryMergeOperation.Sync}", _httpContent(entities.ToList()), factoryType);
+            var mergeSync = await Post_EndpointsResponse($"{_prefix}/merge/{RepositoryMergeOperation.Sync}", _httpContent(entities ?? Array.Empty<T>().ToList()), factoryType);
             Assert.True(mergeSync.response.IsSuccessStatusCode);
 
             // Final check
             var getAllAfterSync = await getAll<T, TKey>(_prefix, factoryType, maxItems);
             IEnumerable<T> entitiesAfterSync = getAllAfterSync.entities;
-            Assert.True(entitiesAfterSync?.Any() == true && entitiesCount == entitiesAfterSync.Count() && _isEquals<T, TKey>(entities,getAllAfterSync.entities));
+            Assert.True(
+                entitiesAfterSync?.Any() == true 
+                && entitiesCount == entitiesAfterSync.Count() 
+                && _isEquals<T, TKey>(entities ?? Array.Empty<T>().ToList()
+                , getAllAfterSync.entities));
         }
         else
             Assert.True(false);
@@ -150,7 +160,7 @@ public class Repository : BaseTest
         where T : IRecord, IEntity<TKey>, IAppTracked, new() where TKey : IEquatable<TKey>, IComparable<TKey>
     {
         var (response, content) = await Get_EndpointsResponse(_prefix, factoryType);
-        IEnumerable<T> entities = JsonSerializer.Deserialize<IEnumerable<T>>(content)?.OrderByDescending(_ => _.CreatedAt).ThenBy(_ => _.Id)?.Take(maxItems)?.ToList();
+        IEnumerable<T> entities = JsonSerializer.Deserialize<IEnumerable<T>>(content)?.OrderByDescending(_ => _.CreatedAt).ThenBy(_ => _.Id)?.Take(maxItems)?.ToList() ?? Array.Empty<T>().ToList();
         return (response, content, entities);
     }
 
