@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
+using Hellang.Middleware.ProblemDetails;
 
 namespace Ws.Core.Extensions.Api
 {
@@ -15,6 +16,7 @@ namespace Ws.Core.Extensions.Api
 
             builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            _addProblemDetails(builder, _options.ProblemDetails);
             _addSession(builder, _options.Session);
             _addControllers(builder, _options.Serialization);
             _addDocumentation(builder, _options.Documentation);
@@ -24,11 +26,40 @@ namespace Ws.Core.Extensions.Api
         {
             base.Execute(app);
 
+            _useProblemDetails(app);
             _useSession(app, _options.Session);
             _useControllers(app);
             _useDocumentation(app, _options.Documentation);
         }
+        private static void _addProblemDetails(WebApplicationBuilder builder, ProblemDetailsOptions? options)
+        {
+            _ = builder.Services.AddProblemDetails(_ =>
+            {
+                // map each props
+                /*
+                if (options != null)
+                    foreach (var prop in options.GetType().GetProperties())
+                        if (prop.GetValue(options) != null)
+                            _.GetType().GetProperty(prop.Name)?.SetValue(_, options);
+                */
+                // override
 
+                _.SourceCodeLineCount = 6;
+                _.IncludeExceptionDetails = (ctx, ex) => true;
+                /*
+                _.OnBeforeWriteDetails = (ctx, pd) =>
+                {
+                    if (new[] { "Local", "Development" }.Contains(env.EnvironmentName))
+                        return;                    
+                    pd.Extensions.Remove(Hellang.Middleware.ProblemDetails.ProblemDetailsOptions.DefaultExceptionDetailsPropertyName);
+                };
+                */
+            });
+        }
+        private static void _useProblemDetails(WebApplication app)
+        {
+            app.UseProblemDetails();
+        }
         private static void _addSession(WebApplicationBuilder builder, Options.SessionOptions? options)
         {
             if (options != null)

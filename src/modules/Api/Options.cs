@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel;
 using Ws.Core.Extensions.Base;
 
@@ -7,6 +8,7 @@ namespace Ws.Core.Extensions.Api
     public class Options : IOptions
     {
         public Ws.Core.Shared.Serialization.Options? Serialization { get; set; } = new ();
+        public ProblemDetailsOptions? ProblemDetails { get; set; }
         public SessionOptions? Session { get; set; }
         public DocumentationOptions? Documentation { get; set; }
 

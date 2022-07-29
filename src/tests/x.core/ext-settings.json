@@ -112,7 +112,8 @@
               "fileName": "x.core.xml",
               "includeControllerComments": true
             }
-          }
+          },
+          "problemDetails": { }
         }
       },
       "__Ws.Core.Extensions.Spa": {
