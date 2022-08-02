@@ -10,13 +10,13 @@ namespace Ws.Core.Shared.StaticFilesFolder;
 public class Options
 {
     [Description("Relative or UNC path")]
-    public string Path { get; set; }
+    public string Path { get; set; } = string.Empty;
     [Description("Virtual path, i.e. /downloads")]
-    public string RequestPath { get; set; }
+    public string? RequestPath { get; set; }
     [Description("Dictionary of key/value response header, i.e. \"Cache-Control\": \"public,max-age=43200\"")]
-    public Dictionary<string, string> Headers { get; set; }
+    public Dictionary<string, string>? Headers { get; set; }
     [Description("Dictionary of key/value extention/content-type, i.e. \".myapp\": \"application/x-msdownload\"")]
-    public Dictionary<string, string> MIMEtypes { get; set; }
+    public Dictionary<string, string>? MIMEtypes { get; set; }
     private bool? _isRelativePath;
     public bool IsRelativePath
     {
@@ -30,14 +30,10 @@ public class Options
         set { _isRelativePath = value; }
     }
     public string Root(string basePath) =>
-        IsRelativePath
-        ?
-        System.IO.Path.Combine(basePath, Path)
-        :
-        Path;
+        IsRelativePath ? System.IO.Path.Combine(basePath, Path) : Path;
     public IFileProvider FileProvider(string basePath) => new PhysicalFileProvider(Root(basePath));
 
-    public StaticFileOptions GetStaticFileOptions(string basePath, ILogger logger)
+    public StaticFileOptions GetStaticFileOptions(string basePath, ILogger? logger)
     {
         var staticFileOptions = new StaticFileOptions();
         if (!string.IsNullOrEmpty(Path))
@@ -48,7 +44,7 @@ public class Options
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "");
+                logger?.LogError(ex, "");
             }
         }
         if (!string.IsNullOrEmpty(RequestPath))

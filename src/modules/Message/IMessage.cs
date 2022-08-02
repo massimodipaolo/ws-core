@@ -11,25 +11,25 @@ public class Message
 {
     public Message() { }
 
-    public Actor Sender { get; set; }
-    public IEnumerable<Actor> Recipients { get; set; }
-    public string Subject { get; set; }
-    public string Content { get; set; }
+    public Actor Sender { get; set; } = new();
+    public IEnumerable<Actor> Recipients { get; set; } = Array.Empty<Actor>();
+    public string Subject { get; set; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
     public MessagePriority Priority { get; set; } = MessagePriority.Normal;
     /// <summary>
     /// Set Implementation-specific message format
     /// </summary>
-    public string Format { get; set; }
-    public IEnumerable<Attachment> Attachments { get; set; }
+    public string Format { get; set; } = string.Empty;
+    public IEnumerable<Attachment> Attachments { get; set; } = Array.Empty<Attachment>();
 
     /// <summary>
     /// Implementation-specific properties
     /// </summary>
-    public dynamic Arguments { get; set; }
+    public dynamic? Arguments { get; set; }
     public class Actor
     {
-        public string Name { get; set; }
-        public string Address { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
         public ActorType Type { get; set; } = ActorType.Primary;
 
     }
@@ -42,8 +42,8 @@ public class Message
 
     public class Attachment
     {
-        public string Name { get; set; }
-        public byte[] Content { get; set; }
+        public string? Name { get; set; }
+        public byte[] Content { get; set; } = Array.Empty<byte>();  
     }
 }
 

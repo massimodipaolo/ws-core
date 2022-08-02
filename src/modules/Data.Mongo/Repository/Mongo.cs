@@ -6,9 +6,9 @@ namespace Ws.Core.Extensions.Data.Repository;
 public class Mongo<T, TKey> : BaseRepository, IRepository<T, TKey> where T : class, IEntity<TKey> where TKey : IEquatable<TKey>, IComparable<TKey>
 {
     private readonly Mongo.Options _config;
-    private readonly IMongoCollection<T> _collection;
+    private readonly IMongoCollection<T>? _collection;
 
-    private IMongoCollection<T> getCollectionByConnection(string name)
+    private IMongoCollection<T>? getCollectionByConnection(string name)
     {
         var _db = _config.Connections?.FirstOrDefault(_ => _.Name == name);
         if (null == _db) return null;
@@ -28,9 +28,9 @@ public class Mongo<T, TKey> : BaseRepository, IRepository<T, TKey> where T : cla
 
     IQueryable<T> IRepository<T>.List => _collection?.AsQueryable() ?? Array.Empty<T>().AsQueryable();
 
-    public T Find(TKey Id)
+    public T? Find(TKey? Id)
     {
-        return _collection?.Find(_ => _.Id.Equals(Id))?.FirstOrDefault() ?? null;
+        return _collection?.Find<T>(_ => (_.Id is TKey) && _.Id.Equals(Id))?.FirstOrDefault() ?? default;
     }
 
     public IQueryable<T> Query(FormattableString command)
@@ -53,7 +53,7 @@ public class Mongo<T, TKey> : BaseRepository, IRepository<T, TKey> where T : cla
     public void Update(T entity)
     {
         if (entity != null)
-            _collection?.ReplaceOneAsync(_ => _.Id.Equals(entity.Id), entity, new ReplaceOptions { IsUpsert = false });
+            _collection?.ReplaceOne<T>(_ => (_.Id is TKey) && _.Id.Equals(entity.Id), entity, new ReplaceOptions { IsUpsert = false });
     }
 
     public void UpdateMany(IEnumerable<T> entities)
@@ -86,7 +86,7 @@ public class Mongo<T, TKey> : BaseRepository, IRepository<T, TKey> where T : cla
     public void Delete(T entity)
     {
         if (entity != null)
-            _collection?.DeleteOne(_ => _.Id.Equals(entity.Id));
+            _collection?.DeleteOne<T>(_ => (_.Id is TKey) &&  _.Id.Equals(entity.Id));
     }
 
     public void DeleteMany(IEnumerable<T> entities)

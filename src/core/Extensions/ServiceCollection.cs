@@ -9,7 +9,7 @@ namespace Ws.Core.Extensions;
 
 public static class ServiceCollection
 {
-    public static void AddExtCore(this WebApplicationBuilder builder, string extensionsPath = null, bool includingSubpaths = false)
+    public static void AddExtCore(this WebApplicationBuilder builder, string? extensionsPath = null, bool includingSubpaths = false)
     {
         // init
         IServiceProvider serviceProvider = builder.Services.BuildServiceProvider();
@@ -18,17 +18,17 @@ public static class ServiceCollection
 
         foreach (IConfigureBuilder item in from a in ExtensionManager.GetInstances<IConfigureBuilder>()
                                                   .UnionInjector()
-                                                  orderby a.Priority
-                                                  select a)
+                                           orderby a.Priority
+                                           select a)
         {
             logger.LogInformation("Executing ConfigureServices action '{type}'", item.GetType().FullName);
-            item.Execute(builder, serviceProvider);
+            item.Add(builder, serviceProvider);
             // new container
             serviceProvider = builder.Services.BuildServiceProvider();
         }
     }
 
-    private static void DiscoverAssemblies(IAssemblyProvider assemblyProvider, string extensionsPath, bool includingSubpaths)
+    private static void DiscoverAssemblies(IAssemblyProvider assemblyProvider, string? extensionsPath = null, bool includingSubpaths = false)
     {
         ExtensionManager.SetAssemblies(assemblyProvider.GetAssemblies(extensionsPath, includingSubpaths));
     }

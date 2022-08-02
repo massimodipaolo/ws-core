@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json.schemastore.org/appsettings.json",
+  "Logging": {
+    "NLog": {
+      "IncludeScopes": true
+    }
+  },
+  "NLog": {
+    "autoReload": true,
+    "throwConfigExceptions": true,
+    "internalLogLevel": "Info",
+    "internalLogFile": "${basedir}/logs/nlog-internal.log",
+    "internalLogToConsole": true,
+    "internalLogToConsoleError": true,
+    "extensions": [
+      { "assembly": "NLog.Extensions.Logging" },
+      { "assembly": "NLog.Web.AspNetCore" },
+      { "assembly": "NLog.Targets.Seq" }
+    ],
+    "time": {
+      "type": "AccurateUTC"
+    },
+    "default-wrapper": { "type": "AsyncWrapper" },
+    "targets": {
+      "async": true,
+      "file": {
+        "type": "File",
+        "fileName": "${basedir}/logs/nlog-${shortdate}.log",
+        "maxArchiveDays": 60
+      },
+      "console": {
+        "type": "Console"
+      },
+      "json": {
+        "type": "File",
+        "fileName": "${basedir}/logs/nlog-${shortdate}.json",
+        "maxArchiveDays": 60,
+        "layout": {
+          "type": "JsonLayout",
+          "Attributes": [
+            {
+              "name": "timestamp",
+              "layout": "${date:format=o}"
+            },
+            {
+              "name": "level",
+              "layout": "${level}"
+            },
+            {
+              "name": "logger",
+              "layout": "${logger}"
+            },
+            {
+              "name": "message",
+              "layout": "${message:raw=true}"
+            },
+            {
+              "name": "properties",
+              "encode": false,
+              "layout": {
+                "type": "JsonLayout",
+                "includeallproperties": "true"
+              }
+            }
+          ]
+        }
+      },
+      "sql": {
+        "type": "Database",
+        "dbProvider": "System.Data.SqlClient",
+        "connectionString": "Server=.,14332;Database=ws-core;User Id=ws-core-usr;Password=a2b352dd-2cfe-434d-9f3a-34d04639a5e6;MultipleActiveResultSets=true",
+        "keepConnection": "true",
+        "commandText": "insert into dbo.[app-log] (machineName,createdAt,level,Message,Properties,Logger,Exception) values (@machineName,@createdAt, @level, @message, @properties, @logger, @exception);",
+        "parameters": [
+          {
+            "name": "@machineName",
+            "layout": "${hostname}"
+          },
+          {
+            "name": "@createdAt",
+            "layout": "${date:format=o}",
+            "dbType": "DbType.DateTime"
+          },
+          {
+            "name": "@level",
+            "layout": "${level}"
+          },
+          {
+            "name": "@message",
+            "layout": "${message}"
+          },
+          {
+            "name": "@properties",
+            "layout": "${all-event-properties:separator=|}"
+          },
+          {
+            "name": "@logger",
+            "layout": "${logger}"
+          },
+          {
+            "name": "@exception",
+            "layout": "${exception:tostring}"
+          }
+        ]
+      },
+      "seq": {
+        "type": "BufferingWrapper",
+        "bufferSize": 200,
+        "flushTimeout": 2000,
+        "slidingTimeout": false,
+        "target": {
+          "type": "Seq",
+          "serverUrl": "http://localhost:5341",
+          "apiKey": "",
+          "properties": [
+            {
+              "name": "logger",
+              "value": "${logger}"
+            },
+            {
+              "name": "machineName",
+              "value": "${hostname}"
+            }
+          ]
+        }
+      }
+    },
+    "rules": {
+      "0": {
+        "logger": "x.core.*",
+        "minLevel": "Info",
+        "writeTo": "console, file, json, seq",
+        "final": true
+      },
+      "1": {
+        "logger": "Ws.Core.Program",
+        "minLevel": "Info",
+        "writeTo": "console, file, json, seq",
+        "final": true
+      },
+      "2": {
+        "logger": "Ws.Core.*",
+        "minLevel": "Info",
+        "writeTo": "console, file, json, seq",
+        "final": true
+      },
+      "3": {
+        "logger": "ExtCore.*",
+        "maxLevel": "Warn",
+        "final": true
+      },
+      "4": {
+        "logger": "Microsoft.Hosting.Lifetime",
+        "minLevel": "Info",
+        "writeTo": "console, file, json, seq",
+        "final": true
+      },
+      "10": {
+        "logger": "Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware",
+        "final": true
+      },
+      "11": {
+        "logger": "Microsoft.Extensions.Diagnostics.HealthChecks.*",
+        "final": true
+      },
+      "12": {
+        "logger": "HealthChecks.UI.Core.*",
+        "final": true
+      },
+      "20": {
+        "logger": "*",
+        "minLevel": "Warn",
+        "writeTo": "console, file, json, sql, seq"
+      }
+    }
+  }
+}

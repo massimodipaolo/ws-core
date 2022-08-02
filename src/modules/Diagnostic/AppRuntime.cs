@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Ws.Core.Extensions.Data.Cache;
@@ -20,7 +21,6 @@ public class AppRuntime<TConfig> where TConfig : class, IAppConfiguration, new()
     public struct InfoData
     {
         public DateTime Uptime { get; set; }
-        public IEnumerable<KeyValuePair<string, string>>? ServerFeatures { get; set; }
         public ComputerData Computer { get; set; }
         public IHeaderDictionary? Headers { get; set; }
         public string? RemoteIpAddress { get; set; }
@@ -47,12 +47,12 @@ public class AppRuntime<TConfig> where TConfig : class, IAppConfiguration, new()
         )
     {
         var mainModule = System.Diagnostics.Process.GetCurrentProcess().MainModule;
+
         var runtime = new AppRuntime()
         {
             Info = new()
             {
                 Uptime = Startup.Uptime,
-                ServerFeatures = AppInfo.App?.ServerFeatures?.Select(_ => new KeyValuePair<string, string>(_.Key.ToString(), _.Value?.ToString() ?? "")),
                 Computer = new()
                 {
                     MachineName = System.Environment.MachineName,
@@ -70,7 +70,7 @@ public class AppRuntime<TConfig> where TConfig : class, IAppConfiguration, new()
             Environment = new { env.ApplicationName, env.EnvironmentName, env.ContentRootPath, env.WebRootPath },
             Config = new
             {
-                detail = config?.AsEnumerable()
+                detail = config.AsEnumerable()
                 .Select(conf => new
                 {
                     conf.Key,

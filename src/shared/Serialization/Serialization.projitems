@@ -9,6 +9,7 @@
     <Import_RootNamespace>Serialization</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Obfuscator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExceptionConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Options.cs" />
   </ItemGroup>

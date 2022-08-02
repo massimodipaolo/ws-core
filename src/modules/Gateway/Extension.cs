@@ -7,8 +7,7 @@ namespace Ws.Core.Extensions.Gateway;
 public class Extension : Base.Extension
 {
     private Options options => GetOptions<Options>() ?? new Options();
-
-    public override void Execute(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
+    public override void Add(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
     {
         if (options.Ocelot != null)
         {
@@ -17,7 +16,7 @@ public class Extension : Base.Extension
         }
     }
 
-    public override void Execute(WebApplication app)
+    public override void Use(WebApplication app)
     {
         if (options.Ocelot != null)
             if (string.IsNullOrEmpty(options.MapWhen))

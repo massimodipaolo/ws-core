@@ -7,12 +7,15 @@ namespace Ws.Core.Extensions.Data.Cache.Memcached;
 public class Extension : Base.Extension
 {
     private Options options => GetOptions<Options>();
-
-    public override void Execute(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
+    public override void Add(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
     {
-        base.Execute(builder, serviceProvider);
+        base.Add(builder, serviceProvider);
+        _add(builder);
+    }
 
-        if (options.Client != null)
+    private void _add(WebApplicationBuilder builder)
+    {
+        if (options.Client != null && config != null)
         {
             // service                
             builder.Services.AddEnyimMemcached(config.GetSection($"{ConfigSectionPathOptions}:Client"));
@@ -24,7 +27,7 @@ public class Extension : Base.Extension
         }
     }
 
-    public override void Execute(WebApplication app)
+    public override void Use(WebApplication app)
     {
         if (options.Client != null)
             app.UseEnyimMemcached();

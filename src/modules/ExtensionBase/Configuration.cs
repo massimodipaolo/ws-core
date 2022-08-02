@@ -6,27 +6,26 @@ public class Configuration
 {
     public static string Folder { get; set; } = "Extensions";
     public static string SectionRoot { get; set; } = "extConfig";
-    public bool EnableShutDownOnChange { get; set; } = false;
-    public IDictionary<string,Assembly> Assemblies { get; set; }
-    public IEnumerable<Injector> Injectors { get; set; }
+    public IDictionary<string,Assembly>? Assemblies { get; set; }
+    public IEnumerable<Injector>? Injectors { get; set; }
 
     public class Assembly
     {
         public Assembly() { }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public int Priority { get; set; } = 0;
     }
     public class Injector : Assembly, IOptions
     {
         public Injector(): base() {}
-        public ServiceOption[] Services { get; set; }
-        public DecoratorOption[] Decorators { get; set; }
-        public MiddlewareOption[] Middlewares { get; set; }
+        public ServiceOption[] Services { get; set; } = Array.Empty<ServiceOption>();
+        public DecoratorOption[] Decorators { get; set; } = Array.Empty<DecoratorOption>();
+        public MiddlewareOption[] Middlewares { get; set; } = Array.Empty<MiddlewareOption>();
 
         public class DecoratorOption
         {
-            public string ServiceType { get; set; }
-            public string ImplementationType { get; set; }
+            public string? ServiceType { get; set; }
+            public string? ImplementationType { get; set; }
         }
         public class ServiceOption: DecoratorOption
         {
@@ -41,17 +40,17 @@ public class Configuration
             /// - A public method named Invoke or InvokeAsync that return a Task and accept a first parameter of type HttpContext.
             /// Additional parameters for the constructor and Invoke/InvokeAsync are populated by dependency injection (DI).            
             /// </summary>
-            public string Type { get; set; }
+            public string? Type { get; set; }
             /// <summary>
             /// Branches the request pipeline based on matches of the given request path
             /// </summary>
-            public MapOption Map { get; set; }
+            public MapOption? Map { get; set; }
             public class MapOption
             {
                 /// <summary>
                 /// The request path to match (starts with)
                 /// </summary>
-                public string PathMatch { get; set; }
+                public string? PathMatch { get; set; } 
                 /// <summary>
                 /// If false, matched path would be removed from Request.Path and added to Request.PathBase
                 /// </summary>

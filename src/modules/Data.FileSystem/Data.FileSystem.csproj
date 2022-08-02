@@ -29,6 +29,4 @@
 		<ProjectReference Include="..\Data\Data.csproj" />
 	</ItemGroup>
 
-	<Import Project="..\..\shared\Serialization\Serialization.projitems" Label="Shared" />
-
 </Project>

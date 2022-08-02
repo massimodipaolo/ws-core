@@ -2,7 +2,6 @@
   "$schema": "json-schema.json?reload",
   "extConfig": {
     "folder": "Extensions",
-    "enableShutDownOnChange": false,
     "assemblies": {
     }
   }

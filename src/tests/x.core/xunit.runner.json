@@ -3,7 +3,7 @@
   "_docs": "https://xunit.net/docs/configuration-files",
   "shadowCopy": true,
   "parallelizeTestCollections": true,
-  "diagnosticMessages": true,
+  "diagnosticMessages": true, "internalDiagnosticMessages": true,
   "preEnumerateTheories": false, //true > group all theories in one test
-  "longRunningTestSeconds": 30
+  "longRunningTestSeconds": 30, 
 }

@@ -2,12 +2,8 @@
   "Logging": {
     "LogLevel": {
       "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    },
-    "Console": {
-      "LogLevel": {
-        "Default": "Error"
-      }
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
     }
   }
 }

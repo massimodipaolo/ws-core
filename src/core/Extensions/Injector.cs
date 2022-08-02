@@ -8,8 +8,7 @@ namespace Ws.Core.Extensions;
 
 public class Injector : Base.Extension
 {
-
-    private static IEnumerable<Injector> _list;
+    private static IEnumerable<Injector>? _list;
     private static readonly Util.Locker _mutexList = new();
     private static string _configSectionPathInjectors => $"{Configuration.SectionRoot}:Injectors";
     private static IEnumerable<Configuration.Injector> _getConfigInjectors()
@@ -22,7 +21,7 @@ public class Injector : Base.Extension
             return obj;
         }) ?? Array.Empty<Configuration.Injector>();
 
-    private Configuration.Injector _getOptions()
+    private Configuration.Injector? _getOptions()
     => _getConfigInjectors()?.FirstOrDefault(_ => _.Name == this.Name);
 
     public static IEnumerable<Ws.Core.Extensions.Injector> List()
@@ -33,14 +32,12 @@ public class Injector : Base.Extension
                 {
                     _list = new List<Injector>();
                     foreach (var config in _getConfigInjectors())
-                    {
-                        Ws.Core.Extensions.Injector item = (Injector)Activator.CreateInstance(typeof(Ws.Core.Extensions.Injector), config);
-                        ((List<Injector>)_list).Add(item);
-                    }
+                        if (Activator.CreateInstance(typeof(Ws.Core.Extensions.Injector), config) is Injector item)
+                            ((List<Injector>)_list).Add(item);
                 }
         return _list;
     }
-    private Configuration.Injector _options { get; set; }
+    private Configuration.Injector? _options { get; set; }
     public Injector()
     {
         _options = _getOptions();
@@ -48,41 +45,37 @@ public class Injector : Base.Extension
     public Injector(Configuration.Injector config)
     {
         _options = config;
-    }        
+    }
     public override string Name => _options?.Name ?? "";
     public override int Priority => _options?.Priority ?? 0;
-    public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
+    public override void Add(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
     {
         _addServices(builder, _options?.Services);
         _addDecorators(builder, _options?.Decorators);
     }
-    public override void Execute(WebApplication app)
+    public override void Use(WebApplication app)
     {
         // https://docs.microsoft.com/it-it/aspnet/core/fundamentals/middleware/?view=aspnetcore-6.0
         // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/write?view=aspnetcore-6.0
         if (_options?.Middlewares != null)
             foreach (var middleware in _options.Middlewares)
-            {
-                Type type = _getType(middleware.Type);
-                if (type != null)
-                {
+                if (_getType(middleware.Type) is Type type)
                     if (middleware.Map != null && !string.IsNullOrEmpty(middleware.Map.PathMatch))
                         app.Map(middleware.Map.PathMatch, middleware.Map.PreserveMatchedPathSegment, _ => _.UseMiddleware(type));
                     else
                         app.UseMiddleware(type);
-                }
-            }
     }
 
-    static Type _getType(string s) => !string.IsNullOrEmpty(s) ? (Type.GetType(s, throwOnError: false) ?? Ws.Core.Extensions.Base.Util.GetType(s)) : null;
-    private void _addServices(WebApplicationBuilder builder, Configuration.Injector.ServiceOption[] services = null)
+    static Type? _getType(string? s) => !string.IsNullOrEmpty(s) ? (Type.GetType(s, throwOnError: false) ?? Ws.Core.Extensions.Base.Util.GetType(s)) : null;
+    private void _addServices(WebApplicationBuilder builder, Configuration.Injector.ServiceOption[]? services = null)
     {
-        if (services?.Any() == true)
+        if (services?.Any() == true && _options != null)
             foreach (var service in _options.Services)
             {
-                Type serviceType = _getType(service.ServiceType);
-                Type implementationType = _getType(service.ImplementationType);
-                if (serviceType != null && implementationType != null && serviceType.IsAssignableFrom(implementationType))
+                if (_getType(service.ServiceType) is Type serviceType &&
+                    _getType(service.ImplementationType) is Type implementationType &&
+                    serviceType.IsAssignableFrom(implementationType)
+                    )
                 {
                     var descriptor = new ServiceDescriptor(serviceType, implementationType, service.Lifetime);
                     if (service.OverrideIfAlreadyRegistered)
@@ -92,15 +85,14 @@ public class Injector : Base.Extension
                 }
             }
     }
-    private void _addDecorators(WebApplicationBuilder builder, Configuration.Injector.DecoratorOption[] decorators = null)
+    private void _addDecorators(WebApplicationBuilder builder, Configuration.Injector.DecoratorOption[]? decorators = null)
     {
-        if (decorators?.Any() == true)
+        if (decorators?.Any() == true && _options != null)
             foreach (var decorator in _options.Decorators)
-            {
-                Type serviceType = _getType(decorator.ServiceType);
-                Type implementationType = _getType(decorator.ImplementationType);
-                if (serviceType != null && implementationType != null && serviceType.IsAssignableFrom(implementationType))
+                if (_getType(decorator.ServiceType) is Type serviceType &&
+                    _getType(decorator.ImplementationType) is Type implementationType &&
+                    serviceType.IsAssignableFrom(implementationType)
+                    )
                     builder.Services.TryDecorate(serviceType, implementationType);
-            }
     }
 }

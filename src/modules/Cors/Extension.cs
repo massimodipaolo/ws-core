@@ -7,11 +7,14 @@ namespace Ws.Core.Extensions.Cors
     {
         private Options options => GetOptions<Options>();
         private IEnumerable<Options.PolicyOption>? namedPolicies => options?.Policies?.Where(_ => !string.IsNullOrEmpty(_.Name));
-
-        public override void Execute(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
+        public override void Add(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
         {
-            base.Execute(builder, serviceProvider);
+            base.Add(builder, serviceProvider);
+            _add(builder);
+        }
 
+        private void _add(WebApplicationBuilder builder)
+        {
             if (namedPolicies?.Any() == true)
                 builder.Services.AddCors(opt =>
                 {
@@ -20,12 +23,11 @@ namespace Ws.Core.Extensions.Cors
                 });
             else
                 builder.Services.AddCors();
-
         }
 
-        public override void Execute(WebApplication app)
+        public override void Use(WebApplication app)
         {
-            base.Execute(app);
+            base.Use(app);
 
             if (namedPolicies?.Any() == true)
             {
@@ -59,7 +61,7 @@ namespace Ws.Core.Extensions.Cors
 
             });
         }
-        
+
         /// <summary>
         /// https://stackoverflow.com/a/59662110
         /// </summary>

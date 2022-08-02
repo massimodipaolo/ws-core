@@ -5,9 +5,9 @@ namespace Ws.Core.Extensions.Base;
 
 public class Util
 {
-    private static IEnumerable<Assembly> _allAssemblies { get; set; }
+    private static IEnumerable<Assembly>? _allAssemblies { get; set; }
     private static readonly Locker _mutexAssemblies = new();
-    private static IEnumerable<Type> _allTypes { get; set; }
+    private static IEnumerable<Type>? _allTypes { get; set; }
     private static readonly Locker _mutexTypes = new();
     public Util()
     {
@@ -30,7 +30,7 @@ public class Util
         return _allAssemblies;
     }
 
-    private static IEnumerable<Type> GetAllTypes()
+    public static IEnumerable<Type>? GetAllTypes()
     {
         if (_allTypes == null)
             using (_mutexTypes.Lock())
@@ -52,15 +52,15 @@ public class Util
         return _allTypes;
     }
 
-    public static IEnumerable<Type> GetAllTypesOf<T>() where T : class
+    public static IEnumerable<Type>? GetAllTypesOf<T>() where T : class
         => GetAllTypesOf(typeof(T));
 
-    public static IEnumerable<Type> GetAllTypesOf(Type type)
+    public static IEnumerable<Type>? GetAllTypesOf(Type type)
         =>
             GetAllTypes()?
             .Where(t => t != null && type.IsAssignableFrom(t) && !t.IsInterface);
 
-    public static Type GetType(string typeFullName)
+    public static Type? GetType(string typeFullName)
         =>
             GetAllTypes()?
             .Where(t => t.FullName == typeFullName)?
@@ -71,11 +71,13 @@ public class Util
     #region Tools
     public sealed class Locker : IDisposable
     {
-        private SemaphoreSlim _semaphoreSlim { get; set; }
+        private static readonly int _semaphoreDefaultInitCount = 1;
+        private static readonly int _semaphoreDefaultMaxCount = 1;
+        private SemaphoreSlim _semaphoreSlim { get; set; } = new SemaphoreSlim(_semaphoreDefaultInitCount, _semaphoreDefaultMaxCount);
 
         public Locker()
         {
-            _locker(1);
+            _locker(_semaphoreDefaultMaxCount);
         }
 
         public Locker(int maxCount)
@@ -85,7 +87,7 @@ public class Util
 
         private void _locker(int maxCount)
         {
-            _semaphoreSlim = new SemaphoreSlim(1, maxCount);
+            _semaphoreSlim = new SemaphoreSlim(_semaphoreDefaultInitCount, maxCount);
         }
 
         public Locker Lock()

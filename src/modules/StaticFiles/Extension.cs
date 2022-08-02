@@ -6,7 +6,7 @@ namespace Ws.Core.Extensions.StaticFiles;
 
 public class Extension : Base.Extension
 {
-    private IEnumerable<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)> Settings
+    private IEnumerable<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions? DirectoryBrowserOptions, DefaultFilesOptions? DefaultFilesOptions)> Settings
     {
         get
         {
@@ -14,10 +14,10 @@ public class Extension : Base.Extension
         }
     }
 
-    private List<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)> _getSettings()
+    private List<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions? DirectoryBrowserOptions, DefaultFilesOptions? DefaultFilesOptions)> _getSettings()
     {
-        
-        var res = new List<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions DirectoryBrowserOptions, DefaultFilesOptions DefaultFilesOptions)>();
+
+        var res = new List<(StaticFileOptions StaticFileOptions, DirectoryBrowserOptions? DirectoryBrowserOptions, DefaultFilesOptions? DefaultFilesOptions)>();
 
         foreach (var opt in _configureFolderOptions())
         {
@@ -25,9 +25,9 @@ public class Extension : Base.Extension
             {
                 var staticFileOptions = opt.GetStaticFileOptions(env?.ContentRootPath ?? Directory.GetCurrentDirectory(), logger);
                 res.Add((
-                    staticFileOptions, 
-                    _configureDirectoryBrowser(staticFileOptions,opt),
-                    _configureDefaultFiles(staticFileOptions,opt)));
+                    staticFileOptions,
+                    _configureDirectoryBrowser(staticFileOptions, opt),
+                    _configureDefaultFiles(staticFileOptions, opt)));
             }
         }
 
@@ -47,9 +47,9 @@ public class Extension : Base.Extension
         }
         return opts.Paths;
     }
-    private static DirectoryBrowserOptions _configureDirectoryBrowser(StaticFileOptions staticFileOptions, FolderOption folderOptions)
+    private static DirectoryBrowserOptions? _configureDirectoryBrowser(StaticFileOptions staticFileOptions, FolderOption folderOptions)
     {
-        DirectoryBrowserOptions directoryBrowserOptions = null;
+        DirectoryBrowserOptions? directoryBrowserOptions = null;
         if (folderOptions.EnableDirectoryBrowser)
         {
             directoryBrowserOptions = new DirectoryBrowserOptions();
@@ -61,9 +61,9 @@ public class Extension : Base.Extension
         return directoryBrowserOptions;
     }
 
-    private static DefaultFilesOptions _configureDefaultFiles(StaticFileOptions staticFileOptions, FolderOption folderOptions)
+    private static DefaultFilesOptions? _configureDefaultFiles(StaticFileOptions staticFileOptions, FolderOption folderOptions)
     {
-        DefaultFilesOptions defaultFilesOptions = null;
+        DefaultFilesOptions? defaultFilesOptions = null;
         if (folderOptions.DefaultFiles?.Length > 0)
         {
             defaultFilesOptions = new DefaultFilesOptions();
@@ -78,16 +78,16 @@ public class Extension : Base.Extension
         return defaultFilesOptions;
     }
 
-    public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
+    public override void Add(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
     {
-        base.Execute(builder, serviceProvider);
+        base.Add(builder, serviceProvider);
         if (Settings.Any(_ => _.DirectoryBrowserOptions != null))
             builder.Services.AddDirectoryBrowser();
     }
 
-    public override void Execute(WebApplication app)
+    public override void Use(WebApplication app)
     {
-        base.Execute(app);
+        base.Use(app);
 
         foreach (var setting in Settings)
         {

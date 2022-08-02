@@ -182,6 +182,7 @@
       "Ws.Core.Extensions.Data.EF": {
         "priority": 400,
         "options": {
+          "ignore": [ "x.core.Models.MaskedUser, x.core" ],
           "jsonConvert": [ "x.core.Models.IAppJsonSerializable, x.core" ],
           "includeNavigationProperties": {
             "list": {
@@ -385,7 +386,7 @@
             {
               "address": "127.0.0.1",
               "port": 2110,
-              "userName": "massimo.dipaolo@mail.local",
+              "userName": "massimo.dipaolo@mail.local.io",
               "password": "4CH9cDnxNJ",
               "enableSsl": true,
               "skipCertificateValidation": true

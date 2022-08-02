@@ -7,10 +7,14 @@ namespace Ws.Core.Extensions.Data.Cache;
 public class Extension : Base.Extension
 {
     private Options options => GetOptions<Options>();
-    public override void Execute(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
+    public override void Add(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
     {
-        base.Execute(builder, serviceProvider);
+        base.Add(builder, serviceProvider);
+        _add(builder);
+    }
 
+    private void _add(WebApplicationBuilder builder)
+    {
         builder.Services.AddDistributedMemoryCache();
 
         //DI
