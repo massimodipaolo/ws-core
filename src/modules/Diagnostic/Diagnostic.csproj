@@ -14,11 +14,12 @@
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageReleaseNotes>Mini-profiler; HttpLogging</PackageReleaseNotes>
 		<PackageTags></PackageTags>
-		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>		
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<NoWarn>1701;1702;1705;1591</NoWarn>
+		<NoWarn>1701;1702;1705;1591;AD0001;</NoWarn>
 		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
 	</PropertyGroup>
 

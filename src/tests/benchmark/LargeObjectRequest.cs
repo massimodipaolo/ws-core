@@ -15,9 +15,6 @@ public class LargeObjectRequest
     [Params(100,1000,10000,100000)]
     public int? TopN;
 
-    //[GlobalSetup]
-    //public async Task Setup() => await Rest();
-
     [Benchmark]
     public async Task gRPC()
     {
@@ -36,16 +33,20 @@ public class LargeObjectRequest
 
         var _size = 0;
         var _items = 0;
-        await foreach (var response in call?.ResponseStream?.ReadAllAsync())
+        var items = call?.ResponseStream?.ReadAllAsync();
+        if (items != null)
         {
-            _size += response.CalculateSize();
-            _items++;
+            await foreach (var item in items)
+            {
+                _size += item.CalculateSize();
+                _items++;
+            }
+            Console.WriteLine($"{nameof(gRPCStream)} size [{_size}] items: {_items}");
         }
-        Console.WriteLine($"{nameof(gRPCStream)} size [{_size}] items: {_items}");
     }
 
     [Benchmark]
-    public async Task gRPCStreamFirst()
+    public void gRPCStreamFirst()
     {
         using var channel = GrpcChannel.ForAddress(HOST);
         var client = new Data.DataClient(channel);

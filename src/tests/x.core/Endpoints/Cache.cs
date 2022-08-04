@@ -41,9 +41,7 @@ public class Cache : ICarterModule
         {            
             var list = repo.List.AsEnumerable().Take(5);            
             await cache.SetObjectAsync(Key<T>(), list, cache.ExpirationTier.Medium);
-
-            T? first = list.FirstOrDefault();
-            if (first != null)
+            if (list.FirstOrDefault() is T first && first.Id != null)
                 await cache.SetAsync(Key<T, TKey>(first.Id), Ws.Core.Extensions.Data.Cache.Util.ObjToByte(first), cache.ExpirationTier.Fast);
         }
         return Results.Ok(cached);

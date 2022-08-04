@@ -16,7 +16,7 @@ public class WriteText
         if (!string.IsNullOrWhiteSpace(text))
         {
             await context.Response.WriteAsync($"{text}");
-            _logger?.LogInformation($"Invoked {nameof(WriteText)} middleware with [{text}]");
+            _logger.LogInformation("Invoked {middleware} middleware with [{text}]", nameof(WriteText), text);
         }
         else
             await _next(context);
