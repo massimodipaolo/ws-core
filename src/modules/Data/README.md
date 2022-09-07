@@ -372,7 +372,3 @@ You can configure both the `include` and `exclude` criteria in the `serviceResol
 ## <a id="development"></a>Development
 
 Development note, contribution info, licensing to be defined.
-
-```
-
-```
