@@ -352,6 +352,35 @@ In addition to [Common check options](#setup-configuration-checks-common):
 
 You can access to the configured endpoints to monitor the health check status.
 
+### Create custom health checks example
+
+To create your own health checks you need to implement the [IHealthCheck](https://docs.microsoft.com/it-it/dotnet/api/microsoft.extensions.diagnostics.healthchecks.ihealthcheck) interface and add it to the `ConfigureServices` method of the application `Startup` class or into the `Execute` method of a module/extension.
+
+```csharp
+public class MyService : IHealthCheck
+{
+    public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
+    {
+        // write health check implementation here...
+
+        return await Task.FromResult(HealthCheckResult.Healthy());
+    }
+}
+```
+
+```csharp
+public class Extension: Base.Extension
+{
+    public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
+    {
+        base.Execute(builder, serviceProvider);
+
+        // adding MyService health check implementation.
+        builder.Services.AddHealthChecks().AddCheck<MyService>("my-service", tags: new[] {"custom", "service"});
+    }
+}
+```
+
 ### Health check application log service usage example
 
 To create your own health check application log service you need to implement `ILog` and `IAppLogService` interfaces.
