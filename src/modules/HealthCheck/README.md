@@ -45,8 +45,8 @@ No other modules are required.
 You need to define 3 options:
 
 1. **routes** (_optional_): list of health check [Route options](#setup-configuration-route). If not provided 2 default routes will be used:
-   - `/healtz` for basic app status, with no additional check.
-   - `/healtz/checks` for overall app status, performing all checks.
+   - `/healthz` for basic app status, with no additional check.
+   - `/healthz/checks` for overall app status, performing all checks.
 1. **checks** (_optional_): custom [Checks options](#setup-configuration-checks) configuration.
    - **storage** (_optional_): list of [Storage](#setup-configuration-checks-storage) check options.
    - **memory** (_optional_): [Memory](#setup-configuration-checks-memory) check options.
@@ -59,7 +59,7 @@ You need to define 3 options:
 
 #### <a id="setup-configuration-route"></a>Route options
 
-- **path**: route path (i.e. `/healtz`, `/healtz/checks`).
+- **path**: route path (i.e. `/healthz`, `/healthz/checks`).
 - **contentType** (_default_: `json`): `json`|`text`.
 - **skipChecks** (_default_: `false`): if true skips any defined checks, returning a basic health check endpoint.
 - **authPolicies** (_optional_): list of policy name to validate.
