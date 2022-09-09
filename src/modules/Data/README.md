@@ -270,6 +270,8 @@ If you want to use an implementation for a type of entity and another implementa
    }
 ```
 
+> **Note**: if you need to specify an implementation only for a specific enviroment and not the whole application see the [Inject a service](../ExtensionBase/README.md#usage-service) guide.
+
 #### Usage example
 
 ```csharp

@@ -14,6 +14,7 @@
    - [Create a module](#usage-module)
    - [Create a middleware](#usage-middleware)
    - [Create a decorator](#usage-decorator)
+   - [Inject a service](#usage-service)
 1. [Limitations](#limitations)
 1. [Development](#development)
 
@@ -459,6 +460,39 @@ public class MessageLogger: IMessage
           {
             "serviceType": "Ws.Core.Extensions.Message.IMessage",
             "implementationType": "testApp.Decorators.MessageLogger"
+          }
+        ]
+      }
+    ]
+```
+
+### <a id="usage-service"></a>Inject a service
+
+You can inject a service registration directly in the `ext-settings.json` file using the `injectors` option `services`.
+
+#### Override implementation example
+
+In this example we want to use the `Data.EF.SQLite` implementation of the `IRepository` interface for an entity namespace `testApp.Models.Log`, only for `Development` enviroment without polluting the application `Startup` class.
+
+You need to edit the `ext-settings.Development.json` file adding the service injector, specifying the `overrideIfAlreadyRegistered` option to `true` to override the default registration.
+
+> **Note**: setting the `overrideIfAlreadyRegistered` options to `false` will inject the service only if not already registered.
+
+```json
+  "extConfig": {
+    "folder": "Extensions",
+    "enableShutDownOnChange": false,
+    "assemblies": [...],
+    "injectors": [
+      {
+        "priority": 615,
+        "name": "data-repository-override",
+        "services": [
+          {
+            "serviceType": "Ws.Core.Extensions.Data.IRepository`2[[testApp.Models.Log, testApp],[System.Int32]], Ws.Core.Extensions.Data",
+            "implementationType": "Ws.Core.Extensions.Data.Repository.EF.SQLite`2[[testApp.Models.Log, testApp],[System.Int32]], Ws.Core.Extensions.Data.EF.SQLite",
+            "lifeTime": "Transient",
+            "overrideIfAlreadyRegistered": true
           }
         ]
       }
