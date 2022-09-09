@@ -354,7 +354,7 @@ You can access to the configured endpoints to monitor the health check status.
 
 ### Create custom health checks example
 
-To create your own health checks you need to implement the [IHealthCheck](https://docs.microsoft.com/it-it/dotnet/api/microsoft.extensions.diagnostics.healthchecks.ihealthcheck) interface and add it to the `ConfigureServices` method of the application `Startup` class or into the `Execute` method of a module/extension.
+To create your own health checks you need to implement the [IHealthCheck](https://docs.microsoft.com/it-it/dotnet/api/microsoft.extensions.diagnostics.healthchecks.ihealthcheck) interface and add it to the `ConfigureServices` method of the application `Startup` class or into the [Execute](../ExtensionBase/README.md#usage) method of a module/extension.
 
 ```csharp
 public class MyService : IHealthCheck
@@ -369,7 +369,7 @@ public class MyService : IHealthCheck
 ```
 
 ```csharp
-public class Extension: Base.Extension
+public class Extension: Ws.Core.Extensions.Base.Extension
 {
     public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
     {
