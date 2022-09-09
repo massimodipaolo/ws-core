@@ -377,7 +377,7 @@ To invoke the middleware for every request:
         "name": "request-culture",
         "middlewares": [
           {
-            "type": "Vidly.Core.Api.Middlewares.RequestCulture"
+            "type": "testApp.Middlewares.RequestCulture"
           }
         ]
       }
@@ -397,7 +397,7 @@ To invoke the middleware only for the paths starting with `/branch`:
         "name": "branch-request-culture",
         "middlewares": [
           {
-            "type": "Vidly.Core.Api.Middlewares.RequestCulture",
+            "type": "testApp.Middlewares.RequestCulture",
             "map": {
               "pathMatch": "/branch",
               "preserveMatchedPathSegment": true
