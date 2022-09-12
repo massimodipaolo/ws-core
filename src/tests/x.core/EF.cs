@@ -6,6 +6,7 @@ namespace x.core;
 
 public class EF : BaseTest
 {
+    EF(Program factory) : base(factory) { }
     public EF(Program factory, ITestOutputHelper output) : base(factory, output) { }
 
     [Theory]

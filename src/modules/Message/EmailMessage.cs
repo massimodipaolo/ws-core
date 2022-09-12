@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using MailKit.Net.Pop3;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using MimeKit;
@@ -142,7 +143,7 @@ public class EmailMessage : IMessage
         {
             using var client = new MailKit.Net.Pop3.Pop3Client();
             try
-            {                    
+            {
 #if DEBUG
                 _checkSkipCertificateValidation(client, receiver);
 #endif
@@ -150,26 +151,7 @@ public class EmailMessage : IMessage
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
                 if (!string.IsNullOrEmpty(receiver.UserName) && !string.IsNullOrEmpty(receiver.Password))
                     await client.AuthenticateAsync(receiver.UserName, receiver.Password).ConfigureAwait(false);
-                List<Message> emails = new();
-                for (int i = 0; i < client.Count && i < 10; i++)
-                {
-                    var mime = await client.GetMessageAsync(i).ConfigureAwait(false);
-                    var message = new Message
-                    {
-                        Subject = mime.Subject,
-                        Content = !string.IsNullOrEmpty(mime.HtmlBody) ? mime.HtmlBody : mime.TextBody
-                    };
-                    var _from = (MailboxAddress)mime.From.FirstOrDefault();
-                    message.Sender = new Message.Actor { Name = _from.Name, Address = _from.Address };
-                    message.Recipients = new List<Message.Actor>();
-                    ((List<Message.Actor>)message.Recipients).AddRange(
-                        mime.To.Select(_ => (MailboxAddress)_).Select(_ => new Message.Actor { Name = _.Name, Address = _.Address, Type = Message.ActorType.Primary })
-                        .Union(mime.Cc.Select(_ => (MailboxAddress)_).Select(_ => new Message.Actor { Name = _.Name, Address = _.Address, Type = Message.ActorType.Subscriber }))
-                        .Union(mime.Bcc.Select(_ => (MailboxAddress)_).Select(_ => new Message.Actor { Name = _.Name, Address = _.Address, Type = Message.ActorType.Logging }))
-                    );
-                    emails.Add(message);
-                }
-                return emails;
+                return await _getEmails(client).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -180,7 +162,31 @@ public class EmailMessage : IMessage
                 await client.DisconnectAsync(true).ConfigureAwait(false);
             }
         }
-        return null;
+        return Array.Empty<Message>();
+    }
+
+    private static async Task<List<Message>> _getEmails(Pop3Client client)
+    {
+        List<Message> emails = new();
+        for (int i = 0; i < client.Count && i < 10; i++)
+        {
+            var mime = await client.GetMessageAsync(i).ConfigureAwait(false);
+            var message = new Message
+            {
+                Subject = mime.Subject,
+                Content = !string.IsNullOrEmpty(mime.HtmlBody) ? mime.HtmlBody : mime.TextBody
+            };
+            if (mime.From.FirstOrDefault() is MailboxAddress _from)
+                message.Sender = new Message.Actor { Name = _from.Name, Address = _from.Address };
+            message.Recipients = new List<Message.Actor>();
+            ((List<Message.Actor>)message.Recipients).AddRange(
+                mime.To.Select(_ => (MailboxAddress)_).Select(_ => new Message.Actor { Name = _.Name, Address = _.Address, Type = Message.ActorType.Primary })
+                .Union(mime.Cc.Select(_ => (MailboxAddress)_).Select(_ => new Message.Actor { Name = _.Name, Address = _.Address, Type = Message.ActorType.Subscriber }))
+                .Union(mime.Bcc.Select(_ => (MailboxAddress)_).Select(_ => new Message.Actor { Name = _.Name, Address = _.Address, Type = Message.ActorType.Logging }))
+            );
+            emails.Add(message);
+        }
+        return emails;
     }
 
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
@@ -194,8 +200,8 @@ public class EmailMessage : IMessage
                 HealthChecks.Network.Core.SmtpConnectionType.PLAIN
                 ;
         };
-        Options.Endpoint smtp = _config.Senders?.FirstOrDefault();
-        if (smtp != null)
+        Options.Endpoint? smtp = _config.Senders?.FirstOrDefault();
+        if (smtp?.Address != null)
         {
             if (smtp.Port == 0) smtp.Port = 25;
             var options = new HealthChecks.Network.SmtpHealthCheckOptions()
@@ -205,7 +211,7 @@ public class EmailMessage : IMessage
                 AllowInvalidRemoteCertificates = smtp.SkipCertificateValidation,
                 ConnectionType = _connectionType(smtp)
             };
-            if (!string.IsNullOrEmpty(smtp.UserName))
+            if (!string.IsNullOrEmpty(smtp.UserName) && !string.IsNullOrEmpty(smtp.Password))
                 options.LoginWith(smtp.UserName, smtp.Password);
 
             var result = await new HealthChecks.Network.SmtpHealthCheck(options).CheckHealthAsync(context, cancellationToken);

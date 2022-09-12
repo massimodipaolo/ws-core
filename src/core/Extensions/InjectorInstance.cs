@@ -17,10 +17,8 @@ public static class InjectorInstance
 
         IEnumerable<Ws.Core.Extensions.Injector> injectors = Ws.Core.Extensions.Injector.List();
         if (injectors != null && injectors.Any())
-            list = list
-            .Union((IEnumerable<T>)injectors)
-            //.OrderBy(_ => _.Priority)
-            ;
+            list = list.Union((IEnumerable<T>)injectors);
+
         return list;
     }
 }

@@ -49,7 +49,7 @@ public class DbConnectionSelector
         )
     {
         // repository resolver
-        var entities = Ws.Core.Extensions.Base.Util.GetAllTypesOf(typeof(IEntity));
+        var entities = Ws.Core.Extensions.Base.Util.GetAllTypesOf(typeof(IEntity)) ?? Array.Empty<Type>();
 
         // normalize resolver rules
         var serviceResolver = connectionSelectorTable.Select(_ => _._dbConnection.ServiceResolver) ?? Array.Empty<DbConnection.ServiceResolverCriteria>();
@@ -81,9 +81,9 @@ public class DbConnectionSelector
             !(
             resolver.Exclude.Assembly.Any(__ => __ == _.Assembly?.FullName)
             ||
-            resolver.Exclude.Namespace.Any(__ => __ == _.Namespace) 
+            resolver.Exclude.Namespace.Any(__ => __ == _.Namespace)
             ||
-            resolver.Exclude.FullName.Any(__ => __ == _.FullName) 
+            resolver.Exclude.FullName.Any(__ => __ == _.FullName)
             )
             );
         }

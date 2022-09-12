@@ -9,6 +9,7 @@ namespace x.core;
 
 public class HealthCheck : BaseTest
 {
+    HealthCheck(Program factory) : base(factory) { }
     public HealthCheck(Program factory, ITestOutputHelper output) : base(factory, output) { }
 
     [Theory]

@@ -5,6 +5,7 @@ namespace x.core;
 
 public class Cors : BaseTest
 {
+    Cors(Program factory) : base(factory) { }
     public Cors(Program factory, ITestOutputHelper output) : base(factory, output) { }
 
     [Theory]

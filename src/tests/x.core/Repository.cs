@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Enyim.Caching.Memcached;
+using System.Text.Json;
 using Ws.Core.Extensions.Data;
 using x.core.Models;
 using Xunit;
@@ -21,6 +22,7 @@ public class AppEmbeddedDbContextExt : Ws.Core.Extensions.Data.EF.SQLite.DbConte
 
 public class Repository : BaseTest
 {
+    Repository(Program factory) : base(factory) { }
     public Repository(Program factory, ITestOutputHelper output) : base(factory, output) {}
 
     [Theory]
@@ -39,11 +41,8 @@ public class Repository : BaseTest
         => base.Check_ServiceImplementation(Tinterface, ExpectedTimplementation);
 
     [Fact]
-    public async Task Check_InMemoryCrudOp() {
-        // Arrange
-        var factory = GetFactory(WebApplicationFactoryType.Development);
-        using var scope = factory.Services.CreateScope();
-        if (scope?.ServiceProvider?.GetService(typeof(Ws.Core.Extensions.Data.IRepository<Models.CrudBase, string>)) is Ws.Core.Extensions.Data.IRepository<Models.CrudBase, string> _repo)
+    public async Task Check_InMemoryCrudOp() {        
+        if (_getService(typeof(Ws.Core.Extensions.Data.IRepository<Models.CrudBase, string>)) is Ws.Core.Extensions.Data.IRepository<Models.CrudBase, string> _repo)
         {
             _repo.AddMany(Enumerable.Range(0, 10).Select(_ => new CrudBase() { }));
             await Check_CrudOp<Models.CrudBase, string>();
@@ -63,13 +62,13 @@ public class Repository : BaseTest
     [Fact]
     public async Task Check_MySqlCrudOp() => await Check_CrudOp<Models.Agenda, string>();
 
-    protected async Task Check_CrudOp<T, TKey>(WebApplicationFactoryType factoryType = WebApplicationFactoryType.Development) where T : IRecord, IEntity<TKey>, IAppTracked, new() where TKey : IEquatable<TKey>, IComparable<TKey>
+    protected async Task Check_CrudOp<T, TKey>() where T : IRecord, IEntity<TKey>, IAppTracked, new() where TKey : IEquatable<TKey>, IComparable<TKey>
     {
         // Assert
         var _prefix = $"/api/{nameof(x.core.Endpoints.App).ToLower()}/{typeof(T).Name}";
         var maxItems = 1000;
         // Get
-        var getAll = await getAll<T,TKey>(_prefix,factoryType,maxItems);
+        var getAll = await getAll<T,TKey>(_prefix,maxItems);
         Assert.True(getAll.response.IsSuccessStatusCode);
         List<T> entities = getAll.entities.ToList();
         Assert.True(entities?.Any() == true);
@@ -78,7 +77,7 @@ public class Repository : BaseTest
         if (entities != null && entities?.Any() == true)
         {
             // Get Id
-            var getId = await Get_EndpointsResponse($"{_prefix}/{entities?.First().Id?.ToString() ?? ""}", factoryType);
+            var getId = await Get_EndpointsResponse($"{_prefix}/{entities?.First().Id?.ToString() ?? ""}");
             Assert.True(getId.response.IsSuccessStatusCode);
             var getIdCurrent = JsonSerializer.Deserialize<T>(getId.content);
             if (getIdCurrent == null)
@@ -90,55 +89,55 @@ public class Repository : BaseTest
             // Put
             var newTrackingDate = DateTime.Now;
             var toPut = getIdCurrent with { CreatedAt = newTrackingDate };
-            var putId = await Put_EndpointsResponse($"{_prefix}/{getIdCurrent.Id}", _httpContent(toPut), factoryType);
+            var putId = await Put_EndpointsResponse($"{_prefix}/{getIdCurrent.Id}", _httpContent(toPut));
             Assert.True(putId.response.IsSuccessStatusCode);
-            var getPutId = await Get_EndpointsResponse($"{_prefix}/{toPut.Id}", factoryType);
+            var getPutId = await Get_EndpointsResponse($"{_prefix}/{toPut.Id}");
             var getIdUpdated = JsonSerializer.Deserialize<T>(getPutId.content);
             Assert.True(getIdUpdated?.CreatedAt.ToUniversalTime().ToString("yyyyMMddHHmmss") == newTrackingDate.ToUniversalTime().ToString("yyyyMMddHHmmss"));
 
             // Post
             var toPost = getIdCurrent with { Id = new T().Id, CreatedAt = DateTime.Now };
-            var post = await Post_EndpointsResponse($"{_prefix}", _httpContent(toPost), factoryType);
+            var post = await Post_EndpointsResponse($"{_prefix}", _httpContent(toPost));
             Assert.True(post.response.IsSuccessStatusCode);
 
             // Delete
-            var getLastPost = await getAll<T, TKey>(_prefix, factoryType, 1);
+            var getLastPost = await getAll<T, TKey>(_prefix, 1);
             if (getLastPost.entities.FirstOrDefault() is T _lastPost)
             {
-                var deleteId = await Delete_EndpointsResponse($"{_prefix}/{_lastPost.Id}", factoryType);
+                var deleteId = await Delete_EndpointsResponse($"{_prefix}/{_lastPost.Id}");
                 Assert.True(deleteId.response.IsSuccessStatusCode);
             }
 
             // Put Many
-            var toPutMany = await getAll<T, TKey>(_prefix, factoryType, 5);
-            var putMany = await Put_EndpointsResponse($"{_prefix}", _httpContent(toPutMany.entities), factoryType);
+            var toPutMany = await getAll<T, TKey>(_prefix, 5);
+            var putMany = await Put_EndpointsResponse($"{_prefix}", _httpContent(toPutMany.entities));
             Assert.True(putMany.response.IsSuccessStatusCode);
 
             // Post Many
             var toPostMany = toPutMany.entities.Select(_ => _ with { Id = new T().Id, CreatedAt = DateTime.Now }).ToList();
-            var postMany = await Post_EndpointsResponse($"{_prefix}/range", _httpContent(toPostMany), factoryType);
+            var postMany = await Post_EndpointsResponse($"{_prefix}/range", _httpContent(toPostMany));
             Assert.True(postMany.response.IsSuccessStatusCode);
 
             // Delete Many
-            var getLastPostMany = await getAll<T, TKey>(_prefix, factoryType, 5);
-            var deleteMany = await DeleteMany_EndpointsResponse($"{_prefix}", _httpContent(getLastPostMany.entities), factoryType);
+            var getLastPostMany = await getAll<T, TKey>(_prefix, 5);
+            var deleteMany = await DeleteMany_EndpointsResponse($"{_prefix}", _httpContent(getLastPostMany.entities));
             Assert.True(deleteMany.response.IsSuccessStatusCode);
 
             // Merge upsert
-            var getMergeUpsert = await getAll<T, TKey>(_prefix, factoryType, 5);
+            var getMergeUpsert = await getAll<T, TKey>(_prefix, 5);
             var toMergeUpsert = getMergeUpsert.entities.Take(4)
                 .Select(_ => _ with { CreatedAt = DateTime.Now }) // update
                 .Union(getMergeUpsert.entities.Reverse().Take(1).Select(_ => _ with { Id = new T().Id, CreatedAt = DateTime.Now }))
                 .ToList();
-            var mergeUpsert = await Post_EndpointsResponse($"{_prefix}/merge/{RepositoryMergeOperation.Upsert}", _httpContent(toMergeUpsert), factoryType);
+            var mergeUpsert = await Post_EndpointsResponse($"{_prefix}/merge/{RepositoryMergeOperation.Upsert}", _httpContent(toMergeUpsert));
             Assert.True(mergeUpsert.response.IsSuccessStatusCode);
 
             // Merge sync (with init getAll) 
-            var mergeSync = await Post_EndpointsResponse($"{_prefix}/merge/{RepositoryMergeOperation.Sync}", _httpContent(entities ?? Array.Empty<T>().ToList()), factoryType);
+            var mergeSync = await Post_EndpointsResponse($"{_prefix}/merge/{RepositoryMergeOperation.Sync}", _httpContent(entities ?? Array.Empty<T>().ToList()));
             Assert.True(mergeSync.response.IsSuccessStatusCode);
 
             // Final check
-            var getAllAfterSync = await getAll<T, TKey>(_prefix, factoryType, maxItems);
+            var getAllAfterSync = await getAll<T, TKey>(_prefix, maxItems);
             IEnumerable<T> entitiesAfterSync = getAllAfterSync.entities;
             Assert.True(
                 entitiesAfterSync?.Any() == true 
@@ -156,10 +155,10 @@ public class Repository : BaseTest
         System.Text.Encoding.UTF8,
         "application/json");
 
-    private async Task<(HttpResponseMessage response, string content, IEnumerable<T> entities)> getAll<T, TKey>(string _prefix, WebApplicationFactoryType factoryType, int maxItems)
+    private async Task<(HttpResponseMessage response, string content, IEnumerable<T> entities)> getAll<T, TKey>(string _prefix, int maxItems)
         where T : IRecord, IEntity<TKey>, IAppTracked, new() where TKey : IEquatable<TKey>, IComparable<TKey>
     {
-        var (response, content) = await Get_EndpointsResponse(_prefix, factoryType);
+        var (response, content) = await Get_EndpointsResponse(_prefix);
         IEnumerable<T> entities = JsonSerializer.Deserialize<IEnumerable<T>>(content)?.OrderByDescending(_ => _.CreatedAt).ThenBy(_ => _.Id)?.Take(maxItems)?.ToList() ?? Array.Empty<T>().ToList();
         return (response, content, entities);
     }

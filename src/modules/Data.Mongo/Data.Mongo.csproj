@@ -13,6 +13,7 @@
 		<PackageReleaseNotes>Health check</PackageReleaseNotes>
 		<PackageTags></PackageTags>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>		
 	</PropertyGroup>
 
 	<PropertyGroup>

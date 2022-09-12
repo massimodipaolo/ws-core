@@ -9,9 +9,9 @@ public class DbContext : Microsoft.EntityFrameworkCore.DbContext
     private static ILogger? _logger { get; set; }
     private static List<Type> _ignoreTypes { get; set; } = new();
     private static IEnumerable<Type> _jsonConvertTypes { get; set; } = Array.Empty<Type>();
-    public DbContext(DbContextOptions options, ILogger logger) : base(options)
+    public DbContext(DbContextOptions options, ILogger? logger = null) : base(options)
     {
-        if (_logger == null) _logger = logger;
+        _logger ??= logger;
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

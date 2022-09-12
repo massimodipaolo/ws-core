@@ -10,9 +10,10 @@ public class CrudOp
         repo.Find(id) is T entity
                 ? Results.Ok(entity)
                 : Results.NotFound();
-    protected static IResult Create<T, TKey>(T entity, IRepository<T, TKey> repo) where T : class, IEntity<TKey> where TKey : IEquatable<TKey>, IComparable<TKey>
+    protected static IResult Create<T, TKey>(T entity, IRepository<T, TKey> repo, ILogger<T> logger) where T : class, IEntity<TKey> where TKey : IEquatable<TKey>, IComparable<TKey>
     {
         repo.Add(entity);
+        logger.LogInformation("Obj of type {T} created: {@entity}", typeof(T), entity);
         return Results.Created($"/{typeof(T)}/{entity.Id}", entity);
     }
 
@@ -22,11 +23,12 @@ public class CrudOp
         return Results.NoContent();
     }
 
-    protected static IResult Delete<T, TKey>([Microsoft.AspNetCore.Mvc.FromRoute] TKey id, IRepository<T, TKey> repo) where T : class, IEntity<TKey> where TKey : IEquatable<TKey>, IComparable<TKey>
+    protected static IResult Delete<T, TKey>([Microsoft.AspNetCore.Mvc.FromRoute] TKey id, IRepository<T, TKey> repo, ILogger<T> logger) where T : class, IEntity<TKey> where TKey : IEquatable<TKey>, IComparable<TKey>
     {
         if (repo.Find(id) is T item)
         {
             repo.Delete(item);
+            logger.LogInformation("Obj of type {T} deleted: {@item}", typeof(T), item);
             return Results.NoContent();
         }
         else

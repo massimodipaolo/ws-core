@@ -6,6 +6,7 @@ namespace x.core;
 
 public class Cache : BaseTest
 {
+    Cache(Program factory) : base(factory) { }
     public Cache(Program factory, ITestOutputHelper output) : base(factory, output) { }
 
     [Theory]
@@ -80,7 +81,7 @@ public class Cache : BaseTest
     public void Check_ExpirationTier(Type tCache, double[] minutes)
     {
         var cache = (ICache)_factory.Services.GetRequiredService(tCache);
-        _output.WriteLine($"{cache.GetType().FullName} - {cache.ExpirationTier.Fast.AbsoluteExpirationRelativeToNow}");
+        _output?.WriteLine($"{cache.GetType().FullName} - {cache.ExpirationTier.Fast.AbsoluteExpirationRelativeToNow}");
         Assert.Equal(ExpirationTier.NoCacheValue.AbsoluteExpirationRelativeToNow, cache.ExpirationTier.NoCache.AbsoluteExpirationRelativeToNow);
         Assert.Equal(TimeSpan.FromMinutes(minutes[0]), cache.ExpirationTier.Fast.AbsoluteExpirationRelativeToNow);
         Assert.Equal(TimeSpan.FromMinutes(minutes[1]), cache.ExpirationTier.Medium.AbsoluteExpirationRelativeToNow);

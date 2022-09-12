@@ -5,18 +5,23 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
+using System;
+using Ws.Core.Extensions.Base;
 
 namespace Ws.Core.Extensions.Data.Mongo;
 
 public class Extension : Base.Extension
 {
     private Options options => GetOptions<Options>();
-
-    public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
+    public override void Add(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
     {
-        base.Execute(builder, serviceProvider);
+        base.Add(builder, serviceProvider);
+        _add(builder, serviceProvider);
+    }
 
-        var connections = options?.Connections;
+    private void _add(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
+    {
+        var connections = options?.Connections?.Where(_ => !string.IsNullOrEmpty(_.ConnectionString));
         if (connections?.Any() == true)
         {
             // Mappings
@@ -37,14 +42,17 @@ public class Extension : Base.Extension
                     if (!BsonClassMap.GetRegisteredClassMaps().Contains(cm))
                         BsonClassMap.RegisterClassMap(cm);
                 }
-                catch(Exception ex) {
+                catch (Exception ex)
+                {
                     serviceProvider?.GetService<Microsoft.Extensions.Logging.ILogger<Ws.Core.Extensions.Data.Mongo.Extension>>()?.LogWarning(ex, "");
                 }
             }
 
             var hcBuilder = builder.Services.AddHealthChecks();
             foreach (var conn in connections)
+#pragma warning disable CS8604 // Already filtered in connections list
                 hcBuilder.AddMongoDb(conn.ConnectionString, name: $"mongodb-{conn.Name}", tags: new[] { "db", "mongodb" });
+#pragma warning restore CS8604 // Possible null reference argument.
 
             builder.Services.Configure<Options>(_ =>
             {

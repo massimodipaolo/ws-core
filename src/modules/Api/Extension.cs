@@ -9,10 +9,14 @@ namespace Ws.Core.Extensions.Api
     public class Extension : Base.Extension
     {
         private Options _options => GetOptions<Options>();
-        public override void Execute(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
+        public override void Add(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
         {
-            base.Execute(builder, serviceProvider);
+            base.Add(builder, serviceProvider);
+            _add(builder);
+        }
 
+        private void _add(WebApplicationBuilder builder)
+        {
             builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             _addSession(builder, _options.Session);
@@ -20,9 +24,9 @@ namespace Ws.Core.Extensions.Api
             _addDocumentation(builder, _options.Documentation);
         }
 
-        public override void Execute(WebApplication app)
+        public override void Use(WebApplication app)
         {
-            base.Execute(app);
+            base.Use(app);
 
             _useSession(app, _options.Session);
             _useControllers(app);

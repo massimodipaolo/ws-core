@@ -17,17 +17,17 @@ namespace Ws.Core.Extensions.HealthCheck.Checks.AppLog
         public LogLevel Level { get; set; }
         // Selector roles to ignore log for this severity level
         [Description("Selector roles to ignore log for this severity level")]
-        public IEnumerable<LogRuleSelector> Selectors { get; set; }
+        public IEnumerable<LogRuleSelector> Selectors { get; set; } = Array.Empty<LogRuleSelector>();
     }
     [Description("Select log entry filtering logger AND message constraints")]
     public class LogRuleSelector
     {
-        public LogRuleSelectorMatch Logger { get; set; }
-        public LogRuleSelectorMatch Message { get; set; }
+        public LogRuleSelectorMatch? Logger { get; set; }
+        public LogRuleSelectorMatch? Message { get; set; }
 
         public class LogRuleSelectorMatch
         {
-            public string[] List { get; set; }
+            public string[] List { get; set; } = Array.Empty<string>();
             [Description("Performance order: equalTo > startWith > contains > regEx")]
             [DefaultValue(LogRuleSelectorMatchType.EqualTo)]
             public LogRuleSelectorMatchType Role { get; set; } = LogRuleSelectorMatchType.EqualTo;            
@@ -59,13 +59,13 @@ namespace Ws.Core.Extensions.HealthCheck.Checks.AppLog
     {
         [Description("Min occurrance to set a new healthStatus, i.e. above 1000 Warn set healthStatus Degraded")]
         public int MinEntry { get; set; }
-        public HealthStatus HealthStatus { get; set; }
+        public HealthStatus HealthStatus { get; set; } = Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Healthy;
     }
     public class LogHealthStatusChecker
     {
-        public LogLevel Level { get; set; }
+        public LogLevel? Level { get; set; }
 
-        public IEnumerable<LogLevelMinCounter> MinCounters { get; set; }
+        public IEnumerable<LogLevelMinCounter> MinCounters { get; set; } = Array.Empty<LogLevelMinCounter>();
     }
     public class TakeLastLogCriteria
     {
@@ -85,17 +85,17 @@ namespace Ws.Core.Extensions.HealthCheck.Checks.AppLog
         /// IAppLogService concrete implementation class
         /// </summary>
         [Description("IAppLogService concrete implementation class, i.e. \"MyNamespace.MyServices.MyAppLogService, MyAssembly\"\r\nOtherwise autodiscover will used, or add a transient service in Startup class before extensions discovery.")]
-        public string AppLogService { get; set; }
+        public string? AppLogService { get; set; }
         /// <summary>
         /// Parse last logs by criteria
         /// </summary>
         [Description("Parse last logs by criteria")]
         public TakeLastLogCriteria TakeLastLog { get; set; } = new();
-        public IEnumerable<LogHealthStatusChecker> HealthStatusCheckers { get; set; }
+        public IEnumerable<LogHealthStatusChecker>? HealthStatusCheckers { get; set; }
         /// <summary>
         /// Ignore log based on logger/message
         /// </summary>
-        public IEnumerable<LogRule> LogIgnoreRoles { get; set; }
+        public IEnumerable<LogRule>? LogIgnoreRoles { get; set; }
         public LogMessageAggregate LogMessageAggregate { get; set; } = new ();
     }
 }
@@ -106,7 +106,7 @@ namespace Ws.Core.Extensions.HealthCheck
     {
         public partial class CheckEntries
         {
-            public Ws.Core.Extensions.HealthCheck.Checks.AppLog.Options AppLog { get; set; } 
+            public Ws.Core.Extensions.HealthCheck.Checks.AppLog.Options? AppLog { get; set; } 
         }
     }
 }

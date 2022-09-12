@@ -5,8 +5,32 @@
     "folder": "Extensions",
     "enableShutDownOnChange": false,
     "assemblies": {
+      "Ws.Core.Extensions.Data.Cache.SqlServer": {
+        "options": {
+          "client": {
+            "connectionString": "Server=mssql-02;Database=Cache;User Id=cacheUser;Password=C4$hUs3r-Strong!Pa$$w0rd;MultipleActiveResultSets=true"
+          }
+        }
+      },
+      "Ws.Core.Extensions.Data.Cache.Redis": {
+        "options": {
+          "client": {
+            "configuration": "redis-01:6379"
+          }
+        }
+      },
+      "Ws.Core.Extensions.Data.Cache.Memcached": {
+        "options": {
+          "client": {
+            "servers": [
+              {
+                "address": "memcached-01"
+              }
+            ]
+          }
+        }
+      },
       "Ws.Core.Extensions.Data.EF.SqlServer": {
-        "priority": 410,
         "options": {
           "connections": [
             {
@@ -21,18 +45,30 @@
         }
       },
       "Ws.Core.Extensions.Data.EF.MySql": {
-        "priority": 420,
         "options": {
           "connections": [
             {
               "name": "default",
               "connectionString": "Server=mariadb-01;Port=3306;Database=ws-core;Uid=root;Pwd=WS-1234-secret;"
+            },
+            {
+              "name": "backup",
+              "connectionString": "Server=mariadb-01;Port=3306;Database=ws-core;Uid=root;Pwd=WS-1234-secret;"
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Data.Mongo": {
+        "options": {
+          "connections": [
+            {
+              "name": "default",
+              "connectionString": "mongodb://root:WS-1234-secret@mongo-01:27017"
             }
           ]
         }
       },
       "Ws.Core.Extensions.Message": {
-        "priority": 600,
         "options": {
           "senders": [
             {
@@ -49,7 +85,6 @@
         }
       },
       "Ws.Core.Extensions.HealthCheck": {
-        "priority": 999,
         "options": {
           "checks": {
             "storage": [
@@ -65,8 +100,8 @@
             },
             "process": [
               {
-                "processName": "devenv",
-                "name": "devenv",
+                "processName": "dotnet",
+                "name": "dotnet",
                 "status": "Degraded",
                 "tags": [ "infrastructure", "on-premises" ]
               }

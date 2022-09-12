@@ -12,19 +12,19 @@ public class Hook : ICarterModule
     {
         if (data != null)
         {
-            var payload = Newtonsoft.Json.JsonConvert.DeserializeObject<HealthCheckHookMessage>(data.ToString() ?? "");
+            var payload = System.Text.Json.JsonSerializer.Deserialize<HealthCheckHookMessage>(data.ToString() ?? "");
             if (payload != null)
             {
                 var message = new Ws.Core.Extensions.Message.Message()
                 {
                     Subject = payload.Title,
                     Content = payload.Text,
-                    Arguments = payload.IsFailure ? new { Importance = "High" } : null,
-                    Sender = new Ws.Core.Extensions.Message.Message.Actor() { Address = $"no-reply@{nameof(Ws.Core)}" },
+                    Arguments = new { Importance = payload.IsFailure ? "High" : "Low" },
+                    Sender = new Ws.Core.Extensions.Message.Message.Actor() { Address = $"no-reply@mail.local.io" },
                     Recipients = new Ws.Core.Extensions.Message.Message.Actor[]
                     {
                                     new Ws.Core.Extensions.Message.Message.Actor() {
-                                        Address = $"operator@{nameof(Ws.Core)}",
+                                        Address = $"operator@mail.local.io",
                                         Name="DTC",
                                         Type= Ws.Core.Extensions.Message.Message.ActorType.Primary}
                     }

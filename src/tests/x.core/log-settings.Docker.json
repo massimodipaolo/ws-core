@@ -1,0 +1,25 @@
+{
+  "NLog": {
+    "targets": {
+      "sql": {
+        "connectionString": "Server=mssql-02;Database=ws-core;User Id=ws-core-usr;Password=a2b352dd-2cfe-434d-9f3a-34d04639a5e6;MultipleActiveResultSets=true"
+      },
+      "seq": {
+        "target": {
+          "serverUrl": "http://seq"
+        }
+      }
+    },
+    "rules": {
+      "1": {
+        "writeTo": "file, json, sql, seq"
+      },
+      "2": {
+        "writeTo": "file, json, sql, seq"
+      },
+      "4": {
+        "writeTo": "file, json, sql, seq"
+      }
+    }
+  }
+}

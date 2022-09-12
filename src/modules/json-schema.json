@@ -163,14 +163,6 @@
                 "options": { "$ref": "Message/json-schema.json#" }
               }
             },
-            "Ws.Core.Extensions.Spa": {
-              "allOf": [
-                { "$ref": "#/definitions/assembly" }
-              ],
-              "properties": {
-                "options": { "$ref": "Spa/json-schema.json#" }
-              }
-            },
             "Ws.Core.Extensions.StaticFiles": {
               "allOf": [
                 { "$ref": "#/definitions/assembly" }

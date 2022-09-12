@@ -76,9 +76,9 @@ public class IMessageCopy : IMessage
         {
             Type = Ws.Core.Extensions.Message.Message.ActorType.Logging,
             Name = "ws-core",
-            Address = "ws-core@mail.local"
+            Address = "ws-core@mail.local.io"
         };
-        message.Recipients = message.Recipients?.Append(cc);
+        message.Recipients = message.Recipients.Append(cc);
         
         _logger.LogInformation("Adding message cc: {cc}", cc.Address);
         await _inner.SendAsync(message, throwException);
@@ -101,7 +101,7 @@ public class IMessageSignature : IMessage
 
     public async Task SendAsync(Ws.Core.Extensions.Message.Message message, bool throwException = false)
     {
-        var newLine = message.Format?.Contains("html") == true ? "<br/>" : Environment.NewLine;
+        var newLine = message.Format.Contains("html") == true ? "<br/>" : Environment.NewLine;
         message.Content += $"{newLine}{newLine}{newLine}---------------------{newLine}©🆆🆂-🅲🅾🆁🅴";
         await _inner.SendAsync(message, throwException);
     }

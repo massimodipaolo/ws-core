@@ -6,15 +6,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2EC986FB-383
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A0C1601C-801F-43ED-BDBC-9BD6E69F0BB0}"
 	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
 		.editorconfig = .editorconfig
 		.env = .env
 		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		Dockerfile = Dockerfile
 		global.json = global.json
 		NuGet.config = NuGet.config
 		pack-n-push.ps1 = pack-n-push.ps1
 		posh-build.ps1 = posh-build.ps1
 		README.md = README.md
 		sonar-scan.ps1 = sonar-scan.ps1
+		testEnvironments.json = testEnvironments.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{31612A4E-8B04-4A4C-88C4-48EB07370364}"
@@ -224,7 +228,7 @@ Global
 		{4F2E79A7-5EC9-4AA3-AF43-BEE9F3E0E048} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
 		{5C49E15D-CD3B-4E30-B371-6AC99C81CA69} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
 		{08FB2C9F-D526-43C3-AEF1-16A46AD31A76} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
-		{72F2A867-A2F5-40EE-8B63-00D2E7634D03} = {2EC986FB-3831-46DF-AFF0-D6AE6128C55E}
+		{72F2A867-A2F5-40EE-8B63-00D2E7634D03} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
 		{BEBEC343-27A0-432A-97A4-D0EE58174B45} = {72F2A867-A2F5-40EE-8B63-00D2E7634D03}
 		{F0B64CF6-D886-4A3E-B49A-DB3828F8F4E5} = {72F2A867-A2F5-40EE-8B63-00D2E7634D03}
 		{6E8BDB3E-135D-45E7-AC19-B5D1031714BD} = {31612A4E-8B04-4A4C-88C4-48EB07370364}
@@ -248,10 +252,9 @@ Global
 		SolutionGuid = {C1713483-7DCD-42EB-A437-F0BBBAC5F4EF}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		src\shared\Serialization\Serialization.projitems*{4b554c0c-b363-4c4b-80c2-7493e67f345c}*SharedItemsImports = 5
-		src\shared\Serialization\Serialization.projitems*{946ddfe8-60c9-4f1f-ae3f-66adc604e797}*SharedItemsImports = 5
 		src\shared\StaticFilesFolder\StaticFilesFolder.projitems*{a943b2ef-2fd0-416a-9c54-877ffa0c000a}*SharedItemsImports = 5
 		src\shared\Serialization\Serialization.projitems*{bebec343-27a0-432a-97a4-d0ee58174b45}*SharedItemsImports = 13
+		src\shared\Serialization\Serialization.projitems*{cbf04dea-35fe-4f74-b271-128bfd1f01cf}*SharedItemsImports = 5
 		src\shared\StaticFilesFolder\StaticFilesFolder.projitems*{f0b64cf6-d886-4a3e-b49a-db3828f8f4e5}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

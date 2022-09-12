@@ -33,4 +33,6 @@
 		<ProjectReference Include="..\..\extCore\Infrastructure\Infrastructure.csproj" />
 	</ItemGroup>
 
+	<Import Project="..\..\shared\Serialization\Serialization.projitems" Label="Shared" />
+
 </Project>

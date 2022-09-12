@@ -17,15 +17,16 @@ public class HealthCheck : IHealthCheck
         _service = service ?? throw new ArgumentNullException(nameof(service));
     }
     public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
-    {            
+    {
         IQueryable<ILog> items = _takeLastLog();
-        HealthCheckResultDetail resultDetail = new ();
+        HealthCheckResultDetail resultDetail = new();
 
         try
         {
             _filterIgnoreLog(ref items);
             _setResultByCheckers(resultDetail, ref items);
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             resultDetail.Status = HealthStatus.Unhealthy;
             resultDetail.Description.Append(ex.Message);
@@ -61,7 +62,7 @@ public class HealthCheck : IHealthCheck
     private void _filterIgnoreLog(ref IQueryable<ILog> items)
     {
         if (_options.LogIgnoreRoles?.Any() == true)
-        {             
+        {
 
             // EF compliant: force ToList() to avoid tsql tranlation (disable S2971)
             if (_options.LogIgnoreRoles.Any(_ => _.Selectors?
@@ -76,10 +77,10 @@ public class HealthCheck : IHealthCheck
                     .AsQueryable();
 #pragma warning restore S2971 // "IEnumerable" LINQs should be simplified
 
-            foreach (var role in _options.LogIgnoreRoles?.Where(_ => _.Selectors?.Any() == true))
-                foreach (var selector in role.Selectors?
+            foreach (var role in _options.LogIgnoreRoles.Where(_ => _.Selectors?.Any() == true))
+                foreach (var selector in role.Selectors
                     .Where(_ =>
-                        (_.Logger != null && _.Logger.List.Any()) || (_.Message != null && _.Message.List.Any())
+                        (_.Logger != null && _.Logger.List?.Any() == true) || (_.Message != null && _.Message.List?.Any() == true)
                         )
                     )
                 {
@@ -96,7 +97,7 @@ public class HealthCheck : IHealthCheck
         }
     }
 
-    private static Expression<Func<ILog, bool>> _matchSelectorMatchExpression(LogRuleSelector.LogRuleSelectorMatch selectorMatch, string property)
+    private static Expression<Func<ILog, bool>> _matchSelectorMatchExpression(LogRuleSelector.LogRuleSelectorMatch? selectorMatch, string property)
     {
         Func<ILog, string, string> _matchSelectorMatchGetProperty = (_, property) => ((property.Equals("logger", StringComparison.OrdinalIgnoreCase) ? _.Logger : _.Message) ?? "");
         return selectorMatch?.Role switch
@@ -121,45 +122,46 @@ public class HealthCheck : IHealthCheck
     /// <param name="result"></param>
     /// <param name="items"></param>
     private void _setResultByCheckers(HealthCheckResultDetail result, ref IQueryable<ILog> items)
-    {            
-        foreach (var checker in _options.HealthStatusCheckers?.OrderBy(_ => _.Level))
-        {
-            if (!result.Data.ContainsKey($"{checker.Level}"))
+    {
+        if (_options.HealthStatusCheckers?.Any() == true)
+            foreach (var checker in _options.HealthStatusCheckers.OrderBy(_ => _.Level))
             {
-                var byLevel = items.Where(_ => _.Level == checker.Level);
-                var count = byLevel.Count();
-                HealthCheckData _data = new()
+                if (!result.Data.ContainsKey($"{checker.Level}"))
                 {
-                    Count = count,
-                    Patterns = byLevel
-                    // EF compliant
-                    .AsEnumerable()
-                    .GroupBy(_ => _.Logger)
-                    .Select(_ => new HealthCheckData.HealthCheckLoggerPattern()
+                    var byLevel = items.Where(_ => _.Level == checker.Level);
+                    var count = byLevel.Count();
+                    HealthCheckData _data = new()
                     {
-                        Logger = _.Key,
-                        Count = _.Count(),
-                        Messages = _
-                            .Select(_ => _.Message[..Math.Min(_messageAggregateTruncateLengthAt, _.Message.Length)])
-                            .OrderBy(_ => _)
-                            .Aggregate(new Dictionary<string, int>(), (list, next) => _messageAggregate(list, next))
-                            .Select(_ => new HealthCheckData.HealthCheckMessagePattern() { Message = _.Key, Count = _.Value })
-                            .OrderByDescending(_ => _.Count).ThenBy(_ => _.Message)
-                    })
-                    .OrderByDescending(_ => _.Count).ThenBy(_ => _.Logger)
-                };
+                        Count = count,
+                        Patterns = byLevel
+                        // EF compliant
+                        .AsEnumerable()
+                        .GroupBy(_ => _.Logger)
+                        .Select(_ => new HealthCheckData.HealthCheckLoggerPattern()
+                        {
+                            Logger = _.Key,
+                            Count = _.Count(),
+                            Messages = _
+                                .Select(_ => _.Message[..Math.Min(_messageAggregateTruncateLengthAt, _.Message.Length)])
+                                .OrderBy(_ => _)
+                                .Aggregate(new Dictionary<string, int>(), (list, next) => _messageAggregate(list, next))
+                                .Select(_ => new HealthCheckData.HealthCheckMessagePattern() { Message = _.Key, Count = _.Value })
+                                .OrderByDescending(_ => _.Count).ThenBy(_ => _.Message)
+                        })
+                        .OrderByDescending(_ => _.Count).ThenBy(_ => _.Logger)
+                    };
 
-                result.Data.Add($"{checker.Level}", _data);
+                    result.Data.Add($"{checker.Level}", _data);
 
-                foreach (var counters in checker.MinCounters.Where(_ => count >= _.MinEntry && result.Status > _.HealthStatus))
-                {
-                    // concat description
-                    result.Description.Append($"Level {checker.Level} check: {count}/{counters.MinEntry} => status {counters.HealthStatus} {Environment.NewLine}");
-                    // set new status
-                    result.Status = counters.HealthStatus;
+                    foreach (var counters in checker.MinCounters.Where(_ => count >= _.MinEntry && result.Status > _.HealthStatus))
+                    {
+                        // concat description
+                        result.Description.Append($"Level {checker.Level} check: {count}/{counters.MinEntry} => status {counters.HealthStatus} {Environment.NewLine}");
+                        // set new status
+                        result.Status = counters.HealthStatus;
+                    }
                 }
             }
-        }
     }
     private Dictionary<string, int> _messageAggregate(Dictionary<string, int> list, string next)
     {
@@ -182,27 +184,27 @@ public class HealthCheck : IHealthCheck
     public class HealthCheckData
     {
         public int Count { get; set; }
-        public IEnumerable<HealthCheckLoggerPattern> Patterns { get; set; }
+        public IEnumerable<HealthCheckLoggerPattern> Patterns { get; set; } = Array.Empty<HealthCheckLoggerPattern>();
         public class HealthCheckLoggerPattern
         {
             public int Count { get; set; }
-            public string Logger { get; set; }
-            public IEnumerable<HealthCheckMessagePattern> Messages { get; set; }
+            public string Logger { get; set; } = string.Empty;
+            public IEnumerable<HealthCheckMessagePattern> Messages { get; set; } = Array.Empty<HealthCheckMessagePattern>();
         }
 
         public class HealthCheckMessagePattern
         {
             public int Count { get; set; }
-            public string Message { get; set; }
+            public string Message { get; set; } = string.Empty;
         }
     }
 
     public record HealthCheckResultDetail
     {
         public HealthStatus Status { get; set; } = HealthStatus.Healthy;
-        public System.Text.StringBuilder Description { get; set; }  = new();
+        public System.Text.StringBuilder Description { get; set; } = new();
         public Dictionary<string, object> Data { get; set; } = new();
-        public Exception Exception { get; set; } = null;
+        public Exception? Exception { get; set; } = null;
     }
 
 }

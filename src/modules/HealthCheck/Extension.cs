@@ -12,10 +12,14 @@ namespace Ws.Core.Extensions.HealthCheck;
 public class Extension : Base.Extension
 {
     private Options options => GetOptions<Options>() ?? new Options();
-    public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
+    public override void Add(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
     {
-        base.Execute(builder, serviceProvider);
+        base.Add(builder, serviceProvider);
+        _add(builder);
+    }
 
+    private void _add(WebApplicationBuilder builder)
+    {
         var hcBuilder = builder.Services.AddHealthChecks();
 
         // checks
@@ -28,9 +32,9 @@ public class Extension : Base.Extension
             _addUi(builder, options.Ui);
     }
 
-    public override void Execute(WebApplication app)
+    public override void Use(WebApplication app)
     {
-        base.Execute(app);
+        base.Use(app);
         _map(app, options);
     }
 
@@ -50,7 +54,9 @@ public class Extension : Base.Extension
     {
         if (checks.Storage != null && checks.Storage.Any())
             foreach (var storage in checks.Storage.Where(_ => !string.IsNullOrEmpty(_.Driver)))
+#pragma warning disable CS8604 // Already checked
                 hcBuilder.AddDiskStorageHealthCheck(_ => _.AddDrive(storage.Driver, storage.MinimumFreeMb), $"storage-{storage.Name}", storage.Status, storage.Tags);
+#pragma warning restore CS8604 // Possible null reference argument.
     }
 
     private static void _checkMemory(IHealthChecksBuilder hcBuilder, Options.CheckEntries checks)
@@ -64,28 +70,36 @@ public class Extension : Base.Extension
     {
         if (checks.WinService != null && checks.WinService.Any() && OperatingSystem.IsWindows())
             foreach (var service in checks.WinService.Where(_ => !string.IsNullOrEmpty(_.ServiceName)))
+#pragma warning disable CS8604 // Possible null reference argument.
                 hcBuilder.AddWindowsServiceHealthCheck(service.ServiceName, _ => _.Status == System.ServiceProcess.ServiceControllerStatus.Running, name: $"service-{service.Name}", failureStatus: service.Status, tags: service.Tags);
+#pragma warning restore CS8604 // Possible null reference argument.
     }
 
     private static void _checkProcess(IHealthChecksBuilder hcBuilder, Options.CheckEntries checks)
     {
         if (checks.Process != null && checks.Process.Any())
             foreach (var process in checks.Process.Where(_ => !string.IsNullOrEmpty(_.ProcessName)))
+#pragma warning disable CS8604 // Already checked
                 hcBuilder.AddProcessHealthCheck(process.ProcessName, _ => _.Any(p => !p.HasExited), $"process-{process.Name}", process.Status, process.Tags);
+#pragma warning restore CS8604 // Possible null reference argument.
     }
 
     private static void _checkTcp(IHealthChecksBuilder hcBuilder, Options.CheckEntries checks)
     {
         if (checks.Tcp != null && checks.Tcp.Any())
             foreach (var tcp in checks.Tcp.Where(_ => !string.IsNullOrEmpty(_.Host)))
+#pragma warning disable CS8604 // Already checked
                 hcBuilder.AddTcpHealthCheck(_ => _.AddHost(tcp.Host, tcp.Port), $"tcp-{tcp.Name}", tcp.Status, tcp.Tags);
+#pragma warning restore CS8604 // Possible null reference argument.
     }
 
     private static void _checkHttp(IHealthChecksBuilder hcBuilder, Options.CheckEntries checks)
     {
         if (checks.Http != null && checks.Http.Any())
             foreach (var http in checks.Http.Where(_ => !string.IsNullOrEmpty(_.Url)))
+#pragma warning disable CS8604 // Already checked
                 hcBuilder.AddUrlGroup(new Uri(http.Url), $"http-{http.Name}", http.Status, http.Tags);
+#pragma warning restore CS8604 // Possible null reference argument.
     }
 
     private static void _checkAppLog(IHealthChecksBuilder hcBuilder, Options.CheckEntries checks)
@@ -109,8 +123,10 @@ public class Extension : Base.Extension
     private static void _uiEndpoints(HealthChecks.UI.Configuration.Settings settings, Options.UiOptions options)
     {
         if (options.Endpoints != null && options.Endpoints.Any())
-            foreach (var endpoint in options.Endpoints.Where(_ => !string.IsNullOrEmpty(_.Uri)))
+            foreach (var endpoint in options.Endpoints.Where(_ => !string.IsNullOrEmpty(_.Name) && !string.IsNullOrEmpty(_.Uri)))
+#pragma warning disable CS8604 //Already checked
                 settings.AddHealthCheckEndpoint(endpoint.Name, _uiEndpointUri(endpoint.Uri));
+#pragma warning restore CS8604 // Possible null reference argument.
     }
 
     /// <summary>
@@ -205,15 +221,18 @@ public class Extension : Base.Extension
             if (route.ContentType == Options.RouteContentType.json)
                 opt.ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse;
 
-            var builder = app.MapHealthChecks(route.Path, opt);
+            if (!string.IsNullOrEmpty(route.Path))
+            {
+                var builder = app.MapHealthChecks(route.Path, opt);
 
-            // policy
-            if (route.AuthPolicies != null && route.AuthPolicies.Any())
-                builder.RequireAuthorization(route.AuthPolicies.ToArray());
+                // policy
+                if (route.AuthPolicies != null && route.AuthPolicies.Any())
+                    builder.RequireAuthorization(route.AuthPolicies.ToArray());
 
-            // hosts
-            if (route.AuthHosts != null && route.AuthHosts.Any())
-                builder.RequireHost(route.AuthHosts.ToArray());
+                // hosts
+                if (route.AuthHosts != null && route.AuthHosts.Any())
+                    builder.RequireHost(route.AuthHosts.ToArray());
+            }
         }
     }
 

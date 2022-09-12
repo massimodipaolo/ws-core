@@ -9,28 +9,27 @@ namespace x.core
     public class BaseTest : IClassFixture<Program>
     {
         protected Program _factory;
-        protected readonly ITestOutputHelper _output;
-        public BaseTest(Program factory, ITestOutputHelper output)
+        protected readonly ITestOutputHelper? _output;
+        protected readonly JsonSerializerOptions? _jsonSerializerOptions;
+
+        public BaseTest(Program factory)
         {
             _factory = factory;
+            if (_factory.Services.GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Http.Json.JsonOptions>)) is Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Http.Json.JsonOptions> jsonOptions)
+                _jsonSerializerOptions = jsonOptions.Value.SerializerOptions;
+        }
+
+        public BaseTest(Program factory, ITestOutputHelper output) : this(factory)
+        {
             _output = output;
         }
-        protected WebApplicationFactory<Program> GetFactory(WebApplicationFactoryType factoryType)
-        => factoryType switch
-        {
-            WebApplicationFactoryType.Development => _factory,
-            WebApplicationFactoryType.Local => new LocalApplicationFactory(),
-            WebApplicationFactoryType.Mock => new MockApplicationFactory(),
-            _ => _factory
-        };
 
         public async Task Get_EndpointsReturnSuccess(
             string url,
-            WebApplicationFactoryType factoryType = WebApplicationFactoryType.Development,
             WebApplicationFactoryClientOptions? clientOptions = null)
         {
             // Act
-            var (response, content) = await Get_EndpointsResponse(url, factoryType, clientOptions);
+            var (response, content) = await Get_EndpointsResponse(url, clientOptions);
 
             // Assert: status 200-299
             Assert.True(response.IsSuccessStatusCode);
@@ -38,32 +37,30 @@ namespace x.core
 
         public async Task<(HttpResponseMessage response, string content)> Get_EndpointsResponse(
             string url,
-            WebApplicationFactoryType factoryType = WebApplicationFactoryType.Development,
             WebApplicationFactoryClientOptions? clientOptions = null)
         {
 
             // Arrange
-            var client = _client(factoryType, clientOptions);
+            var client = _client(clientOptions);
 
             // Act
             var response = await client.GetAsync(url);
             var content = await _content(response);
 
-            return (response,content);
+            return (response, content);
         }
 
         public async Task<(HttpResponseMessage response, string content)> Post_EndpointsResponse(
             string url,
             HttpContent? value,
-            WebApplicationFactoryType factoryType = WebApplicationFactoryType.Development,
             WebApplicationFactoryClientOptions? clientOptions = null)
         {
 
             // Arrange
-            var client = _client(factoryType, clientOptions);
+            var client = _client(clientOptions);
 
             // Act
-            var response = await client.PostAsync(url,value);
+            var response = await client.PostAsync(url, value);
             var content = await _content(response);
 
             return (response, content);
@@ -72,12 +69,11 @@ namespace x.core
         public async Task<(HttpResponseMessage response, string content)> Put_EndpointsResponse(
             string url,
             HttpContent? value,
-            WebApplicationFactoryType factoryType = WebApplicationFactoryType.Development,
             WebApplicationFactoryClientOptions? clientOptions = null)
         {
 
             // Arrange
-            var client = _client(factoryType, clientOptions);
+            var client = _client(clientOptions);
 
             // Act
             var response = await client.PutAsync(url, value);
@@ -88,12 +84,11 @@ namespace x.core
 
         public async Task<(HttpResponseMessage response, string content)> Delete_EndpointsResponse(
             string url,
-            WebApplicationFactoryType factoryType = WebApplicationFactoryType.Development,
             WebApplicationFactoryClientOptions? clientOptions = null)
         {
 
             // Arrange
-            var client = _client(factoryType, clientOptions);
+            var client = _client(clientOptions);
 
             // Act
             var response = await client.DeleteAsync(url);
@@ -105,24 +100,37 @@ namespace x.core
         public async Task<(HttpResponseMessage response, string content)> DeleteMany_EndpointsResponse(
             string url,
             HttpContent? value,
-            WebApplicationFactoryType factoryType = WebApplicationFactoryType.Development,
             WebApplicationFactoryClientOptions? clientOptions = null)
         {
 
             // Arrange
-            var client = _client(factoryType, clientOptions);
+            var client = _client(clientOptions);
 
             // Act
-            var response = await client.SendAsync(new HttpRequestMessage() { RequestUri = new Uri($"{client.BaseAddress?.OriginalString}{url}"), Method = HttpMethod.Delete, Content = value});
+            var response = await client.SendAsync(new HttpRequestMessage() { RequestUri = new Uri($"{client.BaseAddress?.OriginalString}{url}"), Method = HttpMethod.Delete, Content = value });
             var content = await _content(response);
 
             return (response, content);
         }
 
-        protected HttpClient _client(WebApplicationFactoryType factoryType = WebApplicationFactoryType.Development,WebApplicationFactoryClientOptions? clientOptions = null)
+        protected HttpClient _client(WebApplicationFactoryClientOptions? clientOptions = null)
+        => _factory.CreateClient(clientOptions ?? new WebApplicationFactoryClientOptions() { });
+
+        protected object? _getService(Type type)
         {
-            var factory = GetFactory(factoryType);
-            return factory.CreateClient(clientOptions ?? new WebApplicationFactoryClientOptions() { });
+            Func<IServiceProvider, object?> _get = (provider) => provider.GetService(type);
+            object? _service = null;
+            try
+            {
+                _service = _get(_factory.Services);
+            }
+            catch(Exception ex)
+            {
+                _output?.Write($"Error getting service {type}\n: {ex.Message}");
+                using var scope = _factory.Services.CreateScope();
+                _service = _get(scope.ServiceProvider);
+            }
+            return _service;
         }
 
         protected async Task<string> _content(HttpResponseMessage response)
@@ -132,32 +140,27 @@ namespace x.core
             if (contentType.Contains("json"))
             {
                 var jdoc = JsonDocument.Parse(content);
-                content = JsonSerializer.Serialize(jdoc, new JsonSerializerOptions { WriteIndented = true });
+                content = JsonSerializer.Serialize(jdoc, _jsonSerializerOptions);
             }
-            _output.Write(
-                $"{response.RequestMessage?.Method} {response.RequestMessage?.RequestUri?.ToString() ?? ""}", 
-                response.StatusCode.ToString(), 
+            _output?.Write(
+                $"{response.RequestMessage?.Method} {response.RequestMessage?.RequestUri?.ToString() ?? ""}",
+                response.StatusCode.ToString(),
                 response.Headers.ToString(),
                 response.Content?.Headers?.ToString() ?? "",
                 content);
             return content;
         }
 
-        public void Check_ServiceImplementation(Type Tinterface, Type ExpectedTimplementation, WebApplicationFactoryType factoryType = WebApplicationFactoryType.Development)
+        public void Check_ServiceImplementation(Type Tinterface, Type ExpectedTimplementation)
         {
             // Arrange
-            var factory = GetFactory(factoryType);
-            object? _service;
-            using (var scope = factory.Services.CreateScope())
-            {
-                _service = scope?.ServiceProvider?.GetService(Tinterface);
-            }
+            object? _service = _getService(Tinterface);          
 
             // Act
-            _output.Write($"Interface: {Tinterface}\n Expected: {ExpectedTimplementation}\n Implementation: {_service}");
+            _output?.Write($"Interface: {Tinterface}\n Expected: {ExpectedTimplementation}\n Implementation: {_service}");
 
             // Assert
-            Assert.True(_service?.GetType() == ExpectedTimplementation);
+            Assert.Equal(ExpectedTimplementation, _service?.GetType());
         }
     }
 }

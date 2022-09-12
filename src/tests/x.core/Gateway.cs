@@ -6,6 +6,7 @@ namespace x.core;
 
 public class Gateway : BaseTest
 {
+    Gateway(Program factory) : base(factory) { }
     public Gateway(Program factory, ITestOutputHelper output) : base(factory, output) { }
 
     [Theory]

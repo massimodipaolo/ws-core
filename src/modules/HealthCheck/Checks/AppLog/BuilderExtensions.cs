@@ -23,19 +23,19 @@ public static class AppLogHealthCheckBuilderExtensions
     public static IHealthChecksBuilder AddAppLog(
         this IHealthChecksBuilder builder, 
         Ws.Core.Extensions.HealthCheck.Checks.AppLog.Options appLogOptions,
-        string name = default, 
+        string? name = default, 
         HealthStatus? failureStatus = default, 
-        IEnumerable<string> tags = default, 
+        IEnumerable<string>? tags = default, 
         TimeSpan? timeout = default) 
     {
         try
         {
-            Type type = null;
+            Type? type = null;
             if (!string.IsNullOrEmpty(appLogOptions.AppLogService))
                 type = Type.GetType(appLogOptions.AppLogService, throwOnError: false);
             // autodiscover
             if (type == null)
-                type = Ws.Core.Extensions.Base.Util.GetAllTypesOf(typeof(IAppLogService)).FirstOrDefault();
+                type = Ws.Core.Extensions.Base.Util.GetAllTypesOf(typeof(IAppLogService))?.FirstOrDefault();
 
             if (type != null)
                 builder.Services.AddTransient(typeof(IAppLogService), type);

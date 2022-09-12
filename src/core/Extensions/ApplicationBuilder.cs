@@ -20,12 +20,12 @@ public static class ApplicationBuilder
         ILogger logger = app.Services.GetService<ILoggerFactory>()!.CreateLogger($"{nameof(ExtCore)}.{nameof(ExtCore.Application)}");
         foreach (IConfigureApp item in from a in ExtensionManager.GetInstances<IConfigureApp>()
                                           .UnionInjector()
-                                          orderby a.Priority
-                                          select a)
+                                       orderby a.Priority
+                                       select a)
         {
             // https://github.com/dotnet/roslyn-analyzers/issues/5626#issuecomment-1033240500
-            logger.LogInformation("Executing Configure action '{type}'",item.GetType().FullName);
-            item.Execute(app);
+            logger.LogInformation("Executing Configure action '{type}'", item.GetType().FullName);
+            item.Use(app);
         }
     }
 }

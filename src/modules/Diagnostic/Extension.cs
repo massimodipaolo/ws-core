@@ -17,13 +17,13 @@ public class Extension : Base.Extension, ICarterModule
         app.MapPost($"{prefix}/{nameof(AppRuntime.Stop)}".ToLower(), AppRuntime.Stop).WithTags(tag);
     }
 
-    public override void Execute(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
+    public override void Add(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
     {
         _addHttpLogging(builder);
         _addProfiler(builder);
     }
 
-    public override void Execute(WebApplication app)
+    public override void Use(WebApplication app)
     {
         if (_options.HttpLogging?.Enable == true)
             app.UseHttpLogging();

@@ -5,6 +5,7 @@ namespace x.core;
 
 public class ImageProcessor : BaseTest
 {
+    ImageProcessor(Program factory) : base(factory) { }
     public ImageProcessor(Program factory, ITestOutputHelper output) : base(factory, output) { }
 
     [Theory]

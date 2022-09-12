@@ -29,7 +29,7 @@
         ]
       }
     },
-    "Duration": {
+    "EntryExpiration": {
       "description": "Tier cache expiration in minutes",
       "type": [
         "object",
@@ -37,19 +37,19 @@
       ],
       "properties": {
         "fast": {
-          "type": "integer",
+          "type": "number",
           "default": 10
         },
         "medium": {
-          "type": "integer",
+          "type": "number",
           "default": 60
         },
         "slow": {
-          "type": "integer",
+          "type": "number",
           "default": 240
         },
         "never": {
-          "type": "integer",
+          "type": "number",
           "default": 1440
         }
       }
@@ -110,6 +110,9 @@
             "null"
           ]
         },
+        "useSslStream": {
+          "type": "boolean"
+        },
         "nodeLocatorFactory": {
           "$ref": "#/definitions/IProviderFactory<IMemcachedNodeLocator>"
         },
@@ -151,6 +154,9 @@
             "string",
             "null"
           ]
+        },
+        "useSslStream": {
+          "type": "boolean"
         },
         "nodeLocatorFactory": {
           "$ref": "#/definitions/IProviderFactory<IMemcachedNodeLocator>"
@@ -219,7 +225,7 @@
       "$ref": "#/definitions/MemcachedClientOptions"
     },
     "entryExpirationInMinutes": {
-      "$ref": "#/definitions/Duration"
+      "$ref": "#/definitions/EntryExpiration"
     }
   }
 }

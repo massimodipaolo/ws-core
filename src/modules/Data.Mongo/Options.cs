@@ -3,5 +3,5 @@
 namespace Ws.Core.Extensions.Data.Mongo;
 
 public class Options : IOptions
-{    public IEnumerable<Extensions.Data.DbConnection> Connections { get; set; }
+{    public IEnumerable<Extensions.Data.DbConnection>? Connections { get; set; }
 }
