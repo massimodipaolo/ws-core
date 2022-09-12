@@ -26,7 +26,7 @@ No other modules are required.
 
 You need to define 3 options to configure the module:
 
-1. **serialization** (_optional_): configuration options of the `Shared.Serialization` module to customize the default `JsonOption` configuration used in the web service.
+1. **serialization** (_optional_): configuration options of the [Shared.Serialization](../../shared/Serialization/Options.cs) option class to customize the default `JsonOption` configuration used in the web service.
 1. **session** (_optional_): Adds the `Microsoft.AspNetCore.Session.SessionMiddleware` to automatically enable session state for the application.
 
    - **cookie**:

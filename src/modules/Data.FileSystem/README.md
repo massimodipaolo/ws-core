@@ -32,7 +32,7 @@ No other modules are required.
 You need to define 2 options to configure the module:
 
 1. **folder**: physical folder on the filesystem for the storage of the data json files.
-2. **converters**: configuration options of the `Shared.Serialization` module to use to serialize data.
+2. **converters**: configuration options of the [Shared.Serialization](../../shared/Serialization/Options.cs) option class used to serialize data.
 
 #### Configuration example
 
