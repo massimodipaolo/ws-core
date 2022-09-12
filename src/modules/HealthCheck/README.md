@@ -354,7 +354,7 @@ You can access to the configured endpoints to monitor the health check status.
 
 ### Create custom health checks example
 
-To create your own health checks you need to implement the [IHealthCheck](https://docs.microsoft.com/it-it/dotnet/api/microsoft.extensions.diagnostics.healthchecks.ihealthcheck) interface and add it to the `ConfigureServices` method of the application `Startup` class or into the [Execute](../ExtensionBase/README.md#usage) method of a module/extension.
+To create your own health checks you need to implement the [IHealthCheck](https://docs.microsoft.com/it-it/dotnet/api/microsoft.extensions.diagnostics.healthchecks.ihealthcheck) interface and add it to the `Add` method of the application `Startup` class or into the [Add](../ExtensionBase/README.md#usage) method of a module/extension.
 
 ```csharp
 public class MyService : IHealthCheck
@@ -371,10 +371,8 @@ public class MyService : IHealthCheck
 ```csharp
 public class Extension: Ws.Core.Extensions.Base.Extension
 {
-    public override void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
+    public override void Add(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
     {
-        base.Execute(builder, serviceProvider);
-
         // adding MyService health check implementation.
         builder.Services.AddHealthChecks().AddCheck<MyService>("my-service", tags: new[] {"custom", "service"});
     }
@@ -431,7 +429,16 @@ You can register your `IAppLogService` implementation in 3 ways:
 2. Adding a transient service in `Startup` class before extensions discovery
 
 ```csharp
-  builder.Services.AddTransient(typeof(IAppLogService), typeof(testApp.HealthCheckAppLogService));
+public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
+{
+    public override void Add(WebApplicationBuilder builder)
+    {
+        // IAppLogService implementation service registration
+        builder.Services.AddTransient(typeof(IAppLogService), typeof(Vidly.Core.Api.Infrastructure.HealthCheckAppLogService));
+
+        base.Add(builder);
+    }
+}
 ```
 
 3. Letting auto discovery register your implementation automatically.

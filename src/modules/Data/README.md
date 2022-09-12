@@ -251,16 +251,14 @@ If you have installed only an implementation of `IRepository` you can directly u
 
 If you have multiple implementations installed you can force the one to use using the `Priority` key in the JSON config of the module, only the one with the highest priority (lowest number) will be resolved for the whole application.
 
-If you want to use an implementation for a type of entity and another implementation for another type of entity you must manually override the `IRepository` registration for the entity in the `ConfigureServices` method of the `Startup` class:
+If you want to use an implementation for a type of entity and another implementation for another type of entity you must manually override the `IRepository` registration for the entity in the `Add` method of the `Startup` class:
 
 ```csharp
    public class Startup : Ws.Core.Startup<Ws.Core.AppConfig>
    {
-       public override void ConfigureServices(WebApplicationBuilder builder)
+       public override void Add(WebApplicationBuilder builder)
        {
-           base.ConfigureServices(builder);
-
-           Ws.Core.AppInfo<Ws.Core.AppConfig>.Set(env: env, config: config, services: builder.Services);
+           base.Add(builder);
 
            // override IRepository<Product, int> implementation
            builder.Services.AddTransient(typeof(Ws.Core.Extensions.Data.IRepository<Product, int>), typeof(Ws.Core.Extensions.Data.Repository.FileSystem<Product, int>));

@@ -77,21 +77,23 @@ Using the `Extension` base class you can create your own **modules** or **extens
 
 The main difference between a module and an extension is that a module is a stand-alone class library with a configuration option class integrated in the `ext-settings.json` while the extension is defined inside your application without the `IOption` implementation.
 
-For both approaches you always need to implement the execute methods:
+For both approaches you always need to implement these methods:
 
 ```csharp
-    //IConfigureBuilder, used in "ConfigureServices" method of the app "Startup" class
-    public virtual void Execute(WebApplicationBuilder builder, IServiceProvider serviceProvider = null)
+    // Add services to the container
+    public virtual void Add(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
     {
     }
 ```
 
 ```csharp
-    //IConfigureApp, used in "Use" method of the app "Startup" class
-    public virtual void Execute(WebApplication app)
+    // Add middleware components to the pipeline
+    public virtual void Use(WebApplication app)
     {
     }
 ```
+
+See [ASP.NET Core fundamentals](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/) to learn more about services and middlewares.
 
 ### <a id="usage-extension"></a>Create an extension
 
@@ -114,7 +116,7 @@ In this example we are creating an extension that adds `Hangfire` to our applica
 
         public override int Priority => 620;
 
-        public override void Execute(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
+        public override void Add(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
         {
             builder.Services
                 .AddHangfire(_ => _.UseMemoryStorage())
@@ -135,7 +137,7 @@ In this example we are creating an extension that adds `Hangfire` to our applica
                 failureStatus: Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded);
         }
 
-        public override void Execute(WebApplication app)
+        public override void Use(WebApplication app)
         {
             app.UseHangfireDashboard("/hangfire", options: new DashboardOptions()
             {
@@ -152,7 +154,7 @@ In order to create a module you need to:
 
 1. Implement the `IOptions` interface declaring the options needed to configure the module in the `ext-settings.json` file. As a convention both file and class are called `Options`.
 
-2. Implement the `Extension` base class declaring the `Options` implemented for the module and implementing the execute methods. As a convention both file and class are called `Extension`.
+2. Implement the `Extension` base class declaring the `Options` implemented for the module and implementing the `Add` and `Use` methods. As a convention both file and class are called `Extension`.
 
 3. Run the `ws.core.cli` command `GenerateJsonSchema` passing your custom module folder as a parameter to generate the `json-schema.json` files that defines your custom modules configuration.
 
@@ -279,7 +281,7 @@ public class Extension: Ws.Core.Extensions.Base.Extension
 {
     private Options _options => GetOptions<Options>() ?? new Options();
 
-    public override void Execute(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
+    public override void Add(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
     {
         builder.Services
             .AddHangfire(_ => _.UseMemoryStorage())
@@ -300,7 +302,7 @@ public class Extension: Ws.Core.Extensions.Base.Extension
         failureStatus: _options.HealthChecks.FailureStatus);
     }
 
-    public override void Execute(WebApplication app)
+    public override void Use(WebApplication app)
     {
         app.UseHangfireDashboard(_options.Dashboard.Path, options: new DashboardOptions()
             {
