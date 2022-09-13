@@ -38,19 +38,19 @@ A set of static methods useful to access the registered assemblies.
 
 ```csharp
 // Returns all the registered assemblies
-IEnumerable<Assembly> GetAllAssemblies()
+IEnumerable<Assembly> GetAllAssemblies();
 
 // Returns all the registered types
-IEnumerable<Type>? GetAllTypes()
+IEnumerable<Type>? GetAllTypes();
 
 // Returns all the registered types of a given type (i.e GetAllTypesOf(typeof(IMessage)))
-IEnumerable<Type>? GetAllTypesOf(Type type)
+IEnumerable<Type>? GetAllTypesOf(Type type);
 
 // Returns all the registered types of a given class or interface (i.e GetAllTypesOf(IMessage))
-IEnumerable<Type>? GetAllTypesOf<T>()
+IEnumerable<Type>? GetAllTypesOf<T>();
 
 // Returns a registered type by full name
-Type? GetType(string typeFullName)
+Type? GetType(string typeFullName);
 ```
 
 #### <a id="description-util-locker"></a>Locker class
@@ -59,19 +59,19 @@ A class based on [System.Threading.SemaphoreSlim](https://docs.microsoft.com/it-
 
 ```csharp
 // Create a Lock instance with default maxCount = 1
-Locker Lock()
+Locker Lock();
 
 // Create a Lock instance with a given maxCount value
-Locker(int maxCount)
+Locker(int maxCount);
 
 // Acquire lock
-Locker Lock()
+Locker Lock();
 
 // Async version of the Lock method
-async Task<Locker> LockAsync()
+async Task<Locker> LockAsync();
 
 // Release lock on dispose
-void Dispose()
+void Dispose();
 ```
 
 ## <a id="setup"></a>Setup
