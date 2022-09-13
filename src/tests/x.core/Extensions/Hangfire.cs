@@ -27,14 +27,14 @@ public class Hangfire : Ws.Core.Extensions.Base.Extension /*ExtCore.Infrastructu
                 if (!_addInit)
                 {
                     builder.Services
-            .AddHangfire(_ => _.UseInMemoryStorage())
-            .AddHangfireServer(_ =>
-            {
-                _.HeartbeatInterval = new System.TimeSpan(0, 1, 0);
-                _.ServerCheckInterval = new System.TimeSpan(0, 1, 0);
-                _.SchedulePollingInterval = new System.TimeSpan(0, 1, 0);
-                _.Queues = new string[] { "default" };
-            });
+                        .AddHangfire(_ => _.UseInMemoryStorage())
+                        .AddHangfireServer(_ =>
+                        {
+                            _.HeartbeatInterval = new System.TimeSpan(0, 1, 0);
+                            _.ServerCheckInterval = new System.TimeSpan(0, 1, 0);
+                            _.SchedulePollingInterval = new System.TimeSpan(0, 1, 0);
+                            _.Queues = new string[] { "default" };
+                        });
                     builder.Services.AddHealthChecks()
                         .AddHangfire(_ =>
                         {

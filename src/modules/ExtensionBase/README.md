@@ -3,6 +3,9 @@
 #### Table of Contents
 
 1. [Description](#description)
+   - [Util class](#description-util)
+     - [Reflection static methods](#description-util-reflection)
+     - [Locker class](#description-util-locker)
 1. [Setup](#setup)
    - [Requirements](#setup-requirements)
    - [Configuration](#setup-configuration)
@@ -25,6 +28,51 @@ The `ExtensionBase` module exposes:
 - `Extension` base class used to implement modules and extensions.
 - `IOptions` interface used to implement module options definition.
 - `Configuration` class that defines the structure of the `extConfig` section of the `ext-settings.json`.
+- `Util` class with utility methods and classes to manage services dependency injection.
+
+### <a id="description-util"></a>Util class
+
+#### <a id="description-util-reflection"></a>Reflection static methods
+
+A set of static methods useful to access the registered assemblies.
+
+```csharp
+// Returns all the registered assemblies
+IEnumerable<Assembly> GetAllAssemblies()
+
+// Returns all the registered types
+IEnumerable<Type>? GetAllTypes()
+
+// Returns all the registered types of a given type (i.e GetAllTypesOf(typeof(IMessage)))
+IEnumerable<Type>? GetAllTypesOf(Type type)
+
+// Returns all the registered types of a given class or interface (i.e GetAllTypesOf(IMessage))
+IEnumerable<Type>? GetAllTypesOf<T>()
+
+// Returns a registered type by full name
+Type? GetType(string typeFullName)
+```
+
+#### <a id="description-util-locker"></a>Locker class
+
+A class based on [System.Threading.SemaphoreSlim](https://docs.microsoft.com/it-it/dotnet/api/system.threading.semaphoreslim). It's used to lock the service container before access.
+
+```csharp
+// Create a Lock instance with default maxCount = 1
+Locker Lock()
+
+// Create a Lock instance with a given maxCount value
+Locker(int maxCount)
+
+// Acquire lock
+Locker Lock()
+
+// Async version of the Lock method
+async Task<Locker> LockAsync()
+
+// Release lock on dispose
+void Dispose()
+```
 
 ## <a id="setup"></a>Setup
 
@@ -102,6 +150,8 @@ In order to create an application extension you need to implement the `Extension
 - **Name**: the name of the extension.
 - **Priority**: the priority of injection in the middleware pipeline. Be careful to avoid conflicts with the priorities already defined in the `ext-settings.json`.
 
+> **Note**: Remember to use the `Locker` before accessing the service container.
+
 #### Hangfire extension example
 
 In this example we are creating an extension that adds `Hangfire` to our application (server, healtchecks, dashboard) using the memory storage. All configurations parameters are hard-coded in the extension implementation.
@@ -112,29 +162,36 @@ In this example we are creating an extension that adds `Hangfire` to our applica
 
     public class Hangfire : Ws.Core.Extensions.Base.Extension
     {
+        private static bool _addInit { get; set; } = false;
+        private static readonly Ws.Core.Extensions.Base.Util.Locker _addMutexInit = new();
+
         public override string Name => typeof(Hangfire).Name;
 
         public override int Priority => 620;
 
         public override void Add(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
         {
-            builder.Services
-                .AddHangfire(_ => _.UseMemoryStorage())
-                .AddHangfireServer(_ =>
-                {
-                    _.HeartbeatInterval = new System.TimeSpan(0, 1, 0);
-                    _.ServerCheckInterval = new System.TimeSpan(0, 1, 0);
-                    _.SchedulePollingInterval = new System.TimeSpan(0, 1, 0);
-                    _.Queues = new string[] { "default" };
-                });
-
-            builder.Services.AddHealthChecks().AddHangfire(_ =>
-                {
-                    _.MinimumAvailableServers = 1;
-                    _.MaximumJobsFailed = 2;
-                },
-                tags: new[] { "tool", "cron" },
-                failureStatus: Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded);
+            if (!_addInit)
+                using (_addMutexInit.Lock()) // Using Locker before accessing service container
+                    if (!_addInit)
+                    {
+                        builder.Services
+                            .AddHangfire(_ => _.UseMemoryStorage())
+                            .AddHangfireServer(_ =>
+                            {
+                                _.HeartbeatInterval = new System.TimeSpan(0, 1, 0);
+                                _.ServerCheckInterval = new System.TimeSpan(0, 1, 0);
+                                _.SchedulePollingInterval = new System.TimeSpan(0, 1, 0);
+                                _.Queues = new string[] { "default" };
+                            });
+                        builder.Services.AddHealthChecks().AddHangfire(_ =>
+                        {
+                            _.MinimumAvailableServers = 1;
+                            _.MaximumJobsFailed = 2;
+                        },
+                        tags: new[] { "tool", "cron" },
+                        failureStatus: Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded);
+                    }
         }
 
         public override void Use(WebApplication app)
