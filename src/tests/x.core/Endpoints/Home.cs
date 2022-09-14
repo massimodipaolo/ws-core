@@ -33,7 +33,14 @@ public class Home : ICarterModule
           <li class=""list-group-item""><samp>/message/send</samp> Injector decorators <a href=""/message/send"" target=""_blank""> => </a></li>
           <li class=""list-group-item""><samp>/swagger</samp> Api discover <a href=""/swagger"" target=""_blank""> => </a></li>
           <li class=""list-group-item""><samp>/profiler</samp> Mini profiler <a href=""/mini-profiler-resources/results-index"" target=""_blank""> => </a> | <a href=""/mini-profiler-resources/results-list"" target=""_blank""> List </a> | <a href=""/mini-profiler-resources/results"" target=""_blank""> Last </a></li>
-        </ul>
+        </ul>        
+        <h2><img src=""https://www.docker.com/wp-content/uploads/2022/03/horizontal-logo-monochromatic-white.png"" class=""img-fluid"" style=""max-width:150px""/></h2>
+        <hr>        
+        <ul class=""list-group list-group-flush"">
+          <li class=""list-group-item""><samp>/code-quality</samp> sonarqube <a href=""http://localhost:9001"" target=""_blank""> => </a></li>
+          <li class=""list-group-item""><samp>/log</samp> datalust/seq <a href=""http://localhost:5380"" target=""_blank""> => </a></li>
+          <li class=""list-group-item""><samp>/mail</samp> analogic/poste.io <a href=""http://localhost:2080/admin/dashboard"" target=""_blank""> dashboard </a> | <a href=""http://localhost:2080/webmail/"" target=""_blank""> webmail </a></li>
+        </ul> 
         </div>
     </body>
 </html>");
@@ -51,7 +58,7 @@ class HtmlResult : IResult
     public async Task ExecuteAsync(HttpContext httpContext)
     {
         httpContext.Response.ContentType = $"{System.Net.Mime.MediaTypeNames.Text.Html};charset=utf-8;";
-        httpContext.Response.ContentLength = System.Text.Encoding.UTF8.GetByteCount(_htmlContent);        
+        httpContext.Response.ContentLength = System.Text.Encoding.UTF8.GetByteCount(_htmlContent);
         await httpContext.Response.WriteAsync(_htmlContent);
     }
 }

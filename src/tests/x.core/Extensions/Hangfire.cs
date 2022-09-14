@@ -1,6 +1,7 @@
 ﻿using Carter;
 using ExtCore.Infrastructure.Actions;
 using Hangfire;
+using Hangfire.Dashboard;
 
 namespace x.core.Extensions;
 
@@ -19,6 +20,22 @@ public class Hangfire : Ws.Core.Extensions.Base.Extension /*ExtCore.Infrastructu
     }
 
     private void enqueue(string text) => BackgroundJob.Enqueue(() => Console.WriteLine($"🄵🄾🄾 - {text} - 𝖇𝖆𝖗"));
+
+    public class DashboardAuthorizationFilter : IDashboardAuthorizationFilter
+    {
+        private readonly WebApplication? _app;
+        public DashboardAuthorizationFilter(WebApplication app)
+        {
+            _app = app;
+        }
+        public bool Authorize(DashboardContext context)
+        {
+            return 
+                _app?.Environment?.IsProduction() == false
+                ||
+                context.GetHttpContext()?.User?.Identity?.IsAuthenticated == true;
+        }
+    }
 
     public override void Add(WebApplicationBuilder builder, IServiceProvider? serviceProvider = null)
     {
@@ -45,7 +62,13 @@ public class Hangfire : Ws.Core.Extensions.Base.Extension /*ExtCore.Infrastructu
     }
     public override void Use(WebApplication app)
     {
-        app.UseHangfireDashboard("/hangfire", options: new DashboardOptions() { StatsPollingInterval = 10 /*seconds*/ * 1000, DisplayStorageConnectionString = true });
+
+        app.UseHangfireDashboard("/hangfire", options: new DashboardOptions()
+        {
+            Authorization = new[] { new DashboardAuthorizationFilter(app) },
+            StatsPollingInterval = 10 /*seconds*/ * 1000,
+            DisplayStorageConnectionString = true
+        });
         enqueue($"{nameof(Extensions)}/{Name} started!");
     }
 }

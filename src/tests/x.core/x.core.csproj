@@ -12,8 +12,8 @@
 	<PropertyGroup>
 		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
 		<UserSecretsId>5157c7a3-7464-47a3-86e8-4ecac9f3b402</UserSecretsId>
-		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<DockerfileContext>..\..\..</DockerfileContext>
+		<SonarQubeExclude>True</SonarQubeExclude>
+		<!--DockerComposeProjectPath>..\docker\docker-compose.dcproj</DockerComposeProjectPath-->
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -24,12 +24,13 @@
 		<Folder Include="wwwroot\**\" />
 		<Folder Remove="wwwroot\media\**;wwwroot\is-cache\**" />
 	</ItemGroup>
-	
 	<ItemGroup>
 		<None Update="data\ws-core.db" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="docker-compose.override.yml">
+		  <DependentUpon>docker-compose.yml</DependentUpon>
+		</None>
 		<None Update="Extensions\**" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
-
 	<ItemGroup>
 		<Protobuf Include="Protos\data.proto" GrpcServices="Server" />
 	</ItemGroup>	

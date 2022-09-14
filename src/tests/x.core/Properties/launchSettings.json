@@ -6,7 +6,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:60935;http://localhost:60936"
+      "applicationUrl": "http://localhost:60936;https://localhost:60937"
     },
     "x.core.local": {
       "commandName": "Project",
@@ -14,15 +14,15 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Local"
       },
-      "applicationUrl": "https://localhost:60935;http://localhost:60936"
+      "applicationUrl": "http://localhost:60936;https://localhost:60937"
     },
     "WSL": {
       "commandName": "WSL2",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:60935",
+      "launchUrl": "https://localhost:60937",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "https://localhost:60935;http://localhost:60936"
+        "ASPNETCORE_URLS": "http://localhost:60936;https://localhost:60937"
       }
     },
     "WSL.local": {
@@ -31,22 +31,23 @@
       "launchUrl": "https://localhost:60935",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Local",
-        "ASPNETCORE_URLS": "https://localhost:60935;http://localhost:60936"
+        "ASPNETCORE_URLS": "http://localhost:60936;https://localhost:60937"
       }
     },
-    "Docker": {
-      "commandName": "Docker",
-      "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
-      "DockerfileRunArguments": "--name x.core --hostname x.core --network container-network",
+    "docker-build": {
+      "commandName": "Executable",
+      "executablePath": "pwsh",
+      "commandLineArgs": "-Command docker build -f src/tests/x.core/Dockerfile -t x.core:dev .",
+      "workingDirectory": "$(SolutionDir)"
+    },
+    "docker-stack": {
+      "commandName": "Executable",
+      "executablePath": "pwsh",
+      "commandLineArgs": "-Command docker compose up -d && Start-Process \"chrome.exe\" \"https://localhost:60937\"",
+      "workingDirectory": "$(ProjectDir)",
       "environmentVariables": {
-        "_ASPNETCORE_URLS": "https://+:443;http://+:80",
-        "ASPNETCORE_HTTPS_PORT": "60935",
         "ASPNETCORE_ENVIRONMENT": "Docker"
-      },
-      "httpPort": 60936,
-      "useSSL": true,
-      "sslPort": 60935
+      }
     }
   }
 }

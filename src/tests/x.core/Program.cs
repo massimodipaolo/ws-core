@@ -122,7 +122,7 @@ namespace x.core
             {
                 var addressFeature = new ServerAddressesFeature();
                 addressFeature.Addresses.Add("http://localhost:60936");
-                addressFeature.Addresses.Add("https://localhost:60935");
+                addressFeature.Addresses.Add("https://localhost:60937");
                 server?.Features?.Set<IServerAddressesFeature>(addressFeature);
             }
         }

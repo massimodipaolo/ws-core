@@ -1,0 +1,179 @@
+name: ws-core
+services:
+  x.core:
+    image: ${DOCKER_REGISTRY-}x.core:dev
+    hostname: x.core
+    #build:
+    #  context: .
+    #  dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_HTTPS_PORT=60937,
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/https/x.core.pfx 
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=2D4314AD-1E5A-4D22-8EEE-74ECEA8201DD
+      - ASPNETCORE_URLS=https://+;http://+
+    ports:
+      - "60936:80"
+      - "60937:443"
+    volumes:
+       - ~/.aspnet/https:/root/.aspnet/https:ro
+       - ~/.aspnet/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+      #- ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      #- ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro    
+    networks:
+        - container-network
+    depends_on:
+        - mssql-01
+        - mssql-02
+        - seq
+    entrypoint: ["/bin/sh", "-c"]
+    command: >
+        "./wait-for-it.sh mssql-01:1433 -t 30 &&
+        ./wait-for-it.sh mssql-02:1433 &&
+        ./wait-for-it.sh seq:80 &&
+        ./wait-for-it.sh seq:5341 &&
+        dotnet x.core.dll"
+  mariadb-01:
+    hostname: mariadb-01
+    image: mariadb:latest
+    environment:
+        - MARIADB_ROOT_PASSWORD=WS-1234-secret
+    volumes:
+        - mariadb-backups:/backup
+        - mariadb-01:/var/lib/mysql
+    ports:
+        - "33061:3306"
+    networks:
+        - container-network
+  mongo-01:
+    hostname: mongo-01
+    image: mongo:latest
+    environment:
+        - MONGO_INITDB_ROOT_USERNAME=root
+        - MONGO_INITDB_ROOT_PASSWORD=WS-1234-secret
+    volumes:
+        - mongo-01:/data/db
+    ports:
+        - "27017:27017"
+    networks:
+        - container-network
+  mssql-01:
+    hostname: mssql-01
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=WS-1234-secret
+    volumes:
+        - mssql-backups:/var/backups
+        - mssql-01:/var/opt/mssql/data
+    ports:
+        - "14331:1433"
+    networks:
+        - container-network
+  mssql-02:
+    hostname: mssql-02
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    user: "0:0"
+    environment:
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=WS-1234-secret
+    volumes:
+        - mssql-backups:/var/backups
+        - mssql-02:/var/opt/mssql/data
+    ports:
+        - "14332:1433"
+    networks:
+        - container-network
+  mailserver:    
+    hostname: mailserver
+    image: analogic/poste.io
+    environment:
+        - HTTPS=OFF
+        - TZ=Europe/Rome
+        - DISABLE_CLAMAV=TRUE
+        - DISABLE_RSPAMD=TRUE
+        - VIRTUAL_HOST=mail.local
+    volumes:
+        - mailserver:/data
+    ports:
+        - "2025:25"
+        - "2080:80"
+        - "2110:110"
+        - "2143:143"
+        - "2443:443"
+        - "2993:993"
+        - "2995:995"
+        - "4190:4190"
+    networks:
+        - container-network
+  redis-01:
+    hostname: redis-01
+    image: redis:latest
+    environment:
+        - ENVIRONMENT=Development
+    volumes:
+        - redis-01:/data
+    ports:
+        - "6379:6379"
+    networks:
+        - container-network
+  memcached-01:
+    hostname: memcached-01
+    image: memcached:latest
+    ports:
+        - "11211:11211"
+    networks:
+        - container-network
+  seq:
+    hostname: seq
+    image: datalust/seq:latest
+    environment:
+        - ACCEPT_EULA=Y
+    volumes:
+        - seq:/data
+    ports:
+        - "5380:80"
+        - "5341:5341"
+    networks:
+        - container-network
+  sonarqube:
+    hostname: sonarqube
+    image: sonarqube:latest
+    environment:
+        - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+        - sonarqube_data:/opt/sonarqube/data
+        - sonarqube_extensions:/opt/sonarqube/extensions
+        - sonarqube_logs:/opt/sonarqube/logs
+    ports:
+        - "9001:9000"
+    networks:
+        - container-network
+volumes:
+  mariadb-backups:
+    external: true  
+  mariadb-01:
+    external: true
+  mongo-01: 
+    external: true
+  mssql-backups:
+    external: true  
+  mssql-01:
+    external: true
+  mssql-02:
+    external: true
+  mailserver:
+    external: true  
+  redis-01: 
+    external: true
+  seq: 
+    external: true
+  sonarqube_data: 
+    external: true
+  sonarqube_extensions: 
+    external: true
+  sonarqube_logs: 
+    external: true
+networks:
+  container-network:
+    external: true  

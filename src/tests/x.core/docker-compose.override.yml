@@ -1,0 +1,5 @@
+services:
+  x.core:
+    build:
+        args:
+            - foo=bar
