@@ -16,6 +16,15 @@
       },
       "applicationUrl": "http://localhost:60936;https://localhost:60937"
     },
+    "x.core.local.standalone": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "https://localhost:60935",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Local",
+        "ASPNETCORE_URLS": "http://localhost:60934;https://localhost:60935"
+      }
+    },
     "WSL": {
       "commandName": "WSL2",
       "launchBrowser": true,
