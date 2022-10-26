@@ -8,6 +8,7 @@
 		<RootNamespace>benchmark</RootNamespace>
 		<IsPackable>false</IsPackable>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
 	</PropertyGroup>
 
 	<ItemGroup>

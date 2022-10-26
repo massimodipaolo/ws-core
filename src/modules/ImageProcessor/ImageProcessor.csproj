@@ -14,7 +14,8 @@
 		<PackageTags>image processor</PackageTags>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>		
-		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>		
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
 	</PropertyGroup>
 
 	<ItemGroup>

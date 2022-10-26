@@ -13,7 +13,8 @@
 		<PackageReleaseNotes>Health check</PackageReleaseNotes>
 		<PackageTags>extension base</PackageTags>
 		<PreBuildEvent />
-		<ImplicitUsings>enable</ImplicitUsings>	
+		<ImplicitUsings>enable</ImplicitUsings>
+		<NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
 	</PropertyGroup>
 
 	<PropertyGroup>

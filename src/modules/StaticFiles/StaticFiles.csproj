@@ -10,9 +10,10 @@
 		<Copyright>© Massimo Di Paolo. All rights reserved.</Copyright>
 		<Description>This extension enables the web app to serve static files. A physical file provider is used.</Description>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-		<PackageReleaseNotes>.netcore 3</PackageReleaseNotes>
+		<PackageReleaseNotes>.netcore 6</PackageReleaseNotes>
 		<PackageTags>static files staticfiles </PackageTags>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
 	</PropertyGroup>
 
 	<PropertyGroup>

@@ -13,7 +13,8 @@
 		<PackageReleaseNotes>Health check</PackageReleaseNotes>
 		<PackageTags></PackageTags>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>		
+		<Nullable>enable</Nullable>
+		<NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
 	</PropertyGroup>
 
 	<PropertyGroup>

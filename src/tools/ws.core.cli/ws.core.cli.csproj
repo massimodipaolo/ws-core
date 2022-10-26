@@ -6,7 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>ws.core.cli</AssemblyName> 
-    <RootNamespace>ws.core.cli</RootNamespace>     	  
+    <RootNamespace>ws.core.cli</RootNamespace>
+	<NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
   </PropertyGroup>
 
   <ItemGroup>

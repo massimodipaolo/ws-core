@@ -1,6 +1,7 @@
 ﻿using Carter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -36,7 +37,6 @@ public class Startup<TOptions> : Startup where TOptions : class, IAppConfigurati
     // This method gets called by the runtime. Use this method to add services to the container.
     // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
     public virtual void Add(WebApplicationBuilder builder) => _add(builder);
-
     private void _add(WebApplicationBuilder builder)
     {
         var services = builder.Services;
@@ -56,7 +56,7 @@ public class Startup<TOptions> : Startup where TOptions : class, IAppConfigurati
         builder.AddExtCore(ExtCoreExtensionsPath(config, env), includingSubpaths: true);
 
         var carterModules = Ws.Core.Extensions.Base.Util.GetAllTypesOf<ICarterModule>();
-        if (carterModules?.Any() == true)
+        if (carterModules?.ToList()?.Any() == true)
             builder.Services.AddCarter(configurator: _ => _
                 .WithModules(carterModules.ToArray())
                 );
@@ -89,6 +89,7 @@ public class Startup<TOptions> : Startup where TOptions : class, IAppConfigurati
         app.UseExtCore();
 
         app.MapCarter();
+        
 
         Ws.Core.AppInfo<TOptions>.ConfigureApp(app: app, appConfigMonitor, extConfigMonitor, loggerFactory: app.Services?.GetRequiredService<ILoggerFactory>(), lifetime);
 

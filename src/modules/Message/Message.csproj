@@ -13,6 +13,7 @@
 		<PackageReleaseNotes>Health check</PackageReleaseNotes>
 		<PackageTags>extension message, email, smtp</PackageTags>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
 	</PropertyGroup>
 
 	<PropertyGroup>
