@@ -12,5 +12,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Obfuscator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExceptionConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Options.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util.cs" />
   </ItemGroup>
 </Project>
