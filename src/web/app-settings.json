@@ -1,0 +1,24 @@
+﻿{
+  "appConfig": {
+    "cronJob": {
+      "Enabled": true,
+      "RecurringJobsCronExpression": {
+        "PayloadCms.Sync": "0 5 * * *"
+      }
+    },
+    "gateway": {
+      "payloadCms": {
+        "host": "http://localhost:4000",
+        "username": "admin@bowl-payload.com",
+        "password": "admin",
+        "slugs": {
+          "auth": "users",
+          "category": "category",
+          "market": "market",
+          "locale": "locale",
+          "excludeFromStore": [ "media", "page" ]
+        }
+      }
+    }
+  }
+}

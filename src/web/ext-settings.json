@@ -1,0 +1,281 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/massimodipaolo/ws-core/master/src/modules/json-schema.json",
+  "extConfig": {
+    "folder": "Extensions",
+    "enableShutDownOnChange": false,
+    "assemblies": {
+      "Ws.Core.Extensions.Cors": {
+        "priority": 200,
+        "options": {
+          "policies": [
+            {
+              "name": "pAllowAnyVerb",
+              "allowCredentials": true,
+              "origins": [ "http://localhost:3000" ]
+            }
+          ]
+        }
+      },
+      "Ws.Core.Extensions.Api": {
+        "priority": 300,
+        "options": {
+          "serialization": {
+            "nullValueHandling": "Ignore",
+            "formatting": "Indented",
+            "referenceLoopHandling": "Ignore",
+            "converters": [
+              {
+                "assembly": "Ws.Core.Extensions.Api",
+                "type": "Ws.Core.Shared.Serialization.ExceptionConverter"
+              }
+            ]
+          },
+          "documentation": {
+            "routePrefix": "swagger",
+            "securityDefinitions": {
+              "bearer": true,
+              "cookies": [ ".auth.api.Cookie" ]
+            },
+            "ui": {
+              "injectCss": "/swagger-ui/custom.css",
+              "injectJs": "/swagger-ui/custom.js"
+            },
+            "endpoints": [
+              {
+                "id": "public",
+                "title": "public api",
+                "version": "v1"
+              },
+              {
+                "id": "admin"
+              }
+            ],
+            "xmlComments": {
+              "fileName": "ws.bom.oven.web.xml",
+              "includeControllerComments": true
+            }
+          }
+        }
+      },
+      "_Ws.Core.Extensions.Data.Cache": {
+        "priority": 300,
+        "options": {
+          "entryExpirationInMinutes": {
+            "fast": 1,
+            "medium": 5,
+            "slow": 60,
+            "never": 1440
+          }
+        }
+      },
+      "Ws.Core.Extensions.Data.FileSystem": {
+        "priority": 440,
+        "options": {
+          "folder": "./data",
+          "serialization": {
+            "nullValueHandling": "Ignore",
+            "formatting": "Indented",
+            "referenceLoopHandling": "Ignore",
+            "converters": [
+              {
+                "assembly": "Ws.Core.Extensions.Api",
+                "type": "Ws.Core.Shared.Serialization.ExceptionConverter"
+              }
+            ]
+          }
+        }
+      },
+      "_Ws.Core.Extensions.Data": {
+        "priority": 460,
+        "options": {}
+      },
+      "_Ws.Core.Extensions.HealthCheck": {
+        "priority": 999,
+        "options": {
+          "routes": [
+            {
+              "path": "/healthz",
+              "contentType": "text",
+              "skipChecks": true
+            },
+            {
+              "path": "/healthz/checks",
+              "contentType": "json",
+              "skipChecks": false,
+              "_authHosts": [ "localhost:32040" ]
+            }
+          ],
+          "checks": {
+            "storage": [
+              {
+                "driver": "C:\\",
+                "minimumFreeMb": 2048,
+                "status": "Degraded",
+                "name": "diskC",
+                "tags": [ "infrastructure", "on-premises" ]
+              }
+            ],
+            "memory": {
+              "maximumAllocatedMb": 500,
+              "status": "Degraded",
+              "tags": [ "infrastructure", "on-premises" ]
+            },
+            "process": [
+              {
+                "processName": "devenv",
+                "name": "devenv",
+                "status": "Degraded",
+                "tags": [ "infrastructure", "on-premises" ]
+              }
+            ],
+            "tcp": [
+              {
+                "host": "127.0.0.1",
+                "port": 2025,
+                "name": "mailserver",
+                "tags": [ "infrastructure", "local", "smtp" ]
+              },
+              {
+                "host": "127.0.0.1",
+                "port": 14331,
+                "name": "mssql-01",
+                "tags": [ "infrastructure", "local", "db" ]
+              }
+            ],
+            "http": [
+              {
+                "url": "https://www.google.com",
+                "name": "outbound",
+                "status": "Unhealthy",
+                "tags": [ "network", "firewall" ]
+              }
+            ],
+            "appLog": {
+              "appLogService": "x.core.HealthCheckAppLogService, x.core",
+              "takeLastLog": {
+                "criteria": "Top",
+                "value": 1000
+              },
+              "logIgnoreRoles": [
+                {
+                  "level": "Warn",
+                  "selectors": [
+                    { "logger": { "list": [ "PUCBM.Hub.Controllers.PrenotingController" ] } },
+                    {
+                      "logger": {
+                        "list": [ "Eurospin", "PUCBM" ],
+                        "role": "StartWith"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "level": "Error",
+                  "selectors": [
+                    {
+                      "logger": {
+                        "list": [ "Aves.Booking.RatePlan", "Eurospin.Server.Extensions.ImageSharpExtension", "SixLabors.ImageSharp.Web.Middleware.ImageSharpMidd" ],
+                        "role": "EqualTo"
+                      }
+                    },
+                    {
+                      "logger": {
+                        "list": [ "NodeServices" ],
+                        "role": "Contains"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "healthStatusCheckers": [
+                {
+                  "level": "Warn",
+                  "minCounters": [
+                    {
+                      "minEntry": 1000,
+                      "healthStatus": "Degraded"
+                    },
+                    {
+                      "minEntry": 10000,
+                      "healthStatus": "Unhealthy"
+                    }
+                  ]
+                },
+                {
+                  "level": "Error",
+                  "minCounters": [
+                    {
+                      "minEntry": 100,
+                      "healthStatus": "Degraded"
+                    },
+                    {
+                      "minEntry": 1000,
+                      "healthStatus": "Unhealthy"
+                    }
+                  ]
+                },
+                {
+                  "level": "Fatal",
+                  "minCounters": [
+                    {
+                      "minEntry": 10,
+                      "healthStatus": "Unhealthy"
+                    }
+                  ]
+                }
+              ],
+              "logMessageAggregate": {
+                "truncateLengthAt": 255,
+                "maxLevenshteinDistanceFactor": 90
+              },
+              "tags": [ "app" ]
+            }
+          },
+          "ui": {
+            "enable": true,
+            "injectCss": "wwwroot/healthcheck-ui/style.css",
+            "endpoints": [
+              {
+                "uri": "/healthz/checks",
+                "name": "web-app"
+              }
+            ],
+            "webhooks": [
+              {
+                "name": "web",
+                "uri": "/hook/healthz",
+                "payload": "{\"title\": \"The HealthCheck '[[LIVENESS]]' is failing\",\"text\": \"Error message: [[FAILURE]]\\r\\n[[DESCRIPTIONS]]\",\"isFailure\": true}",
+                "restorePayload": "{\"title\": \"The HealthCheck '[[LIVENESS]]' is recovered\",\"text\": \"All is up and running\"}"
+              }
+            ],
+            "evaluationTimeInSeconds": 60,
+            "minimumSecondsBetweenFailureNotifications": 300
+          }
+        }
+      },
+      "Ws.Core.Extensions.Diagnostic": {
+        "priority": 999,
+        "options": {
+          "httpLogging": {
+            "enable": true,
+            "config": {
+              "loggingFields": "Request",
+              "requestBodyLogLimit": 4096,
+              "responseBodyLogLimit": 4096,
+              "requestHeaders": [ "Host", "Referer", "sec-ch-ua" ],
+              "responseHeaders": [ "Cache-Control", "Content-Encoding", "Content-Type", "Set-Cookie" ]
+            }
+          },
+          "profiler": {
+            "enable": true,
+            "config": {
+              "EnableDebugMode": true,
+              "ColorScheme": "Light"
+            }
+          }
+        }
+      }
+    },
+    "injectors": []
+  }
+}

@@ -1,4 +1,8 @@
-﻿BenchmarkDotNet.Running.BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
+﻿using BenchmarkDotNet.Configs;
+
+BenchmarkDotNet.Running.BenchmarkSwitcher
+    .FromAssembly(typeof(Program).Assembly)
+    .Run(args /*, new DebugInProcessConfig()*/);
 
 namespace benchmark
 {

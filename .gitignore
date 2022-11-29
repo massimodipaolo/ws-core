@@ -210,6 +210,8 @@ _Pvt_Extensions
 /.sonarqube
 # Task Secret
 .env
+app-settings.local.json
+ext-settings.local.json
 # Pack
 /.build
 *.db
